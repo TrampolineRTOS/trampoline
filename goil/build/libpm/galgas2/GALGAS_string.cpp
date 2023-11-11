@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  'GALGAS_string' : class of galgas string                                                     
+//  'GALGAS_string' : class of galgas string
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 1996, ..., 2023 Pierre Molinaro.
 //
@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//     C++ Management                                                                            
+//     C++ Management
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -143,7 +143,7 @@ AC_OutputStream & operator << (AC_OutputStream & inStream,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//     Constructors                                                                              
+//     Constructors
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -237,7 +237,7 @@ GALGAS_string GALGAS_string::constructor_CppString (const GALGAS_string & inStri
 #if COMPILE_FOR_WINDOWS == 1
   GALGAS_string GALGAS_string::constructor_homeDirectory (UNUSED_LOCATION_ARGS) {
     char path [MAX_PATH] ;
-    SHGetFolderPath (NULL, CSIDL_PROFILE, NULL, 0, path) ;
+    SHGetFolderPath (nullptr, CSIDL_PROFILE, nullptr, 0, path) ;
     return GALGAS_string (path).getter_unixPathWithNativePath (HERE) ;
   }
 #endif
@@ -305,7 +305,7 @@ GALGAS_string GALGAS_string::constructor_stringWithEnvironmentVariable (const GA
   GALGAS_string result ;
   if (inEnvironmentVariableName.isValid ()) {
     const char * value = ::getenv (inEnvironmentVariableName.mString.cString (HERE)) ;
-    if (value == NULL) {
+    if (value == nullptr) {
       C_String message ;
       message << "the '" << inEnvironmentVariableName.mString << "' environment variable does not exist" ;
       inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
@@ -355,19 +355,26 @@ GALGAS_string GALGAS_string::constructor_componentsJoinedByString (const GALGAS_
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_string::constructor_stringWithCurrentDateTime (UNUSED_LOCATION_ARGS) {
-  const time_t currentTime = ::time (NULL) ;
-  char * timeString = NULL ;
+  time_t currentTime = ::time (nullptr) ;
+  struct tm currentTimeTM ;
+  #if COMPILE_FOR_WINDOWS == 0
+   ::localtime_r (&currentTime, &currentTimeTM) ; // Mac, Linux
+  #else
+   ::localtime_s (&currentTimeTM, &currentTime) ; // Windows
+  #endif
+  char timeString [128] ;
   bool ok = currentTime >= 0 ;
   if (ok) {
-    timeString = ::ctime (& currentTime) ;
-    ok = timeString != NULL ;
-    if (ok) {
-      const size_t length = ::strlen (timeString) ;
-      ok = length > 0 ;
-      if (ok) {
-        timeString [length - 1] = '\0' ; // Suppress trailing '\n'
-      }
-    }
+    ::strftime (timeString, sizeof (timeString), "Www Mmm dd hh:mm:ss yyyy", & currentTimeTM) ;
+//    timeString = ::ctime (& currentTime) ;
+//    ok = timeString != nullptr ;
+//    if (ok) {
+//      const size_t length = ::strlen (timeString) ;
+//      ok = length > 0 ;
+//      if (ok) {
+//        timeString [length - 1] = '\0' ; // Suppress trailing '\n'
+//      }
+//    }
   }
   return GALGAS_string (ok ? timeString : "") ;
 }
@@ -409,7 +416,7 @@ GALGAS_string GALGAS_string::constructor_stringWithSymbolicLinkContents (const G
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//     Operators                                                                                 
+//     Operators
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -443,7 +450,7 @@ void GALGAS_string::plusAssign_operation (GALGAS_string inOperand,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//     Getters                                                                                   
+//     Getters
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1093,9 +1100,9 @@ static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
                                             GALGAS_stringlist & ioResult) {
   const C_String nativeStartPath = C_FileManager::nativePathWithUnixPath (inUnixStartPath) ;
   DIR * dir = ::opendir (nativeStartPath.cString (HERE)) ;
-  if (dir != NULL) {
+  if (dir != nullptr) {
     struct dirent  * current = readdir (dir) ;
-    while (current != NULL) {
+    while (current != nullptr) {
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
@@ -1140,9 +1147,9 @@ static void recursiveSearchForHiddenFiles (const C_String & inUnixStartPath,
                                            GALGAS_stringlist & ioResult) {
   const C_String nativeStartPath = C_FileManager::nativePathWithUnixPath (inUnixStartPath) ;
   DIR * dir = ::opendir (nativeStartPath.cString (HERE)) ;
-  if (dir != NULL) {
+  if (dir != nullptr) {
     struct dirent  * current = readdir (dir) ;
-    while (current != NULL) {
+    while (current != nullptr) {
       if ((strlen (current->d_name) > 1) && (current->d_name [0] == '.') && (strcmp (current->d_name, "..") != 0)) {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
@@ -1187,9 +1194,9 @@ static void recursiveSearchForDirectories (const C_String & inUnixStartPath,
                                            GALGAS_stringlist & ioResult) {
   const C_String nativeStartPath = C_FileManager::nativePathWithUnixPath (inUnixStartPath) ;
   DIR * dir = ::opendir (nativeStartPath.cString (HERE)) ;
-  if (dir != NULL) {
+  if (dir != nullptr) {
     struct dirent  * current = readdir (dir) ;
-    while (current != NULL) {
+    while (current != nullptr) {
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
@@ -1236,9 +1243,9 @@ static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
                                             GALGAS_stringlist & ioResult) {
   const C_String nativeStartPath = C_FileManager::nativePathWithUnixPath (inUnixStartPath) ;
   DIR * dir = ::opendir (nativeStartPath.cString (HERE)) ;
-  if (dir != NULL) {
+  if (dir != nullptr) {
     struct dirent  * current = readdir (dir) ;
-    while (current != NULL) {
+    while (current != nullptr) {
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
@@ -1298,9 +1305,9 @@ static void recursiveSearchForDirectories (const C_String & inUnixStartPath,
                                            GALGAS_stringlist & ioResult) {
   const C_String nativeStartPath = C_FileManager::nativePathWithUnixPath (inUnixStartPath) ;
   DIR * dir = ::opendir (nativeStartPath.cString (HERE)) ;
-  if (dir != NULL) {
+  if (dir != nullptr) {
     struct dirent  * current = readdir (dir) ;
-    while (current != NULL) {
+    while (current != nullptr) {
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
@@ -1357,7 +1364,7 @@ GALGAS_stringlist GALGAS_string::getter_directoriesWithExtensions (const GALGAS_
 GALGAS_bool GALGAS_string::getter_doesEnvironmentVariableExist (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid ()) {
-    result = GALGAS_bool (::getenv (mString.cString (HERE)) != NULL) ;
+    result = GALGAS_bool (::getenv (mString.cString (HERE)) != nullptr) ;
   }
   return result ;
 }
@@ -1512,8 +1519,8 @@ GALGAS_bool GALGAS_string::getter_isDecimalSignedBigInt (UNUSED_LOCATION_ARGS) c
     }
     while ((idx < mString.length ()) && ok) {
       const utf32 c = mString (idx COMMA_HERE) ;
-      idx ++ ;
-      ok = (UNICODE_VALUE (c) >= '0') || (UNICODE_VALUE (c) <= '9') ;
+      idx += 1 ;
+      ok = (UNICODE_VALUE (c) >= '0') && (UNICODE_VALUE (c) <= '9') ;
     }
     result = GALGAS_bool (ok) ;
   }
@@ -1585,78 +1592,70 @@ GALGAS_bool GALGAS_string::getter_isSymbolicLink (UNUSED_LOCATION_ARGS) const {
 #endif
 
 //----------------------------------------------------------------------------------------------------------------------
-
 // http://msdn.microsoft.com/en-us/library/ms682499%28VS.85%29.aspx
 
-#if COMPILE_FOR_WINDOWS == 1
+#if (COMPILE_FOR_WINDOWS == 1) || defined(__CYGWIN__)
   #include <windows.h>
-#endif
+  #include <iostream>
 
-//----------------------------------------------------------------------------------------------------------------------
-
-#if COMPILE_FOR_WINDOWS == 1
   static bool CreateChildProcess (HANDLE g_hChildStd_OUT_Wr,
                                   HANDLE g_hChildStd_IN_Rd,
                                   const char * /* inCommandLine */) {
   //--- Create a child process that uses the previously created pipes for STDIN and STDOUT.
      TCHAR szCmdline [] = TEXT ("dir") ;
      TCHAR application [] = TEXT ("c:\\windows\\system32\\command.com") ;
-  //--- Set up members of the PROCESS_INFORMATION structure. 
-     PROCESS_INFORMATION piProcInfo ; 
+  //--- Set up members of the PROCESS_INFORMATION structure.
+     PROCESS_INFORMATION piProcInfo ;
      ZeroMemory (& piProcInfo, sizeof (PROCESS_INFORMATION)) ;
-  //--- Set up members of the STARTUPINFO structure. 
+  //--- Set up members of the STARTUPINFO structure.
      STARTUPINFO siStartInfo ;
      ZeroMemory (& siStartInfo, sizeof (STARTUPINFO)) ;
-     siStartInfo.cb = sizeof (STARTUPINFO) ; 
+     siStartInfo.cb = sizeof (STARTUPINFO) ;
      siStartInfo.hStdError = g_hChildStd_OUT_Wr ;
      siStartInfo.hStdOutput = g_hChildStd_OUT_Wr ;
      siStartInfo.hStdInput = g_hChildStd_IN_Rd ;
      siStartInfo.dwFlags |= STARTF_USESTDHANDLES ;
-  //-- Create the child process. 
+  //-- Create the child process.
      const bool bSuccess = 0 != CreateProcess (
-       application,   // Application 
-       szCmdline,     // command line 
-       NULL,          // process security attributes 
-       NULL,          // primary thread security attributes 
-       TRUE,          // handles are inherited 
-       0,             // creation flags 
-       NULL,          // use parent's environment 
-       NULL,          // use parent's current directory 
-       & siStartInfo, // STARTUPINFO pointer 
-       & piProcInfo   // receives PROCESS_INFORMATION 
+       application,   // Application
+       szCmdline,     // command line
+       nullptr,          // process security attributes
+       nullptr,          // primary thread security attributes
+       TRUE,          // handles are inherited
+       0,             // creation flags
+       nullptr,          // use parent's environment
+       nullptr,          // use parent's current directory
+       & siStartInfo, // STARTUPINFO pointer
+       & piProcInfo   // receives PROCESS_INFORMATION
      ) ;
      if (bSuccess) {
      // Close handles to the child process and its primary thread.
      // Some applications might keep these handles to monitor the status
-     // of the child process, for example. 
+     // of the child process, for example.
        CloseHandle (piProcInfo.hProcess) ;
        CloseHandle (piProcInfo.hThread) ;
      }else{ // CreateProcess Error
        DWORD error = GetLastError () ;
-       printf ("'CreateProcess' error: %ld\n", error) ;
+       std::cout << "'CreateProcess' error: " << error << std::endl ;
      }
    //---
      return bSuccess ;
   }
-#endif
 
-//----------------------------------------------------------------------------------------------------------------------
-
-#if COMPILE_FOR_WINDOWS == 1
   GALGAS_string GALGAS_string::getter_popen (C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) const {
     GALGAS_string result ;
     if (isValid ()) {
-    // Create a pipe for the child process's STDIN. 
-      HANDLE g_hChildStd_OUT_Wr = NULL ;
-      HANDLE g_hChildStd_OUT_Rd = NULL ;
-      HANDLE g_hChildStd_IN_Wr = NULL ;
-      HANDLE g_hChildStd_IN_Rd = NULL ;
+    // Create a pipe for the child process's STDIN.
+      HANDLE g_hChildStd_OUT_Wr = nullptr ;
+      HANDLE g_hChildStd_OUT_Rd = nullptr ;
+      HANDLE g_hChildStd_IN_Wr = nullptr ;
+      HANDLE g_hChildStd_IN_Rd = nullptr ;
       SECURITY_ATTRIBUTES saAttr ;
-      saAttr.nLength = sizeof (SECURITY_ATTRIBUTES) ; 
-      saAttr.bInheritHandle = TRUE ; 
-      saAttr.lpSecurityDescriptor = NULL ; 
-      C_String errorMessage ; 
+      saAttr.nLength = sizeof (SECURITY_ATTRIBUTES) ;
+      saAttr.bInheritHandle = TRUE ;
+      saAttr.lpSecurityDescriptor = nullptr ;
+      C_String errorMessage ;
       bool ok = 0 != CreatePipe (& g_hChildStd_OUT_Rd, & g_hChildStd_OUT_Wr, & saAttr, 0) ;
       if (! ok) {
         errorMessage << "@string popen: 'CreatePipe' error" ;
@@ -1664,25 +1663,25 @@ GALGAS_bool GALGAS_string::getter_isSymbolicLink (UNUSED_LOCATION_ARGS) const {
         ok = SetHandleInformation (g_hChildStd_OUT_Rd, HANDLE_FLAG_INHERIT, 0) ;
         if (! ok) {
           errorMessage << "@string popen: 'SetHandleInformation' error" ;
-        }      
+        }
       }
       if (ok) {
         ok = CreatePipe (& g_hChildStd_IN_Rd, & g_hChildStd_IN_Wr, & saAttr, 0) ;
         if (! ok) {
           errorMessage << "@string popen: 'CreatePipe (2)' error" ;
-        }      
+        }
       }
       if (ok) {
         ok = SetHandleInformation (g_hChildStd_IN_Wr, HANDLE_FLAG_INHERIT, 0) ;
         if (! ok) {
           errorMessage << "@string popen: 'SetHandleInformation (2)' error" ;
-        }      
+        }
       }
       if (ok) {
         ok = CreateChildProcess (g_hChildStd_OUT_Wr, g_hChildStd_IN_Rd, mString.cString (HERE)) ;
         if (! ok) {
           errorMessage << "@string popen: 'CreateChildProcess' error" ;
-        }      
+        }
       }
       if (! ok) {
         inCompiler->onTheFlyRunTimeError (errorMessage COMMA_THERE) ;
@@ -1693,7 +1692,7 @@ GALGAS_bool GALGAS_string::getter_isSymbolicLink (UNUSED_LOCATION_ARGS) const {
           const size_t kBufferSize = 1000 ;
           uint8_t buffer [kBufferSize] ;
           DWORD readLength = 0 ;
-          loop = ReadFile (g_hChildStd_OUT_Rd, buffer, kBufferSize, & readLength, NULL) ;
+          loop = ReadFile (g_hChildStd_OUT_Rd, buffer, kBufferSize, & readLength, nullptr) ;
           loop = readLength > 0 ;
           response.appendDataFromPointer (buffer, readLength) ;
         }
@@ -1708,11 +1707,9 @@ GALGAS_bool GALGAS_string::getter_isSymbolicLink (UNUSED_LOCATION_ARGS) const {
     }
     return result ;
   }
-#endif
 
-//----------------------------------------------------------------------------------------------------------------------
+#else
 
-#if COMPILE_FOR_WINDOWS == 0
   GALGAS_string GALGAS_string::getter_popen (C_Compiler * /* inCompiler */
                                              COMMA_UNUSED_LOCATION_ARGS) const {
     GALGAS_string result ;
@@ -1739,7 +1736,7 @@ GALGAS_bool GALGAS_string::getter_isSymbolicLink (UNUSED_LOCATION_ARGS) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//     Methods                                                                                   
+//     Methods
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1872,7 +1869,6 @@ void GALGAS_string::method_writeToExecutableFile (GALGAS_string inFilePath,
                                                   C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) const {
   if (isValid () && inFilePath.isValid ()) {
- //   inCompiler->addDependancyOutputFilePath (inFilePath.mString) ;
     const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (inFilePath.mString) ;
     if (C_Compiler::performGeneration ()) {
       const bool verboseOptionOn = verboseOutput () ;
@@ -1955,7 +1951,7 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//     Setters                                                                                   
+//     Setters
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1980,14 +1976,14 @@ void GALGAS_string::setter_setCapacity (GALGAS_uint inNewCapacity,
                                         COMMA_LOCATION_ARGS) {
   if (isValid () && inNewCapacity.isValid ()) {
     if (inNewCapacity.uintValue () <= ((uint32_t) INT32_MAX)) {
-      mString.setCapacity (inNewCapacity.uintValue ()) ; 
+      mString.setCapacity (inNewCapacity.uintValue ()) ;
     }else{
       C_String message ;
       message << "setCapacity argument value (" ;
       message.appendUnsigned (inNewCapacity.uintValue ()) ;
       message << ") too large (should be <= 2**31-1)" ;
       inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
-    } 
+    }
   }
 }
 
@@ -1997,7 +1993,7 @@ void GALGAS_string::setter_incIndentation (GALGAS_uint inIndentation,
                                            C_Compiler * /* inCompiler */
                                            COMMA_UNUSED_LOCATION_ARGS) {
   if (isValid () && inIndentation.isValid ()) {
-    mString.incIndentation ((int32_t) inIndentation.uintValue ()) ; 
+    mString.incIndentation ((int32_t) inIndentation.uintValue ()) ;
   }
 }
 
@@ -2007,7 +2003,7 @@ void GALGAS_string::setter_decIndentation (GALGAS_uint inIndentation,
                                            C_Compiler * /* inCompiler */
                                            COMMA_UNUSED_LOCATION_ARGS) {
   if (isValid () && inIndentation.isValid ()) {
-    mString.incIndentation (- ((int32_t) inIndentation.uintValue ())) ; 
+    mString.incIndentation (- ((int32_t) inIndentation.uintValue ())) ;
   }
 }
 
@@ -2072,7 +2068,7 @@ void GALGAS_string::setter_removeCharacterAtIndex (GALGAS_char & outChar,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//     Type methods                                                                              
+//     Type methods
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -2141,9 +2137,9 @@ static C_String recursiveRemoveDirectory (const C_String & inUnixDirectoryPath) 
   C_String result ;
   const C_String nativeStartPath = C_FileManager::nativePathWithUnixPath (inUnixDirectoryPath) ;
   DIR * dir = ::opendir (nativeStartPath.cString (HERE)) ;
-  if (dir != NULL) {
+  if (dir != nullptr) {
     struct dirent  * current = readdir (dir) ;
-    while ((current != NULL) && (result.length () == 0)) {
+    while ((current != nullptr) && (result.length () == 0)) {
       if ((strcmp (current->d_name, ".") != 0) && (strcmp (current->d_name, "..") != 0)) {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
@@ -2263,7 +2259,6 @@ static void generateFile (const C_String & inStartPath,
     #if COMPILE_FOR_WINDOWS == 0
       struct stat fileStat ;
       ::stat (fullPathName.cString (HERE), & fileStat) ;
-      // printf ("FILE MODE 0x%X\n", fileStat.st_mode) ;
       ::chmod (fullPathName.cString (HERE), fileStat.st_mode | S_IXUSR | S_IXGRP | S_IXOTH) ;
     #endif
   }

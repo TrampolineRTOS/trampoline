@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  AC_GALGAS_list : Base class for GALGAS list                                                  
+//  AC_GALGAS_list : Base class for GALGAS list
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2008, ..., 2013 Pierre Molinaro.
 //
@@ -126,7 +126,7 @@ class AC_GALGAS_list : public AC_GALGAS_root {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  cListMapElement                                                                              
+//  cListMapElement
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -162,7 +162,7 @@ class cListMapElement : public cCollectionElement {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  AC_GALGAS_listmap                                                                            
+//  AC_GALGAS_listmap
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -181,7 +181,7 @@ class AC_GALGAS_listmap : public AC_GALGAS_root {
   public: VIRTUAL_IN_DEBUG uint32_t count (void) const ;
 
 //--- isValid
-  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return mSharedListMap != NULL ; }
+  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return mSharedListMap != nullptr ; }
 
 //--- drop
   public: VIRTUAL_IN_DEBUG void drop (void) override ;

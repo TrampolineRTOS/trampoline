@@ -530,7 +530,6 @@ mpn_fft_mul_modF_K (mp_ptr *ap, mp_ptr *bp, mp_size_t n, mp_size_t K)
 	    cc += mpn_add_n (tpn, tpn, a, n) + a[n];
 	  if (cc != 0)
 	    {
-	      /* FIXME: use MPN_INCR_U here, since carry is not expected.  */
 	      cc = mpn_add_1 (tp, tp, n2, cc);
 	      ASSERT (cc == 0);
 	    }

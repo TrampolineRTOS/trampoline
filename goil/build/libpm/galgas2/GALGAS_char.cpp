@@ -24,6 +24,10 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
+#include <ctype.h>
+
+//----------------------------------------------------------------------------------------------------------------------
+
 #if COMPILE_FOR_WINDOWS == 0
   #include <termios.h>
   #include <string.h>
@@ -47,7 +51,7 @@ GALGAS_char GALGAS_char::constructor_default (UNUSED_LOCATION_ARGS) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#if COMPILE_FOR_WINDOWS == 1
+#if (COMPILE_FOR_WINDOWS == 1) || defined(__CYGWIN__)
   GALGAS_char GALGAS_char::constructor_unicodeCharacterFromRawKeyboard (C_Compiler * inCompiler
                                                                         COMMA_LOCATION_ARGS) {
     inCompiler->onTheFlyRunTimeError (
@@ -56,11 +60,7 @@ GALGAS_char GALGAS_char::constructor_default (UNUSED_LOCATION_ARGS) {
     ) ;
     return GALGAS_char () ; // Poison value
   }
-#endif
-
-//----------------------------------------------------------------------------------------------------------------------
-
-#if COMPILE_FOR_WINDOWS == 0
+#else
   static void waitForRawInput (void) {
     bool waiting = true ;
     while (waiting) {
@@ -72,11 +72,7 @@ GALGAS_char GALGAS_char::constructor_default (UNUSED_LOCATION_ARGS) {
       }
     }
   }
-#endif
 
-//----------------------------------------------------------------------------------------------------------------------
-
-#if COMPILE_FOR_WINDOWS == 0
   GALGAS_char GALGAS_char::constructor_unicodeCharacterFromRawKeyboard (C_Compiler * /* inCompiler */
                                                                         COMMA_UNUSED_LOCATION_ARGS) {
   //--- Save current configuration

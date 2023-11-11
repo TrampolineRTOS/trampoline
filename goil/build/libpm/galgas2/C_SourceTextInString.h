@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  'C_SourceTextInString'                                                                       
+//  'C_SourceTextInString'
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 1996, ..., 2016 Pierre Molinaro.
 //
@@ -27,7 +27,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                 Classes for handling source text                                              
+//                 Classes for handling source text
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -42,7 +42,7 @@ class cSourceTextInString : public C_SharedObject {
   mSourceString (inSourceString),
   mShowSourceOnDetailledErrorMessage (inShowSourceOnDetailledErrorMessage) {
   }
-  
+
   public: C_String mFilePath ;
   public: C_String mSourceString ;
   public: bool mShowSourceOnDetailledErrorMessage ;
@@ -69,21 +69,21 @@ class C_SourceTextInString {
 //--- Handle copy
   public: C_SourceTextInString (const C_SourceTextInString & inSource) ;
   public: C_SourceTextInString & operator = (const C_SourceTextInString & inSource) ;
-  
+
 //--- Source file Name
   private: cSourceTextInString * mObject ;
 
   public: inline C_String sourceFilePath (void) const {
-    return (mObject == NULL) ? "" : mObject->mFilePath ;
+    return (mObject == nullptr) ? "" : mObject->mFilePath ;
   }
 
 //--- Source text
   public: inline C_String sourceString (void) const {
-    return (mObject == NULL) ? "" : mObject->mSourceString ;
+    return (mObject == nullptr) ? "" : mObject->mSourceString ;
   }
 
   public: inline bool isValid (void) const {
-    return mObject != NULL ;
+    return mObject != nullptr ;
   }
 
   public: inline bool operator == (const C_SourceTextInString & inOther) const {
@@ -95,15 +95,15 @@ class C_SourceTextInString {
   }
 
   public: int32_t sourceLength (void) const {
-    return (mObject == NULL) ? 0 : mObject->mSourceString.length () ;
+    return (mObject == nullptr) ? 0 : mObject->mSourceString.length () ;
   }
 
   public: utf32 readCharOrNul (const int32_t inIndex COMMA_LOCATION_ARGS) const {
-    return (mObject == NULL) ? TO_UNICODE (0) : mObject->mSourceString.readCharOrNul (inIndex COMMA_THERE) ;
+    return (mObject == nullptr) ? TO_UNICODE (0) : mObject->mSourceString.readCharOrNul (inIndex COMMA_THERE) ;
   }
 
   public: const utf32 * temporaryUTF32StringAtIndex (const int32_t inIndex COMMA_LOCATION_ARGS) const {
-    return (mObject == NULL) ? NULL : & (mObject->mSourceString.utf32String (THERE)) [inIndex] ;
+    return (mObject == nullptr) ? nullptr : & (mObject->mSourceString.utf32String (THERE)) [inIndex] ;
   }
 
   public: C_String getLineForLocation (const class C_LocationInSource & inLocation) const ;

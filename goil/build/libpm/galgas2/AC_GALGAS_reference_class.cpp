@@ -2,7 +2,7 @@
 //
 //  AC_GALGAS_reference_class : base class for reference class objects
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2021, ..., 2021 Pierre Molinaro.
 //
@@ -30,8 +30,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * AC_GALGAS_reference_class::dynamicTypeDescriptor (void) const {
-  const C_galgas_type_descriptor * result = NULL ;
-  if (NULL != mObjectPtr) {
+  const C_galgas_type_descriptor * result = nullptr ;
+  if (nullptr != mObjectPtr) {
     result = mObjectPtr->classDescriptor () ;
   }
   return result ;
@@ -41,14 +41,14 @@ const C_galgas_type_descriptor * AC_GALGAS_reference_class::dynamicTypeDescripto
 
 AC_GALGAS_reference_class::AC_GALGAS_reference_class (void) :
 AC_GALGAS_root (),
-mObjectPtr (NULL) {
+mObjectPtr (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_reference_class::AC_GALGAS_reference_class (const acStrongPtr_class * inPointer) :
 AC_GALGAS_root (),
-mObjectPtr (NULL) {
+mObjectPtr (nullptr) {
   macroAssignSharedObject (mObjectPtr, (acStrongPtr_class *) inPointer) ;
 }
 
@@ -68,7 +68,7 @@ void AC_GALGAS_reference_class::drop (void) {
 
 AC_GALGAS_reference_class::AC_GALGAS_reference_class (const AC_GALGAS_reference_class & inSource) :
 AC_GALGAS_root (),
-mObjectPtr (NULL) {
+mObjectPtr (nullptr) {
   macroAssignSharedObject (mObjectPtr, inSource.mObjectPtr) ;
 }
 

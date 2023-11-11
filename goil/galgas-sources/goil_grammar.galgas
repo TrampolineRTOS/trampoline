@@ -29,6 +29,8 @@ grammar goil_grammar "LL1" {
     syntax implementation_parser
     
     <start> 
+
+    unused <file_without_include>
 }
 
 # vim:ft=ggs:ts=4:sw=4

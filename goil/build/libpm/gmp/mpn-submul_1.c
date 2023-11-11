@@ -126,7 +126,7 @@ mpn_submul_1 (mp_ptr rp, mp_srcptr up, mp_size_t n, mp_limb_t vl)
       umul_ppmm (hpl, lpl, ul, shifted_vl);
       lpl >>= GMP_NAIL_BITS;
       xw = rl - (prev_hpl + lpl) + cl;
-      cl = (mp_limb_signed_t) xw >> GMP_NUMB_BITS; /* FIXME: non-portable */
+      cl = (mp_limb_signed_t) xw >> GMP_NUMB_BITS; 
       xl = xw & GMP_NUMB_MASK;
       *rp++ = xl;
       prev_hpl = hpl;

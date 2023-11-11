@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 1999, ..., 2013 Pierre Molinaro.
+//  Copyright (C) 1999, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -22,25 +22,9 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#include <stdio.h>
-
-//----------------------------------------------------------------------------------------------------------------------
-
-#include "utilities/M_machine.h"
-
-//----------------------------------------------------------------------------------------------------------------------
-
-#ifndef COMPILE_FOR_WINDOWS
-  #error COMPILE_FOR_WINDOWS is undefined
-#endif
-
-//----------------------------------------------------------------------------------------------------------------------
-
-#if COMPILE_FOR_WINDOWS == 1
-  #include <time.h>
-#else
-  #include <sys/time.h>
-#endif
+#include <iostream>
+#include <cstdint>
+#include <time.h>
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -50,13 +34,8 @@ class C_String ;
 //----------------------------------------------------------------------------------------------------------------------
 
 class C_Timer {
-  #if COMPILE_FOR_WINDOWS == 0
-    private: timeval mStart ;
-    private: timeval mEnd ;
-  #else
-    private: clock_t mStart ;
-    private: clock_t mEnd ;
-  #endif
+  private: clock_t mStart ;
+  private: clock_t mEnd ;
   
   private: bool mRunning ;
   

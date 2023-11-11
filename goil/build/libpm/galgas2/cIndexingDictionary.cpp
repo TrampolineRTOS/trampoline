@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  'cIndexingDictionary': dictionary for indexing soures                                        
+//  'cIndexingDictionary': dictionary for indexing soures
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2010, ..., 2012 Pierre Molinaro.
 //
@@ -30,7 +30,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  c I n d e x E n t r y N o d e                                                                
+//  c I n d e x E n t r y N o d e
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -55,8 +55,8 @@ class cIndexEntryNode {
 //----------------------------------------------------------------------------------------------------------------------
 
 cIndexEntryNode::cIndexEntryNode (const C_String & inKey) :
-mInfPtr (NULL),
-mSupPtr (NULL),
+mInfPtr (nullptr),
+mSupPtr (nullptr),
 mBalance (0),
 mKey (inKey),
 mDescriptorArray () {
@@ -96,7 +96,7 @@ static void rotateRight (cIndexEntryNode * & ioRootPtr) {
   cIndexEntryNode * b = ioRootPtr->mInfPtr ;
   ioRootPtr->mInfPtr = b->mSupPtr ;
   b->mSupPtr = ioRootPtr ;
- 
+
   if (b->mBalance > 0) {
     ioRootPtr->mBalance += -b->mBalance - 1 ;
   }else{
@@ -115,8 +115,8 @@ static void rotateRight (cIndexEntryNode * & ioRootPtr) {
 cIndexEntryNode * cIndexingDictionary::findOrAddEntry (cIndexEntryNode * & ioRootPtr,
                                                        const C_String & inKey,
                                                        bool & ioExtension) {
-  cIndexEntryNode * result = NULL ;
-  if (ioRootPtr == NULL) {
+  cIndexEntryNode * result = nullptr ;
+  if (ioRootPtr == nullptr) {
     macroMyNew (ioRootPtr, cIndexEntryNode (inKey)) ;
     ioExtension = true ;
     result = ioRootPtr ;
@@ -167,12 +167,12 @@ cIndexEntryNode * cIndexingDictionary::findOrAddEntry (cIndexEntryNode * & ioRoo
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                 cIndexingDictionary                                                           
+//                 cIndexingDictionary
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 cIndexingDictionary::cIndexingDictionary (void) :
-mEntryRoot (NULL) {
+mEntryRoot (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -214,7 +214,7 @@ void cIndexingDictionary::addIndexedKey (const uint32_t inIndexingKind,
 
 static void enumerateEntries (const cIndexEntryNode * inNode,
                               C_String & ioContents) {
-  if (NULL != inNode) {
+  if (nullptr != inNode) {
     enumerateEntries (inNode->mInfPtr, ioContents) ;
     ioContents << "<key>" << inNode->mKey.HTMLRepresentation () << "</key>" ;
     ioContents << "<array>" ;

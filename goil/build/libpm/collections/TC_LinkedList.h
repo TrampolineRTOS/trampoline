@@ -1,13 +1,13 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Linked list template class.                                                                  
+//  Linked list template class.
 //
-//  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR                       
-//  AND ASSIGNMENT OPERATOR.                                                                     
+//  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR
+//  AND ASSIGNMENT OPERATOR.
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
-//  Copyright (C) 2001 Pierre Molinaro.                                                          
+//  Copyright (C) 2001 Pierre Molinaro.
 //  e-mail : pierre@pcmolinaro.name
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   Predeclarations                                                                             
+//   Predeclarations
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ template <typename TYPE> void swap (TC_LinkedList <TYPE> & ioOperand1,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   Class template declaration                                                                  
+//   Class template declaration
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -47,7 +47,7 @@ template <typename TYPE> class TC_LinkedList {
 //--- Constructor and destructor
   public: TC_LinkedList (void) ;
   public: virtual ~TC_LinkedList (void) ;
-  
+
 //--- No copy
   private: TC_LinkedList (TC_LinkedList <TYPE> &) ;
   private: void operator = (TC_LinkedList <TYPE> &) ;
@@ -67,7 +67,7 @@ template <typename TYPE> class TC_LinkedList {
   public: void mergeListAtBottom (TC_LinkedList <TYPE> & ioList) ;
 
 //--- List empty ?
-  public: bool isListEmpty (void) const { return mTopItem == NULL ; }
+  public: bool isListEmpty (void) const { return mTopItem == nullptr ; }
 
 //--- Exchange
   friend void swap <TYPE> (TC_LinkedList <TYPE> & ioOperand1,
@@ -91,8 +91,8 @@ template <typename TYPE> class TC_LinkedList {
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE>  TC_LinkedList <TYPE>::TC_LinkedList (void) :
-mTopItem ((cElement *) NULL),
-mBottomItem ((cElement *) NULL),
+mTopItem ((cElement *) nullptr),
+mBottomItem ((cElement *) nullptr),
 mCount (0) {
 }
 
@@ -105,7 +105,7 @@ template <typename TYPE> TC_LinkedList <TYPE>::~TC_LinkedList (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> void TC_LinkedList <TYPE>::makeListEmpty (void) {
-  while (mTopItem != NULL) {
+  while (mTopItem != nullptr) {
     mBottomItem = mTopItem->mNextItem ;
     macroMyDelete (mTopItem) ;
     mTopItem = mBottomItem ;
@@ -116,11 +116,11 @@ template <typename TYPE> void TC_LinkedList <TYPE>::makeListEmpty (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> void TC_LinkedList <TYPE>::insertAtBottom (const TYPE & inInfo) {
-  cElement * p = (cElement *) NULL ;
+  cElement * p = (cElement *) nullptr ;
   macroMyNew (p, cElement) ;
-  p->mNextItem = (cElement *) NULL ;
+  p->mNextItem = (cElement *) nullptr ;
   p->mInfo = inInfo ; // Copy
-  if (mTopItem == NULL) {
+  if (mTopItem == nullptr) {
     mTopItem = p ;
   }else{
     mBottomItem->mNextItem = p ;
@@ -132,12 +132,12 @@ template <typename TYPE> void TC_LinkedList <TYPE>::insertAtBottom (const TYPE &
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> void TC_LinkedList<TYPE> ::insertAtTop (const TYPE & inInfo) {
-  cElement * p = (cElement *) NULL ;
+  cElement * p = (cElement *) nullptr ;
   macroMyNew (p, cElement) ;
   p->mNextItem = mTopItem ;
   p->mInfo = inInfo ; // Copy
   mTopItem = p ;
-  if (mBottomItem == NULL) {
+  if (mBottomItem == nullptr) {
     mBottomItem = p ;
   }
   mCount ++ ;
@@ -146,13 +146,13 @@ template <typename TYPE> void TC_LinkedList<TYPE> ::insertAtTop (const TYPE & in
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> TYPE TC_LinkedList <TYPE>::getByCopyAndSuppressTopItem (LOCATION_ARGS) {
-  MF_AssertThere (mTopItem != NULL, "mTopItem == NULL", 0, 0) ;
+  MF_AssertThere (mTopItem != nullptr, "mTopItem == nullptr", 0, 0) ;
   TYPE info (mTopItem->mInfo) ; // Copy constructor call
   cElement * p = mTopItem->mNextItem ;
   macroMyDelete (mTopItem) ;
   mTopItem = p ;
-  if (mTopItem == NULL) {
-    mBottomItem = (cElement *) NULL ;
+  if (mTopItem == nullptr) {
+    mBottomItem = (cElement *) nullptr ;
   }
   mCount -- ;
   return info ;
@@ -162,15 +162,15 @@ template <typename TYPE> TYPE TC_LinkedList <TYPE>::getByCopyAndSuppressTopItem 
 
 template <typename TYPE> void TC_LinkedList <TYPE>::mergeListAtTop (TC_LinkedList <TYPE> & ioList) {
   MF_Assert (this != & ioList, "this == & ioList", 0, 0) ;
-  if (ioList.mTopItem != NULL) {
-    if (mBottomItem == NULL) {
+  if (ioList.mTopItem != nullptr) {
+    if (mBottomItem == nullptr) {
       mBottomItem = ioList.mBottomItem ;
     }else{
       ioList.mBottomItem->mNextItem = mTopItem ;
     }
     mTopItem = ioList.mTopItem ;
-    ioList.mTopItem = (cElement *) NULL ;
-    ioList.mBottomItem = (cElement *) NULL ;
+    ioList.mTopItem = (cElement *) nullptr ;
+    ioList.mBottomItem = (cElement *) nullptr ;
     mCount += ioList.mCount ;
     ioList.mCount = 0 ;
   }
@@ -180,15 +180,15 @@ template <typename TYPE> void TC_LinkedList <TYPE>::mergeListAtTop (TC_LinkedLis
 
 template <typename TYPE> void TC_LinkedList <TYPE>::mergeListAtBottom (TC_LinkedList <TYPE> & ioList) {
   MF_Assert (this != & ioList, "this == & ioList", 0, 0) ;
-  if (ioList.mTopItem != NULL) {
-    if (mBottomItem == NULL) {
+  if (ioList.mTopItem != nullptr) {
+    if (mBottomItem == nullptr) {
       mTopItem = ioList.mTopItem ;
     }else{
       mBottomItem->mNextItem = ioList.mTopItem ;
     }
     mBottomItem = ioList.mBottomItem ;
-    ioList.mTopItem = (cElement *) NULL ;
-    ioList.mBottomItem = (cElement *) NULL ;
+    ioList.mTopItem = (cElement *) nullptr ;
+    ioList.mBottomItem = (cElement *) nullptr ;
     mCount += ioList.mCount ;
     ioList.mCount = 0 ;
   }
@@ -200,9 +200,9 @@ template <typename TYPE> void TC_LinkedList <TYPE>::copyIntoArray (TC_UniqueArra
   outArray.free () ;
   outArray.setCapacity (mCount) ;
   cElement * p = mTopItem ;
-  while (p != NULL) {
+  while (p != nullptr) {
     outArray.appendObject (p->mInfo) ;
-    p = p->mNextItem ;  
+    p = p->mNextItem ;
   }
 }
 

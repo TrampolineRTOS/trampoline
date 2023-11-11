@@ -64,7 +64,7 @@ gOption_generic_5F_cli_5F_options_emit_5F_issue_5F_json_5F_file ("generic_cli_op
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#if COMPILE_FOR_WINDOWS == 1
+  #if COMPILE_FOR_WINDOWS == 1
   C_BoolCommandLineOption
   gOption_generic_5F_cli_5F_options_nodialog ("generic_cli_options",
                                               "nodialog",

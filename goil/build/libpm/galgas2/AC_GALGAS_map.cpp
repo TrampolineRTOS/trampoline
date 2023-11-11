@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  AC_GALGAS_map : Base class for GALGAS map                                                    
+//  AC_GALGAS_map : Base class for GALGAS map
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2008, ..., 2023 Pierre Molinaro.
 //
@@ -32,7 +32,7 @@ class cMapNode ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  c S h a r e d M a p R o o t                                                                  
+//  c S h a r e d M a p R o o t
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -157,7 +157,7 @@ class cSharedMapRoot : public C_SharedObject {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  c M a p N o d e                                                                              
+//  c M a p N o d e
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -186,9 +186,9 @@ class cMapNode {
 
 cSharedMapRoot::cSharedMapRoot (const bool inActivateReplacementSuggestions COMMA_LOCATION_ARGS) :
 C_SharedObject (THERE),
-mRoot (NULL),
+mRoot (nullptr),
 mCount (0),
-mOverridenMap (NULL),
+mOverridenMap (nullptr),
 mActivateReplacementSuggestions (inActivateReplacementSuggestions) {
 }
 
@@ -203,8 +203,8 @@ cSharedMapRoot::~ cSharedMapRoot (void) {
 
 cMapNode::cMapNode (const C_String & inKey,
                     const capCollectionElement & inAttributes) :
-mInfPtr (NULL),
-mSupPtr (NULL),
+mInfPtr (nullptr),
+mSupPtr (nullptr),
 mBalance (0),
 mKey (inKey),
 mAttributes (inAttributes) {
@@ -228,9 +228,9 @@ cMapNode::~cMapNode (void) {
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void checkNode (const cMapNode * inNode,
                          uint32_t & ioCount) {
-    if (NULL != inNode) {
+    if (nullptr != inNode) {
      checkNode (inNode->mInfPtr, ioCount) ;
-     if (inNode->mAttributes.ptr () != NULL) {
+     if (inNode->mAttributes.ptr () != nullptr) {
        ioCount ++ ;
      }
      checkNode (inNode->mSupPtr, ioCount) ;
@@ -258,7 +258,7 @@ cMapNode::~cMapNode (void) {
 
 AC_GALGAS_map::AC_GALGAS_map (const bool inActivateReplacementSuggestions) :
 AC_GALGAS_root (),
-mSharedMap (NULL),
+mSharedMap (nullptr),
 mActivateReplacementSuggestions (inActivateReplacementSuggestions) {
 }
 
@@ -266,7 +266,7 @@ mActivateReplacementSuggestions (inActivateReplacementSuggestions) {
 
 AC_GALGAS_map::AC_GALGAS_map (const AC_GALGAS_map & inSource) :
 AC_GALGAS_root (),
-mSharedMap (NULL),
+mSharedMap (nullptr),
 mActivateReplacementSuggestions (inSource.mActivateReplacementSuggestions) {
   macroAssignSharedObject (mSharedMap, inSource.mSharedMap) ;
 }
@@ -318,7 +318,7 @@ static void internalDescription (cMapNode * inNode,
                                  C_String & ioString,
                                  const int32_t inIndentation,
                                  uint32_t & ioIdx) {
-  if (NULL != inNode) {
+  if (nullptr != inNode) {
     internalDescription (inNode->mInfPtr, ioString, inIndentation, ioIdx) ;
     ioString << "\n" ;
     ioString.writeStringMultiple ("| ", inIndentation) ;
@@ -357,7 +357,7 @@ void AC_GALGAS_map::description (C_String & ioString,
   if (isValid ()) {
     const cSharedMapRoot * currentMap = mSharedMap ;
     uint32_t level = 0 ;
-    while (NULL != currentMap) {
+    while (nullptr != currentMap) {
       currentMap->description (ioString, inIndentation, level) ;
       level ++ ;
       currentMap = currentMap->mOverridenMap ;
@@ -379,13 +379,13 @@ void AC_GALGAS_map::description (C_String & ioString,
 cMapNode * cSharedMapRoot::findEntryInMapAtLevel (const C_String & inKey,
                                                   const uint32_t inLevel,
                                                   const cSharedMapRoot * inFirstMap) const {
-  cMapNode * result = NULL ;
+  cMapNode * result = nullptr ;
   const cSharedMapRoot * currentMap = inFirstMap ;
   uint32_t level = 0 ;
-  while ((NULL != currentMap) && (NULL == result)) {
+  while ((nullptr != currentMap) && (nullptr == result)) {
     if (inLevel == level) {
       cMapNode * currentNode = currentMap->mRoot ;
-      while ((currentNode != NULL) && (NULL == result)) {
+      while ((currentNode != nullptr) && (nullptr == result)) {
         macroValidPointer (currentNode) ;
         const int32_t comparaison = currentNode->mKey.compare (inKey) ;
         if (comparaison > 0) {
@@ -407,11 +407,11 @@ cMapNode * cSharedMapRoot::findEntryInMapAtLevel (const C_String & inKey,
 
 cMapNode * cSharedMapRoot::findEntryInMap (const C_String & inKey,
                                            const cSharedMapRoot * inFirstMap) const {
-  cMapNode * result = NULL ;
+  cMapNode * result = nullptr ;
   const cSharedMapRoot * currentMap = inFirstMap ;
-  while ((NULL != currentMap) && (NULL == result)) {
+  while ((nullptr != currentMap) && (nullptr == result)) {
     cMapNode * currentNode = currentMap->mRoot ;
-    while ((currentNode != NULL) && (NULL == result)) {
+    while ((currentNode != nullptr) && (nullptr == result)) {
       macroValidPointer (currentNode) ;
       const int32_t comparaison = currentNode->mKey.compare (inKey) ;
       if (comparaison > 0) {
@@ -432,11 +432,11 @@ cMapNode * cSharedMapRoot::findEntryInMap (const C_String & inKey,
 const cMapNode * cSharedMapRoot::findNodeForKeyInMapOrInOverridenMaps (const GALGAS_string & inKey,
                                                                        C_Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) const {
-  const cMapNode * result = NULL ;
+  const cMapNode * result = nullptr ;
   if (inKey.isValid ()) {
     const C_String key = inKey.stringValue () ;
     result = findEntryInMap (key, this) ;
-    if (NULL == result) {
+    if (nullptr == result) {
       C_String errorMessage ;
       errorMessage << "the '" << key << "' key is not defined in map" ;
       inCompiler->onTheFlyRunTimeError (errorMessage COMMA_THERE) ;
@@ -448,7 +448,7 @@ const cMapNode * cSharedMapRoot::findNodeForKeyInMapOrInOverridenMaps (const GAL
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapNode * AC_GALGAS_map::searchEntryInMap (const C_String & inKey) const {
-  cMapNode * result = NULL ;
+  cMapNode * result = nullptr ;
   if (isValid ()) {
     result = mSharedMap->findEntryInMap (inKey, mSharedMap) ;
   }
@@ -464,10 +464,10 @@ cMapNode * AC_GALGAS_map::searchEntryInMap (const C_String & inKey) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 const cCollectionElement * AC_GALGAS_map::readAccessForWithInstruction (const GALGAS_string & inKey) const {
-  const cCollectionElement * result = NULL ;
+  const cCollectionElement * result = nullptr ;
   if (isValid () && inKey.isValid ()) {
     cMapNode * node = mSharedMap->findEntryInMap (inKey.stringValue (), mSharedMap) ;
-    if (NULL != node) {
+    if (nullptr != node) {
       result = node->mAttributes.ptr () ;
     }
   }
@@ -480,12 +480,12 @@ cCollectionElement * AC_GALGAS_map::readWriteAccessForWithInstructionWithErrorMe
                                                                                        const GALGAS_lstring & inKey,
                                                                                        const char * inSearchErrorMessage
                                                                                        COMMA_LOCATION_ARGS) {
-  cCollectionElement * result = NULL ;
+  cCollectionElement * result = nullptr ;
   if (isValid () && inKey.isValid ()) {
     insulate (HERE) ;
     const C_String key = inKey.mProperty_string.stringValue () ;
     cMapNode * node = mSharedMap->findEntryInMap (key, mSharedMap) ;
-    if (NULL == node) {
+    if (nullptr == node) {
       TC_UniqueArray <C_String> nearestKeyArray ;
       if (mActivateReplacementSuggestions) {
         mSharedMap->findNearestKey (key, nearestKeyArray) ;
@@ -531,7 +531,7 @@ static void rotateRight (cMapNode * & ioRootPtr) {
   cMapNode * b = ioRootPtr->mInfPtr ;
   ioRootPtr->mInfPtr = b->mSupPtr ;
   b->mSupPtr = ioRootPtr ;
- 
+
   if (b->mBalance > 0) {
     ioRootPtr->mBalance += -b->mBalance - 1 ;
   }else{
@@ -552,7 +552,7 @@ static bool internalInsertOrReplace (cMapNode * & ioRootPtr,
                                      const capCollectionElement & ioAttributeArray,
                                      bool & ioExtension) {
   bool anObjectHasBeenAdded = false ;
-  if (ioRootPtr == NULL) {
+  if (ioRootPtr == nullptr) {
     macroMyNew (ioRootPtr, cMapNode (inKey, ioAttributeArray)) ;
     ioExtension = true ;
     anObjectHasBeenAdded = true ;
@@ -622,7 +622,7 @@ void cSharedMapRoot::performInsertOrReplace (const capCollectionElement & inAttr
 void AC_GALGAS_map::performInsertOrReplace (const capCollectionElement & inAttributes) {
   if (isValid ()) {
     insulate (HERE) ;
-    if (NULL != mSharedMap) {
+    if (nullptr != mSharedMap) {
       mSharedMap->performInsertOrReplace (inAttributes) ;
     }
   }
@@ -637,15 +637,15 @@ void AC_GALGAS_map::performInsertOrReplace (const capCollectionElement & inAttri
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapNode::cMapNode (cMapNode * inNode) :
-mInfPtr (NULL),
-mSupPtr (NULL),
+mInfPtr (nullptr),
+mSupPtr (nullptr),
 mBalance (inNode->mBalance),
 mKey (inNode->mKey),
 mAttributes (inNode->mAttributes) {
-  if (inNode->mInfPtr != NULL) {
+  if (inNode->mInfPtr != nullptr) {
     macroMyNew (mInfPtr, cMapNode (inNode->mInfPtr)) ;
   }
-  if (inNode->mSupPtr != NULL) {
+  if (inNode->mSupPtr != nullptr) {
     macroMyNew (mSupPtr, cMapNode (inNode->mSupPtr)) ;
   }
 }
@@ -659,7 +659,7 @@ void cSharedMapRoot::copyFrom (const cSharedMapRoot * inSource) {
   #endif
   macroValidSharedObject (inSource, cSharedMapRoot) ;
   mCount = inSource->mCount ;
-  if (NULL != inSource->mRoot) {
+  if (nullptr != inSource->mRoot) {
     macroMyNew (mRoot, cMapNode (inSource->mRoot)) ;
   }
   macroAssignSharedObject (mOverridenMap, inSource->mOverridenMap) ;
@@ -671,8 +671,8 @@ void cSharedMapRoot::copyFrom (const cSharedMapRoot * inSource) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_map::insulate (LOCATION_ARGS) {
-  if ((NULL != mSharedMap) && !mSharedMap->isUniquelyReferenced ()) {
-    cSharedMapRoot * p = NULL ;
+  if ((nullptr != mSharedMap) && !mSharedMap->isUniquelyReferenced ()) {
+    cSharedMapRoot * p = nullptr ;
     macroMyNew (p, cSharedMapRoot (mActivateReplacementSuggestions COMMA_THERE)) ;
     p->copyFrom (mSharedMap) ;
     macroAssignSharedObject (mSharedMap, p) ;
@@ -689,10 +689,10 @@ void cSharedMapRoot::copyCurrentAndOverridenMapsFrom (const cSharedMapRoot * inS
   #endif
   macroValidSharedObject (inSource, cSharedMapRoot) ;
   mCount = inSource->mCount ;
-  if (NULL != inSource->mRoot) {
+  if (nullptr != inSource->mRoot) {
     macroMyNew (mRoot, cMapNode (inSource->mRoot)) ;
   }
-  if (NULL != inSource->mOverridenMap) {
+  if (nullptr != inSource->mOverridenMap) {
     macroMyNew (mOverridenMap, cSharedMapRoot (mActivateReplacementSuggestions COMMA_HERE)) ;
     mOverridenMap->copyCurrentAndOverridenMapsFrom (inSource->mOverridenMap) ;
   }
@@ -704,16 +704,16 @@ void cSharedMapRoot::copyCurrentAndOverridenMapsFrom (const cSharedMapRoot * inS
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_map::insulateCurrentAndOverridenMaps (LOCATION_ARGS) {
-  if (NULL != mSharedMap) {
+  if (nullptr != mSharedMap) {
   //--- Perform a deep copy if any of the overriden maps is shared
     bool performDeepCopy = !mSharedMap->isUniquelyReferenced () ;
     cSharedMapRoot * overridenMap = mSharedMap->mOverridenMap ;
-    while ((NULL != overridenMap) && !performDeepCopy) {
+    while ((nullptr != overridenMap) && !performDeepCopy) {
       performDeepCopy = !overridenMap->isUniquelyReferenced () ;
       overridenMap = overridenMap->mOverridenMap ;
     }
     if (performDeepCopy) {
-      cSharedMapRoot * p = NULL ;
+      cSharedMapRoot * p = nullptr ;
       macroMyNew (p, cSharedMapRoot (mActivateReplacementSuggestions COMMA_THERE)) ;
       p->copyCurrentAndOverridenMapsFrom (mSharedMap) ;
       macroAssignSharedObject (mSharedMap, p) ;
@@ -735,8 +735,8 @@ static cMapNode * internalInsert (cMapNode * & ioRootPtr,
                                   const capCollectionElement & inAttributes,
                                   bool & outEntryAlreadyExists,
                                   bool & ioExtension) {
-  cMapNode * matchingEntry = NULL ;
-  if (ioRootPtr == NULL) {
+  cMapNode * matchingEntry = nullptr ;
+  if (ioRootPtr == nullptr) {
     macroMyNew (ioRootPtr, cMapNode (inKey, inAttributes)) ;
     ioExtension = true ;
     matchingEntry = ioRootPtr ;
@@ -774,7 +774,7 @@ static cMapNode * internalInsert (cMapNode * & ioRootPtr,
     }else{ // Error, entry already exists
       matchingEntry = ioRootPtr ;
       ioExtension = false ;
-      outEntryAlreadyExists = NULL != matchingEntry->mAttributes.ptr () ;
+      outEntryAlreadyExists = nullptr != matchingEntry->mAttributes.ptr () ;
       if (! outEntryAlreadyExists) {
         matchingEntry->mAttributes = inAttributes ;
       }
@@ -790,7 +790,7 @@ cMapNode * cSharedMapRoot::performInsert (const capCollectionElement & inAttribu
                                           const char * inInsertErrorMessage,
                                           const char * inShadowErrorMessage
                                           COMMA_LOCATION_ARGS) {
-  cMapNode * result = NULL ;
+  cMapNode * result = nullptr ;
   macroUniqueSharedObject (this) ;
 //--- If all attributes are built, perform insertion
   if (inAttributes.isValid ()) {
@@ -808,22 +808,37 @@ cMapNode * cSharedMapRoot::performInsert (const capCollectionElement & inAttribu
       const int32_t shadowErrorMessageLength = shadowErrorMessage.length () ;
       if (shadowErrorMessageLength > 0) {
         matchingEntry = findEntryInMap (key, mOverridenMap) ;
-        if (NULL != matchingEntry) {
+        if (nullptr != matchingEntry) {
         //--- Existing key
           cMapElement * me = (cMapElement *) matchingEntry->mAttributes.ptr () ;
           macroValidSharedObject (me, cMapElement) ;
-          const GALGAS_location lstring_existingKey_location = me->mProperty_lkey.mProperty_location ;
-        //--- Emit error message
-          inCompiler->semanticErrorWith_K_L_message (p->mProperty_lkey, inShadowErrorMessage, lstring_existingKey_location COMMA_THERE) ;
+          if (me == nullptr) {
+            printf ("nullptr pointer in '%s', line %d\n", __FILE__, __LINE__) ;
+            exit (1) ;
+          }else{
+            const GALGAS_location lstring_existingKey_location = me->mProperty_lkey.mProperty_location ;
+          //--- Emit error message
+            if (p == nullptr) {
+              printf ("nullptr pointer in '%s', line %d\n", __FILE__, __LINE__) ;
+              exit (1) ;
+            }else{
+              inCompiler->semanticErrorWith_K_L_message (p->mProperty_lkey, inShadowErrorMessage, lstring_existingKey_location COMMA_THERE) ;
+            }
+          }
         }
       }
     }else{ // Error, entry already exists
     //--- Existing key
       cMapElement * me = (cMapElement *) matchingEntry->mAttributes.ptr () ;
       macroValidSharedObject (me, cMapElement) ;
-      const GALGAS_location lstring_existingKey_location = me->mProperty_lkey.mProperty_location ;
     //--- Emit error message
-      inCompiler->semanticErrorWith_K_L_message (p->mProperty_lkey, inInsertErrorMessage, lstring_existingKey_location COMMA_THERE) ;
+      if (me == nullptr) {
+        printf ("nullptr pointer in '%s', line %d\n", __FILE__, __LINE__) ;
+        exit (1) ;
+      }else{
+        const GALGAS_location lstring_existingKey_location = me->mProperty_lkey.mProperty_location ;
+        inCompiler->semanticErrorWith_K_L_message (p->mProperty_lkey, inInsertErrorMessage, lstring_existingKey_location COMMA_THERE) ;
+      }
     }
   }
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -843,7 +858,7 @@ void AC_GALGAS_map::performInsert (const capCollectionElement & inAttributes,
 //--- If all attributes are built, perform insertion
   if (isValid () && inAttributes.isValid ()) {
     insulate (HERE) ;
-    if (NULL != mSharedMap) {
+    if (nullptr != mSharedMap) {
       mSharedMap->performInsert (inAttributes, inCompiler, inInsertErrorMessage, inShadowErrorMessage COMMA_THERE) ;
     }
   }
@@ -885,7 +900,7 @@ uint32_t AC_GALGAS_map::count (void) const {
 
 static void enterKeyInStringSet (const cMapNode * inNode,
                                  GALGAS_stringset & ioResult) {
-  if (inNode != NULL) {
+  if (inNode != nullptr) {
     enterKeyInStringSet (inNode->mInfPtr, ioResult) ;
     GALGAS_string object (inNode->mKey) ;
     ioResult.addAssign_operation (object COMMA_HERE) ;
@@ -921,10 +936,10 @@ GALGAS_stringset AC_GALGAS_map::getter_keySet (LOCATION_ARGS) const {
 
 static void enterKeyInLStringList (cMapNode * inNode,
                                    GALGAS_lstringlist & ioResult) {
-  if (inNode != NULL) {
+  if (inNode != nullptr) {
     enterKeyInLStringList (inNode->mInfPtr, ioResult) ;
     cMapElement * p = (cMapElement *) inNode->mAttributes.ptr () ;
-    if (NULL != p) {
+    if (nullptr != p) {
       macroValidSharedObject (p, cMapElement) ;
       ioResult.addAssign_operation (p->mProperty_lkey COMMA_HERE) ;
     }
@@ -965,14 +980,19 @@ GALGAS_location cSharedMapRoot::locationForKey (const GALGAS_string & inKey,
   if (inKey.isValid ()) {
     const C_String key = inKey.stringValue () ;
     cMapNode * node = findEntryInMap (key, this) ;
-    if (NULL == node) {
+    if (nullptr == node) {
       C_String message ;
       message << "'locationForKey' map reader run-time error: the '" << key << "' does not exist in map" ;
       inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
     }else{
       cMapElement * p = (cMapElement *) node->mAttributes.ptr () ;
       macroValidSharedObject (p, cMapElement) ;
-      result = p->mProperty_lkey.mProperty_location ;
+      if (p == nullptr) {
+        printf ("nullptr pointer in '%s', line %d\n", __FILE__, __LINE__) ;
+        exit (1) ;
+      }else{
+        result = p->mProperty_lkey.mProperty_location ;
+      }
     }
   }
   return result ;
@@ -1001,7 +1021,7 @@ GALGAS_location AC_GALGAS_map::getter_locationForKey (const GALGAS_string & inKe
 GALGAS_uint cSharedMapRoot::levels (UNUSED_LOCATION_ARGS) const {
   uint32_t levelCount = 0 ;
   const cSharedMapRoot * currentMap = this ;
-  while (NULL != currentMap) {
+  while (nullptr != currentMap) {
     currentMap = currentMap->mOverridenMap ;
     levelCount ++ ;
   }
@@ -1033,7 +1053,7 @@ GALGAS_bool cSharedMapRoot::hasKeyAtLevel (const GALGAS_string & inKey,
   if (inKey.isValid () && inLevel.isValid ()) {
     const C_String key = inKey.stringValue () ;
     const cMapNode * node = findEntryInMapAtLevel (key, inLevel.uintValue (), this) ;
-    result = GALGAS_bool (NULL != node) ;
+    result = GALGAS_bool (nullptr != node) ;
   }
   return result ;
 }
@@ -1064,7 +1084,7 @@ GALGAS_bool cSharedMapRoot::hasKey (const GALGAS_string & inKey
   if (inKey.isValid ()) {
     const C_String key = inKey.stringValue () ;
     const cMapNode * node = findEntryInMap (key, this) ;
-    result = GALGAS_bool (NULL != node) ;
+    result = GALGAS_bool (nullptr != node) ;
   }
   return result ;
 }
@@ -1092,7 +1112,7 @@ static void findNearestKeyForNode (const C_String & inKey,
                                    const cMapNode * inCurrentNode,
                                    uint32_t & ioBestDistance,
                                    TC_UniqueArray <C_String> & ioNearestKeyArray) {
-  if (NULL != inCurrentNode) {
+  if (nullptr != inCurrentNode) {
     macroValidPointer (inCurrentNode) ;
     const uint32_t distance = inCurrentNode->mKey.LevenshteinDistanceFromString (inKey) ;
     if (ioBestDistance > distance) {
@@ -1114,7 +1134,7 @@ void cSharedMapRoot::findNearestKey (const C_String & inKey,
   ioNearestKeyArray.setCountToZero () ;
   uint32_t bestDistance = UINT32_MAX ;
   const cSharedMapRoot * currentMap = this ;
-  while (NULL != currentMap) {
+  while (nullptr != currentMap) {
     findNearestKeyForNode (inKey, currentMap->mRoot, bestDistance, ioNearestKeyArray) ;
     currentMap = currentMap->mOverridenMap ;
   }
@@ -1126,11 +1146,11 @@ cMapNode * cSharedMapRoot::performSearch (const GALGAS_lstring & inKey,
                                           C_Compiler * inCompiler,
                                           const char * inSearchErrorMessage
                                           COMMA_LOCATION_ARGS) const {
-  cMapNode * result = NULL ;
+  cMapNode * result = nullptr ;
   if (inKey.isValid ()) {
     const C_String key = inKey.mProperty_string.stringValue () ;
     result = findEntryInMap (key, this) ;
-    if (NULL == result) {
+    if (nullptr == result) {
       TC_UniqueArray <C_String> nearestKeyArray ;
       if (mActivateReplacementSuggestions) {
         findNearestKey (key, nearestKeyArray) ;
@@ -1147,10 +1167,10 @@ const cCollectionElement * AC_GALGAS_map::performSearch (const GALGAS_lstring & 
                                                          C_Compiler * inCompiler,
                                                          const char * inSearchErrorMessage
                                                          COMMA_LOCATION_ARGS) const {
-  const cCollectionElement * result = NULL ;
+  const cCollectionElement * result = nullptr ;
   if (isValid () && inKey.isValid ()) {
     const cMapNode * node = mSharedMap->performSearch (inKey, inCompiler, inSearchErrorMessage COMMA_THERE) ;
-    if (NULL != node) {
+    if (nullptr != node) {
       result = node->mAttributes.ptr () ;
     }
   }
@@ -1166,11 +1186,11 @@ const cCollectionElement * AC_GALGAS_map::performSearch (const GALGAS_lstring & 
 //----------------------------------------------------------------------------------------------------------------------
 
 const cMapElement * cSharedMapRoot::searchForKey (const GALGAS_string & inKey) const {
-  const cMapElement * result = NULL ;
+  const cMapElement * result = nullptr ;
   if (inKey.isValid ()) {
     const C_String key = inKey.stringValue () ;
     cMapNode * node = findEntryInMap (key, this) ;
-    if (NULL != node) {
+    if (nullptr != node) {
       result = (const cMapElement *) node->mAttributes.ptr () ;
       macroValidSharedObject (result, cMapElement) ;
     }
@@ -1181,7 +1201,7 @@ const cMapElement * cSharedMapRoot::searchForKey (const GALGAS_string & inKey) c
 //----------------------------------------------------------------------------------------------------------------------
 
 const cMapElement * AC_GALGAS_map::searchForKey (const GALGAS_string & inKey) const {
-  const cMapElement * result = NULL ;
+  const cMapElement * result = nullptr ;
   if (isValid ()) {
     result = mSharedMap->searchForKey (inKey) ;
   }
@@ -1199,11 +1219,11 @@ const cMapElement * AC_GALGAS_map::searchForKey (const GALGAS_string & inKey) co
 const cMapElement * cSharedMapRoot::searchForReadingAttribute (const GALGAS_string & inKey,
                                                                C_Compiler * inCompiler
                                                                COMMA_LOCATION_ARGS) const {
-  const cMapElement * result = NULL ;
+  const cMapElement * result = nullptr ;
   if (inKey.isValid ()) {
     const C_String key = inKey.stringValue () ;
     cMapNode * node = findEntryInMap (key, this) ;
-    if (NULL != node) {
+    if (nullptr != node) {
       result = (const cMapElement *) node->mAttributes.ptr () ;
       macroValidSharedObject (result, cMapElement) ;
     }else{
@@ -1222,7 +1242,7 @@ const cMapElement * cSharedMapRoot::searchForReadingAttribute (const GALGAS_stri
 const cMapElement * AC_GALGAS_map::searchForReadingAttribute (const GALGAS_string & inKey,
                                                               C_Compiler * inCompiler
                                                               COMMA_LOCATION_ARGS) const {
-  const cMapElement * result = NULL ;
+  const cMapElement * result = nullptr ;
   if (isValid ()) {
     result = mSharedMap->searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   }
@@ -1242,11 +1262,11 @@ cMapElement * cSharedMapRoot::searchForReadWriteAttribute (const GALGAS_string &
                                                            C_Compiler * inCompiler
                                                            COMMA_LOCATION_ARGS) {
   macroUniqueSharedObject (this) ;
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   if (inKey.isValid ()) {
     const C_String key = inKey.stringValue () ;
     cMapNode * node = findEntryInMap (key, this) ;
-    if (NULL != node) {
+    if (nullptr != node) {
       node->mAttributes.insulate () ;
       result = (cMapElement *) node->mAttributes.ptr () ;
       macroValidSharedObject (result, cMapElement) ;
@@ -1268,10 +1288,10 @@ cMapElement * AC_GALGAS_map::searchForReadWriteAttribute (const GALGAS_string & 
                                                           const bool inErrorOnUnknownKey,
                                                           C_Compiler * inCompiler
                                                           COMMA_LOCATION_ARGS) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   if (isValid ()) {
     insulateCurrentAndOverridenMaps (THERE) ;
-    if (NULL != mSharedMap) {
+    if (nullptr != mSharedMap) {
       result = (cMapElement *) mSharedMap->searchForReadWriteAttribute (inKey, inErrorOnUnknownKey, inCompiler COMMA_THERE) ;
     }
   }
@@ -1291,11 +1311,11 @@ cMapElement * cSharedMapRoot::searchForReadWriteAttribute (const GALGAS_lstring 
                                                            const char * inSearchErrorMessage
                                                            COMMA_LOCATION_ARGS) {
   macroUniqueSharedObject (this) ;
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   if (inKey.isValid ()) {
     const C_String key = inKey.mProperty_string.stringValue () ;
     cMapNode * node = findEntryInMap (key, this) ;
-    if (NULL != node) {
+    if (nullptr != node) {
       node->mAttributes.insulate () ;
       result = (cMapElement *) node->mAttributes.ptr () ;
       macroValidSharedObject (result, cMapElement) ;
@@ -1317,10 +1337,10 @@ cMapElement * AC_GALGAS_map::searchForReadWriteAttribute (const GALGAS_lstring &
                                                           C_Compiler * inCompiler,
                                                           const char * inSearchErrorMessage
                                                           COMMA_LOCATION_ARGS) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   if (isValid ()) {
     insulate (THERE) ;
-    if (NULL != mSharedMap) {
+    if (nullptr != mSharedMap) {
       result = mSharedMap->searchForReadWriteAttribute (inKey, inCompiler, inSearchErrorMessage COMMA_THERE) ;
     }
   }
@@ -1396,7 +1416,7 @@ static void infBranchDecreased (cMapNode * & ioRoot,
 static void getPreviousElement (cMapNode * & ioRoot,
                                 cMapNode * & ioElement,
                                 bool & ioBranchHasBeenRemoved) {
-  if (ioRoot->mSupPtr == NULL) {
+  if (ioRoot->mSupPtr == nullptr) {
     ioElement = ioRoot ;
     ioRoot = ioRoot->mInfPtr ;
     ioBranchHasBeenRemoved = true ;
@@ -1413,8 +1433,8 @@ static void getPreviousElement (cMapNode * & ioRoot,
 static cMapNode * internalRemoveEntry (const C_String & inKeyToRemove,
                                        cMapNode * & ioRoot,
                                        bool & ioBranchHasBeenRemoved) {
-  cMapNode * removedNode = NULL ;
-  if (ioRoot != NULL) {
+  cMapNode * removedNode = nullptr ;
+  if (ioRoot != nullptr) {
     const int32_t comparaison = ioRoot->mKey.compare (inKeyToRemove) ;
     if (comparaison > 0) {
       removedNode = internalRemoveEntry (inKeyToRemove, ioRoot->mInfPtr, ioBranchHasBeenRemoved);
@@ -1429,20 +1449,20 @@ static cMapNode * internalRemoveEntry (const C_String & inKeyToRemove,
     }else{ // Found
       removedNode = ioRoot ;
       cMapNode * p = ioRoot ;
-      if (p->mInfPtr == NULL) {
+      if (p->mInfPtr == nullptr) {
         ioRoot = p->mSupPtr;
-        p->mSupPtr = NULL;
+        p->mSupPtr = nullptr;
         ioBranchHasBeenRemoved = true;
-      }else if (p->mSupPtr == NULL) {
+      }else if (p->mSupPtr == nullptr) {
         ioRoot = p->mInfPtr;
-        p->mInfPtr = NULL;
+        p->mInfPtr = nullptr;
         ioBranchHasBeenRemoved = true;
       }else{
         getPreviousElement (p->mInfPtr, ioRoot, ioBranchHasBeenRemoved) ;
         ioRoot->mSupPtr = p->mSupPtr;
-        p->mSupPtr = NULL;
+        p->mSupPtr = nullptr;
         ioRoot->mInfPtr = p->mInfPtr;
-        p->mInfPtr = NULL;
+        p->mInfPtr = nullptr;
         ioRoot->mBalance = p->mBalance;
         p->mBalance = 0;
         if (ioBranchHasBeenRemoved) {
@@ -1466,7 +1486,7 @@ void cSharedMapRoot::performRemove (GALGAS_lstring & inKey,
     const C_String key = inKey.mProperty_string.stringValue () ;
     bool branchHasBeenRemoved = false ;
     cMapNode * node = internalRemoveEntry (key, mRoot, branchHasBeenRemoved) ;
-    if (NULL == node) {
+    if (nullptr == node) {
     //--- Build error message
       C_String message ;
       bool perCentFound = false ;
@@ -1508,7 +1528,7 @@ void AC_GALGAS_map::performRemove (GALGAS_lstring & inKey,
                                    COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     insulate (THERE) ;
-    if (NULL != mSharedMap) {
+    if (nullptr != mSharedMap) {
       mSharedMap->performRemove (inKey, outResult, inCompiler, inRemoveErrorMessage COMMA_THERE) ;
     }
   }
@@ -1535,13 +1555,13 @@ typeComparisonResult cSharedMapRoot::mapCompare (const cSharedMapRoot * inOperan
       r = array.objectAtIndex (i COMMA_HERE).compare (operandArray.objectAtIndex (i COMMA_HERE)) ;
     }
     if (kOperandEqual == r) {
-      const int32_t n1 = (NULL == mOverridenMap) ? 0 : (int32_t) mOverridenMap->count () ;
-      const int32_t n2 = (NULL == inOperand->mOverridenMap) ? 0 : (int32_t) inOperand->mOverridenMap->count () ;
+      const int32_t n1 = (nullptr == mOverridenMap) ? 0 : (int32_t) mOverridenMap->count () ;
+      const int32_t n2 = (nullptr == inOperand->mOverridenMap) ? 0 : (int32_t) inOperand->mOverridenMap->count () ;
       if (n1 < n2) {
         r = kFirstOperandLowerThanSecond ;
       }else if (n1 > n2) {
         r = kFirstOperandGreaterThanSecond ;
-      }else if ((NULL != mOverridenMap) && (NULL != inOperand->mOverridenMap)) {
+      }else if ((nullptr != mOverridenMap) && (nullptr != inOperand->mOverridenMap)) {
         r = mOverridenMap->mapCompare (inOperand->mOverridenMap) ;
       }
     }
@@ -1572,7 +1592,7 @@ void AC_GALGAS_map::getOverridenMap (AC_GALGAS_map & outMap,
                                      COMMA_LOCATION_ARGS) const {
   outMap.drop () ;
   if (isValid ()) {
-    if (NULL == mSharedMap->mOverridenMap) {
+    if (nullptr == mSharedMap->mOverridenMap) {
       inCompiler->onTheFlySemanticError ("reader 'overriddenMap': no overriden map" COMMA_THERE) ;
     }else{
       macroAssignSharedObject (outMap.mSharedMap, mSharedMap->mOverridenMap) ;
@@ -1590,9 +1610,9 @@ void AC_GALGAS_map::getOverridenMap (AC_GALGAS_map & outMap,
 
 static void enterAscendingEnumeration (cMapNode * inNode,
                                        capCollectionElementArray & ioEnumerationArray) {
-  if (inNode != NULL) {
+  if (inNode != nullptr) {
     enterAscendingEnumeration (inNode->mInfPtr, ioEnumerationArray) ;
-    if (NULL != inNode->mAttributes.ptr ()) {
+    if (nullptr != inNode->mAttributes.ptr ()) {
       ioEnumerationArray.appendObject (inNode->mAttributes) ;
     }
     enterAscendingEnumeration (inNode->mSupPtr, ioEnumerationArray) ;
@@ -1602,7 +1622,6 @@ static void enterAscendingEnumeration (cMapNode * inNode,
 //----------------------------------------------------------------------------------------------------------------------
 
 void cSharedMapRoot::populateEnumerationArray (capCollectionElementArray & ioEnumerationArray) const {
-  // printf ("MAP COUNT %u\n", count ()) ;
   ioEnumerationArray.setCapacity (mCount) ;
   enterAscendingEnumeration (mRoot, ioEnumerationArray) ;
   MF_Assert (mCount == ioEnumerationArray.count (), "mCount (%lld) != ioEnumerationArray.count () (%lld)", mCount, ioEnumerationArray.count ()) ;

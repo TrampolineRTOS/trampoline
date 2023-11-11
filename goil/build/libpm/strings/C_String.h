@@ -223,7 +223,7 @@ class C_String : public AC_OutputStream {
 
 //--- Get a sub string
   public: C_String subString (const int32_t inStartIndex,
-                               const int32_t inLength) const ;
+                              const int32_t inLength) const ;
 
 //--- Get a sub string
   public: C_String leftSubString (const int32_t inLength) const ;

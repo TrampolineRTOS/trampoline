@@ -26,22 +26,22 @@
 
 cPtr_weakReference_proxy::cPtr_weakReference_proxy (LOCATION_ARGS) :
 acPtr_class (THERE),
-mStrongObjectPtr (NULL) {
+mStrongObjectPtr (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 cPtr_weakReference_proxy::~ cPtr_weakReference_proxy (void) {
-  if (mStrongObjectPtr != NULL) {
-    mStrongObjectPtr->mProxyPtr = NULL ;
+  if (mStrongObjectPtr != nullptr) {
+    mStrongObjectPtr->mProxyPtr = nullptr ;
   }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * cPtr_weakReference_proxy::classDescriptor (void) const {
-  const C_galgas_type_descriptor * result = NULL ;
-  if (mStrongObjectPtr != NULL) {
+  const C_galgas_type_descriptor * result = nullptr ;
+  if (mStrongObjectPtr != nullptr) {
     result = mStrongObjectPtr->classDescriptor () ;
   }
   return result ;
@@ -50,7 +50,7 @@ const C_galgas_type_descriptor * cPtr_weakReference_proxy::classDescriptor (void
 //----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_weakReference_proxy::duplicate (UNUSED_LOCATION_ARGS) const {
-  return NULL ;
+  return nullptr ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

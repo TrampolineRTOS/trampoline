@@ -29,7 +29,7 @@
 #include "command_line_interface/C_StringCommandLineOption.h"
 #include "command_line_interface/C_StringListCommandLineOption.h"
 #include "utilities/C_PrologueEpilogue.h"
-#include "utilities/C_BigInt.h"
+#include "big-integers/C_BigInt.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -608,7 +608,7 @@ class GALGAS_stringset : public AC_GALGAS_root {
   private: class cSharedStringsetRoot * mSharedRoot ;
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return mSharedRoot != NULL ; }
+  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return mSharedRoot != nullptr ; }
   public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
@@ -852,8 +852,8 @@ class GALGAS_type : public AC_GALGAS_root {
   private: const C_galgas_type_descriptor * mTypeDescriptor ;
 
 //--------------------------------- Accessors
-  public: inline bool isValid (void) const override { return NULL != mTypeDescriptor ; }
-  public: inline void drop (void) override { mTypeDescriptor = NULL ; }
+  public: inline bool isValid (void) const override { return nullptr != mTypeDescriptor ; }
+  public: inline void drop (void) override { mTypeDescriptor = nullptr ; }
   public: inline const C_galgas_type_descriptor * typeValue (void) const { return mTypeDescriptor ; }
 
 //--------------------------------- Default constructor
@@ -2938,8 +2938,8 @@ class GALGAS_filewrapper : public AC_GALGAS_root {
   private: C_String mCurrentDirectory ;
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return NULL != mRootDirectoryPtr ; }
-  public: VIRTUAL_IN_DEBUG inline void drop (void) override { mRootDirectoryPtr = NULL ; }
+  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return nullptr != mRootDirectoryPtr ; }
+  public: VIRTUAL_IN_DEBUG inline void drop (void) override { mRootDirectoryPtr = nullptr ; }
 
 //--------------------------------- Default constructor
   public: GALGAS_filewrapper (void) ;
@@ -3048,8 +3048,8 @@ class GALGAS_function : public AC_GALGAS_root {
   private: const C_galgas_function_descriptor * mFunctionDescriptor ;
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return NULL != mFunctionDescriptor ; }
-  public: VIRTUAL_IN_DEBUG inline void drop (void) override { mFunctionDescriptor = NULL ; }
+  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return nullptr != mFunctionDescriptor ; }
+  public: VIRTUAL_IN_DEBUG inline void drop (void) override { mFunctionDescriptor = nullptr ; }
   public: VIRTUAL_IN_DEBUG inline const C_galgas_function_descriptor * functionValue (void) const { return mFunctionDescriptor ; }
 
 //--------------------------------- Default constructor
@@ -3135,7 +3135,7 @@ class GALGAS_object : public AC_GALGAS_root {
   private: cPtr_object * mSharedObject ;
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return mSharedObject != NULL ; }
+  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return mSharedObject != nullptr ; }
   public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor

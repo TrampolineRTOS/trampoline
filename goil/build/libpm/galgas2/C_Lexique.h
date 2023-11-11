@@ -134,20 +134,20 @@ class C_Lexique : public C_Compiler {
   protected: void lexicalWarning (const C_String & messageAlerte COMMA_LOCATION_ARGS) ;
 
 //--- Handling syntax error
-  private: void parsingError (const TC_UniqueArray <int16_t> & inExpectedTerminalsArray,
+  private: void parsingError (const TC_UniqueArray <int32_t> & inExpectedTerminalsArray,
                               const cToken * inPreviousTokenPtr,
                               const cToken * inCurrentTokenPtr,
-                              const int16_t inCurrentTokenCode
+                              const int32_t inCurrentTokenCode
                               COMMA_LOCATION_ARGS) ;
 
 //--- Get message for terminal
-  protected: virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const = 0 ;
+  protected: virtual C_String getMessageForTerminal (const int32_t inTerminalSymbol) const = 0 ;
 
 //--- Static method for searching a string in an ordered list
 //    returns -1 if not found, and associated code if found
-  protected: static int16_t searchInList (const C_String & inString,
+  protected: static int32_t searchInList (const C_String & inString,
                                           const C_unicode_lexique_table_entry inTable [],
-                                          const int16_t inTableSize) ;
+                                          const int32_t inTableSize) ;
 
 //--- Get Token String
   public: virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const = 0 ;
@@ -174,51 +174,51 @@ class C_Lexique : public C_Compiler {
   protected: void lexicalLog (LOCATION_ARGS) ;
 
 //--- Methods for parsing during second pass
-  public: void acceptTerminal (const int16_t inExpectedTerminal COMMA_LOCATION_ARGS) ;
-  public: int16_t nextProductionIndex (void) ;
-  public: virtual int16_t terminalVocabularyCount (void) const = 0 ;
+  public: void acceptTerminal (const int32_t inExpectedTerminal COMMA_LOCATION_ARGS) ;
+  public: int32_t nextProductionIndex (void) ;
+  public: virtual int32_t terminalVocabularyCount (void) const = 0 ;
 
 //--- Perform top down parsing (called by LL (1) parser)
-  public: bool performTopDownParsing (const int16_t inProductions [],
+  public: bool performTopDownParsing (const int32_t inProductions [],
                                       const cProductionNameDescriptor inProductionNames [],
-                                      const int16_t inProductionIndexes [],
-                                      const int16_t inFirstProductionIndex [],
-                                      const int16_t inDecisionTable [],
-                                      const int16_t inDecisionTableIndexes [],
-                                      const int16_t inProgramCounterInitialValue) ;
+                                      const int32_t inProductionIndexes [],
+                                      const int32_t inFirstProductionIndex [],
+                                      const int32_t inDecisionTable [],
+                                      const int32_t inDecisionTableIndexes [],
+                                      const int32_t inProgramCounterInitialValue) ;
 
-  private: void buildExpectedTerminalsArrayOnSyntaxError (const int16_t inErrorProgramCounter,
+  private: void buildExpectedTerminalsArrayOnSyntaxError (const int32_t inErrorProgramCounter,
                                                           const int32_t inErrorStackCount,
-                                                          const TC_Array <int16_t> & inCurrentStack,
-                                                          const TC_Array <int16_t> & inErrorStack,
-                                                          const int16_t inProductions [],
-                                                          const int16_t inProductionIndexes [],
-                                                          const int16_t inFirstProductionIndex [],
-                                                          const int16_t inDecisionTable [],
-                                                          const int16_t inDecisionTableIndexes [],
-                                                          TC_UniqueArray <int16_t> & outExpectedTerminalsArray) ;
+                                                          const TC_Array <int32_t> & inCurrentStack,
+                                                          const TC_Array <int32_t> & inErrorStack,
+                                                          const int32_t inProductions [],
+                                                          const int32_t inProductionIndexes [],
+                                                          const int32_t inFirstProductionIndex [],
+                                                          const int32_t inDecisionTable [],
+                                                          const int32_t inDecisionTableIndexes [],
+                                                          TC_UniqueArray <int32_t> & outExpectedTerminalsArray) ;
 
-  private: bool acceptTerminalForErrorSignaling (const int16_t inTerminal,
-                                                 const int16_t inProductions [],
-                                                 const int16_t inProductionIndexes [],
-                                                 const int16_t inFirstProductionIndex [],
-                                                 const int16_t inDecisionTable [],
-                                                 const int16_t inDecisionTableIndexes [],
-                                                 const TC_Array <int16_t> & inErrorStack,
-                                                 const int16_t inErrorProgramCounter) ;
+  private: bool acceptTerminalForErrorSignaling (const int32_t inTerminal,
+                                                 const int32_t inProductions [],
+                                                 const int32_t inProductionIndexes [],
+                                                 const int32_t inFirstProductionIndex [],
+                                                 const int32_t inDecisionTable [],
+                                                 const int32_t inDecisionTableIndexes [],
+                                                 const TC_Array <int32_t> & inErrorStack,
+                                                 const int32_t inErrorProgramCounter) ;
 
 //--- Perform bottom up parsing (called by SLR and LR(1) parsers)
-  public: bool performBottomUpParsing (const int16_t inActionTable [],
+  public: bool performBottomUpParsing (const int32_t inActionTable [],
                                        const char * inNonTerminalSymbolNames [],
                                        const uint32_t inActionTableIndex [],
-                                       const int16_t * inSuccessorTable [],
-                                       const int16_t inProductionsTable []) ;
+                                       const int32_t * inSuccessorTable [],
+                                       const int32_t inProductionsTable []) ;
 
 //--- Scanner pure virtual methods
   protected: virtual bool parseLexicalToken (void) = 0 ;
 
 //--- Execution array built during first pass, and used by second pass parsing
-  private: TC_UniqueArray <int16_t> mArrayForSecondPassParsing ;
+  private: TC_UniqueArray <int32_t> mArrayForSecondPassParsing ;
   private: int32_t mIndexForSecondPassParsing ;
 
 //--- Latex string (for --mode=latex command line option)

@@ -861,10 +861,6 @@ __GMP_DECLSPEC void __gmp_default_free (void *, size_t);
 
 #if defined (__GNUC__) && defined (HAVE_HOST_CPU_FAMILY_x86)
 #if 0
-/* FIXME: Check that these actually improve things.
-   FIXME: Need a cld after each std.
-   FIXME: Can't have inputs in clobbered registers, must describe them as
-   dummy outputs, and add volatile. */
 #define MPN_COPY_INCR(DST, SRC, N)					\
   __asm__ ("cld\n\trep\n\tmovsl" : :					\
 	   "D" (DST), "S" (SRC), "c" (N) :				\
@@ -2081,7 +2077,7 @@ log_n_max (mp_limb_t n)
   return log;
 }
 
-#define SIEVESIZE 512		/* FIXME: Allow gmp_init_primesieve to choose */
+#define SIEVESIZE 512
 typedef struct
 {
   unsigned long d;		   /* current index in s[] */
@@ -2695,9 +2691,7 @@ __GMP_DECLSPEC mp_bitcnt_t mpn_remove (mp_ptr, mp_size_t *, mp_ptr, mp_size_t, m
    so there's no need for any sophisticated looping, just something compact
    and sensible.
 
-   FIXME: Switch all code from mpn_{incr,decr}_u to MPN_{INCR,DECR}_U,
-   declaring their operand sizes, then remove the former.  This is purely
-   for the benefit of assertion checking.  */
+    */
 
 #if defined (__GNUC__) && GMP_NAIL_BITS == 0 && ! defined (NO_ASM)	\
   && (defined(HAVE_HOST_CPU_FAMILY_x86) || defined(HAVE_HOST_CPU_FAMILY_x86_64)) \
@@ -3595,9 +3589,6 @@ __GMP_DECLSPEC extern const unsigned char  binvert_limb_table[128];
 #define BSWAP_LIMB_FETCH(limb, src)  BSWAP_LIMB (limb, *(src))
 #endif
 
-
-/* On the same basis that lwbrx might be slow, restrict stwbrx to those we
-   know are fast.  FIXME: Is this necessary?  */
 #if defined (__GNUC__) && ! defined (NO_ASM)				\
   && GMP_LIMB_BITS == 32 && HAVE_LIMB_BIG_ENDIAN			\
   && (HAVE_HOST_CPU_powerpc604						\
@@ -3994,8 +3985,6 @@ __GMP_DECLSPEC void __gmp_invalid_operation (void) ATTRIBUTE_NORETURN;
 /* (a/0), with a unsigned; is 1 if a=+/-1, 0 otherwise */
 #define JACOBI_U0(a)   ((a) == 1)
 
-/* FIXME: JACOBI_LS0 and JACOBI_0LS are the same, so delete one and
-   come up with a better name. */
 
 /* (a/0), with a given by low and size;
    is 1 if a=+/-1, 0 otherwise */
@@ -4099,9 +4088,7 @@ __GMP_DECLSPEC void __gmp_invalid_operation (void) ATTRIBUTE_NORETURN;
    factor to introduce into result_bit1, so for that case use mpn_mod_1
    unconditionally.
 
-   FIXME: mpn_modexact_1_odd is more efficient, so some way to get it used
-   for odd GMP_NUMB_BITS would be good.  Perhaps it could mung its result,
-   or not skip a divide step, or something. */
+   */
 
 #define JACOBI_MOD_OR_MODEXACT_1_ODD(result_bit1, a_rem, a_ptr, a_size, b) \
   do {									   \
@@ -4156,12 +4143,6 @@ mpn_jacobi_finish (unsigned bits)
 static inline unsigned
 mpn_jacobi_update (unsigned bits, unsigned denominator, unsigned q)
 {
-  /* FIXME: Could halve table size by not including the e bit in the
-   * index, and instead xor when updating. Then the lookup would be
-   * like
-   *
-   *   bits ^= table[((bits & 30) << 2) + (denominator << 2) + q];
-   */
 
   ASSERT (bits < 26);
   ASSERT (denominator < 2);
@@ -4212,8 +4193,6 @@ __GMP_DECLSPEC mp_size_t mpn_matrix22_mul_itch (mp_size_t, mp_size_t) ATTRIBUTE_
    is computed using count_leading_zeros. If GMP_NAIL_BITS > 0, all of
    xh, xl and r include nail bits. Must have 0 < count < GMP_LIMB_BITS.
 
-   FIXME: Omit masking with GMP_NUMB_MASK, and let callers do that for
-   those calls where the count high bits of xh may be non-zero.
 */
 
 #define MPN_EXTRACT_NUMB(count, xh, xl)				\
@@ -4404,10 +4383,7 @@ __GMP_DECLSPEC extern mp_size_t __gmp_default_fp_limb_precision;
    There are prec many limbs, but the high might be only "1" so forget it
    and just count prec-1 limbs into chars.  +1 rounds that upwards, and a
    further +1 is because the limbs usually won't fall on digit boundaries.
-
-   FIXME: If base is a power of 2 and the bits per digit divides
-   GMP_LIMB_BITS then the +2 is unnecessary.  This happens always for
-   base==2, and in base==16 with the current 32 or 64 bit limb sizes. */
+   */
 
 #define MPF_SIGNIFICANT_DIGITS(n, base, prec)				\
   do {									\
@@ -5092,10 +5068,6 @@ extern struct fft_table_nk mpn_fft_table3[2][FFT_TABLE3_SIZE];
 #if defined (__cplusplus)
 }
 #endif
-
-/* FIXME: Make these itch functions less conservative.  Also consider making
-   them dependent on just 'an', and compute the allocation directly from 'an'
-   instead of via n.  */
 
 /* toom22/toom2: Scratch need is 2*(an + k), k is the recursion depth.
    k is ths smallest k such that

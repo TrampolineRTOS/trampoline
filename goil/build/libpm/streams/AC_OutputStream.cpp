@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  AC_OutputStream : an abstract output stream class                                            
+//  AC_OutputStream : an abstract output stream class
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 1997, ..., 2022 Pierre Molinaro.
 //
@@ -51,7 +51,7 @@ void AC_OutputStream::flush (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_OutputStream::appendCString (const char * inCstring) {
-  if (inCstring != NULL) {
+  if (inCstring != nullptr) {
     genericCharArrayOutput (inCstring, (int32_t) (strlen (inCstring) & UINT32_MAX)) ;
   }
 }
@@ -317,7 +317,7 @@ void AC_OutputStream::writeStringMultiple (const C_String & inString, const int3
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//                          Comments                                                             
+//                          Comments
 //----------------------------------------------------------------------------------------------------------------------
 
 static const int32_t kCommentMaxLength = 119 ;
@@ -356,7 +356,7 @@ void AC_OutputStream::appendCenterJustifiedComment (const C_String & inLineComme
                                                     const C_String & inCommentString) {
   const int32_t commentLength = inCommentString.length () ;
   const int32_t n = (kCommentMaxLength - 3 - commentLength) / 2 ;
-  
+
   *this << inLineCommentPrefix ;
   for (int32_t i=0 ; i<n ; i++) {
    *this << " " ;
@@ -387,7 +387,7 @@ void AC_OutputStream::appendCppHyphenLineComment (const C_String & inLineComment
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//                          C Comments                                                           
+//                          C Comments
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_OutputStream::append_C_HyphenLineComment (void) {
@@ -409,7 +409,7 @@ void AC_OutputStream::append_C_SpaceLineComment (void) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//                        C++ Comments                                                           
+//                        C++ Comments
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_OutputStream::appendCppHyphenLineCommentWithoutExtraBlankLine (void) {

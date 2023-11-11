@@ -73,10 +73,6 @@ mpz_tdiv_qr (mpz_ptr quot, mpz_ptr rem, mpz_srcptr num, mpz_srcptr den)
   np = PTR (num);
   dp = PTR (den);
 
-  /* FIXME: We should think about how to handle the temporary allocation.
-     Perhaps mpn_tdiv_qr should handle it, since it anyway often needs to
-     allocate temp space.  */
-
   /* Copy denominator to temporary space if it overlaps with the quotient
      or remainder.  */
   if (dp == rp || dp == qp)

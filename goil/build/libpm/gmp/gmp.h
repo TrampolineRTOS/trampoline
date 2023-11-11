@@ -29,7 +29,6 @@ GNU Lesser General Public License along with the GNU MP Library.  If not,
 see https://www.gnu.org/licenses/.  */
 
 #pragma once
-//#ifndef __GMP_H__
 
 #if defined (__cplusplus)
 #include <iosfwd>   /* for std::istream, std::ostream, std::string */
@@ -37,9 +36,6 @@ see https://www.gnu.org/licenses/.  */
 #endif
 
 /* Instantiated by configure. */
-/*--- Deleted by PM */
-/* #if ! defined (__GMP_WITHIN_CONFIGURE) */
-/* --- End deleted by PM */
 #define __GMP_HAVE_HOST_CPU_FAMILY_power   0
 #define __GMP_HAVE_HOST_CPU_FAMILY_powerpc 0
 /*--- Modified by PM */
@@ -78,10 +74,6 @@ see https://www.gnu.org/licenses/.  */
 
 #define GMP_NAIL_BITS 0
 
-/*--- Deleted by PM */
-/* #endif */
-/*--- End deleted by PM */
-
 #define GMP_NUMB_BITS     (GMP_LIMB_BITS - GMP_NAIL_BITS)
 #define GMP_NUMB_MASK     ((~ __GMP_CAST (mp_limb_t, 0)) >> GMP_NAIL_BITS)
 #define GMP_NUMB_MAX      GMP_NUMB_MASK
@@ -98,7 +90,6 @@ see https://www.gnu.org/licenses/.  */
 
 /* Instantiated by configure. */
 #if ! defined (__GMP_WITHIN_CONFIGURE)
-/* #undef _LONG_LONG_LIMB */
 #define __GMP_LIBGMP_DLL  0
 #endif
 
@@ -239,7 +230,6 @@ typedef struct
   mp_limb_t *_mp_d;		/* Pointer to the limbs.  */
 } __mpf_struct;
 
-/* typedef __mpf_struct MP_FLOAT; */
 typedef __mpf_struct mpf_t[1];
 
 /* Available random number generation algorithms.  */
@@ -1949,11 +1939,6 @@ mpq_neg (mpq_ptr __gmp_w, mpq_srcptr __gmp_u)
     mp_size_t  __gmp_i;                                                 \
     mp_limb_t  __gmp_x;                                                 \
                                                                         \
-    /* ASSERT ((ysize) >= 0); */                                        \
-    /* ASSERT ((xsize) >= (ysize)); */                                  \
-    /* ASSERT (MPN_SAME_OR_SEPARATE2_P (wp, xsize, xp, xsize)); */      \
-    /* ASSERT (MPN_SAME_OR_SEPARATE2_P (wp, xsize, yp, ysize)); */      \
-                                                                        \
     __gmp_i = (ysize);                                                  \
     if (__gmp_i != 0)                                                   \
       {                                                                 \
@@ -2016,9 +2001,6 @@ mpq_neg (mpq_ptr __gmp_w, mpq_srcptr __gmp_u)
     mp_size_t  __gmp_i;						\
     mp_limb_t  __gmp_x, __gmp_r;                                \
 								\
-    /* ASSERT ((n) >= 1); */					\
-    /* ASSERT (MPN_SAME_OR_SEPARATE_P (dst, src, n)); */	\
-								\
     __gmp_x = (src)[0];						\
     __gmp_r = __gmp_x OP (v);                                   \
     (dst)[0] = __gmp_r;						\
@@ -2054,9 +2036,6 @@ mpq_neg (mpq_ptr __gmp_w, mpq_srcptr __gmp_u)
   do {								\
     mp_size_t  __gmp_i;						\
     mp_limb_t  __gmp_x, __gmp_r;				\
-								\
-    /* ASSERT ((n) >= 1); */					\
-    /* ASSERT (MPN_SAME_OR_SEPARATE_P (dst, src, n)); */	\
 								\
     __gmp_x = (src)[0];						\
     __gmp_r = __gmp_x OP (v);					\
@@ -2105,8 +2084,6 @@ mpq_neg (mpq_ptr __gmp_w, mpq_srcptr __gmp_u)
     mp_size_t  __gmp_i;                                                 \
     mp_limb_t  __gmp_x, __gmp_y;                                        \
                                                                         \
-    /* ASSERT ((size) >= 0); */                                         \
-                                                                        \
     (result) = 0;                                                       \
     __gmp_i = (size);                                                   \
     while (--__gmp_i >= 0)                                              \
@@ -2126,8 +2103,6 @@ mpq_neg (mpq_ptr __gmp_w, mpq_srcptr __gmp_u)
 #if defined (__GMPN_COPY) && ! defined (__GMPN_COPY_REST)
 #define __GMPN_COPY_REST(dst, src, size, start)                 \
   do {                                                          \
-    /* ASSERT ((start) >= 0); */                                \
-    /* ASSERT ((start) <= (size)); */                           \
     __GMPN_COPY ((dst)+(start), (src)+(start), (size)-(start)); \
   } while (0)
 #endif
@@ -2139,10 +2114,6 @@ mpq_neg (mpq_ptr __gmp_w, mpq_srcptr __gmp_u)
 #define __GMPN_COPY_REST(dst, src, size, start)                 \
   do {                                                          \
     mp_size_t __gmp_j;                                          \
-    /* ASSERT ((size) >= 0); */                                 \
-    /* ASSERT ((start) >= 0); */                                \
-    /* ASSERT ((start) <= (size)); */                           \
-    /* ASSERT (MPN_SAME_OR_SEPARATE_P (dst, src, size)); */     \
     __GMP_CRAY_Pragma ("_CRI ivdep");                           \
     for (__gmp_j = (start); __gmp_j < (size); __gmp_j++)        \
       (dst)[__gmp_j] = (src)[__gmp_j];                          \
@@ -2286,16 +2257,6 @@ mpn_neg (mp_ptr __gmp_rp, mp_srcptr __gmp_up, mp_size_t __gmp_n)
 
 /**************** C++ routines ****************/
 
-/* Commented out by PM
-#ifdef __cplusplus
-__GMP_DECLSPEC_XX std::ostream& operator<< (std::ostream &, mpz_srcptr);
-__GMP_DECLSPEC_XX std::ostream& operator<< (std::ostream &, mpq_srcptr);
-__GMP_DECLSPEC_XX std::ostream& operator<< (std::ostream &, mpf_srcptr);
-__GMP_DECLSPEC_XX std::istream& operator>> (std::istream &, mpz_ptr);
-__GMP_DECLSPEC_XX std::istream& operator>> (std::istream &, mpq_ptr);
-__GMP_DECLSPEC_XX std::istream& operator>> (std::istream &, mpf_ptr);
-#endif
-End of commented out by PM */
 
 
 /* Source-level compatibility with GMP 2 and earlier. */
@@ -2329,11 +2290,6 @@ enum
   GMP_ERROR_INVALID_ARGUMENT = 8
 };
 
-/* Define CC and CFLAGS which were used to build this version of GMP */
-/*--- 2 lines commented out by PM
-#define __GMP_CC "/Users/pierremolinaro/galgas-tools-for-cross-compilation/binutils-2.25-gcc-4.9.2-for-mingw32/bin/i586-mingw32-gcc -std=gnu99"
-#define __GMP_CFLAGS "-m32 -O2 -pedantic -fomit-frame-pointer -mtune=pentium -march=pentium -DNO_ASM"
-*/
 
 /* Major version number is the value of __GNU_MP__ too, above and in mp.h. */
 #define __GNU_MP_VERSION            6
@@ -2341,5 +2297,3 @@ enum
 #define __GNU_MP_VERSION_PATCHLEVEL 0
 #define __GNU_MP_RELEASE (__GNU_MP_VERSION * 10000 + __GNU_MP_VERSION_MINOR * 100 + __GNU_MP_VERSION_PATCHLEVEL)
 
-//#define __GMP_H__
-//#endif /* __GMP_H__ */

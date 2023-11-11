@@ -76,15 +76,11 @@ see https://www.gnu.org/licenses/.  */
 #include "gmp-impl.h"
 
 
-/* FIXME: The MU_DIV_QR_SKEW_THRESHOLD was not analysed properly.  It gives a
-   speedup according to old measurements, but does the decision mechanism
-   really make sense?  It seem like the quotient between dn and qn might be
-   what we really should be checking.  */
 #ifndef MU_DIV_QR_SKEW_THRESHOLD
 #define MU_DIV_QR_SKEW_THRESHOLD 100
 #endif
 
-#ifdef CHECK				/* FIXME: Enable in minithres */
+#ifdef CHECK
 #undef  MU_DIV_QR_SKEW_THRESHOLD
 #define MU_DIV_QR_SKEW_THRESHOLD 1
 #endif
@@ -176,9 +172,7 @@ mpn_mu_div_qr2 (mp_ptr qp,
   ASSERT (in <= dn);
 
 #if 1
-  /* This alternative inverse computation method gets slightly more accurate
-     results.  FIXMEs: (1) Temp allocation needs not analysed (2) itch function
-     not adapted (3) mpn_invertappr scratch needs not met.  */
+
   ip = scratch;
   tp = scratch + in + 1;
 
@@ -310,7 +304,7 @@ mpn_preinv_mu_div_qr (mp_ptr qp,
 	{
 	  cy = mpn_sub_n (tp, np, tp, in);	/* get next 'in' limbs from N */
 	  cy = mpn_sub_nc (tp + in, rp, tp + in, dn - in, cy);
-	  MPN_COPY (rp, tp, dn);		/* FIXME: try to avoid this */
+	  MPN_COPY (rp, tp, dn);		
 	}
       else
 	{

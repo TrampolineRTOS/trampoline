@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22504"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -43,7 +43,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="313" height="140"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField focusRingType="none" verticalHuggingPriority="750" preferredMaxLayoutWidth="91" id="141">
+                    <textField verticalHuggingPriority="750" preferredMaxLayoutWidth="91" id="141">
                         <rect key="frame" x="202" y="77" width="91" height="22"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="408">
@@ -58,7 +58,7 @@
                             <outlet property="formatter" destination="151" id="152"/>
                         </connections>
                     </textField>
-                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" preferredMaxLayoutWidth="72" id="142">
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" preferredMaxLayoutWidth="72" id="142">
                         <rect key="frame" x="121" y="79" width="76" height="17"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Goto Line:" id="409">
@@ -109,7 +109,7 @@ Gw
                 <rect key="frame" x="0.0" y="0.0" width="880" height="691"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <textField focusRingType="none" verticalHuggingPriority="750" preferredMaxLayoutWidth="52" textCompletion="NO" id="659">
+                    <textField verticalHuggingPriority="750" preferredMaxLayoutWidth="52" textCompletion="NO" id="659">
                         <rect key="frame" x="95" y="668" width="52" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="center" title="9 999" id="660">
@@ -118,7 +118,7 @@ Gw
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField focusRingType="none" verticalHuggingPriority="750" preferredMaxLayoutWidth="52" textCompletion="NO" id="662">
+                    <textField verticalHuggingPriority="750" preferredMaxLayoutWidth="52" textCompletion="NO" id="662">
                         <rect key="frame" x="155" y="669" width="52" height="19"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="center" title="9 999" id="663">
@@ -177,7 +177,7 @@ Gw
                                                                     <rect key="frame" x="1" y="1" width="203" height="16"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
-                                                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="S4J-MC-scF">
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="S4J-MC-scF">
                                                                             <rect key="frame" x="0.0" y="1" width="203" height="14"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                                             <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="Sn6-7l-VAs">
@@ -791,7 +791,7 @@ Gw
                 <rect key="frame" x="0.0" y="0.0" width="267" height="107"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" preferredMaxLayoutWidth="229" id="206">
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" preferredMaxLayoutWidth="229" id="206">
                         <rect key="frame" x="17" y="50" width="233" height="17"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Updating From File System…" id="420">
@@ -869,7 +869,7 @@ Gw
                         <action selector="closeSearchAndReplaceView:" target="-2" id="874"/>
                     </connections>
                 </button>
-                <textField focusRingType="none" verticalHuggingPriority="750" preferredMaxLayoutWidth="33" id="875">
+                <textField verticalHuggingPriority="750" preferredMaxLayoutWidth="33" id="875">
                     <rect key="frame" x="27" y="389" width="37" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Find:" id="876">
@@ -907,7 +907,7 @@ Gw
                                                 <rect key="frame" x="1" y="1" width="45" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="fHh-sb-BOS">
+                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="fHh-sb-BOS">
                                                         <rect key="frame" x="0.0" y="1" width="84" height="14"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                         <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="qkY-9o-kIU">
@@ -942,7 +942,7 @@ Gw
                                                 <rect key="frame" x="49" y="1" width="361" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="nAE-vo-Zuy">
+                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="nAE-vo-Zuy">
                                                         <rect key="frame" x="0.0" y="1" width="361" height="14"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                         <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingHead" sendsActionOnEndEditing="YES" title="Table View Cell" id="euf-Pt-Ds7">
@@ -982,7 +982,7 @@ Gw
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
-                <textField focusRingType="none" verticalHuggingPriority="750" preferredMaxLayoutWidth="339" id="899">
+                <textField verticalHuggingPriority="750" preferredMaxLayoutWidth="339" id="899">
                     <rect key="frame" x="68" y="317" width="363" height="14"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="900">
@@ -999,7 +999,7 @@ Gw
                         <font key="font" metaFont="smallSystem"/>
                     </buttonCell>
                 </button>
-                <searchField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" id="917">
+                <searchField verticalHuggingPriority="750" textCompletion="NO" id="917">
                     <rect key="frame" x="70" y="389" width="339" height="19"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <searchFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" sendsWholeSearchString="YES" maximumRecents="50" recentsAutosaveName="SEARCH-AUTOSAVE" id="918">
@@ -1011,7 +1011,7 @@ Gw
                         <action selector="globalFindAction:" target="-2" id="920"/>
                     </connections>
                 </searchField>
-                <textField focusRingType="none" verticalHuggingPriority="750" preferredMaxLayoutWidth="57" id="923">
+                <textField verticalHuggingPriority="750" preferredMaxLayoutWidth="57" id="923">
                     <rect key="frame" x="3" y="341" width="61" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Replace:" id="926">
@@ -1020,7 +1020,7 @@ Gw
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField focusRingType="none" verticalHuggingPriority="750" preferredMaxLayoutWidth="256" textCompletion="NO" id="928">
+                <textField verticalHuggingPriority="750" preferredMaxLayoutWidth="256" textCompletion="NO" id="928">
                     <rect key="frame" x="70" y="339" width="247" height="19"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="929">
@@ -1040,7 +1040,7 @@ Gw
                         <action selector="globalReplaceAllAction:" target="-2" id="937"/>
                     </connections>
                 </button>
-                <textField focusRingType="none" verticalHuggingPriority="750" preferredMaxLayoutWidth="47" id="897">
+                <textField verticalHuggingPriority="750" preferredMaxLayoutWidth="47" id="897">
                     <rect key="frame" x="13" y="314" width="51" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Results:" id="898">

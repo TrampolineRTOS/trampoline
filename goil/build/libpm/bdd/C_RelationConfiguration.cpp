@@ -9,7 +9,7 @@
 #include "utilities/C_SharedObject.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-//  cVariablesInRelationConfiguration                                                            
+//  cVariablesInRelationConfiguration
 //----------------------------------------------------------------------------------------------------------------------
 
 class cVariablesInRelationConfiguration : public C_SharedObject {
@@ -56,7 +56,7 @@ class cVariablesInRelationConfiguration : public C_SharedObject {
   public: void checkIdenticalTo (const cVariablesInRelationConfiguration * inVariables
                                   COMMA_LOCATION_ARGS) const ;
 
-//--- Operations on 3 set configurations  
+//--- Operations on 3 set configurations
   public: void swap021 (LOCATION_ARGS) ;
 
   public: void swap102 (LOCATION_ARGS) ;
@@ -124,7 +124,7 @@ mVariableTypeArray () {
                       bddIndex,
                       mBDDStartIndexArray (i COMMA_HERE)) ;
       bddIndex += mVariableTypeArray (i COMMA_HERE).BDDBitCount() ;
-    }  
+    }
   }
 #endif
 
@@ -157,7 +157,7 @@ void cVariablesInRelationConfiguration::checkIdenticalTo (const cVariablesInRela
                   "cVariablesInRelationConfiguration::checkIdenticalTo failure",
                   0,
                   0) ;
-  
+
   if (! same) {
     printf ("*** cVariablesInRelationConfiguration::checkIdenticalTo failure ***\n") ;
     exit (1) ;
@@ -307,11 +307,11 @@ void cVariablesInRelationConfiguration::swap210 (LOCATION_ARGS) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//  C_RelationConfiguration                              
+//  C_RelationConfiguration
 //----------------------------------------------------------------------------------------------------------------------
 
 C_RelationConfiguration::C_RelationConfiguration (void) :
-mVariablesPtr (NULL) {
+mVariablesPtr (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -323,7 +323,7 @@ C_RelationConfiguration::~C_RelationConfiguration (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 C_RelationConfiguration::C_RelationConfiguration (const C_RelationConfiguration & inSource) :
-mVariablesPtr (NULL) {
+mVariablesPtr (nullptr) {
   macroAssignSharedObject (mVariablesPtr, inSource.mVariablesPtr) ;
 }
 
@@ -339,12 +339,12 @@ C_RelationConfiguration & C_RelationConfiguration::operator = (const C_RelationC
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_RelationConfiguration::insulate (LOCATION_ARGS) {
-  if (NULL == mVariablesPtr) {
+  if (nullptr == mVariablesPtr) {
     macroMyNew (mVariablesPtr, cVariablesInRelationConfiguration (THERE)) ;
   }else{
     macroValidSharedObjectThere (mVariablesPtr, cVariablesInRelationConfiguration) ;
     if (!mVariablesPtr->isUniquelyReferenced ()) {
-      cVariablesInRelationConfiguration * ptr = NULL ;
+      cVariablesInRelationConfiguration * ptr = nullptr ;
       macroMyNew (ptr, cVariablesInRelationConfiguration (mVariablesPtr COMMA_THERE)) ;
       macroAssignSharedObject (mVariablesPtr, ptr) ;
       macroDetachSharedObject (ptr) ;
@@ -392,7 +392,7 @@ C_RelationSingleType C_RelationConfiguration::typeForVariable (const int32_t inI
 
 uint32_t C_RelationConfiguration::bitCount (void) const {
   uint32_t result = 0 ;
-  if (NULL != mVariablesPtr) {
+  if (nullptr != mVariablesPtr) {
     macroValidSharedObject (mVariablesPtr, cVariablesInRelationConfiguration) ;
     result = mVariablesPtr->bitCount () ;
   }
@@ -403,7 +403,7 @@ uint32_t C_RelationConfiguration::bitCount (void) const {
 
 int32_t C_RelationConfiguration::variableCount (void) const {
   int32_t result = 0 ;
-  if (NULL != mVariablesPtr) {
+  if (nullptr != mVariablesPtr) {
     macroValidSharedObject (mVariablesPtr, cVariablesInRelationConfiguration) ;
     result = mVariablesPtr->variableCount () ;
   }
@@ -447,7 +447,7 @@ C_String C_RelationConfiguration::constantNameForVariableAndValue (const int32_t
 void C_RelationConfiguration::checkIdenticalTo (const C_RelationConfiguration & inConfiguration
                                                  COMMA_LOCATION_ARGS) const {
   bool same = mVariablesPtr == inConfiguration.mVariablesPtr ;
-  if ((! same) && (NULL != mVariablesPtr) && (NULL != inConfiguration.mVariablesPtr)) {
+  if ((! same) && (nullptr != mVariablesPtr) && (nullptr != inConfiguration.mVariablesPtr)) {
     macroValidSharedObjectThere (mVariablesPtr, cVariablesInRelationConfiguration) ;
     mVariablesPtr->checkIdenticalTo (inConfiguration.mVariablesPtr COMMA_THERE) ;
   }else if (! same) {

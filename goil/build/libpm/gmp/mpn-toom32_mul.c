@@ -104,7 +104,6 @@ mpn_toom32_mul (mp_ptr pp,
 
   /* Scratch need: 2*n + 1 + scratch for the recursive multiplications. */
 
-  /* FIXME: Keep v1[2*n] and vm1[2*n] in scalar variables? */
 
   /* Compute ap1 = a0 + a1 + a3, am1 = a0 - a1 + a3 */
   ap1_hi = mpn_add (ap1, a0, n, a2, s);
@@ -167,7 +166,6 @@ mpn_toom32_mul (mp_ptr pp,
     }
   else
     {
-      /* FIXME: Should still use mpn_add_n_sub_n for the main part. */
       bp1_hi = mpn_add (bp1, b0, n, b1, t);
 
       if (mpn_zero_p (b0 + t, n - t) && mpn_cmp (b0, b1, t) < 0)
@@ -257,8 +255,6 @@ mpn_toom32_mul (mp_ptr pp,
   cy = mpn_add_n (pp + 2*n, v1, v1 + n, n);
   MPN_INCR_U (v1 + n, n + 1, cy + v1[2*n]);
 
-  /* FIXME: Can we get rid of this second vm1_neg conditional by
-     swapping the location of +1 and -1 values? */
   if (vm1_neg)
     {
       cy = mpn_add_n (v1, v1, vm1, n);
@@ -309,7 +305,6 @@ mpn_toom32_mul (mp_ptr pp,
 
   hi += mpn_add (pp + n, pp + n, 3*n, scratch, n);
 
-  /* FIXME: Is support for s + t == n needed? */
   if (LIKELY (s + t > n))
     {
       hi -= mpn_sub (pp + 2*n, pp + 2*n, 2*n, pp + 4*n, s+t-n);

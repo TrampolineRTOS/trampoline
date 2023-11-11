@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  GALGAS_object : Base class for GALGAS object handling                                        
+//  GALGAS_object : Base class for GALGAS object handling
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2009, ..., 2010 Pierre Molinaro.
 //
@@ -25,7 +25,7 @@
 
 GALGAS_object::GALGAS_object (void) :
 AC_GALGAS_root (),
-mSharedObject (NULL) {
+mSharedObject (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -33,15 +33,15 @@ mSharedObject (NULL) {
 GALGAS_object::GALGAS_object (AC_GALGAS_root * inObjectPointer
                               COMMA_LOCATION_ARGS) :
 AC_GALGAS_root (),
-mSharedObject (NULL) {
+mSharedObject (nullptr) {
   macroMyNew (mSharedObject, cPtr_object (inObjectPointer COMMA_THERE)) ;
-} 
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_object::GALGAS_object (const GALGAS_object & inSource) :
 AC_GALGAS_root (),
-mSharedObject (NULL) {
+mSharedObject (nullptr) {
   macroAssignSharedObject (mSharedObject, inSource.mSharedObject) ;
 }
 
@@ -67,7 +67,7 @@ void GALGAS_object::drop (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 const AC_GALGAS_root * GALGAS_object::embeddedObject (void) const {
-  const AC_GALGAS_root * result = NULL ;
+  const AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     result = mSharedObject->embeddedObjectPtr () ;
   }

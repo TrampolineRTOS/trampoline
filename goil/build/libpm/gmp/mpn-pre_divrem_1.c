@@ -81,7 +81,7 @@ mpn_preinv_divrem_1 (mp_ptr qp, mp_size_t xsize,
     ASSERT (dinv == want_dinv);
   }
 #endif
-  /* FIXME: What's the correct overlap rule when xsize!=0? */
+
   ASSERT (MPN_SAME_OR_SEPARATE_P (qp+xsize, ap, size));
 
   ahigh = ap[size-1];

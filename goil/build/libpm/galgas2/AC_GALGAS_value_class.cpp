@@ -2,7 +2,7 @@
 //
 //  AC_GALGAS_value_class : Base class for value class objects
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2008, ..., 2021 Pierre Molinaro.
 //
@@ -26,8 +26,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * AC_GALGAS_value_class::dynamicTypeDescriptor (void) const {
-  const C_galgas_type_descriptor * result = NULL ;
-  if (NULL != mObjectPtr) {
+  const C_galgas_type_descriptor * result = nullptr ;
+  if (nullptr != mObjectPtr) {
     result = mObjectPtr->classDescriptor () ;
   }
   return result ;
@@ -37,14 +37,14 @@ const C_galgas_type_descriptor * AC_GALGAS_value_class::dynamicTypeDescriptor (v
 
 AC_GALGAS_value_class::AC_GALGAS_value_class (void) :
 AC_GALGAS_root (),
-mObjectPtr (NULL) {
+mObjectPtr (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_value_class::AC_GALGAS_value_class (const acPtr_class * inPointer) :
 AC_GALGAS_root (),
-mObjectPtr (NULL) {
+mObjectPtr (nullptr) {
   macroAssignSharedObject (mObjectPtr, (acPtr_class *) inPointer) ;
 }
 
@@ -64,7 +64,7 @@ void AC_GALGAS_value_class::drop (void) {
 
 AC_GALGAS_value_class::AC_GALGAS_value_class (const AC_GALGAS_value_class & inSource) :
 AC_GALGAS_root (),
-mObjectPtr (NULL) {
+mObjectPtr (nullptr) {
   macroAssignSharedObject (mObjectPtr, inSource.mObjectPtr) ;
 }
 

@@ -524,7 +524,6 @@
   static void registerPointerDescriptor (const void * inPointerToRegister,
                                          const enumAllocationKind inAllocation
                                          COMMA_LOCATION_ARGS) {
-    // printf ("*** registering pointer %p\n", p) ;
     if (nullptr != inPointerToRegister) {
       bool ioAlreadyExists = false ;
       bool ioExtension = false ;
@@ -602,7 +601,6 @@
     if (nullptr != pointerToDelete) {
       const int32_t inSourceFileLine = pointerToDelete->mSourceLine ;
       const char * nomFichierSource = pointerToDelete->mSourceFileName ;
-      // printf ("------- %p %d\n", pointerToDelete, pointerToDelete->mAllocationKind) ;
       switch (inAllocationKind) {
       case kAllocatedByMacroMyNew :
         if (pointerToDelete->mAllocationKind != kAllocatedByMacroMyNew) {

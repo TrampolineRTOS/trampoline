@@ -1,9 +1,9 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//     C++ template class for implementing a software cache                                      
-//                        (size : a prime integer)                                               
+//     C++ template class for implementing a software cache
+//                        (size : a prime integer)
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2001, ..., 2005 Pierre Molinaro.
 //
@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//       Template for implementing two-operands cache                                            
+//       Template for implementing two-operands cache
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -164,7 +164,7 @@ void TC_prime_cache2 <RESULT>::reallocCache (const size_t inCacheSize) {
     const size_t newCacheSize = getPrimeGreaterThan ((uint32_t) inCacheSize) ;
     if (newCacheSize != mCacheSize) {
       cCacheEntry * newCache = new cCacheEntry [newCacheSize] ;
-      if (newCache != NULL) {
+      if (newCache != nullptr) {
         cCacheEntry * previousCache = mCache ;
         mCache = newCache ;
         const size_t previousCacheSize = mCacheSize ;

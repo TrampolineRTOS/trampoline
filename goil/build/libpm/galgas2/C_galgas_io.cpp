@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  'C_galgas_io'                                                                                
+//  'C_galgas_io'
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 1996, ..., 2017 Pierre Molinaro.
 //
@@ -61,7 +61,7 @@ mTokenCode (inOperand.mTokenCode) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Exception raised when maximum error count is reached                                         
+//  Exception raised when maximum error count is reached
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -71,7 +71,7 @@ const char * max_error_count_reached_exception::what (void) const throw () {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Exception raised when maximum warning count is reached                                       
+//  Exception raised when maximum warning count is reached
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -121,7 +121,7 @@ int32_t totalWarningCount (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    Construct error or warning location message                                                
+//    Construct error or warning location message
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -186,7 +186,7 @@ static C_String constructErrorOrWarningLocationMessage (const C_String & inMessa
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    This method is called by lexique for signaling lexical warning                             
+//    This method is called by lexique for signaling lexical warning
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -212,7 +212,7 @@ void signalLexicalWarning (C_Compiler * inCompiler,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    This method is called by lexique for signaling lexical error                               
+//    This method is called by lexique for signaling lexical error
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -237,7 +237,7 @@ void signalLexicalError (C_Compiler * inCompiler,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    This method is called by lexique for signaling parsing error                               
+//    This method is called by lexique for signaling parsing error
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -256,7 +256,7 @@ void signalParsingError (C_Compiler * inCompiler,
   errorMessage << (verboseOutput () ? "syntax " : "")
                << "error #" << cStringWithSigned (mErrorTotalCount) << ": found " << inFoundTokenMessage <<", expected:\n" ;
   for (int32_t i=0 ; i<inAcceptedTokenNames.count () ; i++) {
-    errorMessage << "-  " << inAcceptedTokenNames (i COMMA_HERE) << "\n" ;  
+    errorMessage << "-  " << inAcceptedTokenNames (i COMMA_HERE) << "\n" ;
   }
 //--- Previous token location
   errorMessage << "Previous token end location:"
@@ -274,7 +274,7 @@ void signalParsingError (C_Compiler * inCompiler,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//            Method called for signaling an extract error                                       
+//            Method called for signaling an extract error
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -312,7 +312,7 @@ void signalExtractError (C_Compiler * inCompiler,
       errorMessage << errorOrWarningLocationString (inIssue, inSourceText)
                    << "error: " ;
     }
-    errorMessage << "  - " << inExpectedClassesErrorStringsArray (i COMMA_HERE) ;  
+    errorMessage << "  - " << inExpectedClassesErrorStringsArray (i COMMA_HERE) ;
   }
   errorMessage << ".\n" ;
 //--- Print
@@ -325,7 +325,7 @@ void signalExtractError (C_Compiler * inCompiler,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//            Method called for signaling a cast error                                           
+//            Method called for signaling a cast error
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -342,7 +342,7 @@ void signalCastError (C_Compiler * inCompiler,
   TC_UniqueArray <C_String> expectedClassMessageArray ;
   const C_galgas_class_inspector * p = C_galgas_class_inspector::root () ;
   bool found = false ;
-  while ((p != NULL) && ! found) {
+  while ((p != nullptr) && ! found) {
     if (p->mClassID == inBaseClass) {
       found = true ;
       expectedClassMessageArray.appendObject (p->mClassMessage) ;
@@ -356,7 +356,7 @@ void signalCastError (C_Compiler * inCompiler,
     while (loop) {
       loop = false ;
       p = C_galgas_class_inspector::root () ;
-      while (p != NULL) {
+      while (p != nullptr) {
         if (classIDarray.containsObjectEqualTo (p->mSuperClassID)
           && ! classIDarray.containsObjectEqualTo (p->mClassID)) {
           loop = true ;
@@ -499,7 +499,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    Method called for printing an error                                                        
+//    Method called for printing an error
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -589,7 +589,7 @@ void fatalError (const C_String & inErrorMessage,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    Method called for printing a warning                                                       
+//    Method called for printing a warning
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -642,7 +642,7 @@ void ggs_printWarning (C_Compiler * inCompiler,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    Method called for printing a success message                                               
+//    Method called for printing a success message
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -666,7 +666,7 @@ void ggs_printFileOperationSuccess (const C_String & inMessage) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    Method called for printing a file creation success                                         
+//    Method called for printing a file creation success
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -690,7 +690,7 @@ void ggs_printFileCreationSuccess (const C_String & inMessage) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    Methods called for printing a message                                                      
+//    Methods called for printing a message
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -718,7 +718,7 @@ void ggs_printMessage (const C_String & inMessage
 //----------------------------------------------------------------------------------------------------------------------
 
 cToken::cToken (void) :
-mNextToken (NULL),
+mNextToken (nullptr),
 mStartLocation (),
 mEndLocation (),
 mTemplateStringBeforeToken (),
@@ -743,11 +743,11 @@ cToken::~cToken (void) {
 C_parsingContext::C_parsingContext (void) :
 mParsingArrayIndex (0),
 mLocation (),
-mCurrentTokenPtr (NULL),
+mCurrentTokenPtr (nullptr),
 mCurrentChar (TO_UNICODE ('\0')),
 mPreviousChar (TO_UNICODE ('\0')),
 mTemplateString () {
-} 
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -758,7 +758,7 @@ mCurrentTokenPtr (inSource.mCurrentTokenPtr),
 mCurrentChar (inSource.mCurrentChar),
 mPreviousChar (inSource.mPreviousChar),
 mTemplateString (inSource.mTemplateString) {
-} 
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 

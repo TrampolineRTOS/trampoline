@@ -25,13 +25,6 @@
 
 #pragma once
 
-//#ifndef MD5_ROUTINES_DEFINED
-//#define MD5_ROUTINES_DEFINED
-//#ifdef HAVE_OPENSSL
-//#include <openssl/md5.h>
-//#elif !defined(_MD5_H)
-//#define _MD5_H
-
 /* Any 32-bit or wider unsigned integer data type will do */
 typedef unsigned int MD5_u32plus;
 

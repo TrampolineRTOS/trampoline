@@ -27,33 +27,14 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-static struct tm gDate ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-static struct tm currentDate (void) {
-  const time_t currentTime = ::time (nullptr) ;
-  gDate = * ::localtime (& currentTime) ;
-  return gDate ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-static struct tm initWithSeconds (const time_t inTimeInSeconds) {
-  gDate = * ::localtime (& inTimeInSeconds) ;
-  return gDate ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
 C_DateTime::C_DateTime (void) :
-mDate (currentDate ()) {
+mDate (std::chrono::system_clock::now ()) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 C_DateTime::C_DateTime (const time_t inTimeInSeconds) :
-mDate (initWithSeconds (inTimeInSeconds)) {
+mDate (std::chrono::system_clock::from_time_t (inTimeInSeconds)) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -64,7 +45,14 @@ C_DateTime::~C_DateTime (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 const char * C_DateTime::getMonthName (void) const {
-  switch (mDate.tm_mon) {
+  const time_t tt = std::chrono::system_clock::to_time_t (mDate) ;
+  struct tm time ;
+  #if COMPILE_FOR_WINDOWS == 0
+   ::localtime_r (&tt, &time) ; // Mac, Linux, Cygwin
+  #else
+   ::localtime_s (&time, &tt) ; // Windows
+  #endif
+  switch (time.tm_mon) {
   case  0 : return "january" ;
   case  1 : return "february" ;
   case  2 : return "march" ;
@@ -84,7 +72,14 @@ const char * C_DateTime::getMonthName (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 const char * C_DateTime::getDayName (void) const {
-  switch (mDate.tm_wday) {
+  const time_t tt = std::chrono::system_clock::to_time_t (mDate) ;
+  struct tm time ;
+  #if COMPILE_FOR_WINDOWS == 0
+   ::localtime_r (&tt, &time) ; // Mac, Linux
+  #else
+   ::localtime_s (&time, &tt) ; // Windows
+  #endif
+  switch (time.tm_wday) {
   case  0 : return "sunday" ;
   case  1 : return "monday" ;
   case  2 : return "tuesday" ;
@@ -97,65 +92,130 @@ const char * C_DateTime::getDayName (void) const {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//
-//    Date comparisons                                                                           
-//
+
+int32_t C_DateTime::getYearCount (void) const {
+  const time_t tt = std::chrono::system_clock::to_time_t (mDate) ;
+  struct tm time ;
+  #if COMPILE_FOR_WINDOWS == 0
+   ::localtime_r (&tt, &time) ; // Mac, Linux
+  #else
+   ::localtime_s (&time, &tt) ; // Windows
+  #endif
+  return 1900 + time.tm_year ; // (1900, ...)
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
-int32_t C_DateTime::compare (const C_DateTime & inDate) const {
-  int32_t result = getYearCount () - inDate.getYearCount () ;
-  if (result == 0) {
-    result = getMonthCount () - inDate.getMonthCount () ;
-  }
-  if (result == 0) {
-    result = getDayOfMonth () - inDate.getDayOfMonth () ;
-  }
-  if (result == 0) {
-    result = getHourOfDay () - inDate.getHourOfDay () ;
-  }
-  if (result == 0) {
-    result = getMinuteOfHour () - inDate.getMinuteOfHour () ;
-  }
-  if (result == 0) {
-    result = getSecondOfMinute () - inDate.getSecondOfMinute () ;
-  }
-  return result ;
+int32_t C_DateTime::getMonthCount (void) const {
+  const time_t tt = std::chrono::system_clock::to_time_t (mDate) ;
+  struct tm time ;
+  #if COMPILE_FOR_WINDOWS == 0
+   ::localtime_r (&tt, &time) ; // Mac, Linux
+  #else
+   ::localtime_s (&time, &tt) ; // Windows
+  #endif
+  return 1 + time.tm_mon ; // (1, 12)
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+int32_t C_DateTime::getDayOfMonth (void) const {
+  const time_t tt = std::chrono::system_clock::to_time_t (mDate) ;
+  struct tm time ;
+  #if COMPILE_FOR_WINDOWS == 0
+   ::localtime_r (&tt, &time) ; // Mac, Linux
+  #else
+   ::localtime_s (&time, &tt) ; // Windows
+  #endif
+  return time.tm_mday ; // (1, 31)
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+int32_t C_DateTime::getHourOfDay (void) const {
+  const time_t tt = std::chrono::system_clock::to_time_t (mDate) ;
+  struct tm time ;
+  #if COMPILE_FOR_WINDOWS == 0
+   ::localtime_r (&tt, &time) ; // Mac, Linux
+  #else
+   ::localtime_s (&time, &tt) ; // Windows
+  #endif
+  return time.tm_hour ; // (0, 23)
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+int32_t C_DateTime::getMinuteOfHour (void) const {
+  const time_t tt = std::chrono::system_clock::to_time_t (mDate) ;
+  struct tm time ;
+  #if COMPILE_FOR_WINDOWS == 0
+   ::localtime_r (&tt, &time) ; // Mac, Linux
+  #else
+   ::localtime_s (&time, &tt) ; // Windows
+  #endif
+  return time.tm_min ; // (0, 59)
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+int32_t C_DateTime::getSecondOfMinute (void) const {
+  const time_t tt = std::chrono::system_clock::to_time_t (mDate) ;
+  struct tm time ;
+  #if COMPILE_FOR_WINDOWS == 0
+   ::localtime_r (&tt, &time) ; // Mac, Linux
+  #else
+   ::localtime_s (&time, &tt) ; // Windows
+  #endif
+  return time.tm_sec ; // (0, 59)
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+int32_t C_DateTime::getDayOfWeek (void) const {
+  const time_t tt = std::chrono::system_clock::to_time_t (mDate) ;
+  struct tm time ;
+  #if COMPILE_FOR_WINDOWS == 0
+   ::localtime_r (&tt, &time) ; // Mac, Linux
+  #else
+   ::localtime_s (&time, &tt) ; // Windows
+  #endif
+  return time.tm_wday ; // 0 = dimanche
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 bool C_DateTime::operator == (const C_DateTime & inDate) const {
-  return compare (inDate) == 0 ;
+  return mDate == inDate.mDate ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 bool C_DateTime::operator != (const C_DateTime & inDate) const {
-  return compare (inDate) != 0 ;
+  return mDate != inDate.mDate ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 bool C_DateTime::operator > (const C_DateTime & inDate) const {
-  return compare (inDate) > 0 ;
+  return mDate > inDate.mDate ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 bool C_DateTime::operator < (const C_DateTime & inDate) const {
-  return compare (inDate) < 0 ;
+  return mDate < inDate.mDate ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 bool C_DateTime::operator >= (const C_DateTime & inDate) const {
-  return compare (inDate) >= 0 ;
+  return mDate >= inDate.mDate ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 bool C_DateTime::operator <= (const C_DateTime & inDate) const {
-  return compare (inDate) <= 0 ;
+  return mDate <= inDate.mDate ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

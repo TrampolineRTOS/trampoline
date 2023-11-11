@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Routine 'F_default_display_exception'.                                                       
+//  Routine 'F_default_display_exception'.
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 1997, ..., 2008 Pierre Molinaro.
 //
@@ -38,13 +38,13 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//         'F_default_display_exception' for WIN 32                                              
+//         'F_default_display_exception' for WIN 32
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 #if COMPILE_FOR_WINDOWS == 1
   void F_default_display_exception (const ::std:: exception & inException) {
-    ::MessageBox ((HWND__ *) NULL,
+    ::MessageBox ((HWND__ *) nullptr,
                   inException.what (),
                   "C++ exception",
                   MB_OK | MB_ICONERROR) ;
@@ -53,7 +53,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//         'F_default_display_exception' for UNIX                                                
+//         'F_default_display_exception' for UNIX
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -66,13 +66,13 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//     'F_default_display_unknown_exception' for WIN 32                                          
+//     'F_default_display_unknown_exception' for WIN 32
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 #if COMPILE_FOR_WINDOWS == 1
   void F_default_display_unknown_exception (void) {
-    ::MessageBox ((HWND__ *) NULL,
+    ::MessageBox ((HWND__ *) nullptr,
                   "An unknown C++ exception has been raised.",
                   "Unknown exception",
                   MB_OK | MB_ICONERROR) ;
@@ -81,7 +81,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//     'F_default_display_unknown_exception' for UNIX                                            
+//     'F_default_display_unknown_exception' for UNIX
 //
 //----------------------------------------------------------------------------------------------------------------------
 

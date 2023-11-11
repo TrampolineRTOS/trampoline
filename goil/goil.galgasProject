@@ -23,6 +23,7 @@
 #  $URL$
 #
 #---------------------------------------------------------------------------*
+# 3.1.14   updated to galgas 3.6.1
 # 3.1.13   added parseOIL method
 # 3.1.12   added methods to get a file list and the root templates directory 
 # 3.1.11   fix range checking of int and float
@@ -63,9 +64,8 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:1:13) -> "goil" {
+project (3:1:14) -> "goil" {
 
-  %makefile-macosx
   %makefile-unix
   %makefile-x86linux32-on-macosx
   %makefile-x86linux64-on-macosx

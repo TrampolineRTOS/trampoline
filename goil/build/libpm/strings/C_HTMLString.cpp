@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 1997, ..., 2014 Pierre Molinaro.
+//  Copyright (C) 1997, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -66,17 +66,6 @@ void C_HTMLString::writeStartCode (const C_String & inWindowTitle,
 void C_HTMLString::writeEndCode (void) {
   outputRawData ("</div></body></html>\n") ;
 }
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//   A S S I G N M E N T    O P E R A T O R S                                                    
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-/*C_HTMLString & C_HTMLString::operator = (const C_HTMLString & inSource) {
-  macroAssignSharedObject (mEmbeddedString, inSource.mEmbeddedString) ;
-  return * this ;
-}*/
 
 //----------------------------------------------------------------------------------------------------------------------
 

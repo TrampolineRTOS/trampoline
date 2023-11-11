@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  GALGAS_stringset                                                                             
+//  GALGAS_stringset
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
-//  Copyright (C) 2005, ..., 2016 Pierre Molinaro.
+//  Copyright (C) 2005, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -24,7 +24,7 @@
 #include "galgas2/C_Compiler.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-//   cCollectionElement_stringset                                                                
+//   cCollectionElement_stringset
 //----------------------------------------------------------------------------------------------------------------------
 
 class cCollectionElement_stringset : public cCollectionElement {
@@ -78,7 +78,7 @@ typeComparisonResult cCollectionElement_stringset::compare (const cCollectionEle
 //----------------------------------------------------------------------------------------------------------------------
 
 cCollectionElement * cCollectionElement_stringset::copy (void) {
-  cCollectionElement_stringset * p = NULL ;
+  cCollectionElement_stringset * p = nullptr ;
   macroMyNew (p, cCollectionElement_stringset (mProperty_key COMMA_HERE)) ;
   return p ;
 }
@@ -92,7 +92,7 @@ void cCollectionElement_stringset::description (C_String & ioString, const int32
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  c S t r i n g s e t N o d e                                                                  
+//  c S t r i n g s e t N o d e
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -102,7 +102,7 @@ class cStringsetNode {
   public: int32_t mBalance ;
   public: C_String mKey ;
 
-//---  
+//---
   public: cStringsetNode (const C_String & inString) ;
   public: cStringsetNode (const cStringsetNode * inNode) ;
 
@@ -117,8 +117,8 @@ class cStringsetNode {
 //----------------------------------------------------------------------------------------------------------------------
 
 cStringsetNode::cStringsetNode (const C_String & inString) :
-mInfPtr (NULL),
-mSupPtr (NULL),
+mInfPtr (nullptr),
+mSupPtr (nullptr),
 mBalance (0),
 mKey (inString) {
 }
@@ -126,14 +126,14 @@ mKey (inString) {
 //----------------------------------------------------------------------------------------------------------------------
 
 cStringsetNode::cStringsetNode (const cStringsetNode * inNode) :
-mInfPtr (NULL),
-mSupPtr (NULL),
+mInfPtr (nullptr),
+mSupPtr (nullptr),
 mBalance (inNode->mBalance),
 mKey (inNode->mKey) {
-  if (inNode->mInfPtr != NULL) {
+  if (inNode->mInfPtr != nullptr) {
     macroMyNew (mInfPtr, cStringsetNode (inNode->mInfPtr)) ;
   }
-  if (inNode->mSupPtr != NULL) {
+  if (inNode->mSupPtr != nullptr) {
     macroMyNew (mSupPtr, cStringsetNode (inNode->mSupPtr)) ;
   }
 }
@@ -178,7 +178,7 @@ static void rotateRight (cStringsetNode * & ioRootPtr) {
   cStringsetNode * ptr = ioRootPtr->mInfPtr ;
   ioRootPtr->mInfPtr = ptr->mSupPtr ;
   ptr->mSupPtr = ioRootPtr ;
- 
+
   if (ptr->mBalance > 0) {
     ioRootPtr->mBalance += -ptr->mBalance - 1 ;
   }else{
@@ -198,7 +198,7 @@ static void recursiveAddEntry (cStringsetNode * & ioRootPtr,
                                const C_String & inKey,
                                bool & outEntryAdded,
                                bool & ioExtension) {
-  if (ioRootPtr == NULL) {
+  if (ioRootPtr == nullptr) {
     macroMyNew (ioRootPtr, cStringsetNode (inKey)) ;
     ioExtension = true ;
     outEntryAdded = true ;
@@ -309,7 +309,7 @@ static void infBranchDecreased (cStringsetNode * & ioRoot,
 static void getPreviousElement (cStringsetNode * & ioRoot,
                                 cStringsetNode * & ioElement,
                                 bool & ioBranchHasBeenRemoved) {
-  if (ioRoot->mSupPtr == NULL) {
+  if (ioRoot->mSupPtr == nullptr) {
     ioElement = ioRoot ;
     ioRoot = ioRoot->mInfPtr ;
     ioBranchHasBeenRemoved = true ;
@@ -327,7 +327,7 @@ static void internalRemoveRecursively (cStringsetNode * & ioRoot,
                                        const C_String & inKeyToRemove,
                                        bool & outKeyHasBeenRemoved,
                                        bool & ioBranchHasBeenRemoved) {
-  if (ioRoot != NULL) {
+  if (ioRoot != nullptr) {
     const int32_t comparaison = ioRoot->mKey.compare (inKeyToRemove) ;
     if (comparaison > 0) {
       internalRemoveRecursively (ioRoot->mInfPtr, inKeyToRemove, outKeyHasBeenRemoved, ioBranchHasBeenRemoved);
@@ -342,20 +342,20 @@ static void internalRemoveRecursively (cStringsetNode * & ioRoot,
     }else{
       cStringsetNode * p = ioRoot ;
       outKeyHasBeenRemoved = true ;
-      if (p->mInfPtr == NULL) {
+      if (p->mInfPtr == nullptr) {
         ioRoot = p->mSupPtr;
-        p->mSupPtr = NULL;
+        p->mSupPtr = nullptr;
         ioBranchHasBeenRemoved = true;
-      }else if (p->mSupPtr == NULL) {
+      }else if (p->mSupPtr == nullptr) {
         ioRoot = p->mInfPtr;
-        p->mInfPtr = NULL;
+        p->mInfPtr = nullptr;
         ioBranchHasBeenRemoved = true;
       }else{
         getPreviousElement (p->mInfPtr, ioRoot, ioBranchHasBeenRemoved) ;
         ioRoot->mSupPtr = p->mSupPtr;
-        p->mSupPtr = NULL;
+        p->mSupPtr = nullptr;
         ioRoot->mInfPtr = p->mInfPtr;
-        p->mInfPtr = NULL;
+        p->mInfPtr = nullptr;
         ioRoot->mBalance = p->mBalance;
         p->mBalance = 0;
         if (ioBranchHasBeenRemoved) {
@@ -375,7 +375,7 @@ static void internalRemoveRecursively (cStringsetNode * & ioRoot,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  cSharedStringsetRoot                                                                         
+//  cSharedStringsetRoot
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -390,7 +390,7 @@ class cSharedStringsetRoot : public C_SharedObject {
 
 //--- Default constructor
   public: cSharedStringsetRoot (LOCATION_ARGS) ;
-  
+
 //--- Virtual destructor
   public: virtual ~ cSharedStringsetRoot (void) ;
 
@@ -436,7 +436,7 @@ class cSharedStringsetRoot : public C_SharedObject {
 
 cSharedStringsetRoot::cSharedStringsetRoot (LOCATION_ARGS) :
 C_SharedObject (THERE),
-mRoot (NULL),
+mRoot (nullptr),
 mEntryCount (0) {
 }
 
@@ -451,7 +451,7 @@ cSharedStringsetRoot::~cSharedStringsetRoot (void) {
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void cSharedStringsetRoot::countStringSetNodes (const cStringsetNode * inNode,
                                                   uint32_t & ioCount) const {
-    if (NULL != inNode) {
+    if (nullptr != inNode) {
       countStringSetNodes (inNode->mInfPtr, ioCount) ;
       ioCount ++ ;
       countStringSetNodes (inNode->mSupPtr, ioCount) ;
@@ -473,7 +473,7 @@ cSharedStringsetRoot::~cSharedStringsetRoot (void) {
 
 void cSharedStringsetRoot::displayEntries (const cStringsetNode * inNode,
                                            C_String & ioString) const {
-  if (inNode != NULL) {
+  if (inNode != nullptr) {
     displayEntries (inNode->mInfPtr, ioString) ;
     ioString << " '" << inNode->mKey << "'" ;
     displayEntries (inNode->mSupPtr, ioString) ;
@@ -515,7 +515,7 @@ C_String cSharedStringsetRoot::rootKey (void) const {
 
 void cSharedStringsetRoot::copyFrom (const cSharedStringsetRoot * inSharedRootToCopy) {
   macroValidSharedObject (inSharedRootToCopy, cSharedStringsetRoot) ;
-  if (NULL != inSharedRootToCopy->mRoot) {
+  if (nullptr != inSharedRootToCopy->mRoot) {
     macroMyNew (mRoot, cStringsetNode (inSharedRootToCopy->mRoot)) ;
     mEntryCount = inSharedRootToCopy->mEntryCount ;
   }
@@ -524,7 +524,6 @@ void cSharedStringsetRoot::copyFrom (const cSharedStringsetRoot * inSharedRootTo
 //----------------------------------------------------------------------------------------------------------------------
 
 void cSharedStringsetRoot::removeKey (const C_String & inKey) {
-  // printf ("OPERATION -=\n") ; fflush (stdout) ;
   macroUniqueSharedObject (this) ;
   bool branchHasBeenRemoved = false ;
   bool keyHasBeenRemoved = false ;
@@ -538,7 +537,7 @@ void cSharedStringsetRoot::removeKey (const C_String & inKey) {
 
 static void recursiveBuildKeyList (const cStringsetNode * inNode,
                                    TC_UniqueArray <C_String> & ioList) {
-  if (inNode != NULL) {
+  if (inNode != nullptr) {
     recursiveBuildKeyList (inNode->mInfPtr, ioList) ;
     ioList.appendObject (inNode->mKey) ;
     recursiveBuildKeyList (inNode->mSupPtr, ioList) ;
@@ -556,7 +555,7 @@ void cSharedStringsetRoot::buildOrderedKeyList (TC_UniqueArray <C_String> & ioLi
 bool cSharedStringsetRoot::hasKey (const C_String & inKey) const {
   bool found = false ;
   const cStringsetNode * p = mRoot ;
-  while ((p != NULL) && ! found) {
+  while ((p != nullptr) && ! found) {
     const int32_t comparaison = p->mKey.compare (inKey) ;
     if (comparaison > 0) {
       p = p->mInfPtr ;
@@ -573,7 +572,7 @@ bool cSharedStringsetRoot::hasKey (const C_String & inKey) const {
 
 static void recursiveAddToStringList (GALGAS_stringlist & ioResult,
                                       const cStringsetNode * inNode) {
-  if (inNode != NULL) {
+  if (inNode != nullptr) {
     recursiveAddToStringList (ioResult, inNode->mInfPtr) ;
     ioResult.addAssign_operation (GALGAS_string (inNode->mKey) COMMA_HERE) ;
     recursiveAddToStringList (ioResult, inNode->mSupPtr) ;
@@ -594,13 +593,13 @@ void cSharedStringsetRoot::addToStringList (GALGAS_stringlist & ioResult) const 
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  G A L G A S _ s t r i n g s e t                                                              
+//  G A L G A S _ s t r i n g s e t
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringset::GALGAS_stringset (void) :
 AC_GALGAS_root (),
-mSharedRoot (NULL) {
+mSharedRoot (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -619,7 +618,7 @@ void GALGAS_stringset::drop (void) {
 
 GALGAS_stringset::GALGAS_stringset (const GALGAS_stringset & inSource) :
 AC_GALGAS_root (),
-mSharedRoot (NULL) {
+mSharedRoot (nullptr) {
   macroAssignSharedObject (mSharedRoot, inSource.mSharedRoot) ;
 }
 
@@ -634,7 +633,7 @@ GALGAS_stringset & GALGAS_stringset::operator = (const GALGAS_stringset & inSour
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void GALGAS_stringset::checkStringset (LOCATION_ARGS) const {
-    if (NULL != mSharedRoot) {
+    if (nullptr != mSharedRoot) {
       mSharedRoot->checkStringset (THERE) ;
     }
   }
@@ -645,7 +644,7 @@ GALGAS_stringset & GALGAS_stringset::operator = (const GALGAS_stringset & inSour
 void GALGAS_stringset::description (C_String & ioString,
                                     const int32_t /* inIndentation */) const {
   ioString << "<@stringset:" ;
-  if (NULL == mSharedRoot) {
+  if (nullptr == mSharedRoot) {
     ioString << "not built" ;
   }else{
     mSharedRoot->description (ioString) ;
@@ -656,8 +655,8 @@ void GALGAS_stringset::description (C_String & ioString,
 //----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_stringset::insulate (LOCATION_ARGS) {
-  if ((NULL != mSharedRoot) && !mSharedRoot->isUniquelyReferenced ()) {
-    cSharedStringsetRoot * p = NULL ;
+  if ((nullptr != mSharedRoot) && !mSharedRoot->isUniquelyReferenced ()) {
+    cSharedStringsetRoot * p = nullptr ;
     macroMyNew (p, cSharedStringsetRoot (THERE)) ;
     p->copyFrom (mSharedRoot) ;
     macroAssignSharedObject (mSharedRoot, p) ;
@@ -699,7 +698,7 @@ void GALGAS_stringset::setter_removeKey (GALGAS_string inKey
     #ifndef DO_NOT_GENERATE_CHECKINGS
       checkStringset (HERE) ;
     #endif
-    if (NULL != mSharedRoot) {
+    if (nullptr != mSharedRoot) {
       mSharedRoot->removeKey (inKey.stringValue ()) ;
     }
     #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -716,7 +715,7 @@ void GALGAS_stringset::setter_removeKey (GALGAS_string inKey
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    I N T E R S E C T I O N                                                                    
+//    I N T E R S E C T I O N
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -729,13 +728,13 @@ GALGAS_stringset GALGAS_stringset::operator_and (const GALGAS_stringset & inOper
       inOperand2.checkStringset (HERE) ;
     #endif
     result = constructor_emptySet (THERE) ;
-    if (NULL != mSharedRoot) {
+    if (nullptr != mSharedRoot) {
       const uint32_t leftCount = mSharedRoot->count () ;
       TC_UniqueArray <C_String> leftList ((int32_t) leftCount COMMA_THERE) ;
       mSharedRoot->buildOrderedKeyList (leftList) ;
-      const uint32_t rightCount = (NULL == inOperand2.mSharedRoot) ? 0 : inOperand2.mSharedRoot->count () ;
+      const uint32_t rightCount = (nullptr == inOperand2.mSharedRoot) ? 0 : inOperand2.mSharedRoot->count () ;
       TC_UniqueArray <C_String> rightList ((int32_t) rightCount COMMA_THERE) ;
-      if (NULL != inOperand2.mSharedRoot) {
+      if (nullptr != inOperand2.mSharedRoot) {
         inOperand2.mSharedRoot->buildOrderedKeyList (rightList) ;
       }
       uint32_t leftIndex = 0 ;
@@ -762,7 +761,7 @@ GALGAS_stringset GALGAS_stringset::operator_and (const GALGAS_stringset & inOper
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    U N I O N                                                                                  
+//    U N I O N
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -775,9 +774,9 @@ GALGAS_stringset GALGAS_stringset::operator_or (const GALGAS_stringset & inOpera
       inOperand2.checkStringset (HERE) ;
     #endif
     result = *this ;
-    const uint32_t rightCount = (NULL == inOperand2.mSharedRoot) ? 0 : inOperand2.mSharedRoot->count () ;
+    const uint32_t rightCount = (nullptr == inOperand2.mSharedRoot) ? 0 : inOperand2.mSharedRoot->count () ;
     TC_UniqueArray <C_String> rightList ((int32_t) rightCount COMMA_THERE) ;
-    if (NULL != inOperand2.mSharedRoot) {
+    if (nullptr != inOperand2.mSharedRoot) {
       inOperand2.mSharedRoot->buildOrderedKeyList (rightList) ;
     }
     for (uint32_t i=0 ; i<rightCount ; i++) {
@@ -800,9 +799,9 @@ void GALGAS_stringset::plusAssign_operation (const GALGAS_stringset inOperand2,
       checkStringset (HERE) ;
       inOperand2.checkStringset (HERE) ;
     #endif
-    const uint32_t rightCount = (NULL == inOperand2.mSharedRoot) ? 0 : inOperand2.mSharedRoot->count () ;
+    const uint32_t rightCount = (nullptr == inOperand2.mSharedRoot) ? 0 : inOperand2.mSharedRoot->count () ;
     TC_UniqueArray <C_String> rightList ((int32_t) rightCount COMMA_THERE) ;
-    if (NULL != inOperand2.mSharedRoot) {
+    if (nullptr != inOperand2.mSharedRoot) {
       inOperand2.mSharedRoot->buildOrderedKeyList (rightList) ;
     }
     for (uint32_t i=0 ; i<rightCount ; i++) {
@@ -818,7 +817,7 @@ void GALGAS_stringset::plusAssign_operation (const GALGAS_stringset inOperand2,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    D I F F E R E N C E                                                                        
+//    D I F F E R E N C E
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -910,15 +909,15 @@ GALGAS_string GALGAS_stringset::getter_anyString (C_Compiler * inCompiler
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                 'GALGAS_stringset::cEnumerator' class                                         
+//                 'GALGAS_stringset::cEnumerator' class
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 static void enterAscendingEnumeration (const cStringsetNode * inNode,
                                        capCollectionElementArray & ioResult) {
-  if (inNode != NULL) {
+  if (inNode != nullptr) {
     enterAscendingEnumeration (inNode->mInfPtr, ioResult) ;
-    cCollectionElement_stringset * p = NULL ;
+    cCollectionElement_stringset * p = nullptr ;
     GALGAS_string str (GALGAS_string (inNode->mKey)) ;
     macroMyNew (p, cCollectionElement_stringset (str COMMA_HERE)) ;
     capCollectionElement object ;
@@ -969,7 +968,7 @@ GALGAS_string cEnumerator_stringset::current (LOCATION_ARGS) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    C O M P A R I S O N                                                                        
+//    C O M P A R I S O N
 //
 //----------------------------------------------------------------------------------------------------------------------
 

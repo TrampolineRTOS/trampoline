@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2013, ..., 2016 Pierre Molinaro.
+//  Copyright (C) 2013, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -25,10 +25,6 @@
 #include "collections/TC_Array.h"
 #include "C_UIntSet.h"
 #include "strings/C_String.h"
-
-//----------------------------------------------------------------------------------------------------------------------
-
-//#define USE_NODE_NAMES_WITH_SUBGRAPH_COMPUTATION
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -97,9 +93,6 @@ class C_DirectedGraph {
   public: C_DirectedGraph reversedGraph (void) const ;
   
   public: C_DirectedGraph subGraphFromNodes (const C_UIntSet & inStartNodes,
-                                              #ifdef USE_NODE_NAMES_WITH_SUBGRAPH_COMPUTATION
-                                                const TC_UniqueArray <C_String> & inNodeNames,
-                                              #endif
                                               const C_UIntSet & inNodesToExclude) const ;
   
   #ifndef DO_NOT_GENERATE_CHECKINGS

@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library
 //
-//  Copyright (C) 1999, ..., 2010 Pierre Molinaro.
+//  Copyright (C) 1999, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -96,9 +96,6 @@ static bool searchInANDOperationCache (const uint32_t inOperand1,
                                        uint32_t & outResult) {
   if (0 == gANDOperationMapSize) {
     gANDOperationMapSize = kANDOperationCacheInitialSize ;
-    // tStructANDOperationCacheEntry temp [5] ;
-    // printf ("tStructANDOperationCacheEntry: %ld bytes\n", sizeof (tStructANDOperationCacheEntry)) ;
-    // printf ("tStructANDOperationCacheEntry [5]: %ld bytes\n", sizeof (temp)) ;
     macroMyNewPODArray (gANDOperationCacheOperandMap, uint64_t, gANDOperationMapSize) ;
     macroMyNewPODArray (gANDOperationCacheResultMap, uint32_t, gANDOperationMapSize) ;
     clearANDOperationCache () ;
@@ -124,12 +121,12 @@ static bool searchInANDOperationCache (const uint32_t inOperand1,
 static void reallocANDOperationCache (const uint32_t inNewSize) {
   if (0 < inNewSize) {
     gANDOperationCacheMapUsedEntryCount = 0 ;
-    uint64_t * newCache = NULL ;
+    uint64_t * newCache = nullptr ;
     macroMyNewPODArray (newCache, uint64_t, inNewSize) ;
     for (uint32_t i=0 ; i<inNewSize ; i++) {
       newCache [i] = 0 ;
     }
-    uint32_t * newResult = NULL ;
+    uint32_t * newResult = nullptr ;
     macroMyNewPODArray (newResult, uint32_t, inNewSize) ;
     for (uint32_t i=0 ; i<gANDOperationMapSize ; i++) {
       if (gANDOperationCacheOperandMap [i] != 0) {
@@ -221,8 +218,6 @@ void C_BDD::setANDOperationCacheMaxSize (const uint32_t inPowerOfTwo) {
 
 uint32_t internalANDoperation (const uint32_t opf,
                                const uint32_t opg) {
-//  MF_Assert ((opf >> 1) < gUniqueTableSize, "(opf >> 1) (%lld) should be < gUniqueTableSize (%lld)", (opf >> 1), gUniqueTableSize) ;
-//  MF_Assert ((opg >> 1) < gUniqueTableSize, "(opg >> 1) (%lld) should be < gUniqueTableSize (%lld)", (opg >> 1), gUniqueTableSize) ;
   uint32_t result ;
   uint32_t f = opf ;
   uint32_t g = opg ;
@@ -272,7 +267,6 @@ uint32_t internalANDoperation (const uint32_t opf,
   //--- Insert result into cache
     enterInANDOperationCache (f, g, result) ;
   }
-//  MF_Assert ((result >> 1) < gUniqueTableSize, "(result >> 1) (%lld) should be < gUniqueTableSize (%lld)", (result >> 1), gUniqueTableSize) ;
   return result ;
 }
 

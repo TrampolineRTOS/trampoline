@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  'C_TextFileWrite' : a class for stream writing text files                                    
+//  'C_BinaryFileWrite' : a class for stream writing text files
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
-//  Copyright (C) 1999, ..., 2011 Pierre Molinaro.
+//  Copyright (C) 1999, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -25,18 +25,18 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 C_BinaryFileWrite::C_BinaryFileWrite (const C_String & inFileName) :
-AC_FileHandleForWriting (inFileName, "wb") {
+AC_FileHandle (inFileName, "wb") {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//                                Close                                                          
+//                                Close
 //----------------------------------------------------------------------------------------------------------------------
 
 bool C_BinaryFileWrite::close (void) {
   bool ok = true ;
-  if (mFilePtr != NULL) {
+  if (mFilePtr != nullptr) {
     ok = ::fclose (mFilePtr) == 0 ; // Flushes the file, then closes it
-    mFilePtr = NULL ;
+    mFilePtr = nullptr ;
   }
   return ok ;
 }
@@ -44,17 +44,17 @@ bool C_BinaryFileWrite::close (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_BinaryFileWrite::flush (void) {
-  if (NULL != mFilePtr) {
+  if (nullptr != mFilePtr) {
     ::fflush (mFilePtr) ;
   }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//    Destructor (cannot call the virtual 'close' method in destructor)                          
+//    Destructor (cannot call the virtual 'close' method in destructor)
 //----------------------------------------------------------------------------------------------------------------------
 
 C_BinaryFileWrite::~C_BinaryFileWrite (void) {
-  if (NULL != mFilePtr) {
+  if (nullptr != mFilePtr) {
     ::fflush (mFilePtr) ;
   }
 }
@@ -62,7 +62,7 @@ C_BinaryFileWrite::~C_BinaryFileWrite (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_BinaryFileWrite::appendData (const C_Data & inData) {
-  if (NULL != mFilePtr) {
+  if (nullptr != mFilePtr) {
     ::fwrite (inData.unsafeDataPointer (), 1, (size_t) inData.length (), mFilePtr) ;
   }
 }

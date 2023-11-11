@@ -211,10 +211,6 @@ mpn_mul (mp_ptr prodp,
 
       scratch = TMP_SALLOC_LIMBS (ITCH);
 
-      /* FIXME: This condition (repeated in the loop below) leaves from a vn*vn
-	 square to a (3vn-1)*vn rectangle.  Leaving such a rectangle is hardly
-	 wise; we would get better balance by slightly moving the bound.  We
-	 will sometimes end up with un < vn, like in the X3 arm below.  */
       if (un >= 3 * vn)
 	{
 	  mp_limb_t cy;

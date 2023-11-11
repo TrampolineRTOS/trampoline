@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  AC_GALGAS_sortedlist : base class for GALGAS sorted list                                     
+//  AC_GALGAS_sortedlist : base class for GALGAS sorted list
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2005, ..., 2010 Pierre Molinaro.
 //
@@ -53,7 +53,7 @@ class AC_GALGAS_sortedlist : public AC_GALGAS_root {
   public: AC_GALGAS_sortedlist & operator = (const AC_GALGAS_sortedlist &) ;
 
 //--------------------------------- Is Valid
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const override { return NULL != mSharedRoot ; }
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override { return nullptr != mSharedRoot ; }
 
 //--- count
   public: VIRTUAL_IN_DEBUG uint32_t count (void) const ;

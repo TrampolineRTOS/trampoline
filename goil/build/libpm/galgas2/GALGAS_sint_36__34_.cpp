@@ -20,7 +20,6 @@
 
 #include "all-predefined-types.h"
 #include "galgas2/C_Compiler.h"
-#include "files/C_TextFileWrite.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 //

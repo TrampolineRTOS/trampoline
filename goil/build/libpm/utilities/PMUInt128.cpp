@@ -170,9 +170,9 @@ void PMUInt128::divideBy (const uint32_t inDivisor,
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void PMUInt128::operator /= (const uint32_t inMultiplicand) {
+void PMUInt128::operator /= (const uint32_t inDivisor) {
   uint32_t unusedRemainder ;
-  divideBy (inMultiplicand, unusedRemainder) ;
+  divideBy (inDivisor, unusedRemainder) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

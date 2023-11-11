@@ -210,7 +210,7 @@ uint64_t C_Relation::value64Count (void) const {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//   getArray                                            
+//   getArray
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_Relation::getArray (TC_UniqueArray <TC_UniqueArray <uint64_t> > & outArray
@@ -355,7 +355,7 @@ C_Relation C_Relation::transposedRelation (LOCATION_ARGS) const {
   const uint32_t bitSize0 = mConfiguration.bddBitCountForVariable (0 COMMA_THERE) ;
   const uint32_t bitSize1 = mConfiguration.bddBitCountForVariable (1 COMMA_THERE) ;
   const uint32_t totalSize = (uint32_t) (bitSize0 + bitSize1) ;
-  uint32_t * tab = NULL ;
+  uint32_t * tab = nullptr ;
   macroMyNewArray (tab, uint32_t, totalSize) ;
   for (uint32_t i=0 ; i<bitSize0 ; i++) {
     tab [i] = (uint32_t) (i + bitSize1) ;

@@ -54,7 +54,7 @@ class AC_GALGAS_weak_reference : public AC_GALGAS_root { // AC_GALGAS_weak_refer
   protected: virtual ~ AC_GALGAS_weak_reference (void) ;
 
 //--- Is valid
-  public: virtual bool isValid (void) const { return NULL != mProxyPtr ; }
+  public: virtual bool isValid (void) const { return nullptr != mProxyPtr ; }
 
 //--- Drop
   public: virtual void drop (void) ;

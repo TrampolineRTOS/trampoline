@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//     BDD package (implementation of ROBDD)                                                     
+//     BDD package (implementation of ROBDD)
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
-//  Copyright (C) 1999, ..., 2014 Pierre Molinaro.
+//  Copyright (C) 1999, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -51,7 +51,7 @@ void C_BDD::setDisplaysInformationMessages (const bool inFlag) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-uint32_t internalITEoperation (const uint32_t opf, 
+uint32_t internalITEoperation (const uint32_t opf,
                                const uint32_t opg,
                                const uint32_t oph) {
   return internalANDoperation (internalANDoperation (opf, opg)     ^ 1,
@@ -239,21 +239,6 @@ C_BDD C_BDD::bddWithConstants (const uint32_t inValues [],
       idx ++ ;
     }
   }
-//--- Check
-/*  C_BDD r ; r.setToTrue () ;
-  idx = 0 ;
-  for (int32_t i=0 ; i<inEntryCount ; i++) {
-    uint32_t v = inValues [i] ;
-    for (uint32_t j=0 ; j<inBitCount [i] ; j++) {
-      r &= C_BDD (idx, ((v & 1) == 0) ? false : true) ;
-      v >>= 1 ;
-      idx ++ ;
-    }
-  }
-  if (r.mBDDvalue != result) {
-    printf ("[ERROR bddWithConstants]") ;
-  }*/
-//---- 
   return C_BDD (result) ;
 }
 
@@ -327,14 +312,14 @@ C_BDD C_BDD::varCompareConst (const uint32_t inFirstIndex,
     result = construireSupEgal (inFirstIndex, indiceMax, inComparisonConstant) ;
     break ;
   default :
-    ;  
+    ;
   }
   switch (inComparison) {
   case kNotEqual : case kStrictGreater : case kStrictLower :
     result.mBDDvalue ^= 1 ;
     break ;
   default :
-    ;  
+    ;
   }
   return result ;
 }
@@ -423,8 +408,8 @@ uint32_t C_BDD::significantVariableCount (void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-//#define DEBUG_CONTAINS_VALUE
- 
+//    #define DEBUG_CONTAINS_VALUE
+
 //----------------------------------------------------------------------------------------------------------------------
 
 static bool recursiveContainsValue64 (const uint32_t inBDD,
@@ -585,7 +570,7 @@ parcoursBDDinterneParValeur (const uint32_t inValue,
       }
     }
   }else if (inValue == 1) {
-    inTraversing.action (tableauDesValeurs, inVariableCount) ;  
+    inTraversing.action (tableauDesValeurs, inVariableCount) ;
   }
 }
 
@@ -593,7 +578,7 @@ parcoursBDDinterneParValeur (const uint32_t inValue,
 
 void C_BDD::traverseBDDvalues (C_bdd_value_traversing & inTraversing,
                                const uint32_t inVariableCount) const {
-  bool * tableauDesValeurs = NULL ;
+  bool * tableauDesValeurs = nullptr ;
   macroMyNewArray (tableauDesValeurs, bool, inVariableCount) ;
   parcoursBDDinterneParValeur (mBDDvalue, inTraversing, tableauDesValeurs, inVariableCount, inVariableCount) ;
   macroMyDeleteArray (tableauDesValeurs) ;
@@ -641,7 +626,7 @@ void C_BDD::buildValue64Array (TC_UniqueArray <uint64_t> & outValuesArray,
   MF_Assert(inVariableCount < 64, "inVariableCount == %ld >= 64", (int64_t) inVariableCount, 0) ;
   outValuesArray.setCountToZero () ;
   C_build_values64_array builder (& outValuesArray) ;
-  bool * tableauDesValeurs = NULL ;
+  bool * tableauDesValeurs = nullptr ;
   macroMyNewArray (tableauDesValeurs, bool, inVariableCount) ;
   parcoursBDDinterneParValeur (mBDDvalue, builder, tableauDesValeurs, inVariableCount, inVariableCount) ;
   macroMyDeleteArray (tableauDesValeurs) ;
@@ -688,7 +673,7 @@ void C_BDD::buildValueArray (TC_UniqueArray <TC_Array <bool> > & outValuesArray,
                              const uint32_t inVariableCount) const {
   outValuesArray.setCountToZero () ;
   C_build_values_array builder (& outValuesArray) ;
-  bool * tableauDesValeurs = NULL ;
+  bool * tableauDesValeurs = nullptr ;
   macroMyNewArray (tableauDesValeurs, bool, inVariableCount) ;
   parcoursBDDinterneParValeur (mBDDvalue, builder, tableauDesValeurs, inVariableCount, inVariableCount) ;
   macroMyDeleteArray (tableauDesValeurs) ;
@@ -737,7 +722,7 @@ buildLittleEndianStringValueArray (TC_UniqueArray <C_String> & outValuesArray,
                                    const uint32_t inVariableCount) const {
   outValuesArray.setCountToZero () ;
   cLittleEndianStringValueBuilder builder (& outValuesArray) ;
-  bool * tableauDesValeurs = NULL ;
+  bool * tableauDesValeurs = nullptr ;
   macroMyNewArray (tableauDesValeurs, bool, inVariableCount) ;
   parcoursBDDinterneParValeur (mBDDvalue, builder, tableauDesValeurs, inVariableCount, inVariableCount) ;
   macroMyDeleteArray (tableauDesValeurs) ;
@@ -780,7 +765,7 @@ buildBigEndianStringValueArray (TC_UniqueArray <C_String> & outValuesArray,
                                 const uint32_t inVariableCount) const {
   outValuesArray.setCountToZero () ;
   cBuildBigEndianStringValueArray builder (& outValuesArray) ;
-  bool * tableauDesValeurs = NULL ;
+  bool * tableauDesValeurs = nullptr ;
   macroMyNewArray (tableauDesValeurs, bool, inVariableCount) ;
   parcoursBDDinterneParValeur (mBDDvalue, builder, tableauDesValeurs, inVariableCount, inVariableCount) ;
   macroMyDeleteArray (tableauDesValeurs) ;
@@ -1102,7 +1087,7 @@ static void internalValueCount (const uint32_t inValue,
   const uint32_t nodeIndex = nodeIndexForRoot (inValue COMMA_THERE) ;
   if (bothBranches (gNodeArray [nodeIndex]) == 0) {
     nombreDirect.setToZero () ;
-    nombreComplement.setFromUnsigned (1) ;
+    nombreComplement.setFromU32 (1) ;
     nombreComplement <<= inVariableCount ;
   }else{
     const uint32_t var = gNodeArray [nodeIndex].mVariableIndex ;
@@ -1143,7 +1128,7 @@ static void internalValueCountUsingCache (const uint32_t inValue,
   const uint32_t nodeIndex = nodeIndexForRoot (inValue COMMA_THERE) ;
   if (bothBranches (gNodeArray [nodeIndex]) == 0) {
     nombreDirect.setToZero () ;
-    nombreComplement.setFromUnsigned (1) ; nombreComplement <<= inVariableCount ;
+    nombreComplement.setFromU32 (1) ; nombreComplement <<= inVariableCount ;
   }else if ((ioDirectCacheArray.count () > (int32_t) (inValue / 2))
     && (((!ioDirectCacheArray (inValue / 2 COMMA_HERE).isZero ()) || (!ioComplementCacheArray (inValue / 2 COMMA_HERE).isZero())))) {
     nombreDirect = ioDirectCacheArray (inValue / 2 COMMA_HERE) ;
@@ -1241,7 +1226,7 @@ C_BDD C_BDD::getNthBDD (const uint64_t inNthBDDvalue,
                         const uint32_t inVariableCount) const {
   return obtenirIemeBDDinterne (mBDDvalue, inNthBDDvalue, inVariableCount) ;
 }
-  
+
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1386,7 +1371,7 @@ class cBuildArrayForSet : public C_bdd_value_traversing {
   public: virtual void action (const bool inValuesArray [],
                                 const uint32_t inBDDbitsSize) ;
 } ;
-  
+
 //----------------------------------------------------------------------------------------------------------------------
 
 cBuildArrayForSet::
@@ -1425,7 +1410,7 @@ void C_BDD::getBoolArray (TC_UniqueArray <bool> & outArray,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   U P D A T E   R E L A T I O N                                                               
+//   U P D A T E   R E L A T I O N
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1456,8 +1441,8 @@ internalRecursiveUpdateRelation (const uint32_t inValue,
 //----------------------------------------------------------------------------------------------------------------------
 
 C_BDD C_BDD::
-updateRelation (const uint32_t inRelationBitNeededCount [], 
-                uint32_t * inRelationBitCurrentCount [], 
+updateRelation (const uint32_t inRelationBitNeededCount [],
+                uint32_t * inRelationBitCurrentCount [],
                 const int32_t inRelationCardinality) const {
   uint32_t result = mBDDvalue ;
 //--- Check if update is needed
@@ -1467,14 +1452,13 @@ updateRelation (const uint32_t inRelationBitNeededCount [],
   }
 //--- Perform updating
   if (updateIsNeeded) {
-    //printf ("BEFORE '%s'\n", queryStringValue ().cString (HERE)) ;
     uint32_t totalCurrentBitCount = 0 ;
     uint32_t newNeededTotalBitCount = 0 ;
     for (int32_t i=0 ; i<inRelationCardinality ; i++) {
       totalCurrentBitCount = (uint32_t) (totalCurrentBitCount + * (inRelationBitCurrentCount [i])) ;
       newNeededTotalBitCount = (uint32_t) (newNeededTotalBitCount + inRelationBitNeededCount [i]) ;
     }
-    uint32_t * translationVector = NULL ;
+    uint32_t * translationVector = nullptr ;
     macroMyNewArray (translationVector, uint32_t, totalCurrentBitCount) ;
     int32_t idx = 0 ;
     int32_t newIdx = 0 ;
@@ -1495,18 +1479,14 @@ updateRelation (const uint32_t inRelationBitNeededCount [],
       + (* (inRelationBitCurrentCount [inRelationCardinality - 1]))
       - inRelationBitNeededCount [inRelationCardinality - 1]) ;
     while (finalTranslatedIndex < newNeededTotalBitCount) {
-     // printf ("finalTranslatedIndex %u\n", finalTranslatedIndex) ;
-     // result = internalITEoperation (find_or_add (finalTranslatedIndex, 1, 0), result, 0) ;
       result = find_or_add (finalTranslatedIndex, result, 0 COMMA_HERE) ;
       finalTranslatedIndex ++ ;
     }
-    // printf ("AFTER '%s'\n", C_BDD (result).queryStringValue ().cString (HERE)) ;
     macroMyDeleteArray (translationVector) ;
   }
 //--- Register updating
   if (updateIsNeeded) {
     for (int32_t i=0 ; i<inRelationCardinality; i++) {
-      //printf ("%d -> %d\n", * (inRelationBitCurrentCount [i]), inRelationBitNeededCount [i]) ;
       * (inRelationBitCurrentCount [i]) = inRelationBitNeededCount [i] ;
     }
   }
@@ -1526,7 +1506,7 @@ C_BDD C_BDD::
 swap10 (const uint32_t inBitSize1,
         const uint32_t inBitSize2) const {
   const uint32_t totalSize = (uint32_t) (inBitSize1 + inBitSize2) ;
-  uint32_t * tab = NULL ;
+  uint32_t * tab = nullptr ;
   macroMyNewArray (tab, uint32_t, totalSize) ;
   for (uint32_t i=0 ; i<inBitSize1 ; i++) {
     tab [i] = (uint32_t) (i + inBitSize2) ;
@@ -1561,7 +1541,7 @@ accessibleStates (const C_BDD & inInitialStateSet,
     accessibleY = accessible.translate (inBitSize, inBitSize) ;
     accessible |= (accessibleY & edgeYX).existsOnBitsAfterNumber (inBitSize) ;
   }while (v != accessible) ;
-  if (outIterationCount != NULL) {
+  if (outIterationCount != nullptr) {
     * outIterationCount = iterationCount ;
   }
   return accessible ;
@@ -1587,7 +1567,7 @@ transitiveClosure (const uint32_t inBitSize,
     ZYclosure = closure.swap210 (inBitSize, inBitSize, inBitSize) ;
     closure |= (XZclosure & ZYclosure).existsOnBitsAfterNumber (bitCount2) ;
   }while (closure != v) ;
-  if (outIterationCount != NULL) {
+  if (outIterationCount != nullptr) {
     * outIterationCount = iterationCount ;
   }
   return closure ;
@@ -1609,7 +1589,7 @@ class cBuildArrayForRelation2 : public C_bdd_value_traversing {
   public: virtual void action (const bool inValuesArray [],
                                 const uint32_t inBDDbitsSize) ;
 } ;
-  
+
 //----------------------------------------------------------------------------------------------------------------------
 
 cBuildArrayForRelation2::
@@ -1662,7 +1642,7 @@ swap021 (const uint32_t inBitSize1,
          const uint32_t inBitSize2,
          const uint32_t inBitSize3) const {
   const uint32_t totalSize = (uint32_t) (inBitSize1 + inBitSize2 + inBitSize3) ;
-  uint32_t * tab = NULL ;
+  uint32_t * tab = nullptr ;
   macroMyNewArray (tab, uint32_t, totalSize) ;
   for (uint32_t i=0 ; i<inBitSize1 ; i++) {
     tab [i] = i ;
@@ -1685,7 +1665,7 @@ swap120 (const uint32_t inBitSize1,
          const uint32_t inBitSize2,
          const uint32_t inBitSize3) const {
   const uint32_t totalSize = (uint32_t) (inBitSize1 + inBitSize2 + inBitSize3) ;
-  uint32_t * tab = NULL ;
+  uint32_t * tab = nullptr ;
   macroMyNewArray (tab, uint32_t, totalSize) ;
   for (uint32_t i=0 ; i<inBitSize1 ; i++) {
     tab [i] = (uint32_t) (i + inBitSize1 + inBitSize2) ;
@@ -1708,7 +1688,7 @@ swap102 (const uint32_t inBitSize1,
          const uint32_t inBitSize2,
          const uint32_t inBitSize3) const {
   const uint32_t totalSize = (uint32_t) (inBitSize1 + inBitSize2 + inBitSize3) ;
-  uint32_t * tab = NULL ;
+  uint32_t * tab = nullptr ;
   macroMyNewArray (tab, uint32_t, totalSize) ;
   for (uint32_t i=0 ; i<inBitSize1 ; i++) {
     tab [i] = (uint32_t) (i + inBitSize2) ;
@@ -1731,7 +1711,7 @@ swap210 (const uint32_t inBitSize1,
          const uint32_t inBitSize2,
          const uint32_t inBitSize3) const {
   const uint32_t totalSize = (uint32_t) (inBitSize1 + inBitSize2 + inBitSize3) ;
-  uint32_t * tab = NULL ;
+  uint32_t * tab = nullptr ;
   macroMyNewArray (tab, uint32_t, totalSize) ;
   for (uint32_t i=0 ; i<inBitSize1 ; i++) {
     tab [i] = (uint32_t) (i + inBitSize1 + inBitSize2) ;
@@ -1754,7 +1734,7 @@ swap201 (const uint32_t inBitSize1,
          const uint32_t inBitSize2,
          const uint32_t inBitSize3) const {
   const uint32_t totalSize = (uint32_t) (inBitSize1 + inBitSize2 + inBitSize3) ;
-  uint32_t * tab = NULL ;
+  uint32_t * tab = nullptr ;
   macroMyNewArray (tab, uint32_t, totalSize) ;
   for (uint32_t i=0 ; i<inBitSize1 ; i++) {
     tab [i] = (uint32_t) (i + inBitSize3) ;
@@ -2309,10 +2289,6 @@ static void sortValueArray (uint64_t ioValueArray [],
 
 //----------------------------------------------------------------
 
-//#define CHECK_WITH_TRIVIAL_BDD_COMPUTING
-
-//----------------------------------------------------------------
-
 C_BDD C_BDD::buildBDDFromValueList (uint64_t ioValueList [],
                                     const uint32_t inValueCount,
                                     const uint32_t inBitCount) {
@@ -2330,10 +2306,6 @@ C_BDD C_BDD::buildBDDFromValueList (uint64_t ioValueList [],
   if (inValueCount > 0) {
   //--- Sort value list in ascending order
     sortValueArray (ioValueList, 0, (int32_t) (inValueCount - 1)) ;
-  //--- Check values are sorted
-  //  for (uint32_t i=1 ; i<inValueCount ; i++) {
-  //    MF_Assert (ioValueList [i-1] < ioValueList [i], "ioValueList [i-1] < ioValueList [i] for i=%lld, inValueCount:%lld", i, inValueCount) ;
-  //  }
   //--- Search for duplicates
     uint32_t duplicates = 0 ;
     for (uint32_t i=1 ; i<inValueCount ; i++) {
@@ -2343,10 +2315,7 @@ C_BDD C_BDD::buildBDDFromValueList (uint64_t ioValueList [],
       printf ("Warning: %u duplicates\n", duplicates) ;
     }
   //--- Translate into BDD
-    #ifdef CHECK_WITH_TRIVIAL_BDD_COMPUTING
-      C_BDD EXresult ;
-    #endif
-    C_BDD * accumulatorArray = NULL ;
+    C_BDD * accumulatorArray = nullptr ;
     macroMyNewArray (accumulatorArray, C_BDD, inBitCount) ;
     uint64_t referenceValue = ioValueList [0] ;
     for (uint32_t i=0 ; i<inValueCount ; i++) {
@@ -2368,9 +2337,6 @@ C_BDD C_BDD::buildBDDFromValueList (uint64_t ioValueList [],
         referenceValue = currentTransition ;
         accumulatorArray [firstDifferentBit] |= accumulatorBDD ;
       }
-      #ifdef CHECK_WITH_TRIVIAL_BDD_COMPUTING
-        EXresult |= C_BDD::varCompareConst (0, inBitCount, C_BDD::kEqual, ioValueList [i]) ;
-      #endif
     }
     result.setToTrue () ;
     uint64_t mask = 1UL ;
@@ -2379,12 +2345,6 @@ C_BDD C_BDD::buildBDDFromValueList (uint64_t ioValueList [],
       mask <<= 1 ;
     }
     macroMyDeleteArray (accumulatorArray) ;
-    #ifdef CHECK_WITH_TRIVIAL_BDD_COMPUTING
-      if (result.integerValue () != EXresult.integerValue ()) {
-        printf ("*** error in %s:%d ***\n", __FILE__, __LINE__) ;
-        exit (1) ;
-      }
-    #endif
   }
   return result ;
 }

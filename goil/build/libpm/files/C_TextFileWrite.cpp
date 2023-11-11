@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  'C_TextFileWrite' : a class for stream writing text files                                    
+//  'C_TextFileWrite' : a class for stream writing text files
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 1999, ..., 2011 Pierre Molinaro.
 //
@@ -30,46 +30,46 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 C_TextFileWrite::C_TextFileWrite (const C_String & inFileName) :
-AC_FileHandleForWriting (inFileName, "wt"),
+AC_FileHandle (inFileName, "wt"),
 mBufferLength (0) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//                                Close                                                          
+//                                Close
 //----------------------------------------------------------------------------------------------------------------------
 
 bool C_TextFileWrite::close (void) {
   bool ok = true ;
-  if (mFilePtr != NULL) {
+  if (mFilePtr != nullptr) {
     if (mBufferLength > 0) {
       ::fprintf (mFilePtr, "%.*s", (int) mBufferLength, mBuffer) ;
       mBufferLength = 0 ;
     }
     ok = ::fclose (mFilePtr) == 0 ; // Flushes the file, then closes it
-    mFilePtr = NULL ;
+    mFilePtr = nullptr ;
   }
   return ok ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//                             Destructor                                                        
-// Cannot call the virtual 'close' method in destructor                                          
+//                             Destructor
+// Cannot call the virtual 'close' method in destructor
 //----------------------------------------------------------------------------------------------------------------------
 
 C_TextFileWrite::~C_TextFileWrite (void) {
-  if ((mFilePtr != NULL) && (mBufferLength > 0)) {
+  if ((mFilePtr != nullptr) && (mBufferLength > 0)) {
     ::fprintf (mFilePtr, "%.*s", (int) mBufferLength, mBuffer) ;
     mBufferLength = 0 ;
   }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//                  Write a character string into the file                                       
+//                  Write a character string into the file
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_TextFileWrite::performActualCharArrayOutput (const char * inCharArray,
                                                     const int32_t inArrayCount) {
-  if ((mFilePtr != NULL) && (inArrayCount > 0)) {
+  if ((mFilePtr != nullptr) && (inArrayCount > 0)) {
     if ((mBufferLength + inArrayCount) < kFileBufferSize) {
       ::memcpy (& mBuffer [mBufferLength], inCharArray, (size_t) inArrayCount) ;
       mBufferLength += inArrayCount ;
@@ -87,7 +87,7 @@ void C_TextFileWrite::performActualCharArrayOutput (const char * inCharArray,
 
 void C_TextFileWrite::performActualUnicodeArrayOutput (const utf32 * inCharArray,
                                                        const int32_t inArrayCount) {
-  if ((mFilePtr != NULL) && (inArrayCount > 0)) {
+  if ((mFilePtr != nullptr) && (inArrayCount > 0)) {
     for (int32_t i=0 ; i<inArrayCount ; i++) {
       char buffer [5] ;
       const int32_t length = UTF8StringFromUTF32Character (inCharArray [i], buffer) ;
@@ -102,11 +102,11 @@ void C_TextFileWrite::performActualUnicodeArrayOutput (const utf32 * inCharArray
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//                   Flush print                                                                 
+//                   Flush print
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_TextFileWrite::flush (void) {
-  if (mFilePtr != NULL) {
+  if (mFilePtr != nullptr) {
     if (mBufferLength > 0) {
       ::fprintf (mFilePtr, "%.*s", (int) mBufferLength, mBuffer) ;
       mBufferLength = 0 ;

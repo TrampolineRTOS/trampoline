@@ -98,7 +98,7 @@ mpn_divrem_1 (mp_ptr qp, mp_size_t qxn,
   ASSERT (qxn >= 0);
   ASSERT (un >= 0);
   ASSERT (d != 0);
-  /* FIXME: What's the correct overlap rule when qxn!=0? */
+
   ASSERT (MPN_SAME_OR_SEPARATE_P (qp+qxn, up, un));
 
   n = un + qxn;

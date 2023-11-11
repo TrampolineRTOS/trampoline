@@ -28,8 +28,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * AC_GALGAS_weak_reference::dynamicTypeDescriptor (void) const {
-  const C_galgas_type_descriptor * result = NULL ;
-  if (NULL != mProxyPtr) {
+  const C_galgas_type_descriptor * result = nullptr ;
+  if (nullptr != mProxyPtr) {
     result = mProxyPtr->classDescriptor () ;
   }
   return result ;
@@ -41,7 +41,7 @@ const C_galgas_type_descriptor * AC_GALGAS_weak_reference::dynamicTypeDescriptor
 
 AC_GALGAS_weak_reference::AC_GALGAS_weak_reference (void) :
 AC_GALGAS_root (),
-mProxyPtr (NULL) {
+mProxyPtr (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -58,9 +58,9 @@ AC_GALGAS_weak_reference::~AC_GALGAS_weak_reference (void) {
 
 AC_GALGAS_weak_reference::AC_GALGAS_weak_reference (const AC_GALGAS_reference_class & inSource) :
 AC_GALGAS_root (),
-mProxyPtr (NULL) {
+mProxyPtr (nullptr) {
   acStrongPtr_class * ptr = (acStrongPtr_class *) inSource.ptr () ;
-  if (ptr != NULL) {
+  if (ptr != nullptr) {
     cPtr_weakReference_proxy * proxy = ptr->getProxy () ;
     macroAssignSharedObject (mProxyPtr, proxy) ;
   }
@@ -72,7 +72,7 @@ mProxyPtr (NULL) {
 
 AC_GALGAS_weak_reference::AC_GALGAS_weak_reference (const AC_GALGAS_weak_reference & inSource) :
 AC_GALGAS_root (),
-mProxyPtr (NULL) {
+mProxyPtr (nullptr) {
   macroAssignSharedObject (mProxyPtr, inSource.mProxyPtr) ;
 }
 
@@ -92,8 +92,8 @@ void AC_GALGAS_weak_reference::drop (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 acStrongPtr_class * AC_GALGAS_weak_reference::ptr (void) const {
-  acStrongPtr_class * result = NULL ;
-  if (mProxyPtr != NULL) {
+  acStrongPtr_class * result = nullptr ;
+  if (mProxyPtr != nullptr) {
     result = mProxyPtr->strongObject () ;
   }
   return result ;
@@ -107,11 +107,11 @@ void AC_GALGAS_weak_reference::description (C_String & ioString,
            << staticTypeDescriptor ()->mGalgasTypeName
            << ":" ;
   acStrongPtr_class * ptr = (acStrongPtr_class *) mProxyPtr ;
-  if (ptr == NULL) {
+  if (ptr == nullptr) {
     ioString << "not built" ;
   }else{
     cPtr_weakReference_proxy * proxy = ptr->getProxy () ;
-    if (proxy == NULL) {
+    if (proxy == nullptr) {
       ioString << "nil" ;
     }else{
       const C_galgas_type_descriptor * descriptor = proxy->classDescriptor () ;

@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   GALGAS_data : this class implements the GALGAS 'data' native type                           
+//   GALGAS_data : this class implements the GALGAS 'data' native type
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
-//  Copyright (C) 2009, ..., 2012 Pierre Molinaro.
+//  Copyright (C) 2009, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -29,11 +29,7 @@
 #include "galgas2/F_verbose_output.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-
-// #include <ctype.h>
-
-//----------------------------------------------------------------------------------------------------------------------
-//   GALGAS_data                                                                                 
+//   GALGAS_data
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_data::GALGAS_data (void) :
@@ -66,7 +62,7 @@ GALGAS_data GALGAS_data::constructor_dataWithContentsOfFile (const GALGAS_string
     C_Data binaryData ;
     const bool ok = C_FileManager::binaryDataWithContentOfFile (inFilePath.stringValue (), binaryData) ;
     if (ok) {
-      
+
       result = GALGAS_data (binaryData) ;
     }else{
       C_String s ;
@@ -356,7 +352,7 @@ void GALGAS_data::method_writeToExecutableFile (GALGAS_string inFilePath,
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//   cCollectionElement_data                                                                     
+//   cCollectionElement_data
 //----------------------------------------------------------------------------------------------------------------------
 
 class cCollectionElement_data : public cCollectionElement {
@@ -410,7 +406,7 @@ typeComparisonResult cCollectionElement_data::compare (const cCollectionElement 
 //----------------------------------------------------------------------------------------------------------------------
 
 cCollectionElement * cCollectionElement_data::copy (void) {
-  cCollectionElement_data * p = NULL ;
+  cCollectionElement_data * p = nullptr ;
   macroMyNew (p, cCollectionElement_data (mProperty_data COMMA_HERE)) ;
   return p ;
 }
@@ -423,7 +419,7 @@ void cCollectionElement_data::description (C_String & ioString, const int32_t in
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//     cEnumerator_data class                                                                    
+//     cEnumerator_data class
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -437,7 +433,7 @@ void GALGAS_data::populateEnumerationArray (capCollectionElementArray & inEnumer
   const int32_t count = mData.length () ;
   inEnumerationArray.setCapacity ((uint32_t) count) ;
   for (int32_t i=0 ; i<count ; i++) {
-    cCollectionElement_data * p = NULL ;
+    cCollectionElement_data * p = nullptr ;
     macroMyNew (p, cCollectionElement_data (GALGAS_uint (mData (i COMMA_HERE)) COMMA_HERE)) ;
     capCollectionElement object ;
     object.setPointer (p) ;

@@ -351,7 +351,7 @@ GALGAS_gtlData cPtr_gtlEnum::getter_neqOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlEnum temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlEnum *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlEnum *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlEnum *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlEnum", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 810)) ;
@@ -386,7 +386,7 @@ GALGAS_gtlData cPtr_gtlEnum::getter_eqOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlEnum temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlEnum *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlEnum *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlEnum *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlEnum", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 821)) ;
@@ -623,7 +623,7 @@ static void extensionSetter_gtlEnum_performSetter (cPtr_gtlData * inObject,
       }
       GALGAS_gtlString temp_1 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 909)).isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 909)).ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 909)).ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 909)).ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 909)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 909)) ;
@@ -657,7 +657,7 @@ static void extensionSetter_gtlEnum_performSetter (cPtr_gtlData * inObject,
           callExtensionMethod_callSetter ((cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("enum"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 917)).ptr (), constinArgument_methodName.readProperty_location (), constinArgument_context, constinArgument_lib, var_copy_29422, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 917)) ;
           GALGAS_gtlEnum temp_5 ;
           if (var_copy_29422.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlEnum *> (var_copy_29422.ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlEnum *> (var_copy_29422.ptr ())) {
               temp_5 = (cPtr_gtlEnum *) var_copy_29422.ptr () ;
             }else{
               inCompiler->castError ("gtlEnum", var_copy_29422.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 924)) ;
@@ -684,7 +684,7 @@ static void defineExtensionSetter_gtlEnum_performSetter (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlEnum_performSetter (defineExtensionSetter_gtlEnum_performSetter, NULL) ;
+C_PrologueEpilogue gSetter_gtlEnum_performSetter (defineExtensionSetter_gtlEnum_performSetter, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -1028,7 +1028,7 @@ GALGAS_gtlData cPtr_gtlChar::getter_neqOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlChar temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlChar *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlChar *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlChar", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1020)) ;
@@ -1063,7 +1063,7 @@ GALGAS_gtlData cPtr_gtlChar::getter_eqOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlChar temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlChar *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlChar *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlChar", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1032)) ;
@@ -1098,7 +1098,7 @@ GALGAS_gtlData cPtr_gtlChar::getter_gtOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlChar temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlChar *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlChar *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlChar", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1044)) ;
@@ -1133,7 +1133,7 @@ GALGAS_gtlData cPtr_gtlChar::getter_geOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlChar temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlChar *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlChar *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlChar", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1056)) ;
@@ -1168,7 +1168,7 @@ GALGAS_gtlData cPtr_gtlChar::getter_ltOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlChar temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlChar *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlChar *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlChar", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1068)) ;
@@ -1203,7 +1203,7 @@ GALGAS_gtlData cPtr_gtlChar::getter_leOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlChar temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlChar *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlChar *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlChar", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1080)) ;
@@ -1449,7 +1449,7 @@ static void extensionSetter_gtlChar_performSetter (cPtr_gtlData * inObject,
       }
       GALGAS_gtlString temp_1 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1191)).isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1191)).ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1191)).ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1191)).ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1191)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1191)) ;
@@ -1483,7 +1483,7 @@ static void extensionSetter_gtlChar_performSetter (cPtr_gtlData * inObject,
           callExtensionMethod_callSetter ((cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("char"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1199)).ptr (), constinArgument_methodName.readProperty_location (), constinArgument_context, constinArgument_lib, var_copy_37888, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1199)) ;
           GALGAS_gtlChar temp_5 ;
           if (var_copy_37888.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlChar *> (var_copy_37888.ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlChar *> (var_copy_37888.ptr ())) {
               temp_5 = (cPtr_gtlChar *) var_copy_37888.ptr () ;
             }else{
               inCompiler->castError ("gtlChar", var_copy_37888.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1206)) ;
@@ -1510,7 +1510,7 @@ static void defineExtensionSetter_gtlChar_performSetter (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlChar_performSetter (defineExtensionSetter_gtlChar_performSetter, NULL) ;
+C_PrologueEpilogue gSetter_gtlChar_performSetter (defineExtensionSetter_gtlChar_performSetter, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -1667,7 +1667,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_addOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1260)) ;
@@ -1702,7 +1702,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_subOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1272)) ;
@@ -1737,7 +1737,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_mulOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1284)) ;
@@ -1772,7 +1772,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_divOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1296)) ;
@@ -1807,7 +1807,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_modOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1308)) ;
@@ -1842,7 +1842,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_andOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1320)) ;
@@ -1877,7 +1877,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_orOp (const GALGAS_gtlData constinArgument_ri
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1332)) ;
@@ -1912,7 +1912,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_xorOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1344)) ;
@@ -1947,7 +1947,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_slOp (const GALGAS_gtlData constinArgument_ri
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1353)) ;
@@ -1960,7 +1960,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_slOp (const GALGAS_gtlData constinArgument_ri
         if (kBoolTrue == test_2) {
           GALGAS_gtlInt temp_3 ;
           if (constinArgument_right.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
               temp_3 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
             }else{
               inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1358)) ;
@@ -2002,7 +2002,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_srOp (const GALGAS_gtlData constinArgument_ri
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1370)) ;
@@ -2049,7 +2049,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_neqOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1386)) ;
@@ -2084,7 +2084,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_eqOp (const GALGAS_gtlData constinArgument_ri
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1398)) ;
@@ -2119,7 +2119,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_gtOp (const GALGAS_gtlData constinArgument_ri
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1410)) ;
@@ -2154,7 +2154,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_geOp (const GALGAS_gtlData constinArgument_ri
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1422)) ;
@@ -2189,7 +2189,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_ltOp (const GALGAS_gtlData constinArgument_ri
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1434)) ;
@@ -2224,7 +2224,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_leOp (const GALGAS_gtlData constinArgument_ri
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlInt *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1446)) ;
@@ -2303,7 +2303,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_performGetter (const GALGAS_lstring constinAr
         }
         GALGAS_gtlInt temp_3 ;
         if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1480)).isValid ()) {
-          if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1480)).ptr ())) {
+          if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1480)).ptr ())) {
             temp_3 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1480)).ptr () ;
           }else{
             inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1480)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1480)) ;
@@ -2324,7 +2324,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_performGetter (const GALGAS_lstring constinAr
           }
           GALGAS_gtlInt temp_6 ;
           if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1488)).isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1488)).ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1488)).ptr ())) {
               temp_6 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1488)).ptr () ;
             }else{
               inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1488)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1488)) ;
@@ -2345,7 +2345,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_performGetter (const GALGAS_lstring constinAr
             }
             GALGAS_gtlInt temp_9 ;
             if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1496)).isValid ()) {
-              if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1496)).ptr ())) {
+              if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1496)).ptr ())) {
                 temp_9 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1496)).ptr () ;
               }else{
                 inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1496)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1496)) ;
@@ -2542,7 +2542,7 @@ GALGAS_gtlData cPtr_gtlInt::getter_performGetter (const GALGAS_lstring constinAr
                                               }
                                               GALGAS_gtlInt temp_28 ;
                                               if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1612)).isValid ()) {
-                                                if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1612)).ptr ())) {
+                                                if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1612)).ptr ())) {
                                                   temp_28 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1612)).ptr () ;
                                                 }else{
                                                   inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1612)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1612)) ;
@@ -2665,7 +2665,7 @@ static void extensionSetter_gtlInt_performSetter (cPtr_gtlData * inObject,
       }
       GALGAS_gtlBool temp_1 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1662)).isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlBool *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1662)).ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlBool *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1662)).ptr ())) {
           temp_1 = (cPtr_gtlBool *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1662)).ptr () ;
         }else{
           inCompiler->castError ("gtlBool", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1662)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1662)) ;
@@ -2674,7 +2674,7 @@ static void extensionSetter_gtlInt_performSetter (cPtr_gtlData * inObject,
       GALGAS_bool var_bit_51573 = temp_1.readProperty_value () ;
       GALGAS_gtlInt temp_2 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1663)).isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1663)).ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1663)).ptr ())) {
           temp_2 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1663)).ptr () ;
         }else{
           inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1663)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1663)) ;
@@ -2697,7 +2697,7 @@ static void extensionSetter_gtlInt_performSetter (cPtr_gtlData * inObject,
         }
         GALGAS_gtlInt temp_4 ;
         if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1668)).isValid ()) {
-          if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1668)).ptr ())) {
+          if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1668)).ptr ())) {
             temp_4 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1668)).ptr () ;
           }else{
             inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1668)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1668)) ;
@@ -2720,7 +2720,7 @@ static void extensionSetter_gtlInt_performSetter (cPtr_gtlData * inObject,
           }
           GALGAS_gtlString temp_6 ;
           if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1673)).isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1673)).ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1673)).ptr ())) {
               temp_6 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1673)).ptr () ;
             }else{
               inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1673)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1673)) ;
@@ -2754,7 +2754,7 @@ static void extensionSetter_gtlInt_performSetter (cPtr_gtlData * inObject,
               callExtensionMethod_callSetter ((cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("int"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1681)).ptr (), constinArgument_methodName.readProperty_location (), constinArgument_context, constinArgument_lib, var_copy_52452, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1681)) ;
               GALGAS_gtlInt temp_10 ;
               if (var_copy_52452.isValid ()) {
-                if (NULL != dynamic_cast <const cPtr_gtlInt *> (var_copy_52452.ptr ())) {
+                if (nullptr != dynamic_cast <const cPtr_gtlInt *> (var_copy_52452.ptr ())) {
                   temp_10 = (cPtr_gtlInt *) var_copy_52452.ptr () ;
                 }else{
                   inCompiler->castError ("gtlInt", var_copy_52452.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1688)) ;
@@ -2783,7 +2783,7 @@ static void defineExtensionSetter_gtlInt_performSetter (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlInt_performSetter (defineExtensionSetter_gtlInt_performSetter, NULL) ;
+C_PrologueEpilogue gSetter_gtlInt_performSetter (defineExtensionSetter_gtlInt_performSetter, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -2942,7 +2942,7 @@ GALGAS_gtlData cPtr_gtlFloat::getter_addOp (const GALGAS_gtlData constinArgument
     if (kBoolTrue == test_0) {
       GALGAS_gtlFloat temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlFloat *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlFloat", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1742)) ;
@@ -2977,7 +2977,7 @@ GALGAS_gtlData cPtr_gtlFloat::getter_subOp (const GALGAS_gtlData constinArgument
     if (kBoolTrue == test_0) {
       GALGAS_gtlFloat temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlFloat *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlFloat", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1754)) ;
@@ -3012,7 +3012,7 @@ GALGAS_gtlData cPtr_gtlFloat::getter_mulOp (const GALGAS_gtlData constinArgument
     if (kBoolTrue == test_0) {
       GALGAS_gtlFloat temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlFloat *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlFloat", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1766)) ;
@@ -3047,7 +3047,7 @@ GALGAS_gtlData cPtr_gtlFloat::getter_divOp (const GALGAS_gtlData constinArgument
     if (kBoolTrue == test_0) {
       GALGAS_gtlFloat temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlFloat *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlFloat", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1778)) ;
@@ -3190,7 +3190,7 @@ GALGAS_gtlData cPtr_gtlFloat::getter_neqOp (const GALGAS_gtlData constinArgument
     if (kBoolTrue == test_0) {
       GALGAS_gtlFloat temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlFloat *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlFloat", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1814)) ;
@@ -3225,7 +3225,7 @@ GALGAS_gtlData cPtr_gtlFloat::getter_eqOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlFloat temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlFloat *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlFloat", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1826)) ;
@@ -3260,7 +3260,7 @@ GALGAS_gtlData cPtr_gtlFloat::getter_gtOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlFloat temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlFloat *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlFloat", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1838)) ;
@@ -3295,7 +3295,7 @@ GALGAS_gtlData cPtr_gtlFloat::getter_geOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlFloat temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlFloat *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlFloat", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1850)) ;
@@ -3330,7 +3330,7 @@ GALGAS_gtlData cPtr_gtlFloat::getter_ltOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlFloat temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlFloat *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlFloat", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1862)) ;
@@ -3365,7 +3365,7 @@ GALGAS_gtlData cPtr_gtlFloat::getter_leOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlFloat temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlFloat *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlFloat", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1874)) ;
@@ -3565,7 +3565,7 @@ GALGAS_gtlData cPtr_gtlFloat::getter_performGetter (const GALGAS_lstring constin
                               }
                               GALGAS_gtlFloat temp_14 ;
                               if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1963)).isValid ()) {
-                                if (NULL != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1963)).ptr ())) {
+                                if (nullptr != dynamic_cast <const cPtr_gtlFloat *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1963)).ptr ())) {
                                   temp_14 = (cPtr_gtlFloat *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1963)).ptr () ;
                                 }else{
                                   inCompiler->castError ("gtlFloat", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1963)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1963)) ;
@@ -3692,7 +3692,7 @@ static void extensionSetter_gtlFloat_performSetter (cPtr_gtlData * inObject,
       }
       GALGAS_gtlString temp_1 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2016)).isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2016)).ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2016)).ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2016)).ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2016)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2016)) ;
@@ -3726,7 +3726,7 @@ static void extensionSetter_gtlFloat_performSetter (cPtr_gtlData * inObject,
           callExtensionMethod_callSetter ((cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("float"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2024)).ptr (), constinArgument_methodName.readProperty_location (), constinArgument_context, constinArgument_lib, var_copy_62896, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2024)) ;
           GALGAS_gtlFloat temp_5 ;
           if (var_copy_62896.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlFloat *> (var_copy_62896.ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlFloat *> (var_copy_62896.ptr ())) {
               temp_5 = (cPtr_gtlFloat *) var_copy_62896.ptr () ;
             }else{
               inCompiler->castError ("gtlFloat", var_copy_62896.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2031)) ;
@@ -3753,7 +3753,7 @@ static void defineExtensionSetter_gtlFloat_performSetter (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlFloat_performSetter (defineExtensionSetter_gtlFloat_performSetter, NULL) ;
+C_PrologueEpilogue gSetter_gtlFloat_performSetter (defineExtensionSetter_gtlFloat_performSetter, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -3915,7 +3915,7 @@ GALGAS_gtlData cPtr_gtlString::getter_addOp (const GALGAS_gtlData constinArgumen
     if (kBoolTrue == test_0) {
       GALGAS_gtlString temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2085)) ;
@@ -4112,7 +4112,7 @@ GALGAS_gtlData cPtr_gtlString::getter_neqOp (const GALGAS_gtlData constinArgumen
     if (kBoolTrue == test_0) {
       GALGAS_gtlString temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2133)) ;
@@ -4147,7 +4147,7 @@ GALGAS_gtlData cPtr_gtlString::getter_eqOp (const GALGAS_gtlData constinArgument
     if (kBoolTrue == test_0) {
       GALGAS_gtlString temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2145)) ;
@@ -4182,7 +4182,7 @@ GALGAS_gtlData cPtr_gtlString::getter_gtOp (const GALGAS_gtlData constinArgument
     if (kBoolTrue == test_0) {
       GALGAS_gtlString temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2157)) ;
@@ -4217,7 +4217,7 @@ GALGAS_gtlData cPtr_gtlString::getter_geOp (const GALGAS_gtlData constinArgument
     if (kBoolTrue == test_0) {
       GALGAS_gtlString temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2169)) ;
@@ -4252,7 +4252,7 @@ GALGAS_gtlData cPtr_gtlString::getter_ltOp (const GALGAS_gtlData constinArgument
     if (kBoolTrue == test_0) {
       GALGAS_gtlString temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2181)) ;
@@ -4287,7 +4287,7 @@ GALGAS_gtlData cPtr_gtlString::getter_leOp (const GALGAS_gtlData constinArgument
     if (kBoolTrue == test_0) {
       GALGAS_gtlString temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2193)) ;
@@ -4365,7 +4365,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
         }
         GALGAS_gtlInt temp_2 ;
         if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2227)).isValid ()) {
-          if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2227)).ptr ())) {
+          if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2227)).ptr ())) {
             temp_2 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2227)).ptr () ;
           }else{
             inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2227)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2227)) ;
@@ -4385,7 +4385,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
           }
           GALGAS_gtlChar temp_4 ;
           if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2233)).isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2233)).ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2233)).ptr ())) {
               temp_4 = (cPtr_gtlChar *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2233)).ptr () ;
             }else{
               inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2233)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2233)) ;
@@ -4446,7 +4446,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
             }
             GALGAS_gtlChar temp_10 ;
             if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2252)).isValid ()) {
-              if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2252)).ptr ())) {
+              if (nullptr != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2252)).ptr ())) {
                 temp_10 = (cPtr_gtlChar *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2252)).ptr () ;
               }else{
                 inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2252)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2252)) ;
@@ -4455,7 +4455,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
             GALGAS_char var_minChar_69401 = temp_10.readProperty_value () ;
             GALGAS_gtlChar temp_11 ;
             if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2253)).isValid ()) {
-              if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2253)).ptr ())) {
+              if (nullptr != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2253)).ptr ())) {
                 temp_11 = (cPtr_gtlChar *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2253)).ptr () ;
               }else{
                 inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2253)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2253)) ;
@@ -4521,7 +4521,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
               }
               GALGAS_gtlChar temp_18 ;
               if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2273)).isValid ()) {
-                if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2273)).ptr ())) {
+                if (nullptr != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2273)).ptr ())) {
                   temp_18 = (cPtr_gtlChar *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2273)).ptr () ;
                 }else{
                   inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2273)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2273)) ;
@@ -4541,7 +4541,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                 }
                 GALGAS_gtlChar temp_20 ;
                 if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2281)).isValid ()) {
-                  if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2281)).ptr ())) {
+                  if (nullptr != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2281)).ptr ())) {
                     temp_20 = (cPtr_gtlChar *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2281)).ptr () ;
                   }else{
                     inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2281)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2281)) ;
@@ -4550,7 +4550,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                 GALGAS_char var_minChar_70449 = temp_20.readProperty_value () ;
                 GALGAS_gtlChar temp_21 ;
                 if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2282)).isValid ()) {
-                  if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2282)).ptr ())) {
+                  if (nullptr != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2282)).ptr ())) {
                     temp_21 = (cPtr_gtlChar *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2282)).ptr () ;
                   }else{
                     inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2282)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2282)) ;
@@ -4662,7 +4662,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                                   }
                                   GALGAS_gtlString temp_32 ;
                                   if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2331)).isValid ()) {
-                                    if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2331)).ptr ())) {
+                                    if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2331)).ptr ())) {
                                       temp_32 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2331)).ptr () ;
                                     }else{
                                       inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2331)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2331)) ;
@@ -4715,7 +4715,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                                     }
                                     GALGAS_gtlInt temp_36 ;
                                     if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2348)).isValid ()) {
-                                      if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2348)).ptr ())) {
+                                      if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2348)).ptr ())) {
                                         temp_36 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2348)).ptr () ;
                                       }else{
                                         inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2348)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2348)) ;
@@ -4735,7 +4735,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                                       }
                                       GALGAS_gtlInt temp_38 ;
                                       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2354)).isValid ()) {
-                                        if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2354)).ptr ())) {
+                                        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2354)).ptr ())) {
                                           temp_38 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2354)).ptr () ;
                                         }else{
                                           inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2354)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2354)) ;
@@ -4755,7 +4755,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                                         }
                                         GALGAS_gtlInt temp_40 ;
                                         if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2360)).isValid ()) {
-                                          if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2360)).ptr ())) {
+                                          if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2360)).ptr ())) {
                                             temp_40 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2360)).ptr () ;
                                           }else{
                                             inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2360)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2360)) ;
@@ -4764,7 +4764,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                                         GALGAS_uint var_start_73892 = temp_40.readProperty_value ().getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2360)) ;
                                         GALGAS_gtlInt temp_41 ;
                                         if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2361)).isValid ()) {
-                                          if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2361)).ptr ())) {
+                                          if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2361)).ptr ())) {
                                             temp_41 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2361)).ptr () ;
                                           }else{
                                             inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2361)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2361)) ;
@@ -4795,7 +4795,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                                             }
                                             GALGAS_gtlString temp_44 ;
                                             if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2372)).isValid ()) {
-                                              if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2372)).ptr ())) {
+                                              if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2372)).ptr ())) {
                                                 temp_44 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2372)).ptr () ;
                                               }else{
                                                 inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2372)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2372)) ;
@@ -4833,7 +4833,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                                                 }
                                                 GALGAS_gtlString temp_49 ;
                                                 if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2388)).isValid ()) {
-                                                  if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2388)).ptr ())) {
+                                                  if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2388)).ptr ())) {
                                                     temp_49 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2388)).ptr () ;
                                                   }else{
                                                     inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2388)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2388)) ;
@@ -4853,7 +4853,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                                                   }
                                                   GALGAS_gtlInt temp_51 ;
                                                   if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2396)).isValid ()) {
-                                                    if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2396)).ptr ())) {
+                                                    if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2396)).ptr ())) {
                                                       temp_51 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2396)).ptr () ;
                                                     }else{
                                                       inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2396)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2396)) ;
@@ -4862,7 +4862,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                                                   GALGAS_uint var_width_75496 = temp_51.readProperty_value ().getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2396)) ;
                                                   GALGAS_gtlInt temp_52 ;
                                                   if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2397)).isValid ()) {
-                                                    if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2397)).ptr ())) {
+                                                    if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2397)).ptr ())) {
                                                       temp_52 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2397)).ptr () ;
                                                     }else{
                                                       inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2397)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2397)) ;
@@ -4913,7 +4913,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                                                     }
                                                     GALGAS_gtlString temp_56 ;
                                                     if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2424)).isValid ()) {
-                                                      if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2424)).ptr ())) {
+                                                      if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2424)).ptr ())) {
                                                         temp_56 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2424)).ptr () ;
                                                       }else{
                                                         inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2424)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2424)) ;
@@ -4922,7 +4922,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                                                     GALGAS_string var_find_76621 = temp_56.readProperty_value () ;
                                                     GALGAS_gtlString temp_57 ;
                                                     if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2425)).isValid ()) {
-                                                      if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2425)).ptr ())) {
+                                                      if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2425)).ptr ())) {
                                                         temp_57 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2425)).ptr () ;
                                                       }else{
                                                         inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2425)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2425)) ;
@@ -4942,7 +4942,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                                                       }
                                                       GALGAS_gtlString temp_59 ;
                                                       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2433)).isValid ()) {
-                                                        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2433)).ptr ())) {
+                                                        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2433)).ptr ())) {
                                                           temp_59 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2433)).ptr () ;
                                                         }else{
                                                           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2433)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2433)) ;
@@ -5088,7 +5088,7 @@ GALGAS_gtlData cPtr_gtlString::getter_performGetter (const GALGAS_lstring consti
                                                                         GALGAS_stringlist var_extensions_79464 = GALGAS_stringlist::constructor_emptyList (SOURCE_FILE ("gtl_data_types.galgas", 2504)) ;
                                                                         GALGAS_gtlSet temp_72 ;
                                                                         if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2505)).isValid ()) {
-                                                                          if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2505)).ptr ())) {
+                                                                          if (nullptr != dynamic_cast <const cPtr_gtlSet *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2505)).ptr ())) {
                                                                             temp_72 = (cPtr_gtlSet *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2505)).ptr () ;
                                                                           }else{
                                                                             inCompiler->castError ("gtlSet", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2505)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2505)) ;
@@ -5198,7 +5198,7 @@ static void extensionSetter_gtlString_performSetter (cPtr_gtlData * inObject,
       }
       GALGAS_gtlString temp_1 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2554)).isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2554)).ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2554)).ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2554)).ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2554)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2554)) ;
@@ -5232,7 +5232,7 @@ static void extensionSetter_gtlString_performSetter (cPtr_gtlData * inObject,
           }
           GALGAS_gtlChar temp_4 ;
           if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2562)).isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2562)).ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2562)).ptr ())) {
               temp_4 = (cPtr_gtlChar *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2562)).ptr () ;
             }else{
               inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2562)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2562)) ;
@@ -5241,7 +5241,7 @@ static void extensionSetter_gtlString_performSetter (cPtr_gtlData * inObject,
           GALGAS_char var_charToSet_81648 = temp_4.readProperty_value () ;
           GALGAS_gtlInt temp_5 ;
           if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2563)).isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2563)).ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2563)).ptr ())) {
               temp_5 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2563)).ptr () ;
             }else{
               inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2563)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2563)) ;
@@ -5264,7 +5264,7 @@ static void extensionSetter_gtlString_performSetter (cPtr_gtlData * inObject,
             }
             GALGAS_gtlChar temp_7 ;
             if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2568)).isValid ()) {
-              if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2568)).ptr ())) {
+              if (nullptr != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2568)).ptr ())) {
                 temp_7 = (cPtr_gtlChar *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2568)).ptr () ;
               }else{
                 inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2568)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2568)) ;
@@ -5273,7 +5273,7 @@ static void extensionSetter_gtlString_performSetter (cPtr_gtlData * inObject,
             GALGAS_char var_charToInsert_81981 = temp_7.readProperty_value () ;
             GALGAS_gtlInt temp_8 ;
             if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2569)).isValid ()) {
-              if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2569)).ptr ())) {
+              if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2569)).ptr ())) {
                 temp_8 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2569)).ptr () ;
               }else{
                 inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2569)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2569)) ;
@@ -5296,7 +5296,7 @@ static void extensionSetter_gtlString_performSetter (cPtr_gtlData * inObject,
               }
               GALGAS_gtlInt temp_10 ;
               if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2574)).isValid ()) {
-                if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2574)).ptr ())) {
+                if (nullptr != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2574)).ptr ())) {
                   temp_10 = (cPtr_gtlInt *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2574)).ptr () ;
                 }else{
                   inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2574)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2574)) ;
@@ -5320,7 +5320,7 @@ static void extensionSetter_gtlString_performSetter (cPtr_gtlData * inObject,
                 callExtensionMethod_callSetter ((cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("string"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2579)).ptr (), constinArgument_methodName.readProperty_location (), constinArgument_context, constinArgument_lib, var_copy_82516, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2579)) ;
                 GALGAS_gtlString temp_13 ;
                 if (var_copy_82516.isValid ()) {
-                  if (NULL != dynamic_cast <const cPtr_gtlString *> (var_copy_82516.ptr ())) {
+                  if (nullptr != dynamic_cast <const cPtr_gtlString *> (var_copy_82516.ptr ())) {
                     temp_13 = (cPtr_gtlString *) var_copy_82516.ptr () ;
                   }else{
                     inCompiler->castError ("gtlString", var_copy_82516.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2586)) ;
@@ -5350,7 +5350,7 @@ static void defineExtensionSetter_gtlString_performSetter (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlString_performSetter (defineExtensionSetter_gtlString_performSetter, NULL) ;
+C_PrologueEpilogue gSetter_gtlString_performSetter (defineExtensionSetter_gtlString_performSetter, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -5612,7 +5612,7 @@ GALGAS_gtlData cPtr_gtlBool::getter_andOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlBool temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlBool *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlBool", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2662)) ;
@@ -5647,7 +5647,7 @@ GALGAS_gtlData cPtr_gtlBool::getter_orOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlBool temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlBool *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlBool", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2674)) ;
@@ -5682,7 +5682,7 @@ GALGAS_gtlData cPtr_gtlBool::getter_xorOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlBool temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlBool *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlBool", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2686)) ;
@@ -5753,7 +5753,7 @@ GALGAS_gtlData cPtr_gtlBool::getter_neqOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlBool temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlBool *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlBool", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2706)) ;
@@ -5788,7 +5788,7 @@ GALGAS_gtlData cPtr_gtlBool::getter_eqOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlBool temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlBool *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlBool", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2718)) ;
@@ -5823,7 +5823,7 @@ GALGAS_gtlData cPtr_gtlBool::getter_gtOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlBool temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlBool *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlBool", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2730)) ;
@@ -5858,7 +5858,7 @@ GALGAS_gtlData cPtr_gtlBool::getter_geOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlBool temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlBool *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlBool", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2742)) ;
@@ -5893,7 +5893,7 @@ GALGAS_gtlData cPtr_gtlBool::getter_ltOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlBool temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlBool *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlBool", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2754)) ;
@@ -5928,7 +5928,7 @@ GALGAS_gtlData cPtr_gtlBool::getter_leOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlBool temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlBool *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlBool *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlBool", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2766)) ;
@@ -6189,7 +6189,7 @@ static void extensionSetter_gtlBool_performSetter (cPtr_gtlData * inObject,
       }
       GALGAS_gtlString temp_1 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2880)).isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2880)).ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2880)).ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2880)).ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2880)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2880)) ;
@@ -6223,7 +6223,7 @@ static void extensionSetter_gtlBool_performSetter (cPtr_gtlData * inObject,
           callExtensionMethod_callSetter ((cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("bool"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2888)).ptr (), constinArgument_methodName.readProperty_location (), constinArgument_context, constinArgument_lib, var_copy_91245, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2888)) ;
           GALGAS_gtlBool temp_5 ;
           if (var_copy_91245.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlBool *> (var_copy_91245.ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlBool *> (var_copy_91245.ptr ())) {
               temp_5 = (cPtr_gtlBool *) var_copy_91245.ptr () ;
             }else{
               inCompiler->castError ("gtlBool", var_copy_91245.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2895)) ;
@@ -6250,7 +6250,7 @@ static void defineExtensionSetter_gtlBool_performSetter (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlBool_performSetter (defineExtensionSetter_gtlBool_performSetter, NULL) ;
+C_PrologueEpilogue gSetter_gtlBool_performSetter (defineExtensionSetter_gtlBool_performSetter, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -6465,7 +6465,7 @@ GALGAS_gtlData cPtr_gtlSet::getter_subOp (const GALGAS_gtlData constinArgument_r
       GALGAS_lstringset var_resultSet_93942 = this->mProperty_value ;
       GALGAS_gtlSet temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlSet *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2983)) ;
@@ -6568,7 +6568,7 @@ GALGAS_gtlData cPtr_gtlSet::getter_andOp (const GALGAS_gtlData constinArgument_r
       GALGAS_lstringset var_resultSet_94709 = GALGAS_lstringset::constructor_emptyMap (SOURCE_FILE ("gtl_data_types.galgas", 3010)) ;
       GALGAS_gtlSet temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlSet *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3011)) ;
@@ -6616,7 +6616,7 @@ GALGAS_gtlData cPtr_gtlSet::getter_orOp (const GALGAS_gtlData constinArgument_ri
     if (kBoolTrue == test_0) {
       GALGAS_gtlSet temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlSet *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3026)) ;
@@ -6719,7 +6719,7 @@ GALGAS_gtlData cPtr_gtlSet::getter_neqOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlSet temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlSet *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3055)) ;
@@ -6754,7 +6754,7 @@ GALGAS_gtlData cPtr_gtlSet::getter_eqOp (const GALGAS_gtlData constinArgument_ri
     if (kBoolTrue == test_0) {
       GALGAS_gtlSet temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlSet *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3065)) ;
@@ -6791,7 +6791,7 @@ GALGAS_gtlData cPtr_gtlSet::getter_gtOp (const GALGAS_gtlData constinArgument_ri
       if (kBoolTrue == test_1) {
         GALGAS_gtlSet temp_2 ;
         if (constinArgument_right.isValid ()) {
-          if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
+          if (nullptr != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
             temp_2 = (cPtr_gtlSet *) constinArgument_right.ptr () ;
           }else{
             inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3074)) ;
@@ -6806,7 +6806,7 @@ GALGAS_gtlData cPtr_gtlSet::getter_gtOp (const GALGAS_gtlData constinArgument_ri
         GALGAS_bool var_included_96524 = GALGAS_bool (true) ;
         GALGAS_gtlSet temp_3 ;
         if (constinArgument_right.isValid ()) {
-          if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
+          if (nullptr != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
             temp_3 = (cPtr_gtlSet *) constinArgument_right.ptr () ;
           }else{
             inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3078)) ;
@@ -6860,7 +6860,7 @@ GALGAS_gtlData cPtr_gtlSet::getter_geOp (const GALGAS_gtlData constinArgument_ri
       GALGAS_bool var_included_96914 = GALGAS_bool (true) ;
       GALGAS_gtlSet temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlSet *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3091)) ;
@@ -6914,7 +6914,7 @@ GALGAS_gtlData cPtr_gtlSet::getter_ltOp (const GALGAS_gtlData constinArgument_ri
       if (kBoolTrue == test_1) {
         GALGAS_gtlSet temp_2 ;
         if (constinArgument_right.isValid ()) {
-          if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
+          if (nullptr != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
             temp_2 = (cPtr_gtlSet *) constinArgument_right.ptr () ;
           }else{
             inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3102)) ;
@@ -6935,7 +6935,7 @@ GALGAS_gtlData cPtr_gtlSet::getter_ltOp (const GALGAS_gtlData constinArgument_ri
             if (kBoolTrue == test_4) {
               GALGAS_gtlSet temp_5 ;
               if (constinArgument_right.isValid ()) {
-                if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
+                if (nullptr != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
                   temp_5 = (cPtr_gtlSet *) constinArgument_right.ptr () ;
                 }else{
                   inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3107)) ;
@@ -6989,7 +6989,7 @@ GALGAS_gtlData cPtr_gtlSet::getter_leOp (const GALGAS_gtlData constinArgument_ri
           if (kBoolTrue == test_2) {
             GALGAS_gtlSet temp_3 ;
             if (constinArgument_right.isValid ()) {
-              if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
+              if (nullptr != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
                 temp_3 = (cPtr_gtlSet *) constinArgument_right.ptr () ;
               }else{
                 inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3120)) ;
@@ -7198,7 +7198,7 @@ static void extensionSetter_gtlSet_performSetter (cPtr_gtlData * inObject,
       }
       GALGAS_gtlString temp_1 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3216)).isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3216)).ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3216)).ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3216)).ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3216)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3216)) ;
@@ -7277,7 +7277,7 @@ static void extensionSetter_gtlSet_performSetter (cPtr_gtlData * inObject,
               callExtensionMethod_callSetter ((cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("set"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3239)).ptr (), constinArgument_methodName.readProperty_location (), constinArgument_context, constinArgument_lib, var_copy_101900, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3239)) ;
               GALGAS_gtlSet temp_9 ;
               if (var_copy_101900.isValid ()) {
-                if (NULL != dynamic_cast <const cPtr_gtlSet *> (var_copy_101900.ptr ())) {
+                if (nullptr != dynamic_cast <const cPtr_gtlSet *> (var_copy_101900.ptr ())) {
                   temp_9 = (cPtr_gtlSet *) var_copy_101900.ptr () ;
                 }else{
                   inCompiler->castError ("gtlSet", var_copy_101900.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3246)) ;
@@ -7306,7 +7306,7 @@ static void defineExtensionSetter_gtlSet_performSetter (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlSet_performSetter (defineExtensionSetter_gtlSet_performSetter, NULL) ;
+C_PrologueEpilogue gSetter_gtlSet_performSetter (defineExtensionSetter_gtlSet_performSetter, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -7662,7 +7662,7 @@ GALGAS_gtlData cPtr_gtlStruct::getter_neqOp (const GALGAS_gtlData constinArgumen
     if (kBoolTrue == test_0) {
       GALGAS_gtlStruct temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlStruct *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlStruct *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlStruct *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlStruct", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3347)) ;
@@ -7725,7 +7725,7 @@ GALGAS_gtlData cPtr_gtlStruct::getter_eqOp (const GALGAS_gtlData constinArgument
     if (kBoolTrue == test_0) {
       GALGAS_gtlStruct temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlStruct *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlStruct *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlStruct *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlStruct", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3370)) ;
@@ -7988,7 +7988,7 @@ static void extensionSetter_gtlStruct_performSetter (cPtr_gtlData * inObject,
       }
       GALGAS_gtlString temp_1 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3476)).isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3476)).ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3476)).ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3476)).ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3476)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3476)) ;
@@ -8022,7 +8022,7 @@ static void extensionSetter_gtlStruct_performSetter (cPtr_gtlData * inObject,
           callExtensionMethod_callSetter ((cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("struct"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3484)).ptr (), constinArgument_methodName.readProperty_location (), constinArgument_context, constinArgument_lib, var_copy_109454, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3484)) ;
           GALGAS_gtlStruct temp_5 ;
           if (var_copy_109454.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlStruct *> (var_copy_109454.ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlStruct *> (var_copy_109454.ptr ())) {
               temp_5 = (cPtr_gtlStruct *) var_copy_109454.ptr () ;
             }else{
               inCompiler->castError ("gtlStruct", var_copy_109454.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3491)) ;
@@ -8049,7 +8049,7 @@ static void defineExtensionSetter_gtlStruct_performSetter (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlStruct_performSetter (defineExtensionSetter_gtlStruct_performSetter, NULL) ;
+C_PrologueEpilogue gSetter_gtlStruct_performSetter (defineExtensionSetter_gtlStruct_performSetter, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -8142,7 +8142,7 @@ static void defineExtensionSetter_gtlStruct_setStructField (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlStruct_setStructField (defineExtensionSetter_gtlStruct_setStructField, NULL) ;
+C_PrologueEpilogue gSetter_gtlStruct_setStructField (defineExtensionSetter_gtlStruct_setStructField, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -8171,7 +8171,7 @@ static void defineExtensionSetter_gtlStruct_setStructFieldAtLevel (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlStruct_setStructFieldAtLevel (defineExtensionSetter_gtlStruct_setStructFieldAtLevel, NULL) ;
+C_PrologueEpilogue gSetter_gtlStruct_setStructFieldAtLevel (defineExtensionSetter_gtlStruct_setStructFieldAtLevel, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -8199,7 +8199,7 @@ static void defineExtensionSetter_gtlStruct_deleteStructField (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlStruct_deleteStructField (defineExtensionSetter_gtlStruct_deleteStructField, NULL) ;
+C_PrologueEpilogue gSetter_gtlStruct_deleteStructField (defineExtensionSetter_gtlStruct_deleteStructField, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -8485,7 +8485,7 @@ GALGAS_gtlData cPtr_gtlList::getter_orOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlList temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlList *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlList *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlList *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlList", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3649)) ;
@@ -8574,7 +8574,7 @@ GALGAS_gtlData cPtr_gtlList::getter_neqOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlList temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlList *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlList *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlList *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlList", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3670)) ;
@@ -8628,7 +8628,7 @@ GALGAS_gtlData cPtr_gtlList::getter_eqOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlList temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlList *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlList *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlList *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlList", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3688)) ;
@@ -9125,7 +9125,7 @@ GALGAS_gtlData cPtr_gtlList::getter_performGetter (const GALGAS_lstring constinA
                                           if (kBoolFalse == test_36) {
                                             GALGAS_gtlStruct temp_38 ;
                                             if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3911)).isValid ()) {
-                                              if (NULL != dynamic_cast <const cPtr_gtlStruct *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3911)).ptr ())) {
+                                              if (nullptr != dynamic_cast <const cPtr_gtlStruct *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3911)).ptr ())) {
                                                 temp_38 = (cPtr_gtlStruct *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3911)).ptr () ;
                                               }else{
                                                 inCompiler->castError ("gtlStruct", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3911)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3911)) ;
@@ -9140,7 +9140,7 @@ GALGAS_gtlData cPtr_gtlList::getter_performGetter (const GALGAS_lstring constinA
                                       }
                                       GALGAS_gtlExpr temp_39 ;
                                       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3916)).isValid ()) {
-                                        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3916)).ptr ())) {
+                                        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3916)).ptr ())) {
                                           temp_39 = (cPtr_gtlExpr *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3916)).ptr () ;
                                         }else{
                                           inCompiler->castError ("gtlExpr", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3916)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3916)) ;
@@ -9240,7 +9240,7 @@ static void extensionSetter_gtlList_performSetter (cPtr_gtlData * inObject,
       }
       GALGAS_gtlString temp_1 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3963)).isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3963)).ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3963)).ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3963)).ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3963)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3963)) ;
@@ -9299,7 +9299,7 @@ static void extensionSetter_gtlList_performSetter (cPtr_gtlData * inObject,
             callExtensionMethod_callSetter ((cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("list"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3981)).ptr (), constinArgument_methodName.readProperty_location (), constinArgument_context, constinArgument_lib, var_copy_125166, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3981)) ;
             GALGAS_gtlList temp_7 ;
             if (var_copy_125166.isValid ()) {
-              if (NULL != dynamic_cast <const cPtr_gtlList *> (var_copy_125166.ptr ())) {
+              if (nullptr != dynamic_cast <const cPtr_gtlList *> (var_copy_125166.ptr ())) {
                 temp_7 = (cPtr_gtlList *) var_copy_125166.ptr () ;
               }else{
                 inCompiler->castError ("gtlList", var_copy_125166.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3988)) ;
@@ -9327,7 +9327,7 @@ static void defineExtensionSetter_gtlList_performSetter (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlList_performSetter (defineExtensionSetter_gtlList_performSetter, NULL) ;
+C_PrologueEpilogue gSetter_gtlList_performSetter (defineExtensionSetter_gtlList_performSetter, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -9355,7 +9355,7 @@ static void defineExtensionSetter_gtlList_setItemAtIndex (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlList_setItemAtIndex (defineExtensionSetter_gtlList_setItemAtIndex, NULL) ;
+C_PrologueEpilogue gSetter_gtlList_setItemAtIndex (defineExtensionSetter_gtlList_setItemAtIndex, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -9405,7 +9405,7 @@ static void defineExtensionSetter_gtlList_deleteItemAtIndex (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlList_deleteItemAtIndex (defineExtensionSetter_gtlList_deleteItemAtIndex, NULL) ;
+C_PrologueEpilogue gSetter_gtlList_deleteItemAtIndex (defineExtensionSetter_gtlList_deleteItemAtIndex, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -9458,7 +9458,7 @@ static void defineExtensionSetter_gtlList_appendItem (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlList_appendItem (defineExtensionSetter_gtlList_appendItem, NULL) ;
+C_PrologueEpilogue gSetter_gtlList_appendItem (defineExtensionSetter_gtlList_appendItem, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -9814,7 +9814,7 @@ GALGAS_gtlData cPtr_gtlMap::getter_neqOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlMap temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlMap *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlMap *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlMap *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlMap", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4132)) ;
@@ -9877,7 +9877,7 @@ GALGAS_gtlData cPtr_gtlMap::getter_eqOp (const GALGAS_gtlData constinArgument_ri
     if (kBoolTrue == test_0) {
       GALGAS_gtlMap temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlMap *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlMap *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlMap *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlMap", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4155)) ;
@@ -10130,7 +10130,7 @@ GALGAS_gtlData cPtr_gtlMap::getter_performGetter (const GALGAS_lstring constinAr
                       if (kBoolFalse == test_12) {
                         GALGAS_gtlStruct temp_14 ;
                         if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4249)).isValid ()) {
-                          if (NULL != dynamic_cast <const cPtr_gtlStruct *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4249)).ptr ())) {
+                          if (nullptr != dynamic_cast <const cPtr_gtlStruct *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4249)).ptr ())) {
                             temp_14 = (cPtr_gtlStruct *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4249)).ptr () ;
                           }else{
                             inCompiler->castError ("gtlStruct", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (1U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4249)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4249)) ;
@@ -10145,7 +10145,7 @@ GALGAS_gtlData cPtr_gtlMap::getter_performGetter (const GALGAS_lstring constinAr
                   }
                   GALGAS_gtlExpr temp_15 ;
                   if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4254)).isValid ()) {
-                    if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4254)).ptr ())) {
+                    if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4254)).ptr ())) {
                       temp_15 = (cPtr_gtlExpr *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4254)).ptr () ;
                     }else{
                       inCompiler->castError ("gtlExpr", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4254)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4254)) ;
@@ -10249,7 +10249,7 @@ static void extensionSetter_gtlMap_performSetter (cPtr_gtlData * inObject,
       }
       GALGAS_gtlString temp_1 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4306)).isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4306)).ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4306)).ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4306)).ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4306)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4306)) ;
@@ -10283,7 +10283,7 @@ static void extensionSetter_gtlMap_performSetter (cPtr_gtlData * inObject,
           callExtensionMethod_callSetter ((cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("map"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4314)).ptr (), constinArgument_methodName.readProperty_location (), constinArgument_context, constinArgument_lib, var_copy_135212, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4314)) ;
           GALGAS_gtlMap temp_5 ;
           if (var_copy_135212.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlMap *> (var_copy_135212.ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlMap *> (var_copy_135212.ptr ())) {
               temp_5 = (cPtr_gtlMap *) var_copy_135212.ptr () ;
             }else{
               inCompiler->castError ("gtlMap", var_copy_135212.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4321)) ;
@@ -10310,7 +10310,7 @@ static void defineExtensionSetter_gtlMap_performSetter (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlMap_performSetter (defineExtensionSetter_gtlMap_performSetter, NULL) ;
+C_PrologueEpilogue gSetter_gtlMap_performSetter (defineExtensionSetter_gtlMap_performSetter, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -10338,7 +10338,7 @@ static void defineExtensionSetter_gtlMap_setMapItem (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlMap_setMapItem (defineExtensionSetter_gtlMap_setMapItem, NULL) ;
+C_PrologueEpilogue gSetter_gtlMap_setMapItem (defineExtensionSetter_gtlMap_setMapItem, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -10366,7 +10366,7 @@ static void defineExtensionSetter_gtlMap_deleteMapItem (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlMap_deleteMapItem (defineExtensionSetter_gtlMap_deleteMapItem, NULL) ;
+C_PrologueEpilogue gSetter_gtlMap_deleteMapItem (defineExtensionSetter_gtlMap_deleteMapItem, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -10568,7 +10568,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_addOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4421)) ;
@@ -10603,7 +10603,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_subOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4433)) ;
@@ -10638,7 +10638,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_mulOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4445)) ;
@@ -10673,7 +10673,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_divOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4457)) ;
@@ -10708,7 +10708,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_modOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4469)) ;
@@ -10743,7 +10743,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_andOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4481)) ;
@@ -10778,7 +10778,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_orOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4493)) ;
@@ -10813,7 +10813,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_xorOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4505)) ;
@@ -10848,7 +10848,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_slOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4517)) ;
@@ -10883,7 +10883,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_srOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4529)) ;
@@ -10918,7 +10918,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_neqOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4541)) ;
@@ -10953,7 +10953,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_eqOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4553)) ;
@@ -10988,7 +10988,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_gtOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4565)) ;
@@ -11023,7 +11023,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_geOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4577)) ;
@@ -11058,7 +11058,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_ltOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4589)) ;
@@ -11093,7 +11093,7 @@ GALGAS_gtlData cPtr_gtlExpr::getter_leOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlExpr temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlExpr *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlExpr", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4601)) ;
@@ -11257,7 +11257,7 @@ static void extensionSetter_gtlExpr_performSetter (cPtr_gtlData * inObject,
       }
       GALGAS_gtlString temp_1 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4677)).isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4677)).ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4677)).ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4677)).ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4677)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4677)) ;
@@ -11291,7 +11291,7 @@ static void extensionSetter_gtlExpr_performSetter (cPtr_gtlData * inObject,
           callExtensionMethod_callSetter ((cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("expression"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4685)).ptr (), constinArgument_methodName.readProperty_location (), constinArgument_context, constinArgument_lib, var_copy_145530, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4685)) ;
           GALGAS_gtlExpr temp_5 ;
           if (var_copy_145530.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlExpr *> (var_copy_145530.ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlExpr *> (var_copy_145530.ptr ())) {
               temp_5 = (cPtr_gtlExpr *) var_copy_145530.ptr () ;
             }else{
               inCompiler->castError ("gtlExpr", var_copy_145530.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 4692)) ;
@@ -11318,7 +11318,7 @@ static void defineExtensionSetter_gtlExpr_performSetter (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlExpr_performSetter (defineExtensionSetter_gtlExpr_performSetter, NULL) ;
+C_PrologueEpilogue gSetter_gtlExpr_performSetter (defineExtensionSetter_gtlExpr_performSetter, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -11614,7 +11614,7 @@ void cPtr_gtlTemplateInstruction::method_execute (GALGAS_gtlContext & ioArgument
   }
   GALGAS_gtlString temp_1 ;
   if (callExtensionGetter_eval ((const cPtr_gtlExpression *) this->mProperty_fileName.ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 486)).isValid ()) {
-    if (NULL != dynamic_cast <const cPtr_gtlString *> (callExtensionGetter_eval ((const cPtr_gtlExpression *) this->mProperty_fileName.ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 486)).ptr ())) {
+    if (nullptr != dynamic_cast <const cPtr_gtlString *> (callExtensionGetter_eval ((const cPtr_gtlExpression *) this->mProperty_fileName.ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 486)).ptr ())) {
       temp_1 = (cPtr_gtlString *) callExtensionGetter_eval ((const cPtr_gtlExpression *) this->mProperty_fileName.ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 486)).ptr () ;
     }else{
       inCompiler->castError ("gtlString", callExtensionGetter_eval ((const cPtr_gtlExpression *) this->mProperty_fileName.ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 486)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_instructions.galgas", 486)) ;

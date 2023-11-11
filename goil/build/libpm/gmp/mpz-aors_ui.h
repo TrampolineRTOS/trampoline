@@ -30,6 +30,9 @@ You should have received copies of the GNU General Public License and the
 GNU Lesser General Public License along with the GNU MP Library.  If not,
 see https://www.gnu.org/licenses/.  */
 
+// pragma once added by PM (nov 7 2023)
+#pragma once
+
 #include "gmp.h"
 #include "gmp-impl.h"
 

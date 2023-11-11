@@ -26,12 +26,12 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#include <time.h>
+#include <chrono>
 
 //----------------------------------------------------------------------------------------------------------------------
 
 class C_DateTime {
-  private: struct tm mDate ;
+  private: std::chrono::time_point<std::chrono::system_clock> mDate ;
 
 //--- Constructors et destructor
   public: C_DateTime (void) ; // Current date
@@ -39,13 +39,13 @@ class C_DateTime {
   public: virtual ~C_DateTime (void) ;
 
 //--- Get date components
-  public: int32_t getYearCount (void) const { return 1900 + mDate.tm_year ; } // (1900, ...)
-  public: int32_t getMonthCount (void) const { return 1 + mDate.tm_mon ; } // (1, 12)
-  public: int32_t getDayOfMonth (void) const { return mDate.tm_mday ; } // (1, 31)
-  public: int32_t getHourOfDay (void) const { return mDate.tm_hour ; } // (0, 23)
-  public: int32_t getMinuteOfHour (void) const { return mDate.tm_min ; } // (0, 59)
-  public: int32_t getSecondOfMinute (void) const { return mDate.tm_sec ; } // (0, 59)
-  public: int32_t getDayOfWeek (void) const { return mDate.tm_wday ; } // 0 = dimanche
+  public: int32_t getYearCount (void) const ; // (1900, ...)
+  public: int32_t getMonthCount (void) const ; // (1, 12)
+  public: int32_t getDayOfMonth (void) const ; // (1, 31)
+  public: int32_t getHourOfDay (void) const ; // (0, 23)
+  public: int32_t getMinuteOfHour (void) const ; // (0, 59)
+  public: int32_t getSecondOfMinute (void) const ; // (0, 59)
+  public: int32_t getDayOfWeek (void) const ; // 0 = dimanche
   public: const char * getDayName (void) const ;
   public: const char * getMonthName (void) const ;
 

@@ -18,7 +18,7 @@ class C_RelationSingleType {
   public: class cType ;
 
 //--- Default constructor
-  public: inline C_RelationSingleType (void) : mTypePtr (NULL) {}
+  public: inline C_RelationSingleType (void) : mTypePtr (nullptr) {}
 
 //--- Constructor with an enumerated type
   public: C_RelationSingleType (const C_String & inTypeName,

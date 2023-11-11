@@ -54,7 +54,7 @@ extern C_StringCommandLineOption gOption_generic_5F_cli_5F_options_emit_5F_issue
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#if COMPILE_FOR_WINDOWS == 1
+  #if COMPILE_FOR_WINDOWS == 1
   extern C_BoolCommandLineOption gOption_generic_5F_cli_5F_options_nodialog ;
 #endif
 

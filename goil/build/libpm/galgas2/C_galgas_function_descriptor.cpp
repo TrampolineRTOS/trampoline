@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  GALGAS introspection classes                                                                 
+//  GALGAS introspection classes
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2009, ..., 2010 Pierre Molinaro.
 //
@@ -22,11 +22,11 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  GALGAS function descriptor (for function introspection)                                      
+//  GALGAS function descriptor (for function introspection)
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-static C_galgas_function_descriptor * gGalgasFunctionListRoot = NULL ;
+static C_galgas_function_descriptor * gGalgasFunctionListRoot = nullptr ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -49,6 +49,6 @@ mFormalParameterTypeList (inParameterTypeList) {
 
 C_galgas_function_descriptor * C_galgas_function_descriptor::functionListRoot (void) {
   return gGalgasFunctionListRoot ;
-} 
+}
 
 //----------------------------------------------------------------------------------------------------------------------

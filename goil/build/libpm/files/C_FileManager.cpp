@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  'C_FileManager' : a class for handling files, independantly from platform                    
+//  'C_FileManager' : a class for handling files, independantly from platform
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2012, ..., 2018 Pierre Molinaro.
 //
@@ -28,6 +28,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include <ctype.h>
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -49,7 +50,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   Converting into Unix Path                                                                   
+//   Converting into Unix Path
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -97,7 +98,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   Converting into Native Path                                                                 
+//   Converting into Native Path
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -170,7 +171,7 @@ bool C_FileManager::binaryDataWithContentOfFile (const C_String & inFilePath,
 //--- Open file for binary reading
   const C_String nativePath = nativePathWithUnixPath (inFilePath) ;
   FILE * inputFile = ::fopen (nativePath.cString (HERE), "rb") ;
-  bool ok = inputFile != NULL ;
+  bool ok = inputFile != nullptr ;
 //--- Go to the end of the file
   if (ok) {
     ok = ::fseek (inputFile, 0, 2) == 0 ;
@@ -190,7 +191,7 @@ bool C_FileManager::binaryDataWithContentOfFile (const C_String & inFilePath,
 
 //--- Read file
   if (ok) {
-    uint8_t * binaryData = NULL ;
+    uint8_t * binaryData = nullptr ;
     macroMyNewArray (binaryData, uint8_t, uint32_t (fileSize)) ;
     const int32_t sizeRead = (int32_t) (fread (binaryData, 1, (uint32_t) fileSize, inputFile) & UINT32_MAX) ;
     ok = sizeRead == fileSize ;
@@ -199,9 +200,9 @@ bool C_FileManager::binaryDataWithContentOfFile (const C_String & inFilePath,
     }
   }
 //--- Close file
-  if (inputFile != NULL) {
+  if (inputFile != nullptr) {
     const int32_t result = ::fclose (inputFile) ;
-    inputFile = NULL ;
+    inputFile = nullptr ;
     if (ok) {
       ok = result == 0 ;
     }
@@ -263,12 +264,11 @@ static bool parseUTF32BE (const C_Data & inDataString,
 
 //----------------------------------------------------------------------------------------------------------------------
 // UTF-16 http://fr.wikipedia.org/wiki/UTF-16
-//
+
 static bool parseUTF16LE (const C_Data & inDataString,
                           const int32_t inOffset,
                           C_String & outString) {
   bool ok = (inDataString.length () % 2) == 0 ;
-  // uint32_t utf16prefix =0 ;
   bool foundUTF16prefix = false ;
   for (int32_t i=inOffset ; (i<inDataString.length ()) && ok ; i+=2) {
     uint32_t n = inDataString (i+1 COMMA_HERE) ;
@@ -277,13 +277,9 @@ static bool parseUTF16LE (const C_Data & inDataString,
     if ((n & 0xDC00) == 0xD800) {
       ok = ! foundUTF16prefix ;
       foundUTF16prefix = true ;
-      // utf16prefix = n & 0x3FF ;
-      // utf16prefix += 64 ;
     }else if ((n & 0xDC00) == 0xDC00) {
       ok = foundUTF16prefix ;
       foundUTF16prefix = false ;
-      // n &= 0x3FF ;
-      // n |= utf16prefix << 6 ;
     }else{
       ok = isUnicodeCharacterAssigned (TO_UNICODE (n)) && ! foundUTF16prefix ;
       outString.appendUnicodeCharacter (TO_UNICODE (n) COMMA_HERE) ;
@@ -302,7 +298,6 @@ static bool parseUTF16BE (const C_Data & inDataString,
                           const int32_t inOffset,
                           C_String & outString) {
   bool ok = (inDataString.length () % 2) == 0 ;
-  // uint32_t utf16prefix =0 ;
   bool foundUTF16prefix = false ;
   for (int32_t i=inOffset ; (i<inDataString.length ()) && ok ; i+=2) {
     uint32_t n = inDataString (i COMMA_HERE) ;
@@ -312,13 +307,9 @@ static bool parseUTF16BE (const C_Data & inDataString,
     if ((n & 0xDC00) == 0xD800) {
       ok = ! foundUTF16prefix ;
       foundUTF16prefix = true ;
-      // utf16prefix = n & 0x3FF ;
-      // utf16prefix += 64 ;
     }else if ((n & 0xDC00) == 0xDC00) {
       ok = foundUTF16prefix ;
       foundUTF16prefix = false ;
-      // n &= 0x3FF ;
-      // n |= utf16prefix << 6 ;
     }else{
       ok = isUnicodeCharacterAssigned (TO_UNICODE (n)) && ! foundUTF16prefix ;
       outString.appendUnicodeCharacter (TO_UNICODE (n) COMMA_HERE) ;
@@ -524,7 +515,7 @@ static bool searchForEncodingTagAndParse (const C_Data & inDataString,
   bool ok = false ;
 //--- Search for Tag
   bool tagFound = false ;
-  if (strstr (firstLine, "UTF-8") != NULL) {
+  if (strstr (firstLine, "UTF-8") != nullptr) {
     ok = C_String::parseUTF8 (inDataString, 0, outResultString) ;
     outTextFileEncoding = kUTF_8_FileEncoding ;
     tagFound = true ;
@@ -533,7 +524,7 @@ static bool searchForEncodingTagAndParse (const C_Data & inDataString,
     #endif
   }
   for (int32_t i=0 ; (i<kEncodingCount) && ! tagFound ; i++) {
-    tagFound = strstr (firstLine, kEncodings [i].mEncodingName) != NULL ;
+    tagFound = strstr (firstLine, kEncodings [i].mEncodingName) != nullptr ;
     if (tagFound) {
       ok = parseWithEncoding (inDataString, kEncodings [i].mStringEncoding, outResultString) ;
       outTextFileEncoding = kEncodings [i].mTextFileEncoding ;
@@ -657,7 +648,6 @@ bool C_FileManager::writeStringToExecutableFile (const C_String & inString,
     #if COMPILE_FOR_WINDOWS == 0
       struct stat fileStat ;
       ::stat (inFilePath.cString (HERE), & fileStat) ;
-      // printf ("FILE MODE 0x%X\n", fileStat.st_mode) ;
       ::chmod (inFilePath.cString (HERE), fileStat.st_mode | S_IXUSR | S_IXGRP | S_IXOTH) ;
     #endif
   }
@@ -696,7 +686,6 @@ bool C_FileManager::writeBinaryDataToExecutableFile (const C_Data & inBinaryData
     #if COMPILE_FOR_WINDOWS == 0
       struct stat fileStat ;
       ::stat (inFilePath.cString (HERE), & fileStat) ;
-      // printf ("FILE MODE 0x%X\n", fileStat.st_mode) ;
       ::chmod (inFilePath.cString (HERE), fileStat.st_mode | S_IXUSR | S_IXGRP | S_IXOTH) ;
     #endif
   }
@@ -718,7 +707,6 @@ bool C_FileManager::makeFileExecutable (const C_String & inFilePath) {
     if (result) {
       struct stat fileStat ;
       ::stat (inFilePath.cString (HERE), & fileStat) ;
-      // printf ("FILE MODE 0x%X\n", fileStat.st_mode) ;
       ::chmod (inFilePath.cString (HERE), fileStat.st_mode | S_IXUSR | S_IXGRP | S_IXOTH) ;
     }
   #endif
@@ -763,7 +751,7 @@ bool C_FileManager::directoryExistsWithNativePath (const C_String & inDirectoryN
 //----------------------------------------------------------------------------------------------------------------------
 
 C_String C_FileManager::currentDirectory (void) {
-  char * cwd = getcwd (NULL, 0) ;
+  char * cwd = getcwd (nullptr, 0) ;
   #if COMPILE_FOR_WINDOWS == 1
     const int32_t fileLength = (int32_t) strlen (cwd) ;
     int32_t firstChar = 0 ;
@@ -789,7 +777,6 @@ C_String C_FileManager::currentDirectory (void) {
 bool C_FileManager::makeDirectoryIfDoesNotExist (const C_String & inDirectoryPath) {
   const C_String directoryPath = absolutePathFromCurrentDirectory (inDirectoryPath) ;
   bool ok = directoryExists (directoryPath) ;
-  // co << "TEST '" << s << "' '" << directoryPath << "' " << (ok ? "yes" : "no") << "\n" ;
   if (! ok) {
     ok = makeDirectoryIfDoesNotExist (directoryPath.stringByDeletingLastPathComponent ()) ;
     if (ok && !directoryExists (directoryPath)) { // Special case when the path contains ../
@@ -799,7 +786,6 @@ bool C_FileManager::makeDirectoryIfDoesNotExist (const C_String & inDirectoryPat
         const int result = ::mkdir (nativePath.cString (HERE)) ;
       #else
         const int result = ::mkdir (nativePath.cString (HERE), 0770) ;
-        // co << "CREATE '" << nativePath << "' " << cStringWithSigned(result) << "\n" ;
       #endif
       ok = result == 0 ;
     }
@@ -900,7 +886,7 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#if COMPILE_FOR_WINDOWS == 1
+#if (COMPILE_FOR_WINDOWS == 1) || defined (__CYGWIN__)
   bool C_FileManager::makeSymbolicLinkWithPath (const C_String & /* inPath */,
                                                 const C_String & /* inLinkPath */) {
     return true ; // Symbolic links are not supported on Windows
@@ -922,15 +908,11 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#if COMPILE_FOR_WINDOWS == 1
+#if (COMPILE_FOR_WINDOWS == 1) || defined (__CYGWIN__)
   bool C_FileManager::isSymbolicLink (const C_String & /* inLinkPath */) {
     return false ; // Symbolic links are not supported on Windows
   }
-#endif
-
-//----------------------------------------------------------------------------------------------------------------------
-
-#if COMPILE_FOR_WINDOWS == 0
+#else
   bool C_FileManager::isSymbolicLink (const C_String & inLinkPath) {
     char buffer [8] ; // Any value
     return readlink (inLinkPath.cString (HERE), buffer, 8) >= 0 ;
@@ -939,23 +921,19 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#if COMPILE_FOR_WINDOWS == 1
+#if (COMPILE_FOR_WINDOWS == 1) || defined (__CYGWIN__)
   C_String C_FileManager::stringWithSymbolicLinkContents (const C_String & /* inLinkPath */,
                                                           bool & outOk) {
     outOk = false ; // Symbolic links are not supported on Windows
     return C_String () ;
   }
-#endif
-
-//----------------------------------------------------------------------------------------------------------------------
-
-#if COMPILE_FOR_WINDOWS == 0
+#else
   C_String C_FileManager::stringWithSymbolicLinkContents (const C_String & inLinkPath,
                                                           bool & outOk) {
     C_String result ;
     bool loop = true ;
     outOk = true ;
-    char * buffer = NULL ;
+    char * buffer = nullptr ;
     size_t bufferSize = 128 ;
     while (loop) {
       macroMyReallocPODArray (buffer, char, bufferSize) ;
@@ -984,7 +962,7 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Delete file                                                                                  
+//  Delete file
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1006,10 +984,6 @@ C_String C_FileManager::deleteFile (const C_String & inFilePath) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-// #define DEBUG_recursiveSearchInDirectory
-
-//----------------------------------------------------------------------------------------------------------------------
-
 static C_String recursiveSearchInDirectory (const C_String & inStartSearchPath,
                                             const C_String & inFileName,
                                             const int32_t inDirectoriesToExcludeCount,
@@ -1017,17 +991,14 @@ static C_String recursiveSearchInDirectory (const C_String & inStartSearchPath,
   C_String result ;
   const C_String nativeStartSearchPath = C_FileManager::nativePathWithUnixPath (inStartSearchPath) ;
   DIR * dir = ::opendir (nativeStartSearchPath.cString (HERE)) ;
-  if (dir != NULL) {
+  if (dir != nullptr) {
     C_String fileName = inStartSearchPath ;
     fileName << "/" << inFileName ;
     if (C_FileManager::fileExistsAtPath (fileName)) {
-      #ifdef DEBUG_recursiveSearchInDirectory
-        co << "** FILE '" << fileName << "' EXISTS **\n" ;
-      #endif
       result = fileName ;
     }else{
       struct dirent  * current = readdir (dir) ;
-      while ((current != NULL) && (result.length () == 0)) {
+      while ((current != nullptr) && (result.length () == 0)) {
         if (current->d_name [0] != '.') {
           C_String name = inStartSearchPath ;
           name.appendCString ("/") ;
@@ -1037,20 +1008,12 @@ static C_String recursiveSearchInDirectory (const C_String & inStartSearchPath,
             for (int32_t i=0 ; (i<inDirectoriesToExcludeCount) && dirOk ; i++) {
               if (UNICODE_VALUE (inDirectoriesToExclude (i COMMA_HERE) (0 COMMA_HERE)) == '.') {
                 const char * dotPtr = strrchr (current->d_name, '.') ;
-                dirOk = (dotPtr == NULL) || (inDirectoriesToExclude (i COMMA_HERE).compare (dotPtr) != 0) ;
+                dirOk = (dotPtr == nullptr) || (inDirectoriesToExclude (i COMMA_HERE).compare (dotPtr) != 0) ;
               }else{
                 dirOk = inDirectoriesToExclude (i COMMA_HERE).compare (current->d_name) != 0 ;
               }
-              #ifdef DEBUG_recursiveSearchInDirectory
-                if (! dirOk) {
-                  co << "** REJECTED DIR '" << name << "' **\n" ;
-                }
-              #endif
             }
             if (dirOk) {
-              #ifdef DEBUG_recursiveSearchInDirectory
-                co << "** SEARCH IN DIR '" << name << "' **\n" ;
-              #endif
               result = recursiveSearchInDirectory (name, inFileName, inDirectoriesToExcludeCount, inDirectoriesToExclude) ;
             }
           }
@@ -1060,9 +1023,6 @@ static C_String recursiveSearchInDirectory (const C_String & inStartSearchPath,
     }
     closedir (dir) ;
   }
-  #ifdef DEBUG_recursiveSearchInDirectory
-    co << "** RESULT IS '" << result << "' **\n" ;
-  #endif
   return result ;
 }
 
@@ -1072,13 +1032,6 @@ C_String C_FileManager::findFileInDirectory (const C_String & inDirectoryPath,
                                              const C_String & inFileName,
                                              const TC_UniqueArray <C_String> & inDirectoriesToExclude) {
   const int32_t directoriesToExcludeCount = inDirectoriesToExclude.count () ;
-  #ifdef DEBUG_recursiveSearchInDirectory
-    co << "************* Search in directory '" << *this << "'\n"
-          "** File to search '" << inFileName << "'\n'" ;
-    for (int32_t i=0 ; i<directoriesToExcludeCount ; i++) {
-      co << "** Exclude '" << inDirectoriesToExclude (i COMMA_HERE) << "'\n'" ;
-    }
-  #endif
   return recursiveSearchInDirectory (inDirectoryPath, inFileName, directoriesToExcludeCount, inDirectoriesToExclude) ;
 }
 
@@ -1096,9 +1049,9 @@ static void recursiveFindAllFilesInDirectory (const C_String & inStartSearchPath
 //--- Iterate throught directory
   const C_String nativeStartSearchPath = C_FileManager::nativePathWithUnixPath (inStartSearchPath) ;
   DIR * dir = ::opendir (nativeStartSearchPath.cString (HERE)) ;
-  if (dir != NULL) {
+  if (dir != nullptr) {
     struct dirent  * current = readdir (dir) ;
-    while (current != NULL) {
+    while (current != nullptr) {
       if (current->d_name [0] != '.') {
         C_String name = inStartSearchPath ;
         name.appendCString ("/") ;

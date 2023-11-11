@@ -10,410 +10,6 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-// Phase 1: @arxmlElementValue  value class
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_arxmlElementValue : public AC_GALGAS_value_class {
-//--------------------------------- Default constructor
-  public: GALGAS_arxmlElementValue (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public: static GALGAS_arxmlElementValue constructor_default (LOCATION_ARGS) ;
-
-//--------------------------------- Embedded object pointer
-  public: inline const class cPtr_arxmlElementValue * ptr (void) const {
-    return (const cPtr_arxmlElementValue *) mObjectPtr ;
-  }
-
-//--------------------------------- Constructor from pointer
-  public: GALGAS_arxmlElementValue (const cPtr_arxmlElementValue * inSourcePtr) ;
-
-//--------------------------------- Property read access
-  public: class GALGAS_lstring readProperty_type (void) const ;
-
-  public: class GALGAS_lstring readProperty_text (void) const ;
-
-  public: class GALGAS_arxmlElementValueMap readProperty_elements (void) const ;
-
-  public: class GALGAS_arxmlAttributeMap readProperty_attributes (void) const ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
-
-//--------------------------------- Object extraction
-  public: static GALGAS_arxmlElementValue extractObject (const GALGAS_object & inObject,
-                                                         C_Compiler * inCompiler
-                                                         COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public: static class GALGAS_arxmlElementValue constructor_new (const class GALGAS_lstring & inOperand0,
-                                                                 const class GALGAS_lstring & inOperand1,
-                                                                 const class GALGAS_arxmlElementValueMap & inOperand2,
-                                                                 const class GALGAS_arxmlAttributeMap & inOperand3
-                                                                 COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public: typeComparisonResult objectCompare (const GALGAS_arxmlElementValue & inOperand) const ;
-
-//--------------------------------- Setters
-  public: VIRTUAL_IN_DEBUG void setter_setAttributes (class GALGAS_arxmlAttributeMap inArgument0
-                                                      COMMA_LOCATION_ARGS) ;
-
-  public: VIRTUAL_IN_DEBUG void setter_setElements (class GALGAS_arxmlElementValueMap inArgument0
-                                                    COMMA_LOCATION_ARGS) ;
-
-  public: VIRTUAL_IN_DEBUG void setter_setText (class GALGAS_lstring inArgument0
-                                                COMMA_LOCATION_ARGS) ;
-
-  public: VIRTUAL_IN_DEBUG void setter_setType (class GALGAS_lstring inArgument0
-                                                COMMA_LOCATION_ARGS) ;
-
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Optional Methods
-
-//--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
- 
-} ; // End of GALGAS_arxmlElementValue class
-
-
-//----------------------------------------------------------------------------------------------------------------------
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementValue ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-// Phase 2: pointer class for @arxmlElementValue class
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class cPtr_arxmlElementValue : public acPtr_class {
-
-//--- Extension getter getAttributeValueFromElement
-  public: virtual class GALGAS_lstring getter_getAttributeValueFromElement (const class GALGAS_string elementName,
-           const class GALGAS_string attributeName,
-           C_Compiler * COMMA_LOCATION_ARGS) const ;
-
-//--- Extension getter getTextFromElement
-  public: virtual class GALGAS_lstring getter_getTextFromElement (const class GALGAS_string elementName,
-           C_Compiler * COMMA_LOCATION_ARGS) const ;
-
-//--- Extension getter hasElement
-  public: virtual class GALGAS_bool getter_hasElement (const class GALGAS_string elementName,
-           C_Compiler * COMMA_LOCATION_ARGS) const ;
-
-//--- Extension method getAllTextsInSelf
-  public: virtual void method_getAllTextsInSelf (class GALGAS_string separator,
-           class GALGAS_lstring & outString,
-           C_Compiler * COMMA_LOCATION_ARGS) ;
-
-//--- Extension method getElement
-  public: virtual void method_getElement (class GALGAS_string elementName,
-           class GALGAS_arxmlElementValue & outElement,
-           C_Compiler * COMMA_LOCATION_ARGS) ;
-
-//--- Extension method getElements
-  public: virtual void method_getElements (class GALGAS_string elementName,
-           class GALGAS_arxmlElementValueList & outElements,
-           C_Compiler * COMMA_LOCATION_ARGS) ;
-
-//--- Extension method getElementsByPath
-  public: virtual void method_getElementsByPath (class GALGAS_stringlist path,
-           class GALGAS_arxmlElementValueList & outElements,
-           C_Compiler * COMMA_LOCATION_ARGS) ;
-
-
-//--- Properties
-  public: GALGAS_lstring mProperty_type ;
-  public: GALGAS_lstring mProperty_text ;
-  public: GALGAS_arxmlElementValueMap mProperty_elements ;
-  public: GALGAS_arxmlAttributeMap mProperty_attributes ;
-
-//--- Constructor
-  public: cPtr_arxmlElementValue (const GALGAS_lstring & in_type,
-                                  const GALGAS_lstring & in_text,
-                                  const GALGAS_arxmlElementValueMap & in_elements,
-                                  const GALGAS_arxmlAttributeMap & in_attributes
-                                  COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
-
-//--- Attribute accessors
-  public: VIRTUAL_IN_DEBUG GALGAS_lstring getter_type (LOCATION_ARGS) const ;
-  public: VIRTUAL_IN_DEBUG void setter_setType (GALGAS_lstring inValue COMMA_LOCATION_ARGS) ;
-  public: VIRTUAL_IN_DEBUG GALGAS_lstring getter_text (LOCATION_ARGS) const ;
-  public: VIRTUAL_IN_DEBUG void setter_setText (GALGAS_lstring inValue COMMA_LOCATION_ARGS) ;
-  public: VIRTUAL_IN_DEBUG GALGAS_arxmlElementValueMap getter_elements (LOCATION_ARGS) const ;
-  public: VIRTUAL_IN_DEBUG void setter_setElements (GALGAS_arxmlElementValueMap inValue COMMA_LOCATION_ARGS) ;
-  public: VIRTUAL_IN_DEBUG GALGAS_arxmlAttributeMap getter_attributes (LOCATION_ARGS) const ;
-  public: VIRTUAL_IN_DEBUG void setter_setAttributes (GALGAS_arxmlAttributeMap inValue COMMA_LOCATION_ARGS) ;
-//--- Description
-  public: virtual void description (C_String & ioString,
-                                    const int32_t inIndentation) const override ;
-
-  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
-
-  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
-
-} ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-// Phase 1: @arxmlElementValueList_2D_element struct
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_arxmlElementValueList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Properties
-  public: GALGAS_arxmlElementValue mProperty_value ;
-  public: inline GALGAS_arxmlElementValue readProperty_value (void) const {
-    return mProperty_value ;
-  }
-
-//--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
-  public: VIRTUAL_IN_DEBUG void drop (void) override ;
-
-//--------------------------------- Default GALGAS constructor
-  public: static GALGAS_arxmlElementValueList_2D_element constructor_default (LOCATION_ARGS) ;
-
-//--------------------------------- Default constructor
-  public: GALGAS_arxmlElementValueList_2D_element (void) ;
-
-//--------------------------------- Property setters
-  public: inline void setter_setValue (const GALGAS_arxmlElementValue & inValue COMMA_UNUSED_LOCATION_ARGS) {
-    mProperty_value = inValue ;
-  }
-
-//--------------------------------- Virtual destructor (in debug mode)
-  public: virtual ~ GALGAS_arxmlElementValueList_2D_element (void) ;
-
-//--------------------------------- Native constructor
-  public: GALGAS_arxmlElementValueList_2D_element (const GALGAS_arxmlElementValue & in_value) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
-
-//--------------------------------- Object extraction
-  public: static GALGAS_arxmlElementValueList_2D_element extractObject (const GALGAS_object & inObject,
-                                                                        C_Compiler * inCompiler
-                                                                        COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public: static class GALGAS_arxmlElementValueList_2D_element constructor_new (const class GALGAS_arxmlElementValue & inOperand0
-                                                                                COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Implementation of getter 'description'
-  public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const override ;
-//--------------------------------- Comparison
-  public: typeComparisonResult objectCompare (const GALGAS_arxmlElementValueList_2D_element & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Optional Methods
-
-//--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
- 
-} ; // End of GALGAS_arxmlElementValueList_2D_element class
-
-
-//----------------------------------------------------------------------------------------------------------------------
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementValueList_2D_element ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//LEXIQUE arxmlmetaparser_5F_scanner
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-#include "galgas2/C_Lexique.h"
-
-//----------------------------------------------------------------------------------------------------------------------
-//                    E X T E R N    R O U T I N E S
-//----------------------------------------------------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------------------------------------------------
-//                    E X T E R N    F U N C T I O N S
-//----------------------------------------------------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------------------------------------------------
-//                       T O K E N    C L A S S
-//----------------------------------------------------------------------------------------------------------------------
-
-class cTokenFor_arxmlmetaparser_5F_scanner : public cToken {
-  public: C_String mLexicalAttribute_tokenString ;
-
-  public: cTokenFor_arxmlmetaparser_5F_scanner (void) ;
-} ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//                     S C A N N E R    C L A S S
-//----------------------------------------------------------------------------------------------------------------------
-
-class C_Lexique_arxmlmetaparser_5F_scanner : public C_Lexique {
-//--- Constructors
-  public: C_Lexique_arxmlmetaparser_5F_scanner (C_Compiler * inCallerCompiler,
-                       const C_String & inSourceFileName
-                       COMMA_LOCATION_ARGS) ;
-
-  public: C_Lexique_arxmlmetaparser_5F_scanner (C_Compiler * inCallerCompiler,
-                       const C_String & inSourceString,
-                       const C_String & inStringForError
-                       COMMA_LOCATION_ARGS) ;
-
-//--- Instrospection
-  public: static GALGAS_stringlist symbols (LOCATION_ARGS) ;
-
-//--- Declaring a protected virtual destructor enables the compiler to raise
-//    an error if a direct delete is performed; only the static method
-//    C_SharedObject::detachPointer may invoke delete.
-  #ifndef DO_NOT_GENERATE_CHECKINGS
-    protected: virtual ~ C_Lexique_arxmlmetaparser_5F_scanner (void) {}
-  #endif
-
-//--- Scanner mode for template scanner
-  private: int32_t mMatchedTemplateDelimiterIndex ;
-
-
-
-//--- Terminal symbols enumeration
-  public: enum {kToken_,
-   kToken_comment,
-   kToken_xmlTag,
-   kToken_xmlTagValue,
-   kToken_identifier,
-   kToken__3C_,
-   kToken__3C_xsd_3A_,
-   kToken__3C__2F_xsd_3A_,
-   kToken__3C__3F_xml,
-   kToken__3E_,
-   kToken__3F__3E_,
-   kToken__2F__3E_,
-   kToken__3C__2F_,
-   kToken__3D_,
-   kToken_group,
-   kToken_annotation,
-   kToken_appinfo,
-   kToken_attribute,
-   kToken_attributeGroup,
-   kToken_choice,
-   kToken_complexType,
-   kToken_documentation,
-   kToken_element,
-   kToken_enumeration,
-   kToken_extension,
-   kToken_import,
-   kToken_maxLength,
-   kToken_pattern,
-   kToken_restriction,
-   kToken_schema,
-   kToken_sequence,
-   kToken_simpleContent,
-   kToken_simpleType,
-   kToken_whiteSpace,
-   kToken_abstract,
-   kToken_attributeFormDefault,
-   kToken_attributeRef,
-   kToken_base,
-   kToken_category,
-   kToken_CATEGORY,
-   kToken_color,
-   kToken_customType,
-   kToken_elementFormDefault,
-   kToken_encoding,
-   kToken_enforceMinMultiplicity,
-   kToken_globalElement,
-   kToken_id,
-   kToken_latestBindingTime,
-   kToken_maxOccurs,
-   kToken_minOccurs,
-   kToken_mixed,
-   kToken_name,
-   kToken_namePlural,
-   kToken_namespace,
-   kToken_noteType,
-   kToken_nsPrefix,
-   kToken_qualifiedName,
-   kToken_recommendedPackage,
-   kToken_ref,
-   kToken_roleElement,
-   kToken_roleWrapperElement,
-   kToken_schemaLocation,
-   kToken_sequenceOffset,
-   kToken_source,
-   kToken_Splitkey,
-   kToken_Status,
-   kToken_StatusRevisionBegin,
-   kToken_targetNamespace,
-   kToken_type,
-   kToken_typeElement,
-   kToken_typeWrapperElement,
-   kToken_use,
-   kToken_value,
-   kToken_version,
-   kToken_xmlns_3A_AR,
-   kToken_xmlns_3A_xsd,
-   kToken_TODO} ;
-
-//--- Key words table 'xmlDelimitorsList'
-  public: static int16_t search_into_xmlDelimitorsList (const C_String & inSearchedString) ;
-
-//--- Key words table 'keyWordList'
-  public: static int16_t search_into_keyWordList (const C_String & inSearchedString) ;
-  
-
-//--- Assign from attribute
-  public: GALGAS_lstring synthetizedAttribute_tokenString (void) const ;
-
-
-//--- Attribute access
-  public: C_String attributeValue_tokenString (void) const ;
-
-
-//--- Indexing keys
-
-//--- Parse lexical token
-  protected: void internalParseLexicalToken (cTokenFor_arxmlmetaparser_5F_scanner & token) ;
-  protected: virtual bool parseLexicalToken (void) override ;
-
-//--- Get terminal message
-  protected: virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const override ;
-
-//--- Get terminal count
-  public: virtual int16_t terminalVocabularyCount (void) const override { return 76 ; }
-
-//--- Get Token String
-  public: virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const override ;
-
-//--- Enter Token
-  protected: void enterToken (cTokenFor_arxmlmetaparser_5F_scanner & ioToken) ;
-
-//--- Style name for Latex
-  protected: virtual C_String styleNameForIndex (const uint32_t inStyleIndex) const override ;
-  protected: virtual uint32_t styleIndexForTerminal (const int32_t inTerminalIndex) const override ;
-} ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
 // Phase 1: @arxmlMetaClassMap map
 //
 //----------------------------------------------------------------------------------------------------------------------
@@ -2897,6 +2493,123 @@ void enterExtensionSetter_setMapItem (const int32_t inClassIndex,
 void callExtensionSetter_setMapItem (class cPtr_gtlData * inObject,
                                      const GALGAS_lstring constin_name,
                                      const GALGAS_gtlData constin_data,
+                                     C_Compiler * inCompiler
+                                     COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@gtlData deleteMapItem'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+typedef void (*extensionSetterSignature_gtlData_deleteMapItem) (class cPtr_gtlData * inObject,
+                                                                const class GALGAS_lstring constinArgument0,
+                                                                class C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void enterExtensionSetter_deleteMapItem (const int32_t inClassIndex,
+                                         extensionSetterSignature_gtlData_deleteMapItem inModifier) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionSetter_deleteMapItem (class cPtr_gtlData * inObject,
+                                        const GALGAS_lstring constin_name,
+                                        C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@gtlData itemAtIndex'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionMethod_itemAtIndex (class cPtr_gtlData * inObject,
+                                      class GALGAS_gtlData & out_result,
+                                      const class GALGAS_gtlInt constin_index,
+                                      C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension getter '@gtlData hasItemAtIndex'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bool callExtensionGetter_hasItemAtIndex (const cPtr_gtlData * inObject,
+                                                      const class GALGAS_gtlInt constin_index,
+                                                      class C_Compiler * inCompiler
+                                                      COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@gtlData setItemAtIndex'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+typedef void (*extensionSetterSignature_gtlData_setItemAtIndex) (class cPtr_gtlData * inObject,
+                                                                 const class GALGAS_gtlData constinArgument0,
+                                                                 const class GALGAS_gtlInt constinArgument1,
+                                                                 class C_Compiler * inCompiler
+                                                                 COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void enterExtensionSetter_setItemAtIndex (const int32_t inClassIndex,
+                                          extensionSetterSignature_gtlData_setItemAtIndex inModifier) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionSetter_setItemAtIndex (class cPtr_gtlData * inObject,
+                                         const GALGAS_gtlData constin_data,
+                                         const GALGAS_gtlInt constin_index,
+                                         C_Compiler * inCompiler
+                                         COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@gtlData deleteItemAtIndex'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+typedef void (*extensionSetterSignature_gtlData_deleteItemAtIndex) (class cPtr_gtlData * inObject,
+                                                                    const class GALGAS_gtlInt constinArgument0,
+                                                                    class C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void enterExtensionSetter_deleteItemAtIndex (const int32_t inClassIndex,
+                                             extensionSetterSignature_gtlData_deleteItemAtIndex inModifier) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionSetter_deleteItemAtIndex (class cPtr_gtlData * inObject,
+                                            const GALGAS_gtlInt constin_index,
+                                            C_Compiler * inCompiler
+                                            COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@gtlData appendItem'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+typedef void (*extensionSetterSignature_gtlData_appendItem) (class cPtr_gtlData * inObject,
+                                                             const class GALGAS_gtlData constinArgument0,
+                                                             class C_Compiler * inCompiler
+                                                             COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void enterExtensionSetter_appendItem (const int32_t inClassIndex,
+                                      extensionSetterSignature_gtlData_appendItem inModifier) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionSetter_appendItem (class cPtr_gtlData * inObject,
+                                     const GALGAS_gtlData constin_item,
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 

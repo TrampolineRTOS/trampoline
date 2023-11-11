@@ -1650,7 +1650,7 @@ void routine_arxmlDefinitionParameter (const GALGAS_implementationObjectMap cons
       if (kBoolTrue == test_17) {
         GALGAS_impEnumType temp_18 ;
         if (var_type_50168.isValid ()) {
-          if (NULL != dynamic_cast <const cPtr_impEnumType *> (var_type_50168.ptr ())) {
+          if (nullptr != dynamic_cast <const cPtr_impEnumType *> (var_type_50168.ptr ())) {
             temp_18 = (cPtr_impEnumType *) var_type_50168.ptr () ;
           }else{
             inCompiler->castError ("impEnumType", var_type_50168.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("arxml_parser.galgas", 1554)) ;
@@ -1699,7 +1699,7 @@ void routine_arxmlDefinitionParameter (const GALGAS_implementationObjectMap cons
         if (kBoolTrue == test_22) {
           GALGAS_impBoolType temp_23 ;
           if (var_type_50168.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_impBoolType *> (var_type_50168.ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_impBoolType *> (var_type_50168.ptr ())) {
               temp_23 = (cPtr_impBoolType *) var_type_50168.ptr () ;
             }else{
               inCompiler->castError ("impBoolType", var_type_50168.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("arxml_parser.galgas", 1581)) ;
@@ -1834,7 +1834,7 @@ void routine_arxmlDefinitionParameter (const GALGAS_implementationObjectMap cons
                     if (kBoolTrue == test_35) {
                       GALGAS_impStructType temp_36 ;
                       if (var_type_50168.isValid ()) {
-                        if (NULL != dynamic_cast <const cPtr_impStructType *> (var_type_50168.ptr ())) {
+                        if (nullptr != dynamic_cast <const cPtr_impStructType *> (var_type_50168.ptr ())) {
                           temp_36 = (cPtr_impStructType *) var_type_50168.ptr () ;
                         }else{
                           inCompiler->castError ("impStructType", var_type_50168.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("arxml_parser.galgas", 1672)) ;
@@ -2359,7 +2359,7 @@ void cPtr_arxmlElementNode::method_getSubElementsFromName (const GALGAS_string c
       if (kBoolTrue == test_0) {
         GALGAS_arxmlElementNode temp_1 ;
         if (enumerator_4178.current_node (HERE).isValid ()) {
-          if (NULL != dynamic_cast <const cPtr_arxmlElementNode *> (enumerator_4178.current_node (HERE).ptr ())) {
+          if (nullptr != dynamic_cast <const cPtr_arxmlElementNode *> (enumerator_4178.current_node (HERE).ptr ())) {
             temp_1 = (cPtr_arxmlElementNode *) enumerator_4178.current_node (HERE).ptr () ;
           }else{
             inCompiler->castError ("arxmlElementNode", enumerator_4178.current_node (HERE).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("arxml_types.galgas", 197)) ;
@@ -2585,7 +2585,7 @@ static const char * kSourceFileExtensions [] = {
   "OIL",
   "goilTemplate",
   "arxml",
-  NULL
+  nullptr
 } ;    
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2595,13 +2595,13 @@ static const char * kSourceFileHelpMessages [] = {
   "an '.OIL' source file",
   "a Goil template file",
   "an AUTOSAR arxml configuration file",
-  NULL
+  nullptr
 } ;    
 
 //----------------------------------------------------------------------------------------------------------------------
 
 const char * projectVersionString (void) {
-  return "3.1.13" ;
+  return "3.1.14" ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2717,8 +2717,8 @@ int mainForLIBPM (int inArgc, const char * inArgv []) {
     returnCode = 1 ;
   }else{
   //--- Common lexique object
-    C_Compiler * commonCompiler = NULL ;
-    macroMyNew (commonCompiler, C_Compiler (NULL COMMA_HERE)) ;
+    C_Compiler * commonCompiler = nullptr ;
+    macroMyNew (commonCompiler, C_Compiler (nullptr COMMA_HERE)) ;
     try{
       routine_before (commonCompiler COMMA_HERE) ;
       cLexiqueIntrospection::handleGetKeywordListOption (commonCompiler) ;

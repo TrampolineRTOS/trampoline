@@ -61,23 +61,15 @@ class GenericGalgasMakefile :
     self.mLinkerOptions += self.mDictionary ["USER_LINK_OPTIONS"]
   #--- LIBPM
     LIBPM_DIRECTORY_PATH = self.mDictionary ["LIBPM_DIRECTORY_PATH"]
-  #--------------------------------------------------------------------------- System
-    if self.mCrossCompilation == "":
-      (SYSTEM_NAME, MODE_NAME, SYSTEM_RELEASE, SYSTEM_VERSION, MACHINE) = os.uname ()
-      if SYSTEM_NAME == "Darwin":
-        MACHINE = "Intel"
-      SYSTEM_MACHINE = SYSTEM_NAME + "-" + MACHINE
-    else:
-      SYSTEM_MACHINE = self.mCrossCompilation
   #--- GMP
     GMP_DIRECTORY_PATH = LIBPM_DIRECTORY_PATH + "/gmp"
   #--- Source directory list
     SOURCES_DIR = self.mDictionary ["SOURCES_DIR"]
   #--------------------------------------------------------------------------- Include dirs
     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/bdd")
+    SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/big-integers")
     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/command_line_interface")
     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/files")
-    SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/galgas")
     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/galgas2")
     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/gmp")
     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/streams")

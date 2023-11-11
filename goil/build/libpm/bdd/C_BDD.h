@@ -26,7 +26,7 @@
 #include "utilities/PMUInt128.h"
 #include "collections/TC_UniqueArray.h"
 #include "collections/TC_Array.h"
-#include "utilities/C_BigInt.h"
+#include "big-integers/C_BigInt.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 

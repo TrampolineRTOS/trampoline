@@ -118,7 +118,6 @@ mpn_toom_eval_pm2exp (mp_ptr xp2, mp_ptr xm2, unsigned k,
   mpn_add_n (xp2, xp2, tp, n + 1);
 #endif /* !HAVE_NATIVE_mpn_add_n_sub_n */
 
-  /* FIXME: the following asserts are useless if (k+1)*shift >= GMP_LIMB_BITS */
   ASSERT ((k+1)*shift >= GMP_LIMB_BITS ||
 	  xp2[n] < ((CNST_LIMB(1)<<((k+1)*shift))-1)/((CNST_LIMB(1)<<shift)-1));
   ASSERT ((k+2)*shift >= GMP_LIMB_BITS ||

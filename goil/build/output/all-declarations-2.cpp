@@ -8,1077 +8,6 @@
 #include "all-declarations-2.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-//
-//Abstract extension method '@attributeRange enclose'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void callExtensionMethod_enclose (cPtr_attributeRange * inObject,
-                                  GALGAS_bool & out_isWithin,
-                                  const GALGAS_attributeRange constin_value,
-                                  C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) {
-//--- Drop output arguments
-  out_isWithin.drop () ;
-//--- Find method
-  if (nullptr != inObject) {
-    macroValidSharedObject (inObject, cPtr_attributeRange) ;
-    inObject->method_enclose (out_isWithin, constin_value, inCompiler COMMA_THERE) ;
-  }
-}
-//----------------------------------------------------------------------------------------------------------------------
-//   Object comparison                                                                           
-//----------------------------------------------------------------------------------------------------------------------
-
-typeComparisonResult cPtr_noRange::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
-  typeComparisonResult result = kOperandEqual ;
-  const cPtr_noRange * p = (const cPtr_noRange *) inOperandPtr ;
-  macroValidSharedObject (p, cPtr_noRange) ;
-  if (kOperandEqual == result) {
-    result = mProperty_location.objectCompare (p->mProperty_location) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-
-typeComparisonResult GALGAS_noRange::objectCompare (const GALGAS_noRange & inOperand) const {
-  typeComparisonResult result = kOperandNotValid ;
-  if (isValid () && inOperand.isValid ()) {
-    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
-    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
-    if (mySlot < operandSlot) {
-      result = kFirstOperandLowerThanSecond ;
-    }else if (mySlot > operandSlot) {
-      result = kFirstOperandGreaterThanSecond ;
-    }else{
-      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
-    }
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_noRange::GALGAS_noRange (void) :
-GALGAS_attributeRange () {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_noRange GALGAS_noRange::constructor_default (LOCATION_ARGS) {
-  return GALGAS_noRange::constructor_new (GALGAS_location::constructor_nowhere (HERE)
-                                          COMMA_THERE) ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_noRange::GALGAS_noRange (const cPtr_noRange * inSourcePtr) :
-GALGAS_attributeRange (inSourcePtr) {
-  macroNullOrValidSharedObject (inSourcePtr, cPtr_noRange) ;
-}
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_noRange GALGAS_noRange::constructor_new (const GALGAS_location & inAttribute_location
-                                                COMMA_LOCATION_ARGS) {
-  GALGAS_noRange result ;
-  if (inAttribute_location.isValid ()) {
-    macroMyNew (result.mObjectPtr, cPtr_noRange (inAttribute_location COMMA_THERE)) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//Pointer class for @noRange class
-//----------------------------------------------------------------------------------------------------------------------
-
-cPtr_noRange::cPtr_noRange (const GALGAS_location & in_location
-                            COMMA_LOCATION_ARGS) :
-cPtr_attributeRange (in_location COMMA_THERE) {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor * cPtr_noRange::classDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_noRange ;
-}
-
-void cPtr_noRange::description (C_String & ioString,
-                                const int32_t inIndentation) const {
-  ioString << "[@noRange:" ;
-  mProperty_location.description (ioString, inIndentation+1) ;
-  ioString << "]" ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-acPtr_class * cPtr_noRange::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_noRange (mProperty_location COMMA_THERE)) ;
-  return ptr ;
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//     @noRange generic code implementation
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_noRange ("noRange",
-                                & kTypeDescriptor_GALGAS_attributeRange) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor * GALGAS_noRange::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_noRange ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-AC_GALGAS_root * GALGAS_noRange::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_noRange (*this)) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_noRange GALGAS_noRange::extractObject (const GALGAS_object & inObject,
-                                              C_Compiler * inCompiler
-                                              COMMA_LOCATION_ARGS) {
-  GALGAS_noRange result ;
-  const GALGAS_noRange * p = (const GALGAS_noRange *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_noRange *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("noRange", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//   Object comparison                                                                           
-//----------------------------------------------------------------------------------------------------------------------
-
-typeComparisonResult cPtr_uint_33__32_AttributeSet::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
-  typeComparisonResult result = kOperandEqual ;
-  const cPtr_uint_33__32_AttributeSet * p = (const cPtr_uint_33__32_AttributeSet *) inOperandPtr ;
-  macroValidSharedObject (p, cPtr_uint_33__32_AttributeSet) ;
-  if (kOperandEqual == result) {
-    result = mProperty_location.objectCompare (p->mProperty_location) ;
-  }
-  if (kOperandEqual == result) {
-    result = mProperty_valueList.objectCompare (p->mProperty_valueList) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-
-typeComparisonResult GALGAS_uint_33__32_AttributeSet::objectCompare (const GALGAS_uint_33__32_AttributeSet & inOperand) const {
-  typeComparisonResult result = kOperandNotValid ;
-  if (isValid () && inOperand.isValid ()) {
-    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
-    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
-    if (mySlot < operandSlot) {
-      result = kFirstOperandLowerThanSecond ;
-    }else if (mySlot > operandSlot) {
-      result = kFirstOperandGreaterThanSecond ;
-    }else{
-      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
-    }
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_uint_33__32_AttributeSet::GALGAS_uint_33__32_AttributeSet (void) :
-GALGAS_attributeRange () {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_uint_33__32_AttributeSet GALGAS_uint_33__32_AttributeSet::constructor_default (LOCATION_ARGS) {
-  return GALGAS_uint_33__32_AttributeSet::constructor_new (GALGAS_location::constructor_nowhere (HERE),
-                                                           GALGAS_uint_33__32_List::constructor_emptyList (HERE)
-                                                           COMMA_THERE) ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_uint_33__32_AttributeSet::GALGAS_uint_33__32_AttributeSet (const cPtr_uint_33__32_AttributeSet * inSourcePtr) :
-GALGAS_attributeRange (inSourcePtr) {
-  macroNullOrValidSharedObject (inSourcePtr, cPtr_uint_33__32_AttributeSet) ;
-}
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_uint_33__32_AttributeSet GALGAS_uint_33__32_AttributeSet::constructor_new (const GALGAS_location & inAttribute_location,
-                                                                                  const GALGAS_uint_33__32_List & inAttribute_valueList
-                                                                                  COMMA_LOCATION_ARGS) {
-  GALGAS_uint_33__32_AttributeSet result ;
-  if (inAttribute_location.isValid () && inAttribute_valueList.isValid ()) {
-    macroMyNew (result.mObjectPtr, cPtr_uint_33__32_AttributeSet (inAttribute_location, inAttribute_valueList COMMA_THERE)) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_uint_33__32_List GALGAS_uint_33__32_AttributeSet::readProperty_valueList (void) const {
-  if (NULL == mObjectPtr) {
-    return GALGAS_uint_33__32_List () ;
-  }else{
-    const cPtr_uint_33__32_AttributeSet * p = (const cPtr_uint_33__32_AttributeSet *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_uint_33__32_AttributeSet) ;
-    return p->mProperty_valueList ;
-  }
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_uint_33__32_List cPtr_uint_33__32_AttributeSet::getter_valueList (UNUSED_LOCATION_ARGS) const {
-  return mProperty_valueList ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void GALGAS_uint_33__32_AttributeSet::setter_setValueList (GALGAS_uint_33__32_List inValue
-                                                           COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
-    insulate (THERE) ;
-    cPtr_uint_33__32_AttributeSet * p = (cPtr_uint_33__32_AttributeSet *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_uint_33__32_AttributeSet) ;
-    p->mProperty_valueList = inValue ;
-  }
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void cPtr_uint_33__32_AttributeSet::setter_setValueList (GALGAS_uint_33__32_List inValue
-                                                         COMMA_UNUSED_LOCATION_ARGS) {
-  mProperty_valueList = inValue ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//Pointer class for @uint32AttributeSet class
-//----------------------------------------------------------------------------------------------------------------------
-
-cPtr_uint_33__32_AttributeSet::cPtr_uint_33__32_AttributeSet (const GALGAS_location & in_location,
-                                                              const GALGAS_uint_33__32_List & in_valueList
-                                                              COMMA_LOCATION_ARGS) :
-cPtr_attributeRange (in_location COMMA_THERE),
-mProperty_valueList (in_valueList) {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor * cPtr_uint_33__32_AttributeSet::classDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_uint_33__32_AttributeSet ;
-}
-
-void cPtr_uint_33__32_AttributeSet::description (C_String & ioString,
-                                                 const int32_t inIndentation) const {
-  ioString << "[@uint32AttributeSet:" ;
-  mProperty_location.description (ioString, inIndentation+1) ;
-  ioString << ", " ;
-  mProperty_valueList.description (ioString, inIndentation+1) ;
-  ioString << "]" ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-acPtr_class * cPtr_uint_33__32_AttributeSet::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_uint_33__32_AttributeSet (mProperty_location, mProperty_valueList COMMA_THERE)) ;
-  return ptr ;
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//     @uint32AttributeSet generic code implementation
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_uint_33__32_AttributeSet ("uint32AttributeSet",
-                                                 & kTypeDescriptor_GALGAS_attributeRange) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor * GALGAS_uint_33__32_AttributeSet::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_uint_33__32_AttributeSet ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-AC_GALGAS_root * GALGAS_uint_33__32_AttributeSet::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_uint_33__32_AttributeSet (*this)) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_uint_33__32_AttributeSet GALGAS_uint_33__32_AttributeSet::extractObject (const GALGAS_object & inObject,
-                                                                                C_Compiler * inCompiler
-                                                                                COMMA_LOCATION_ARGS) {
-  GALGAS_uint_33__32_AttributeSet result ;
-  const GALGAS_uint_33__32_AttributeSet * p = (const GALGAS_uint_33__32_AttributeSet *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_uint_33__32_AttributeSet *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("uint32AttributeSet", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//   Object comparison                                                                           
-//----------------------------------------------------------------------------------------------------------------------
-
-typeComparisonResult cPtr_uint_36__34_AttributeSet::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
-  typeComparisonResult result = kOperandEqual ;
-  const cPtr_uint_36__34_AttributeSet * p = (const cPtr_uint_36__34_AttributeSet *) inOperandPtr ;
-  macroValidSharedObject (p, cPtr_uint_36__34_AttributeSet) ;
-  if (kOperandEqual == result) {
-    result = mProperty_location.objectCompare (p->mProperty_location) ;
-  }
-  if (kOperandEqual == result) {
-    result = mProperty_valueList.objectCompare (p->mProperty_valueList) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-
-typeComparisonResult GALGAS_uint_36__34_AttributeSet::objectCompare (const GALGAS_uint_36__34_AttributeSet & inOperand) const {
-  typeComparisonResult result = kOperandNotValid ;
-  if (isValid () && inOperand.isValid ()) {
-    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
-    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
-    if (mySlot < operandSlot) {
-      result = kFirstOperandLowerThanSecond ;
-    }else if (mySlot > operandSlot) {
-      result = kFirstOperandGreaterThanSecond ;
-    }else{
-      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
-    }
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_uint_36__34_AttributeSet::GALGAS_uint_36__34_AttributeSet (void) :
-GALGAS_attributeRange () {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_uint_36__34_AttributeSet GALGAS_uint_36__34_AttributeSet::constructor_default (LOCATION_ARGS) {
-  return GALGAS_uint_36__34_AttributeSet::constructor_new (GALGAS_location::constructor_nowhere (HERE),
-                                                           GALGAS_uint_36__34_List::constructor_emptyList (HERE)
-                                                           COMMA_THERE) ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_uint_36__34_AttributeSet::GALGAS_uint_36__34_AttributeSet (const cPtr_uint_36__34_AttributeSet * inSourcePtr) :
-GALGAS_attributeRange (inSourcePtr) {
-  macroNullOrValidSharedObject (inSourcePtr, cPtr_uint_36__34_AttributeSet) ;
-}
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_uint_36__34_AttributeSet GALGAS_uint_36__34_AttributeSet::constructor_new (const GALGAS_location & inAttribute_location,
-                                                                                  const GALGAS_uint_36__34_List & inAttribute_valueList
-                                                                                  COMMA_LOCATION_ARGS) {
-  GALGAS_uint_36__34_AttributeSet result ;
-  if (inAttribute_location.isValid () && inAttribute_valueList.isValid ()) {
-    macroMyNew (result.mObjectPtr, cPtr_uint_36__34_AttributeSet (inAttribute_location, inAttribute_valueList COMMA_THERE)) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_uint_36__34_List GALGAS_uint_36__34_AttributeSet::readProperty_valueList (void) const {
-  if (NULL == mObjectPtr) {
-    return GALGAS_uint_36__34_List () ;
-  }else{
-    const cPtr_uint_36__34_AttributeSet * p = (const cPtr_uint_36__34_AttributeSet *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_uint_36__34_AttributeSet) ;
-    return p->mProperty_valueList ;
-  }
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_uint_36__34_List cPtr_uint_36__34_AttributeSet::getter_valueList (UNUSED_LOCATION_ARGS) const {
-  return mProperty_valueList ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void GALGAS_uint_36__34_AttributeSet::setter_setValueList (GALGAS_uint_36__34_List inValue
-                                                           COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
-    insulate (THERE) ;
-    cPtr_uint_36__34_AttributeSet * p = (cPtr_uint_36__34_AttributeSet *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_uint_36__34_AttributeSet) ;
-    p->mProperty_valueList = inValue ;
-  }
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void cPtr_uint_36__34_AttributeSet::setter_setValueList (GALGAS_uint_36__34_List inValue
-                                                         COMMA_UNUSED_LOCATION_ARGS) {
-  mProperty_valueList = inValue ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//Pointer class for @uint64AttributeSet class
-//----------------------------------------------------------------------------------------------------------------------
-
-cPtr_uint_36__34_AttributeSet::cPtr_uint_36__34_AttributeSet (const GALGAS_location & in_location,
-                                                              const GALGAS_uint_36__34_List & in_valueList
-                                                              COMMA_LOCATION_ARGS) :
-cPtr_attributeRange (in_location COMMA_THERE),
-mProperty_valueList (in_valueList) {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor * cPtr_uint_36__34_AttributeSet::classDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_uint_36__34_AttributeSet ;
-}
-
-void cPtr_uint_36__34_AttributeSet::description (C_String & ioString,
-                                                 const int32_t inIndentation) const {
-  ioString << "[@uint64AttributeSet:" ;
-  mProperty_location.description (ioString, inIndentation+1) ;
-  ioString << ", " ;
-  mProperty_valueList.description (ioString, inIndentation+1) ;
-  ioString << "]" ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-acPtr_class * cPtr_uint_36__34_AttributeSet::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_uint_36__34_AttributeSet (mProperty_location, mProperty_valueList COMMA_THERE)) ;
-  return ptr ;
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//     @uint64AttributeSet generic code implementation
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_uint_36__34_AttributeSet ("uint64AttributeSet",
-                                                 & kTypeDescriptor_GALGAS_attributeRange) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor * GALGAS_uint_36__34_AttributeSet::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_uint_36__34_AttributeSet ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-AC_GALGAS_root * GALGAS_uint_36__34_AttributeSet::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_uint_36__34_AttributeSet (*this)) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_uint_36__34_AttributeSet GALGAS_uint_36__34_AttributeSet::extractObject (const GALGAS_object & inObject,
-                                                                                C_Compiler * inCompiler
-                                                                                COMMA_LOCATION_ARGS) {
-  GALGAS_uint_36__34_AttributeSet result ;
-  const GALGAS_uint_36__34_AttributeSet * p = (const GALGAS_uint_36__34_AttributeSet *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_uint_36__34_AttributeSet *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("uint64AttributeSet", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//   Object comparison                                                                           
-//----------------------------------------------------------------------------------------------------------------------
-
-typeComparisonResult cPtr_sint_33__32_AttributeSet::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
-  typeComparisonResult result = kOperandEqual ;
-  const cPtr_sint_33__32_AttributeSet * p = (const cPtr_sint_33__32_AttributeSet *) inOperandPtr ;
-  macroValidSharedObject (p, cPtr_sint_33__32_AttributeSet) ;
-  if (kOperandEqual == result) {
-    result = mProperty_location.objectCompare (p->mProperty_location) ;
-  }
-  if (kOperandEqual == result) {
-    result = mProperty_valueList.objectCompare (p->mProperty_valueList) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-
-typeComparisonResult GALGAS_sint_33__32_AttributeSet::objectCompare (const GALGAS_sint_33__32_AttributeSet & inOperand) const {
-  typeComparisonResult result = kOperandNotValid ;
-  if (isValid () && inOperand.isValid ()) {
-    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
-    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
-    if (mySlot < operandSlot) {
-      result = kFirstOperandLowerThanSecond ;
-    }else if (mySlot > operandSlot) {
-      result = kFirstOperandGreaterThanSecond ;
-    }else{
-      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
-    }
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_sint_33__32_AttributeSet::GALGAS_sint_33__32_AttributeSet (void) :
-GALGAS_attributeRange () {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_sint_33__32_AttributeSet GALGAS_sint_33__32_AttributeSet::constructor_default (LOCATION_ARGS) {
-  return GALGAS_sint_33__32_AttributeSet::constructor_new (GALGAS_location::constructor_nowhere (HERE),
-                                                           GALGAS_sint_33__32_List::constructor_emptyList (HERE)
-                                                           COMMA_THERE) ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_sint_33__32_AttributeSet::GALGAS_sint_33__32_AttributeSet (const cPtr_sint_33__32_AttributeSet * inSourcePtr) :
-GALGAS_attributeRange (inSourcePtr) {
-  macroNullOrValidSharedObject (inSourcePtr, cPtr_sint_33__32_AttributeSet) ;
-}
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_sint_33__32_AttributeSet GALGAS_sint_33__32_AttributeSet::constructor_new (const GALGAS_location & inAttribute_location,
-                                                                                  const GALGAS_sint_33__32_List & inAttribute_valueList
-                                                                                  COMMA_LOCATION_ARGS) {
-  GALGAS_sint_33__32_AttributeSet result ;
-  if (inAttribute_location.isValid () && inAttribute_valueList.isValid ()) {
-    macroMyNew (result.mObjectPtr, cPtr_sint_33__32_AttributeSet (inAttribute_location, inAttribute_valueList COMMA_THERE)) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_sint_33__32_List GALGAS_sint_33__32_AttributeSet::readProperty_valueList (void) const {
-  if (NULL == mObjectPtr) {
-    return GALGAS_sint_33__32_List () ;
-  }else{
-    const cPtr_sint_33__32_AttributeSet * p = (const cPtr_sint_33__32_AttributeSet *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_sint_33__32_AttributeSet) ;
-    return p->mProperty_valueList ;
-  }
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_sint_33__32_List cPtr_sint_33__32_AttributeSet::getter_valueList (UNUSED_LOCATION_ARGS) const {
-  return mProperty_valueList ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void GALGAS_sint_33__32_AttributeSet::setter_setValueList (GALGAS_sint_33__32_List inValue
-                                                           COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
-    insulate (THERE) ;
-    cPtr_sint_33__32_AttributeSet * p = (cPtr_sint_33__32_AttributeSet *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_sint_33__32_AttributeSet) ;
-    p->mProperty_valueList = inValue ;
-  }
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void cPtr_sint_33__32_AttributeSet::setter_setValueList (GALGAS_sint_33__32_List inValue
-                                                         COMMA_UNUSED_LOCATION_ARGS) {
-  mProperty_valueList = inValue ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//Pointer class for @sint32AttributeSet class
-//----------------------------------------------------------------------------------------------------------------------
-
-cPtr_sint_33__32_AttributeSet::cPtr_sint_33__32_AttributeSet (const GALGAS_location & in_location,
-                                                              const GALGAS_sint_33__32_List & in_valueList
-                                                              COMMA_LOCATION_ARGS) :
-cPtr_attributeRange (in_location COMMA_THERE),
-mProperty_valueList (in_valueList) {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor * cPtr_sint_33__32_AttributeSet::classDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_sint_33__32_AttributeSet ;
-}
-
-void cPtr_sint_33__32_AttributeSet::description (C_String & ioString,
-                                                 const int32_t inIndentation) const {
-  ioString << "[@sint32AttributeSet:" ;
-  mProperty_location.description (ioString, inIndentation+1) ;
-  ioString << ", " ;
-  mProperty_valueList.description (ioString, inIndentation+1) ;
-  ioString << "]" ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-acPtr_class * cPtr_sint_33__32_AttributeSet::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_sint_33__32_AttributeSet (mProperty_location, mProperty_valueList COMMA_THERE)) ;
-  return ptr ;
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//     @sint32AttributeSet generic code implementation
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_sint_33__32_AttributeSet ("sint32AttributeSet",
-                                                 & kTypeDescriptor_GALGAS_attributeRange) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor * GALGAS_sint_33__32_AttributeSet::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_sint_33__32_AttributeSet ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-AC_GALGAS_root * GALGAS_sint_33__32_AttributeSet::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_sint_33__32_AttributeSet (*this)) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_sint_33__32_AttributeSet GALGAS_sint_33__32_AttributeSet::extractObject (const GALGAS_object & inObject,
-                                                                                C_Compiler * inCompiler
-                                                                                COMMA_LOCATION_ARGS) {
-  GALGAS_sint_33__32_AttributeSet result ;
-  const GALGAS_sint_33__32_AttributeSet * p = (const GALGAS_sint_33__32_AttributeSet *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_sint_33__32_AttributeSet *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("sint32AttributeSet", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//   Object comparison                                                                           
-//----------------------------------------------------------------------------------------------------------------------
-
-typeComparisonResult cPtr_sint_36__34_AttributeSet::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
-  typeComparisonResult result = kOperandEqual ;
-  const cPtr_sint_36__34_AttributeSet * p = (const cPtr_sint_36__34_AttributeSet *) inOperandPtr ;
-  macroValidSharedObject (p, cPtr_sint_36__34_AttributeSet) ;
-  if (kOperandEqual == result) {
-    result = mProperty_location.objectCompare (p->mProperty_location) ;
-  }
-  if (kOperandEqual == result) {
-    result = mProperty_valueList.objectCompare (p->mProperty_valueList) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-
-typeComparisonResult GALGAS_sint_36__34_AttributeSet::objectCompare (const GALGAS_sint_36__34_AttributeSet & inOperand) const {
-  typeComparisonResult result = kOperandNotValid ;
-  if (isValid () && inOperand.isValid ()) {
-    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
-    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
-    if (mySlot < operandSlot) {
-      result = kFirstOperandLowerThanSecond ;
-    }else if (mySlot > operandSlot) {
-      result = kFirstOperandGreaterThanSecond ;
-    }else{
-      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
-    }
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_sint_36__34_AttributeSet::GALGAS_sint_36__34_AttributeSet (void) :
-GALGAS_attributeRange () {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_sint_36__34_AttributeSet GALGAS_sint_36__34_AttributeSet::constructor_default (LOCATION_ARGS) {
-  return GALGAS_sint_36__34_AttributeSet::constructor_new (GALGAS_location::constructor_nowhere (HERE),
-                                                           GALGAS_sint_36__34_List::constructor_emptyList (HERE)
-                                                           COMMA_THERE) ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_sint_36__34_AttributeSet::GALGAS_sint_36__34_AttributeSet (const cPtr_sint_36__34_AttributeSet * inSourcePtr) :
-GALGAS_attributeRange (inSourcePtr) {
-  macroNullOrValidSharedObject (inSourcePtr, cPtr_sint_36__34_AttributeSet) ;
-}
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_sint_36__34_AttributeSet GALGAS_sint_36__34_AttributeSet::constructor_new (const GALGAS_location & inAttribute_location,
-                                                                                  const GALGAS_sint_36__34_List & inAttribute_valueList
-                                                                                  COMMA_LOCATION_ARGS) {
-  GALGAS_sint_36__34_AttributeSet result ;
-  if (inAttribute_location.isValid () && inAttribute_valueList.isValid ()) {
-    macroMyNew (result.mObjectPtr, cPtr_sint_36__34_AttributeSet (inAttribute_location, inAttribute_valueList COMMA_THERE)) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_sint_36__34_List GALGAS_sint_36__34_AttributeSet::readProperty_valueList (void) const {
-  if (NULL == mObjectPtr) {
-    return GALGAS_sint_36__34_List () ;
-  }else{
-    const cPtr_sint_36__34_AttributeSet * p = (const cPtr_sint_36__34_AttributeSet *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_sint_36__34_AttributeSet) ;
-    return p->mProperty_valueList ;
-  }
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_sint_36__34_List cPtr_sint_36__34_AttributeSet::getter_valueList (UNUSED_LOCATION_ARGS) const {
-  return mProperty_valueList ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void GALGAS_sint_36__34_AttributeSet::setter_setValueList (GALGAS_sint_36__34_List inValue
-                                                           COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
-    insulate (THERE) ;
-    cPtr_sint_36__34_AttributeSet * p = (cPtr_sint_36__34_AttributeSet *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_sint_36__34_AttributeSet) ;
-    p->mProperty_valueList = inValue ;
-  }
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void cPtr_sint_36__34_AttributeSet::setter_setValueList (GALGAS_sint_36__34_List inValue
-                                                         COMMA_UNUSED_LOCATION_ARGS) {
-  mProperty_valueList = inValue ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//Pointer class for @sint64AttributeSet class
-//----------------------------------------------------------------------------------------------------------------------
-
-cPtr_sint_36__34_AttributeSet::cPtr_sint_36__34_AttributeSet (const GALGAS_location & in_location,
-                                                              const GALGAS_sint_36__34_List & in_valueList
-                                                              COMMA_LOCATION_ARGS) :
-cPtr_attributeRange (in_location COMMA_THERE),
-mProperty_valueList (in_valueList) {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor * cPtr_sint_36__34_AttributeSet::classDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_sint_36__34_AttributeSet ;
-}
-
-void cPtr_sint_36__34_AttributeSet::description (C_String & ioString,
-                                                 const int32_t inIndentation) const {
-  ioString << "[@sint64AttributeSet:" ;
-  mProperty_location.description (ioString, inIndentation+1) ;
-  ioString << ", " ;
-  mProperty_valueList.description (ioString, inIndentation+1) ;
-  ioString << "]" ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-acPtr_class * cPtr_sint_36__34_AttributeSet::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_sint_36__34_AttributeSet (mProperty_location, mProperty_valueList COMMA_THERE)) ;
-  return ptr ;
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//     @sint64AttributeSet generic code implementation
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_sint_36__34_AttributeSet ("sint64AttributeSet",
-                                                 & kTypeDescriptor_GALGAS_attributeRange) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor * GALGAS_sint_36__34_AttributeSet::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_sint_36__34_AttributeSet ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-AC_GALGAS_root * GALGAS_sint_36__34_AttributeSet::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_sint_36__34_AttributeSet (*this)) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_sint_36__34_AttributeSet GALGAS_sint_36__34_AttributeSet::extractObject (const GALGAS_object & inObject,
-                                                                                C_Compiler * inCompiler
-                                                                                COMMA_LOCATION_ARGS) {
-  GALGAS_sint_36__34_AttributeSet result ;
-  const GALGAS_sint_36__34_AttributeSet * p = (const GALGAS_sint_36__34_AttributeSet *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_sint_36__34_AttributeSet *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("sint64AttributeSet", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//   Object comparison                                                                           
-//----------------------------------------------------------------------------------------------------------------------
-
-typeComparisonResult cPtr_floatAttributeSet::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
-  typeComparisonResult result = kOperandEqual ;
-  const cPtr_floatAttributeSet * p = (const cPtr_floatAttributeSet *) inOperandPtr ;
-  macroValidSharedObject (p, cPtr_floatAttributeSet) ;
-  if (kOperandEqual == result) {
-    result = mProperty_location.objectCompare (p->mProperty_location) ;
-  }
-  if (kOperandEqual == result) {
-    result = mProperty_valueList.objectCompare (p->mProperty_valueList) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-
-typeComparisonResult GALGAS_floatAttributeSet::objectCompare (const GALGAS_floatAttributeSet & inOperand) const {
-  typeComparisonResult result = kOperandNotValid ;
-  if (isValid () && inOperand.isValid ()) {
-    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
-    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
-    if (mySlot < operandSlot) {
-      result = kFirstOperandLowerThanSecond ;
-    }else if (mySlot > operandSlot) {
-      result = kFirstOperandGreaterThanSecond ;
-    }else{
-      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
-    }
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_floatAttributeSet::GALGAS_floatAttributeSet (void) :
-GALGAS_attributeRange () {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_floatAttributeSet GALGAS_floatAttributeSet::constructor_default (LOCATION_ARGS) {
-  return GALGAS_floatAttributeSet::constructor_new (GALGAS_location::constructor_nowhere (HERE),
-                                                    GALGAS_floatList::constructor_emptyList (HERE)
-                                                    COMMA_THERE) ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_floatAttributeSet::GALGAS_floatAttributeSet (const cPtr_floatAttributeSet * inSourcePtr) :
-GALGAS_attributeRange (inSourcePtr) {
-  macroNullOrValidSharedObject (inSourcePtr, cPtr_floatAttributeSet) ;
-}
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_floatAttributeSet GALGAS_floatAttributeSet::constructor_new (const GALGAS_location & inAttribute_location,
-                                                                    const GALGAS_floatList & inAttribute_valueList
-                                                                    COMMA_LOCATION_ARGS) {
-  GALGAS_floatAttributeSet result ;
-  if (inAttribute_location.isValid () && inAttribute_valueList.isValid ()) {
-    macroMyNew (result.mObjectPtr, cPtr_floatAttributeSet (inAttribute_location, inAttribute_valueList COMMA_THERE)) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_floatList GALGAS_floatAttributeSet::readProperty_valueList (void) const {
-  if (NULL == mObjectPtr) {
-    return GALGAS_floatList () ;
-  }else{
-    const cPtr_floatAttributeSet * p = (const cPtr_floatAttributeSet *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_floatAttributeSet) ;
-    return p->mProperty_valueList ;
-  }
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_floatList cPtr_floatAttributeSet::getter_valueList (UNUSED_LOCATION_ARGS) const {
-  return mProperty_valueList ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void GALGAS_floatAttributeSet::setter_setValueList (GALGAS_floatList inValue
-                                                    COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
-    insulate (THERE) ;
-    cPtr_floatAttributeSet * p = (cPtr_floatAttributeSet *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_floatAttributeSet) ;
-    p->mProperty_valueList = inValue ;
-  }
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void cPtr_floatAttributeSet::setter_setValueList (GALGAS_floatList inValue
-                                                  COMMA_UNUSED_LOCATION_ARGS) {
-  mProperty_valueList = inValue ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//Pointer class for @floatAttributeSet class
-//----------------------------------------------------------------------------------------------------------------------
-
-cPtr_floatAttributeSet::cPtr_floatAttributeSet (const GALGAS_location & in_location,
-                                                const GALGAS_floatList & in_valueList
-                                                COMMA_LOCATION_ARGS) :
-cPtr_attributeRange (in_location COMMA_THERE),
-mProperty_valueList (in_valueList) {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor * cPtr_floatAttributeSet::classDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_floatAttributeSet ;
-}
-
-void cPtr_floatAttributeSet::description (C_String & ioString,
-                                          const int32_t inIndentation) const {
-  ioString << "[@floatAttributeSet:" ;
-  mProperty_location.description (ioString, inIndentation+1) ;
-  ioString << ", " ;
-  mProperty_valueList.description (ioString, inIndentation+1) ;
-  ioString << "]" ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-acPtr_class * cPtr_floatAttributeSet::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_floatAttributeSet (mProperty_location, mProperty_valueList COMMA_THERE)) ;
-  return ptr ;
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//     @floatAttributeSet generic code implementation
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_floatAttributeSet ("floatAttributeSet",
-                                          & kTypeDescriptor_GALGAS_attributeRange) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-const C_galgas_type_descriptor * GALGAS_floatAttributeSet::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_floatAttributeSet ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-AC_GALGAS_root * GALGAS_floatAttributeSet::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_floatAttributeSet (*this)) ;
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-GALGAS_floatAttributeSet GALGAS_floatAttributeSet::extractObject (const GALGAS_object & inObject,
-                                                                  C_Compiler * inCompiler
-                                                                  COMMA_LOCATION_ARGS) {
-  GALGAS_floatAttributeSet result ;
-  const GALGAS_floatAttributeSet * p = (const GALGAS_floatAttributeSet *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_floatAttributeSet *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("floatAttributeSet", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
 //   Object comparison                                                                           
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1154,7 +83,7 @@ GALGAS_uint_33__32_AttributeMinMax GALGAS_uint_33__32_AttributeMinMax::construct
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint GALGAS_uint_33__32_AttributeMinMax::readProperty_min (void) const {
-  if (NULL == mObjectPtr) {
+  if (nullptr == mObjectPtr) {
     return GALGAS_uint () ;
   }else{
     const cPtr_uint_33__32_AttributeMinMax * p = (const cPtr_uint_33__32_AttributeMinMax *) mObjectPtr ;
@@ -1172,7 +101,7 @@ GALGAS_uint cPtr_uint_33__32_AttributeMinMax::getter_min (UNUSED_LOCATION_ARGS) 
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint GALGAS_uint_33__32_AttributeMinMax::readProperty_max (void) const {
-  if (NULL == mObjectPtr) {
+  if (nullptr == mObjectPtr) {
     return GALGAS_uint () ;
   }else{
     const cPtr_uint_33__32_AttributeMinMax * p = (const cPtr_uint_33__32_AttributeMinMax *) mObjectPtr ;
@@ -1191,7 +120,7 @@ GALGAS_uint cPtr_uint_33__32_AttributeMinMax::getter_max (UNUSED_LOCATION_ARGS) 
 
 void GALGAS_uint_33__32_AttributeMinMax::setter_setMin (GALGAS_uint inValue
                                                         COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
+  if (nullptr != mObjectPtr) {
     insulate (THERE) ;
     cPtr_uint_33__32_AttributeMinMax * p = (cPtr_uint_33__32_AttributeMinMax *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_uint_33__32_AttributeMinMax) ;
@@ -1210,7 +139,7 @@ void cPtr_uint_33__32_AttributeMinMax::setter_setMin (GALGAS_uint inValue
 
 void GALGAS_uint_33__32_AttributeMinMax::setter_setMax (GALGAS_uint inValue
                                                         COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
+  if (nullptr != mObjectPtr) {
     insulate (THERE) ;
     cPtr_uint_33__32_AttributeMinMax * p = (cPtr_uint_33__32_AttributeMinMax *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_uint_33__32_AttributeMinMax) ;
@@ -1258,7 +187,7 @@ void cPtr_uint_33__32_AttributeMinMax::description (C_String & ioString,
 //----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_uint_33__32_AttributeMinMax::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
+  acPtr_class * ptr = nullptr ;
   macroMyNew (ptr, cPtr_uint_33__32_AttributeMinMax (mProperty_location, mProperty_min, mProperty_max COMMA_THERE)) ;
   return ptr ;
 }
@@ -1283,7 +212,7 @@ const C_galgas_type_descriptor * GALGAS_uint_33__32_AttributeMinMax::staticTypeD
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_uint_33__32_AttributeMinMax::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_uint_33__32_AttributeMinMax (*this)) ;
   }
@@ -1297,8 +226,8 @@ GALGAS_uint_33__32_AttributeMinMax GALGAS_uint_33__32_AttributeMinMax::extractOb
                                                                                       COMMA_LOCATION_ARGS) {
   GALGAS_uint_33__32_AttributeMinMax result ;
   const GALGAS_uint_33__32_AttributeMinMax * p = (const GALGAS_uint_33__32_AttributeMinMax *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_uint_33__32_AttributeMinMax *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_uint_33__32_AttributeMinMax *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("uint32AttributeMinMax", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -1383,7 +312,7 @@ GALGAS_uint_36__34_AttributeMinMax GALGAS_uint_36__34_AttributeMinMax::construct
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint_36__34_ GALGAS_uint_36__34_AttributeMinMax::readProperty_min (void) const {
-  if (NULL == mObjectPtr) {
+  if (nullptr == mObjectPtr) {
     return GALGAS_uint_36__34_ () ;
   }else{
     const cPtr_uint_36__34_AttributeMinMax * p = (const cPtr_uint_36__34_AttributeMinMax *) mObjectPtr ;
@@ -1401,7 +330,7 @@ GALGAS_uint_36__34_ cPtr_uint_36__34_AttributeMinMax::getter_min (UNUSED_LOCATIO
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint_36__34_ GALGAS_uint_36__34_AttributeMinMax::readProperty_max (void) const {
-  if (NULL == mObjectPtr) {
+  if (nullptr == mObjectPtr) {
     return GALGAS_uint_36__34_ () ;
   }else{
     const cPtr_uint_36__34_AttributeMinMax * p = (const cPtr_uint_36__34_AttributeMinMax *) mObjectPtr ;
@@ -1420,7 +349,7 @@ GALGAS_uint_36__34_ cPtr_uint_36__34_AttributeMinMax::getter_max (UNUSED_LOCATIO
 
 void GALGAS_uint_36__34_AttributeMinMax::setter_setMin (GALGAS_uint_36__34_ inValue
                                                         COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
+  if (nullptr != mObjectPtr) {
     insulate (THERE) ;
     cPtr_uint_36__34_AttributeMinMax * p = (cPtr_uint_36__34_AttributeMinMax *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_uint_36__34_AttributeMinMax) ;
@@ -1439,7 +368,7 @@ void cPtr_uint_36__34_AttributeMinMax::setter_setMin (GALGAS_uint_36__34_ inValu
 
 void GALGAS_uint_36__34_AttributeMinMax::setter_setMax (GALGAS_uint_36__34_ inValue
                                                         COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
+  if (nullptr != mObjectPtr) {
     insulate (THERE) ;
     cPtr_uint_36__34_AttributeMinMax * p = (cPtr_uint_36__34_AttributeMinMax *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_uint_36__34_AttributeMinMax) ;
@@ -1487,7 +416,7 @@ void cPtr_uint_36__34_AttributeMinMax::description (C_String & ioString,
 //----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_uint_36__34_AttributeMinMax::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
+  acPtr_class * ptr = nullptr ;
   macroMyNew (ptr, cPtr_uint_36__34_AttributeMinMax (mProperty_location, mProperty_min, mProperty_max COMMA_THERE)) ;
   return ptr ;
 }
@@ -1512,7 +441,7 @@ const C_galgas_type_descriptor * GALGAS_uint_36__34_AttributeMinMax::staticTypeD
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_uint_36__34_AttributeMinMax::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_uint_36__34_AttributeMinMax (*this)) ;
   }
@@ -1526,8 +455,8 @@ GALGAS_uint_36__34_AttributeMinMax GALGAS_uint_36__34_AttributeMinMax::extractOb
                                                                                       COMMA_LOCATION_ARGS) {
   GALGAS_uint_36__34_AttributeMinMax result ;
   const GALGAS_uint_36__34_AttributeMinMax * p = (const GALGAS_uint_36__34_AttributeMinMax *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_uint_36__34_AttributeMinMax *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_uint_36__34_AttributeMinMax *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("uint64AttributeMinMax", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -1612,7 +541,7 @@ GALGAS_sint_33__32_AttributeMinMax GALGAS_sint_33__32_AttributeMinMax::construct
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sint GALGAS_sint_33__32_AttributeMinMax::readProperty_min (void) const {
-  if (NULL == mObjectPtr) {
+  if (nullptr == mObjectPtr) {
     return GALGAS_sint () ;
   }else{
     const cPtr_sint_33__32_AttributeMinMax * p = (const cPtr_sint_33__32_AttributeMinMax *) mObjectPtr ;
@@ -1630,7 +559,7 @@ GALGAS_sint cPtr_sint_33__32_AttributeMinMax::getter_min (UNUSED_LOCATION_ARGS) 
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sint GALGAS_sint_33__32_AttributeMinMax::readProperty_max (void) const {
-  if (NULL == mObjectPtr) {
+  if (nullptr == mObjectPtr) {
     return GALGAS_sint () ;
   }else{
     const cPtr_sint_33__32_AttributeMinMax * p = (const cPtr_sint_33__32_AttributeMinMax *) mObjectPtr ;
@@ -1649,7 +578,7 @@ GALGAS_sint cPtr_sint_33__32_AttributeMinMax::getter_max (UNUSED_LOCATION_ARGS) 
 
 void GALGAS_sint_33__32_AttributeMinMax::setter_setMin (GALGAS_sint inValue
                                                         COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
+  if (nullptr != mObjectPtr) {
     insulate (THERE) ;
     cPtr_sint_33__32_AttributeMinMax * p = (cPtr_sint_33__32_AttributeMinMax *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_sint_33__32_AttributeMinMax) ;
@@ -1668,7 +597,7 @@ void cPtr_sint_33__32_AttributeMinMax::setter_setMin (GALGAS_sint inValue
 
 void GALGAS_sint_33__32_AttributeMinMax::setter_setMax (GALGAS_sint inValue
                                                         COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
+  if (nullptr != mObjectPtr) {
     insulate (THERE) ;
     cPtr_sint_33__32_AttributeMinMax * p = (cPtr_sint_33__32_AttributeMinMax *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_sint_33__32_AttributeMinMax) ;
@@ -1716,7 +645,7 @@ void cPtr_sint_33__32_AttributeMinMax::description (C_String & ioString,
 //----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_sint_33__32_AttributeMinMax::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
+  acPtr_class * ptr = nullptr ;
   macroMyNew (ptr, cPtr_sint_33__32_AttributeMinMax (mProperty_location, mProperty_min, mProperty_max COMMA_THERE)) ;
   return ptr ;
 }
@@ -1741,7 +670,7 @@ const C_galgas_type_descriptor * GALGAS_sint_33__32_AttributeMinMax::staticTypeD
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_sint_33__32_AttributeMinMax::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_sint_33__32_AttributeMinMax (*this)) ;
   }
@@ -1755,8 +684,8 @@ GALGAS_sint_33__32_AttributeMinMax GALGAS_sint_33__32_AttributeMinMax::extractOb
                                                                                       COMMA_LOCATION_ARGS) {
   GALGAS_sint_33__32_AttributeMinMax result ;
   const GALGAS_sint_33__32_AttributeMinMax * p = (const GALGAS_sint_33__32_AttributeMinMax *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_sint_33__32_AttributeMinMax *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_sint_33__32_AttributeMinMax *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("sint32AttributeMinMax", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -1841,7 +770,7 @@ GALGAS_sint_36__34_AttributeMinMax GALGAS_sint_36__34_AttributeMinMax::construct
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sint_36__34_ GALGAS_sint_36__34_AttributeMinMax::readProperty_min (void) const {
-  if (NULL == mObjectPtr) {
+  if (nullptr == mObjectPtr) {
     return GALGAS_sint_36__34_ () ;
   }else{
     const cPtr_sint_36__34_AttributeMinMax * p = (const cPtr_sint_36__34_AttributeMinMax *) mObjectPtr ;
@@ -1859,7 +788,7 @@ GALGAS_sint_36__34_ cPtr_sint_36__34_AttributeMinMax::getter_min (UNUSED_LOCATIO
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sint_36__34_ GALGAS_sint_36__34_AttributeMinMax::readProperty_max (void) const {
-  if (NULL == mObjectPtr) {
+  if (nullptr == mObjectPtr) {
     return GALGAS_sint_36__34_ () ;
   }else{
     const cPtr_sint_36__34_AttributeMinMax * p = (const cPtr_sint_36__34_AttributeMinMax *) mObjectPtr ;
@@ -1878,7 +807,7 @@ GALGAS_sint_36__34_ cPtr_sint_36__34_AttributeMinMax::getter_max (UNUSED_LOCATIO
 
 void GALGAS_sint_36__34_AttributeMinMax::setter_setMin (GALGAS_sint_36__34_ inValue
                                                         COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
+  if (nullptr != mObjectPtr) {
     insulate (THERE) ;
     cPtr_sint_36__34_AttributeMinMax * p = (cPtr_sint_36__34_AttributeMinMax *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_sint_36__34_AttributeMinMax) ;
@@ -1897,7 +826,7 @@ void cPtr_sint_36__34_AttributeMinMax::setter_setMin (GALGAS_sint_36__34_ inValu
 
 void GALGAS_sint_36__34_AttributeMinMax::setter_setMax (GALGAS_sint_36__34_ inValue
                                                         COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
+  if (nullptr != mObjectPtr) {
     insulate (THERE) ;
     cPtr_sint_36__34_AttributeMinMax * p = (cPtr_sint_36__34_AttributeMinMax *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_sint_36__34_AttributeMinMax) ;
@@ -1945,7 +874,7 @@ void cPtr_sint_36__34_AttributeMinMax::description (C_String & ioString,
 //----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_sint_36__34_AttributeMinMax::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
+  acPtr_class * ptr = nullptr ;
   macroMyNew (ptr, cPtr_sint_36__34_AttributeMinMax (mProperty_location, mProperty_min, mProperty_max COMMA_THERE)) ;
   return ptr ;
 }
@@ -1970,7 +899,7 @@ const C_galgas_type_descriptor * GALGAS_sint_36__34_AttributeMinMax::staticTypeD
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_sint_36__34_AttributeMinMax::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_sint_36__34_AttributeMinMax (*this)) ;
   }
@@ -1984,8 +913,8 @@ GALGAS_sint_36__34_AttributeMinMax GALGAS_sint_36__34_AttributeMinMax::extractOb
                                                                                       COMMA_LOCATION_ARGS) {
   GALGAS_sint_36__34_AttributeMinMax result ;
   const GALGAS_sint_36__34_AttributeMinMax * p = (const GALGAS_sint_36__34_AttributeMinMax *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_sint_36__34_AttributeMinMax *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_sint_36__34_AttributeMinMax *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("sint64AttributeMinMax", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -2070,7 +999,7 @@ GALGAS_floatAttributeMinMax GALGAS_floatAttributeMinMax::constructor_new (const 
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_double GALGAS_floatAttributeMinMax::readProperty_min (void) const {
-  if (NULL == mObjectPtr) {
+  if (nullptr == mObjectPtr) {
     return GALGAS_double () ;
   }else{
     const cPtr_floatAttributeMinMax * p = (const cPtr_floatAttributeMinMax *) mObjectPtr ;
@@ -2088,7 +1017,7 @@ GALGAS_double cPtr_floatAttributeMinMax::getter_min (UNUSED_LOCATION_ARGS) const
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_double GALGAS_floatAttributeMinMax::readProperty_max (void) const {
-  if (NULL == mObjectPtr) {
+  if (nullptr == mObjectPtr) {
     return GALGAS_double () ;
   }else{
     const cPtr_floatAttributeMinMax * p = (const cPtr_floatAttributeMinMax *) mObjectPtr ;
@@ -2107,7 +1036,7 @@ GALGAS_double cPtr_floatAttributeMinMax::getter_max (UNUSED_LOCATION_ARGS) const
 
 void GALGAS_floatAttributeMinMax::setter_setMin (GALGAS_double inValue
                                                  COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
+  if (nullptr != mObjectPtr) {
     insulate (THERE) ;
     cPtr_floatAttributeMinMax * p = (cPtr_floatAttributeMinMax *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_floatAttributeMinMax) ;
@@ -2126,7 +1055,7 @@ void cPtr_floatAttributeMinMax::setter_setMin (GALGAS_double inValue
 
 void GALGAS_floatAttributeMinMax::setter_setMax (GALGAS_double inValue
                                                  COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
+  if (nullptr != mObjectPtr) {
     insulate (THERE) ;
     cPtr_floatAttributeMinMax * p = (cPtr_floatAttributeMinMax *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_floatAttributeMinMax) ;
@@ -2174,7 +1103,7 @@ void cPtr_floatAttributeMinMax::description (C_String & ioString,
 //----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_floatAttributeMinMax::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
+  acPtr_class * ptr = nullptr ;
   macroMyNew (ptr, cPtr_floatAttributeMinMax (mProperty_location, mProperty_min, mProperty_max COMMA_THERE)) ;
   return ptr ;
 }
@@ -2199,7 +1128,7 @@ const C_galgas_type_descriptor * GALGAS_floatAttributeMinMax::staticTypeDescript
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_floatAttributeMinMax::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_floatAttributeMinMax (*this)) ;
   }
@@ -2213,8 +1142,8 @@ GALGAS_floatAttributeMinMax GALGAS_floatAttributeMinMax::extractObject (const GA
                                                                         COMMA_LOCATION_ARGS) {
   GALGAS_floatAttributeMinMax result ;
   const GALGAS_floatAttributeMinMax * p = (const GALGAS_floatAttributeMinMax *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_floatAttributeMinMax *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_floatAttributeMinMax *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("floatAttributeMinMax", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -2268,13 +1197,13 @@ mObject (inElement.mProperty_location) {
 //----------------------------------------------------------------------------------------------------------------------
 
 bool cCollectionElement_locationList::isValid (void) const {
-  return true ; // return mObject.isValid () ;
+  return true ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 cCollectionElement * cCollectionElement_locationList::copy (void) {
-  cCollectionElement * result = NULL ;
+  cCollectionElement * result = nullptr ;
   macroMyNew (result, cCollectionElement_locationList (mObject.mProperty_location COMMA_HERE)) ;
   return result ;
 }
@@ -2333,7 +1262,7 @@ GALGAS_locationList GALGAS_locationList::constructor_listWithValue (const GALGAS
 void GALGAS_locationList::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                      const GALGAS_location & in_location
                                                      COMMA_LOCATION_ARGS) {
-  cCollectionElement_locationList * p = NULL ;
+  cCollectionElement_locationList * p = nullptr ;
   macroMyNew (p, cCollectionElement_locationList (in_location COMMA_THERE)) ;
   outAttributes.setPointer (p) ;
   macroDetachSharedObject (p) ;
@@ -2345,7 +1274,7 @@ void GALGAS_locationList::addAssign_operation (const GALGAS_location & inOperand
                                                COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inOperand0.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_locationList (inOperand0 COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -2364,7 +1293,7 @@ void GALGAS_locationList::setter_append (GALGAS_locationList_2D_element inElemen
                                          COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inElement.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_locationList (inElement COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -2384,7 +1313,7 @@ void GALGAS_locationList::setter_insertAtIndex (const GALGAS_location inOperand0
                                                 COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inInsertionIndex.isValid () && inOperand0.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_locationList (inOperand0 COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -2407,7 +1336,7 @@ void GALGAS_locationList::setter_removeAtIndex (GALGAS_location & outOperand0,
       capCollectionElement attributes ;
       removeObjectAtIndex (attributes, inRemoveIndex.uintValue (), inCompiler COMMA_THERE) ;
       cCollectionElement_locationList * p = (cCollectionElement_locationList *) attributes.ptr () ;
-      if (NULL == p) {
+      if (nullptr == p) {
         outOperand0.drop () ;
         drop () ;
       }else{
@@ -2431,7 +1360,7 @@ void GALGAS_locationList::setter_popFirst (GALGAS_location & outOperand0,
   capCollectionElement attributes ;
   removeFirstObject (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_locationList * p = (cCollectionElement_locationList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_locationList) ;
@@ -2447,7 +1376,7 @@ void GALGAS_locationList::setter_popLast (GALGAS_location & outOperand0,
   capCollectionElement attributes ;
   removeLastObject (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_locationList * p = (cCollectionElement_locationList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_locationList) ;
@@ -2463,7 +1392,7 @@ void GALGAS_locationList::method_first (GALGAS_location & outOperand0,
   capCollectionElement attributes ;
   readFirst (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_locationList * p = (cCollectionElement_locationList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_locationList) ;
@@ -2479,7 +1408,7 @@ void GALGAS_locationList::method_last (GALGAS_location & outOperand0,
   capCollectionElement attributes ;
   readLast (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_locationList * p = (cCollectionElement_locationList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_locationList) ;
@@ -2545,7 +1474,7 @@ void GALGAS_locationList::setter_setLocationAtIndex (GALGAS_location inOperand,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) {
   cCollectionElement_locationList * p = (cCollectionElement_locationList *) uniquelyReferencedPointerAtIndex (inIndex, inCompiler COMMA_THERE) ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cCollectionElement_locationList) ;
     macroUniqueSharedObject (p) ;
     p->mObject.mProperty_location = inOperand ;
@@ -2560,7 +1489,7 @@ GALGAS_location GALGAS_locationList::getter_locationAtIndex (const GALGAS_uint &
   capCollectionElement attributes = readObjectAtIndex (inIndex, inCompiler COMMA_THERE) ;
   cCollectionElement_locationList * p = (cCollectionElement_locationList *) attributes.ptr () ;
   GALGAS_location result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cCollectionElement_locationList) ;
     result = p->mObject.mProperty_location ;
   }
@@ -2605,7 +1534,7 @@ GALGAS_location cEnumerator_locationList::current_location (LOCATION_ARGS) const
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_locationList ("locationList",
-                                     NULL) ;
+                                     nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -2616,7 +1545,7 @@ const C_galgas_type_descriptor * GALGAS_locationList::staticTypeDescriptor (void
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_locationList::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_locationList (*this)) ;
   }
@@ -2630,8 +1559,8 @@ GALGAS_locationList GALGAS_locationList::extractObject (const GALGAS_object & in
                                                         COMMA_LOCATION_ARGS) {
   GALGAS_locationList result ;
   const GALGAS_locationList * p = (const GALGAS_locationList *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_locationList *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_locationList *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("locationList", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -2658,7 +1587,7 @@ bool cMapElement_implementationObjectMap::isValid (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapElement * cMapElement_implementationObjectMap::copy (void) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   macroMyNew (result, cMapElement_implementationObjectMap (mProperty_lkey, mProperty_type COMMA_HERE)) ;
   return result ;
 }
@@ -2734,7 +1663,7 @@ void GALGAS_implementationObjectMap::addAssign_operation (const GALGAS_lstring &
                                                           const GALGAS_impType & inArgument0,
                                                           C_Compiler * inCompiler
                                                           COMMA_LOCATION_ARGS) {
-  cMapElement_implementationObjectMap * p = NULL ;
+  cMapElement_implementationObjectMap * p = nullptr ;
   macroMyNew (p, cMapElement_implementationObjectMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -2764,7 +1693,7 @@ void GALGAS_implementationObjectMap::setter_put (GALGAS_lstring inKey,
                                                  GALGAS_impType inArgument0,
                                                  C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) {
-  cMapElement_implementationObjectMap * p = NULL ;
+  cMapElement_implementationObjectMap * p = nullptr ;
   macroMyNew (p, cMapElement_implementationObjectMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -2788,7 +1717,7 @@ void GALGAS_implementationObjectMap::method_get (GALGAS_lstring inKey,
                                                                                                                inCompiler,
                                                                                                                kSearchErrorMessage_implementationObjectMap_get
                                                                                                                COMMA_THERE) ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_implementationObjectMap) ;
@@ -2806,7 +1735,7 @@ void GALGAS_implementationObjectMap::setter_del (GALGAS_lstring inKey,
   capCollectionElement attributes ;
   performRemove (inKey, attributes, inCompiler, kRemoveErrorMessage COMMA_THERE) ;
   cMapElement_implementationObjectMap * p = (cMapElement_implementationObjectMap *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_implementationObjectMap) ;
@@ -2822,7 +1751,7 @@ GALGAS_impType GALGAS_implementationObjectMap::getter_typeForKey (const GALGAS_s
   const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   const cMapElement_implementationObjectMap * p = (const cMapElement_implementationObjectMap *) attributes ;
   GALGAS_impType result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_implementationObjectMap) ;
     result = p->mProperty_type ;
   }
@@ -2837,7 +1766,7 @@ void GALGAS_implementationObjectMap::setter_setTypeForKey (GALGAS_impType inAttr
                                                            COMMA_LOCATION_ARGS) {
   cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_implementationObjectMap * p = (cMapElement_implementationObjectMap *) attributes ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_implementationObjectMap) ;
     p->mProperty_type = inAttributeValue ;
   }
@@ -2890,7 +1819,7 @@ GALGAS_impType cEnumerator_implementationObjectMap::current_type (LOCATION_ARGS)
 bool GALGAS_implementationObjectMap::optional_searchKey (const GALGAS_string & inKey,
                                                          GALGAS_impType & outArgument0) const {
   const cMapElement_implementationObjectMap * p = (const cMapElement_implementationObjectMap *) searchForKey (inKey) ;
-  const bool result = NULL != p ;
+  const bool result = nullptr != p ;
   if (result) {
     macroValidSharedObject (p, cMapElement_implementationObjectMap) ;
     outArgument0 = p->mProperty_type ;
@@ -2908,7 +1837,7 @@ bool GALGAS_implementationObjectMap::optional_searchKey (const GALGAS_string & i
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_implementationObjectMap ("implementationObjectMap",
-                                                NULL) ;
+                                                nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -2919,7 +1848,7 @@ const C_galgas_type_descriptor * GALGAS_implementationObjectMap::staticTypeDescr
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_implementationObjectMap::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_implementationObjectMap (*this)) ;
   }
@@ -2933,8 +1862,8 @@ GALGAS_implementationObjectMap GALGAS_implementationObjectMap::extractObject (co
                                                                               COMMA_LOCATION_ARGS) {
   GALGAS_implementationObjectMap result ;
   const GALGAS_implementationObjectMap * p = (const GALGAS_implementationObjectMap *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_implementationObjectMap *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_implementationObjectMap *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("implementationObjectMap", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -2961,7 +1890,7 @@ bool cMapElement_enumValues::isValid (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapElement * cMapElement_enumValues::copy (void) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   macroMyNew (result, cMapElement_enumValues (mProperty_lkey, mProperty_subAttributes COMMA_HERE)) ;
   return result ;
 }
@@ -3037,7 +1966,7 @@ void GALGAS_enumValues::addAssign_operation (const GALGAS_lstring & inKey,
                                              const GALGAS_implementationObjectMap & inArgument0,
                                              C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) {
-  cMapElement_enumValues * p = NULL ;
+  cMapElement_enumValues * p = nullptr ;
   macroMyNew (p, cMapElement_enumValues (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -3067,7 +1996,7 @@ void GALGAS_enumValues::setter_put (GALGAS_lstring inKey,
                                     GALGAS_implementationObjectMap inArgument0,
                                     C_Compiler * inCompiler
                                     COMMA_LOCATION_ARGS) {
-  cMapElement_enumValues * p = NULL ;
+  cMapElement_enumValues * p = nullptr ;
   macroMyNew (p, cMapElement_enumValues (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -3091,7 +2020,7 @@ void GALGAS_enumValues::method_get (GALGAS_lstring inKey,
                                                                                      inCompiler,
                                                                                      kSearchErrorMessage_enumValues_get
                                                                                      COMMA_THERE) ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_enumValues) ;
@@ -3109,7 +2038,7 @@ void GALGAS_enumValues::setter_del (GALGAS_lstring inKey,
   capCollectionElement attributes ;
   performRemove (inKey, attributes, inCompiler, kRemoveErrorMessage COMMA_THERE) ;
   cMapElement_enumValues * p = (cMapElement_enumValues *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_enumValues) ;
@@ -3125,7 +2054,7 @@ GALGAS_implementationObjectMap GALGAS_enumValues::getter_subAttributesForKey (co
   const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   const cMapElement_enumValues * p = (const cMapElement_enumValues *) attributes ;
   GALGAS_implementationObjectMap result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_enumValues) ;
     result = p->mProperty_subAttributes ;
   }
@@ -3140,7 +2069,7 @@ void GALGAS_enumValues::setter_setSubAttributesForKey (GALGAS_implementationObje
                                                        COMMA_LOCATION_ARGS) {
   cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_enumValues * p = (cMapElement_enumValues *) attributes ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_enumValues) ;
     p->mProperty_subAttributes = inAttributeValue ;
   }
@@ -3193,7 +2122,7 @@ GALGAS_implementationObjectMap cEnumerator_enumValues::current_subAttributes (LO
 bool GALGAS_enumValues::optional_searchKey (const GALGAS_string & inKey,
                                             GALGAS_implementationObjectMap & outArgument0) const {
   const cMapElement_enumValues * p = (const cMapElement_enumValues *) searchForKey (inKey) ;
-  const bool result = NULL != p ;
+  const bool result = nullptr != p ;
   if (result) {
     macroValidSharedObject (p, cMapElement_enumValues) ;
     outArgument0 = p->mProperty_subAttributes ;
@@ -3211,7 +2140,7 @@ bool GALGAS_enumValues::optional_searchKey (const GALGAS_string & inKey,
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_enumValues ("enumValues",
-                                   NULL) ;
+                                   nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -3222,7 +2151,7 @@ const C_galgas_type_descriptor * GALGAS_enumValues::staticTypeDescriptor (void) 
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_enumValues::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_enumValues (*this)) ;
   }
@@ -3236,8 +2165,8 @@ GALGAS_enumValues GALGAS_enumValues::extractObject (const GALGAS_object & inObje
                                                     COMMA_LOCATION_ARGS) {
   GALGAS_enumValues result ;
   const GALGAS_enumValues * p = (const GALGAS_enumValues *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_enumValues *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_enumValues *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("enumValues", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -3315,7 +2244,7 @@ bool cMapElement_implementationMap::isValid (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapElement * cMapElement_implementationMap::copy (void) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   macroMyNew (result, cMapElement_implementationMap (mProperty_lkey, mProperty_obj COMMA_HERE)) ;
   return result ;
 }
@@ -3391,7 +2320,7 @@ void GALGAS_implementationMap::addAssign_operation (const GALGAS_lstring & inKey
                                                     const GALGAS_implementationObject & inArgument0,
                                                     C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) {
-  cMapElement_implementationMap * p = NULL ;
+  cMapElement_implementationMap * p = nullptr ;
   macroMyNew (p, cMapElement_implementationMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -3421,7 +2350,7 @@ void GALGAS_implementationMap::setter_put (GALGAS_lstring inKey,
                                            GALGAS_implementationObject inArgument0,
                                            C_Compiler * inCompiler
                                            COMMA_LOCATION_ARGS) {
-  cMapElement_implementationMap * p = NULL ;
+  cMapElement_implementationMap * p = nullptr ;
   macroMyNew (p, cMapElement_implementationMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -3445,7 +2374,7 @@ void GALGAS_implementationMap::method_get (GALGAS_lstring inKey,
                                                                                                    inCompiler,
                                                                                                    kSearchErrorMessage_implementationMap_get
                                                                                                    COMMA_THERE) ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_implementationMap) ;
@@ -3463,7 +2392,7 @@ void GALGAS_implementationMap::setter_del (GALGAS_lstring inKey,
   capCollectionElement attributes ;
   performRemove (inKey, attributes, inCompiler, kRemoveErrorMessage COMMA_THERE) ;
   cMapElement_implementationMap * p = (cMapElement_implementationMap *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_implementationMap) ;
@@ -3479,7 +2408,7 @@ GALGAS_implementationObject GALGAS_implementationMap::getter_objForKey (const GA
   const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   const cMapElement_implementationMap * p = (const cMapElement_implementationMap *) attributes ;
   GALGAS_implementationObject result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_implementationMap) ;
     result = p->mProperty_obj ;
   }
@@ -3494,7 +2423,7 @@ void GALGAS_implementationMap::setter_setObjForKey (GALGAS_implementationObject 
                                                     COMMA_LOCATION_ARGS) {
   cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_implementationMap * p = (cMapElement_implementationMap *) attributes ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_implementationMap) ;
     p->mProperty_obj = inAttributeValue ;
   }
@@ -3547,7 +2476,7 @@ GALGAS_implementationObject cEnumerator_implementationMap::current_obj (LOCATION
 bool GALGAS_implementationMap::optional_searchKey (const GALGAS_string & inKey,
                                                    GALGAS_implementationObject & outArgument0) const {
   const cMapElement_implementationMap * p = (const cMapElement_implementationMap *) searchForKey (inKey) ;
-  const bool result = NULL != p ;
+  const bool result = nullptr != p ;
   if (result) {
     macroValidSharedObject (p, cMapElement_implementationMap) ;
     outArgument0 = p->mProperty_obj ;
@@ -3565,7 +2494,7 @@ bool GALGAS_implementationMap::optional_searchKey (const GALGAS_string & inKey,
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_implementationMap ("implementationMap",
-                                          NULL) ;
+                                          nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -3576,7 +2505,7 @@ const C_galgas_type_descriptor * GALGAS_implementationMap::staticTypeDescriptor 
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_implementationMap::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_implementationMap (*this)) ;
   }
@@ -3590,8 +2519,8 @@ GALGAS_implementationMap GALGAS_implementationMap::extractObject (const GALGAS_o
                                                                   COMMA_LOCATION_ARGS) {
   GALGAS_implementationMap result ;
   const GALGAS_implementationMap * p = (const GALGAS_implementationMap *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_implementationMap *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_implementationMap *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("implementationMap", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -3666,7 +2595,7 @@ GALGAS_implementation GALGAS_implementation::constructor_new (const GALGAS_imple
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_implementationMap GALGAS_implementation::readProperty_imp (void) const {
-  if (NULL == mObjectPtr) {
+  if (nullptr == mObjectPtr) {
     return GALGAS_implementationMap () ;
   }else{
     const cPtr_implementation * p = (const cPtr_implementation *) mObjectPtr ;
@@ -3685,7 +2614,7 @@ GALGAS_implementationMap cPtr_implementation::getter_imp (UNUSED_LOCATION_ARGS) 
 
 void GALGAS_implementation::setter_setImp (GALGAS_implementationMap inValue
                                            COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
+  if (nullptr != mObjectPtr) {
     insulate (THERE) ;
     cPtr_implementation * p = (cPtr_implementation *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_implementation) ;
@@ -3726,7 +2655,7 @@ void cPtr_implementation::description (C_String & ioString,
 //----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_implementation::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
+  acPtr_class * ptr = nullptr ;
   macroMyNew (ptr, cPtr_implementation (mProperty_imp COMMA_THERE)) ;
   return ptr ;
 }
@@ -3740,7 +2669,7 @@ acPtr_class * cPtr_implementation::duplicate (LOCATION_ARGS) const {
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_implementation ("implementation",
-                                       NULL) ;
+                                       nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -3751,7 +2680,7 @@ const C_galgas_type_descriptor * GALGAS_implementation::staticTypeDescriptor (vo
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_implementation::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_implementation (*this)) ;
   }
@@ -3765,8 +2694,8 @@ GALGAS_implementation GALGAS_implementation::extractObject (const GALGAS_object 
                                                             COMMA_LOCATION_ARGS) {
   GALGAS_implementation result ;
   const GALGAS_implementation * p = (const GALGAS_implementation *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_implementation *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_implementation *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("implementation", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -4077,53 +3006,22 @@ static const char * gLexicalMessage_options_5F_scanner_unableToConvertToDouble =
 static const char * gLexicalMessage_options_5F_scanner_unterminatedLitteralString = "Unterminated literal string" ;
 
 //----------------------------------------------------------------------------------------------------------------------
-//          Syntax error messages, for every terminal symbol                                     
-//----------------------------------------------------------------------------------------------------------------------
-
-//--- Syntax error message for terminal '$idf$' :
-static const char * gSyntaxErrorMessage_options_5F_scanner_idf = "identifier" ;
-
-//--- Syntax error message for terminal '$string$' :
-static const char * gSyntaxErrorMessage_options_5F_scanner_string = "literal string" ;
-
-//--- Syntax error message for terminal '$uint_number$' :
-static const char * gSyntaxErrorMessage_options_5F_scanner_uint_5F_number = "literal unsigned 64 bits integer" ;
-
-//--- Syntax error message for terminal '$float_number$' :
-static const char * gSyntaxErrorMessage_options_5F_scanner_float_5F_number = "literal float" ;
-
-//--- Syntax error message for terminal '$=$' :
-static const char * gSyntaxErrorMessage_options_5F_scanner__3D_ = "'=' delimiter" ;
-
-//--- Syntax error message for terminal '$,$' :
-static const char * gSyntaxErrorMessage_options_5F_scanner__2C_ = "',' delimiter" ;
-
-//--- Syntax error message for terminal '$-$' :
-static const char * gSyntaxErrorMessage_options_5F_scanner__2D_ = "'-' delimiter" ;
-
-//--- Syntax error message for terminal '$($' :
-static const char * gSyntaxErrorMessage_options_5F_scanner__28_ = "'(' delimiter" ;
-
-//--- Syntax error message for terminal '$)$' :
-static const char * gSyntaxErrorMessage_options_5F_scanner__29_ = "')' delimiter" ;
-
-//----------------------------------------------------------------------------------------------------------------------
 //                getMessageForTerminal                                                          
 //----------------------------------------------------------------------------------------------------------------------
 
-C_String C_Lexique_options_5F_scanner::getMessageForTerminal (const int16_t inTerminalIndex) const {
+C_String C_Lexique_options_5F_scanner::getMessageForTerminal (const int32_t inTerminalIndex) const {
   C_String result = "<unknown>" ;
   if ((inTerminalIndex >= 0) && (inTerminalIndex < 10)) {
     static const char * syntaxErrorMessageArray [10] = {kEndOfSourceLexicalErrorMessage,
-        gSyntaxErrorMessage_options_5F_scanner_idf,
-        gSyntaxErrorMessage_options_5F_scanner_string,
-        gSyntaxErrorMessage_options_5F_scanner_uint_5F_number,
-        gSyntaxErrorMessage_options_5F_scanner_float_5F_number,
-        gSyntaxErrorMessage_options_5F_scanner__3D_,
-        gSyntaxErrorMessage_options_5F_scanner__2C_,
-        gSyntaxErrorMessage_options_5F_scanner__2D_,
-        gSyntaxErrorMessage_options_5F_scanner__28_,
-        gSyntaxErrorMessage_options_5F_scanner__29_
+        "identifier",
+        "literal string",
+        "literal unsigned 64 bits integer",
+        "literal float",
+        "'=' delimiter",
+        "',' delimiter",
+        "'-' delimiter",
+        "'(' delimiter",
+        "')' delimiter"
     } ;
     result = syntaxErrorMessageArray [inTerminalIndex] ;
   }
@@ -4192,7 +3090,7 @@ static const C_unicode_lexique_table_entry ktable_for_options_5F_scanner_options
   C_unicode_lexique_table_entry (kUnicodeString_options_5F_scanner__3D_, 1, C_Lexique_options_5F_scanner::kToken__3D_)
 } ;
 
-int16_t C_Lexique_options_5F_scanner::search_into_optionsDelimiters (const C_String & inSearchedString) {
+int32_t C_Lexique_options_5F_scanner::search_into_optionsDelimiters (const C_String & inSearchedString) {
   return searchInList (inSearchedString, ktable_for_options_5F_scanner_optionsDelimiters, ktable_size_options_5F_scanner_optionsDelimiters) ;
 }
 
@@ -4204,7 +3102,7 @@ int16_t C_Lexique_options_5F_scanner::search_into_optionsDelimiters (const C_Str
 C_String C_Lexique_options_5F_scanner::getCurrentTokenString (const cToken * inTokenPtr) const {
   const cTokenFor_options_5F_scanner * ptr = (const cTokenFor_options_5F_scanner *) inTokenPtr ;
   C_String s ;
-  if (ptr == NULL) {
+  if (ptr == nullptr) {
     s.appendCString("$$") ;
   }else{
     switch (ptr->mTokenCode) {
@@ -4413,7 +3311,7 @@ bool C_Lexique_options_5F_scanner::parseLexicalToken (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_Lexique_options_5F_scanner::enterToken (cTokenFor_options_5F_scanner & ioToken) {
-  cTokenFor_options_5F_scanner * ptr = NULL ;
+  cTokenFor_options_5F_scanner * ptr = nullptr ;
   macroMyNew (ptr, cTokenFor_options_5F_scanner ()) ;
   ptr->mTokenCode = ioToken.mTokenCode ;
   // ptr->mIsOptional = ioToken.mIsOptional ;
@@ -4626,7 +3524,7 @@ bool cMapElement_identifierMap::isValid (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapElement * cMapElement_identifierMap::copy (void) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   macroMyNew (result, cMapElement_identifierMap (mProperty_lkey, mProperty_value COMMA_HERE)) ;
   return result ;
 }
@@ -4702,7 +3600,7 @@ void GALGAS_identifierMap::addAssign_operation (const GALGAS_lstring & inKey,
                                                 const GALGAS_object_5F_t & inArgument0,
                                                 C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) {
-  cMapElement_identifierMap * p = NULL ;
+  cMapElement_identifierMap * p = nullptr ;
   macroMyNew (p, cMapElement_identifierMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -4732,7 +3630,7 @@ void GALGAS_identifierMap::setter_put (GALGAS_lstring inKey,
                                        GALGAS_object_5F_t inArgument0,
                                        C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) {
-  cMapElement_identifierMap * p = NULL ;
+  cMapElement_identifierMap * p = nullptr ;
   macroMyNew (p, cMapElement_identifierMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -4756,7 +3654,7 @@ void GALGAS_identifierMap::method_get (GALGAS_lstring inKey,
                                                                                            inCompiler,
                                                                                            kSearchErrorMessage_identifierMap_get
                                                                                            COMMA_THERE) ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_identifierMap) ;
@@ -4774,7 +3672,7 @@ void GALGAS_identifierMap::setter_del (GALGAS_lstring inKey,
   capCollectionElement attributes ;
   performRemove (inKey, attributes, inCompiler, kRemoveErrorMessage COMMA_THERE) ;
   cMapElement_identifierMap * p = (cMapElement_identifierMap *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_identifierMap) ;
@@ -4790,7 +3688,7 @@ GALGAS_object_5F_t GALGAS_identifierMap::getter_valueForKey (const GALGAS_string
   const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   const cMapElement_identifierMap * p = (const cMapElement_identifierMap *) attributes ;
   GALGAS_object_5F_t result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_identifierMap) ;
     result = p->mProperty_value ;
   }
@@ -4805,7 +3703,7 @@ void GALGAS_identifierMap::setter_setValueForKey (GALGAS_object_5F_t inAttribute
                                                   COMMA_LOCATION_ARGS) {
   cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_identifierMap * p = (cMapElement_identifierMap *) attributes ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_identifierMap) ;
     p->mProperty_value = inAttributeValue ;
   }
@@ -4858,7 +3756,7 @@ GALGAS_object_5F_t cEnumerator_identifierMap::current_value (LOCATION_ARGS) cons
 bool GALGAS_identifierMap::optional_searchKey (const GALGAS_string & inKey,
                                                GALGAS_object_5F_t & outArgument0) const {
   const cMapElement_identifierMap * p = (const cMapElement_identifierMap *) searchForKey (inKey) ;
-  const bool result = NULL != p ;
+  const bool result = nullptr != p ;
   if (result) {
     macroValidSharedObject (p, cMapElement_identifierMap) ;
     outArgument0 = p->mProperty_value ;
@@ -4876,7 +3774,7 @@ bool GALGAS_identifierMap::optional_searchKey (const GALGAS_string & inKey,
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_identifierMap ("identifierMap",
-                                      NULL) ;
+                                      nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -4887,7 +3785,7 @@ const C_galgas_type_descriptor * GALGAS_identifierMap::staticTypeDescriptor (voi
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_identifierMap::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_identifierMap (*this)) ;
   }
@@ -4901,8 +3799,8 @@ GALGAS_identifierMap GALGAS_identifierMap::extractObject (const GALGAS_object & 
                                                           COMMA_LOCATION_ARGS) {
   GALGAS_identifierMap result ;
   const GALGAS_identifierMap * p = (const GALGAS_identifierMap *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_identifierMap *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_identifierMap *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("identifierMap", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -4977,7 +3875,7 @@ GALGAS_objectAttributes GALGAS_objectAttributes::constructor_new (const GALGAS_i
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_identifierMap GALGAS_objectAttributes::readProperty_objectParams (void) const {
-  if (NULL == mObjectPtr) {
+  if (nullptr == mObjectPtr) {
     return GALGAS_identifierMap () ;
   }else{
     const cPtr_objectAttributes * p = (const cPtr_objectAttributes *) mObjectPtr ;
@@ -4996,7 +3894,7 @@ GALGAS_identifierMap cPtr_objectAttributes::getter_objectParams (UNUSED_LOCATION
 
 void GALGAS_objectAttributes::setter_setObjectParams (GALGAS_identifierMap inValue
                                                       COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
+  if (nullptr != mObjectPtr) {
     insulate (THERE) ;
     cPtr_objectAttributes * p = (cPtr_objectAttributes *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_objectAttributes) ;
@@ -5037,7 +3935,7 @@ void cPtr_objectAttributes::description (C_String & ioString,
 //----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_objectAttributes::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
+  acPtr_class * ptr = nullptr ;
   macroMyNew (ptr, cPtr_objectAttributes (mProperty_objectParams COMMA_THERE)) ;
   return ptr ;
 }
@@ -5051,7 +3949,7 @@ acPtr_class * cPtr_objectAttributes::duplicate (LOCATION_ARGS) const {
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_objectAttributes ("objectAttributes",
-                                         NULL) ;
+                                         nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -5062,7 +3960,7 @@ const C_galgas_type_descriptor * GALGAS_objectAttributes::staticTypeDescriptor (
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_objectAttributes::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_objectAttributes (*this)) ;
   }
@@ -5076,8 +3974,8 @@ GALGAS_objectAttributes GALGAS_objectAttributes::extractObject (const GALGAS_obj
                                                                 COMMA_LOCATION_ARGS) {
   GALGAS_objectAttributes result ;
   const GALGAS_objectAttributes * p = (const GALGAS_objectAttributes *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_objectAttributes *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_objectAttributes *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("objectAttributes", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -5098,7 +3996,7 @@ static TC_UniqueArray <extensionSetterSignature_objectAttributes_mergeAttributes
 
 void enterExtensionSetter_mergeAttributes (const int32_t inClassIndex,
                                            extensionSetterSignature_objectAttributes_mergeAttributes inModifier) {
-  gExtensionModifierTable_objectAttributes_mergeAttributes.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
+  gExtensionModifierTable_objectAttributes_mergeAttributes.forceObjectAtIndex (inClassIndex, inModifier, nullptr COMMA_HERE) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5109,23 +4007,23 @@ void callExtensionSetter_mergeAttributes (cPtr_objectAttributes * inObject,
                                           COMMA_LOCATION_ARGS) {
 //--- Drop output arguments
 //--- Find setter
-  if (NULL != inObject) {
+  if (nullptr != inObject) {
     macroValidSharedObject (inObject, cPtr_objectAttributes) ;
     const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
     const int32_t classIndex = info->mSlotID ;
-    extensionSetterSignature_objectAttributes_mergeAttributes f = NULL ;
+    extensionSetterSignature_objectAttributes_mergeAttributes f = nullptr ;
     if (classIndex < gExtensionModifierTable_objectAttributes_mergeAttributes.count ()) {
       f = gExtensionModifierTable_objectAttributes_mergeAttributes (classIndex COMMA_HERE) ;
     }
-    if (NULL == f) {
+    if (nullptr == f) {
        const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
+       while ((nullptr == f) && (nullptr != p)) {
          if (p->mSlotID < gExtensionModifierTable_objectAttributes_mergeAttributes.count ()) {
            f = gExtensionModifierTable_objectAttributes_mergeAttributes (p->mSlotID COMMA_HERE) ;
          }
          p = p->mSuperclassDescriptor ;
        }
-       gExtensionModifierTable_objectAttributes_mergeAttributes.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
+       gExtensionModifierTable_objectAttributes_mergeAttributes.forceObjectAtIndex (classIndex, f, nullptr COMMA_HERE) ;
     }
     f (inObject, in_withAttributes, inCompiler COMMA_THERE) ;
   }
@@ -5230,13 +4128,13 @@ mObject (inElement.mProperty_item) {
 //----------------------------------------------------------------------------------------------------------------------
 
 bool cCollectionElement_identifierList::isValid (void) const {
-  return true ; // return mObject.isValid () ;
+  return true ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 cCollectionElement * cCollectionElement_identifierList::copy (void) {
-  cCollectionElement * result = NULL ;
+  cCollectionElement * result = nullptr ;
   macroMyNew (result, cCollectionElement_identifierList (mObject.mProperty_item COMMA_HERE)) ;
   return result ;
 }
@@ -5295,7 +4193,7 @@ GALGAS_identifierList GALGAS_identifierList::constructor_listWithValue (const GA
 void GALGAS_identifierList::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                        const GALGAS_object_5F_t & in_item
                                                        COMMA_LOCATION_ARGS) {
-  cCollectionElement_identifierList * p = NULL ;
+  cCollectionElement_identifierList * p = nullptr ;
   macroMyNew (p, cCollectionElement_identifierList (in_item COMMA_THERE)) ;
   outAttributes.setPointer (p) ;
   macroDetachSharedObject (p) ;
@@ -5307,7 +4205,7 @@ void GALGAS_identifierList::addAssign_operation (const GALGAS_object_5F_t & inOp
                                                  COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inOperand0.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_identifierList (inOperand0 COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -5326,7 +4224,7 @@ void GALGAS_identifierList::setter_append (GALGAS_identifierList_2D_element inEl
                                            COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inElement.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_identifierList (inElement COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -5346,7 +4244,7 @@ void GALGAS_identifierList::setter_insertAtIndex (const GALGAS_object_5F_t inOpe
                                                   COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inInsertionIndex.isValid () && inOperand0.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_identifierList (inOperand0 COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -5369,7 +4267,7 @@ void GALGAS_identifierList::setter_removeAtIndex (GALGAS_object_5F_t & outOperan
       capCollectionElement attributes ;
       removeObjectAtIndex (attributes, inRemoveIndex.uintValue (), inCompiler COMMA_THERE) ;
       cCollectionElement_identifierList * p = (cCollectionElement_identifierList *) attributes.ptr () ;
-      if (NULL == p) {
+      if (nullptr == p) {
         outOperand0.drop () ;
         drop () ;
       }else{
@@ -5393,7 +4291,7 @@ void GALGAS_identifierList::setter_popFirst (GALGAS_object_5F_t & outOperand0,
   capCollectionElement attributes ;
   removeFirstObject (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_identifierList * p = (cCollectionElement_identifierList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_identifierList) ;
@@ -5409,7 +4307,7 @@ void GALGAS_identifierList::setter_popLast (GALGAS_object_5F_t & outOperand0,
   capCollectionElement attributes ;
   removeLastObject (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_identifierList * p = (cCollectionElement_identifierList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_identifierList) ;
@@ -5425,7 +4323,7 @@ void GALGAS_identifierList::method_first (GALGAS_object_5F_t & outOperand0,
   capCollectionElement attributes ;
   readFirst (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_identifierList * p = (cCollectionElement_identifierList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_identifierList) ;
@@ -5441,7 +4339,7 @@ void GALGAS_identifierList::method_last (GALGAS_object_5F_t & outOperand0,
   capCollectionElement attributes ;
   readLast (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_identifierList * p = (cCollectionElement_identifierList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_identifierList) ;
@@ -5507,7 +4405,7 @@ void GALGAS_identifierList::setter_setItemAtIndex (GALGAS_object_5F_t inOperand,
                                                    C_Compiler * inCompiler
                                                    COMMA_LOCATION_ARGS) {
   cCollectionElement_identifierList * p = (cCollectionElement_identifierList *) uniquelyReferencedPointerAtIndex (inIndex, inCompiler COMMA_THERE) ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cCollectionElement_identifierList) ;
     macroUniqueSharedObject (p) ;
     p->mObject.mProperty_item = inOperand ;
@@ -5522,7 +4420,7 @@ GALGAS_object_5F_t GALGAS_identifierList::getter_itemAtIndex (const GALGAS_uint 
   capCollectionElement attributes = readObjectAtIndex (inIndex, inCompiler COMMA_THERE) ;
   cCollectionElement_identifierList * p = (cCollectionElement_identifierList *) attributes.ptr () ;
   GALGAS_object_5F_t result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cCollectionElement_identifierList) ;
     result = p->mObject.mProperty_item ;
   }
@@ -5567,7 +4465,7 @@ GALGAS_object_5F_t cEnumerator_identifierList::current_item (LOCATION_ARGS) cons
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_identifierList ("identifierList",
-                                       NULL) ;
+                                       nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -5578,7 +4476,7 @@ const C_galgas_type_descriptor * GALGAS_identifierList::staticTypeDescriptor (vo
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_identifierList::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_identifierList (*this)) ;
   }
@@ -5592,8 +4490,8 @@ GALGAS_identifierList GALGAS_identifierList::extractObject (const GALGAS_object 
                                                             COMMA_LOCATION_ARGS) {
   GALGAS_identifierList result ;
   const GALGAS_identifierList * p = (const GALGAS_identifierList *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_identifierList *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_identifierList *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("identifierList", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -5620,7 +4518,7 @@ bool cMapElement_stringMap::isValid (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapElement * cMapElement_stringMap::copy (void) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   macroMyNew (result, cMapElement_stringMap (mProperty_lkey, mProperty_value COMMA_HERE)) ;
   return result ;
 }
@@ -5696,7 +4594,7 @@ void GALGAS_stringMap::addAssign_operation (const GALGAS_lstring & inKey,
                                             const GALGAS_string & inArgument0,
                                             C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) {
-  cMapElement_stringMap * p = NULL ;
+  cMapElement_stringMap * p = nullptr ;
   macroMyNew (p, cMapElement_stringMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -5726,7 +4624,7 @@ void GALGAS_stringMap::setter_put (GALGAS_lstring inKey,
                                    GALGAS_string inArgument0,
                                    C_Compiler * inCompiler
                                    COMMA_LOCATION_ARGS) {
-  cMapElement_stringMap * p = NULL ;
+  cMapElement_stringMap * p = nullptr ;
   macroMyNew (p, cMapElement_stringMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -5750,7 +4648,7 @@ void GALGAS_stringMap::method_get (GALGAS_lstring inKey,
                                                                                    inCompiler,
                                                                                    kSearchErrorMessage_stringMap_get
                                                                                    COMMA_THERE) ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_stringMap) ;
@@ -5766,7 +4664,7 @@ GALGAS_string GALGAS_stringMap::getter_valueForKey (const GALGAS_string & inKey,
   const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   const cMapElement_stringMap * p = (const cMapElement_stringMap *) attributes ;
   GALGAS_string result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_stringMap) ;
     result = p->mProperty_value ;
   }
@@ -5781,7 +4679,7 @@ void GALGAS_stringMap::setter_setValueForKey (GALGAS_string inAttributeValue,
                                               COMMA_LOCATION_ARGS) {
   cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_stringMap * p = (cMapElement_stringMap *) attributes ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_stringMap) ;
     p->mProperty_value = inAttributeValue ;
   }
@@ -5834,7 +4732,7 @@ GALGAS_string cEnumerator_stringMap::current_value (LOCATION_ARGS) const {
 bool GALGAS_stringMap::optional_searchKey (const GALGAS_string & inKey,
                                            GALGAS_string & outArgument0) const {
   const cMapElement_stringMap * p = (const cMapElement_stringMap *) searchForKey (inKey) ;
-  const bool result = NULL != p ;
+  const bool result = nullptr != p ;
   if (result) {
     macroValidSharedObject (p, cMapElement_stringMap) ;
     outArgument0 = p->mProperty_value ;
@@ -5852,7 +4750,7 @@ bool GALGAS_stringMap::optional_searchKey (const GALGAS_string & inKey,
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_stringMap ("stringMap",
-                                  NULL) ;
+                                  nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -5863,7 +4761,7 @@ const C_galgas_type_descriptor * GALGAS_stringMap::staticTypeDescriptor (void) c
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_stringMap::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_stringMap (*this)) ;
   }
@@ -5877,8 +4775,8 @@ GALGAS_stringMap GALGAS_stringMap::extractObject (const GALGAS_object & inObject
                                                   COMMA_LOCATION_ARGS) {
   GALGAS_stringMap result ;
   const GALGAS_stringMap * p = (const GALGAS_stringMap *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_stringMap *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_stringMap *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("stringMap", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -5905,7 +4803,7 @@ bool cMapElement_lstringMap::isValid (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapElement * cMapElement_lstringMap::copy (void) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   macroMyNew (result, cMapElement_lstringMap (mProperty_lkey, mProperty_value COMMA_HERE)) ;
   return result ;
 }
@@ -5981,7 +4879,7 @@ void GALGAS_lstringMap::addAssign_operation (const GALGAS_lstring & inKey,
                                              const GALGAS_lstring & inArgument0,
                                              C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) {
-  cMapElement_lstringMap * p = NULL ;
+  cMapElement_lstringMap * p = nullptr ;
   macroMyNew (p, cMapElement_lstringMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -6011,7 +4909,7 @@ void GALGAS_lstringMap::setter_put (GALGAS_lstring inKey,
                                     GALGAS_lstring inArgument0,
                                     C_Compiler * inCompiler
                                     COMMA_LOCATION_ARGS) {
-  cMapElement_lstringMap * p = NULL ;
+  cMapElement_lstringMap * p = nullptr ;
   macroMyNew (p, cMapElement_lstringMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -6035,7 +4933,7 @@ void GALGAS_lstringMap::method_get (GALGAS_lstring inKey,
                                                                                      inCompiler,
                                                                                      kSearchErrorMessage_lstringMap_get
                                                                                      COMMA_THERE) ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_lstringMap) ;
@@ -6051,7 +4949,7 @@ GALGAS_lstring GALGAS_lstringMap::getter_valueForKey (const GALGAS_string & inKe
   const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   const cMapElement_lstringMap * p = (const cMapElement_lstringMap *) attributes ;
   GALGAS_lstring result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_lstringMap) ;
     result = p->mProperty_value ;
   }
@@ -6066,7 +4964,7 @@ void GALGAS_lstringMap::setter_setValueForKey (GALGAS_lstring inAttributeValue,
                                                COMMA_LOCATION_ARGS) {
   cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_lstringMap * p = (cMapElement_lstringMap *) attributes ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_lstringMap) ;
     p->mProperty_value = inAttributeValue ;
   }
@@ -6119,7 +5017,7 @@ GALGAS_lstring cEnumerator_lstringMap::current_value (LOCATION_ARGS) const {
 bool GALGAS_lstringMap::optional_searchKey (const GALGAS_string & inKey,
                                             GALGAS_lstring & outArgument0) const {
   const cMapElement_lstringMap * p = (const cMapElement_lstringMap *) searchForKey (inKey) ;
-  const bool result = NULL != p ;
+  const bool result = nullptr != p ;
   if (result) {
     macroValidSharedObject (p, cMapElement_lstringMap) ;
     outArgument0 = p->mProperty_value ;
@@ -6137,7 +5035,7 @@ bool GALGAS_lstringMap::optional_searchKey (const GALGAS_string & inKey,
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_lstringMap ("lstringMap",
-                                   NULL) ;
+                                   nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -6148,7 +5046,7 @@ const C_galgas_type_descriptor * GALGAS_lstringMap::staticTypeDescriptor (void) 
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_lstringMap::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_lstringMap (*this)) ;
   }
@@ -6162,8 +5060,8 @@ GALGAS_lstringMap GALGAS_lstringMap::extractObject (const GALGAS_object & inObje
                                                     COMMA_LOCATION_ARGS) {
   GALGAS_lstringMap result ;
   const GALGAS_lstringMap * p = (const GALGAS_lstringMap *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_lstringMap *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_lstringMap *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("lstringMap", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -6192,7 +5090,7 @@ bool cMapElement_prefix_5F_map::isValid (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapElement * cMapElement_prefix_5F_map::copy (void) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   macroMyNew (result, cMapElement_prefix_5F_map (mProperty_lkey, mProperty_prefix, mProperty_tag_5F_to_5F_rep COMMA_HERE)) ;
   return result ;
 }
@@ -6276,7 +5174,7 @@ void GALGAS_prefix_5F_map::addAssign_operation (const GALGAS_lstring & inKey,
                                                 const GALGAS_string & inArgument1,
                                                 C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) {
-  cMapElement_prefix_5F_map * p = NULL ;
+  cMapElement_prefix_5F_map * p = nullptr ;
   macroMyNew (p, cMapElement_prefix_5F_map (inKey, inArgument0, inArgument1 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -6307,7 +5205,7 @@ void GALGAS_prefix_5F_map::setter_add (GALGAS_lstring inKey,
                                        GALGAS_string inArgument1,
                                        C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) {
-  cMapElement_prefix_5F_map * p = NULL ;
+  cMapElement_prefix_5F_map * p = nullptr ;
   macroMyNew (p, cMapElement_prefix_5F_map (inKey, inArgument0, inArgument1 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -6324,7 +5222,7 @@ void GALGAS_prefix_5F_map::setter_insert_5F_prefix (GALGAS_lstring inKey,
                                                     GALGAS_string inArgument1,
                                                     C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) {
-  cMapElement_prefix_5F_map * p = NULL ;
+  cMapElement_prefix_5F_map * p = nullptr ;
   macroMyNew (p, cMapElement_prefix_5F_map (inKey, inArgument0, inArgument1 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -6349,7 +5247,7 @@ void GALGAS_prefix_5F_map::method_prefix (GALGAS_lstring inKey,
                                                                                            inCompiler,
                                                                                            kSearchErrorMessage_prefix_5F_map_prefix
                                                                                            COMMA_THERE) ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
     outArgument1.drop () ;
   }else{
@@ -6367,7 +5265,7 @@ GALGAS_string GALGAS_prefix_5F_map::getter_prefixForKey (const GALGAS_string & i
   const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   const cMapElement_prefix_5F_map * p = (const cMapElement_prefix_5F_map *) attributes ;
   GALGAS_string result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_prefix_5F_map) ;
     result = p->mProperty_prefix ;
   }
@@ -6382,7 +5280,7 @@ GALGAS_string GALGAS_prefix_5F_map::getter_tag_5F_to_5F_repForKey (const GALGAS_
   const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   const cMapElement_prefix_5F_map * p = (const cMapElement_prefix_5F_map *) attributes ;
   GALGAS_string result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_prefix_5F_map) ;
     result = p->mProperty_tag_5F_to_5F_rep ;
   }
@@ -6397,7 +5295,7 @@ void GALGAS_prefix_5F_map::setter_setPrefixForKey (GALGAS_string inAttributeValu
                                                    COMMA_LOCATION_ARGS) {
   cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_prefix_5F_map * p = (cMapElement_prefix_5F_map *) attributes ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_prefix_5F_map) ;
     p->mProperty_prefix = inAttributeValue ;
   }
@@ -6411,7 +5309,7 @@ void GALGAS_prefix_5F_map::setter_setTag_5F_to_5F_repForKey (GALGAS_string inAtt
                                                              COMMA_LOCATION_ARGS) {
   cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_prefix_5F_map * p = (cMapElement_prefix_5F_map *) attributes ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_prefix_5F_map) ;
     p->mProperty_tag_5F_to_5F_rep = inAttributeValue ;
   }
@@ -6473,7 +5371,7 @@ bool GALGAS_prefix_5F_map::optional_searchKey (const GALGAS_string & inKey,
                                                GALGAS_string & outArgument0,
                                                GALGAS_string & outArgument1) const {
   const cMapElement_prefix_5F_map * p = (const cMapElement_prefix_5F_map *) searchForKey (inKey) ;
-  const bool result = NULL != p ;
+  const bool result = nullptr != p ;
   if (result) {
     macroValidSharedObject (p, cMapElement_prefix_5F_map) ;
     outArgument0 = p->mProperty_prefix ;
@@ -6493,7 +5391,7 @@ bool GALGAS_prefix_5F_map::optional_searchKey (const GALGAS_string & inKey,
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_prefix_5F_map ("prefix_map",
-                                      NULL) ;
+                                      nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -6504,7 +5402,7 @@ const C_galgas_type_descriptor * GALGAS_prefix_5F_map::staticTypeDescriptor (voi
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_prefix_5F_map::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_prefix_5F_map (*this)) ;
   }
@@ -6518,8 +5416,8 @@ GALGAS_prefix_5F_map GALGAS_prefix_5F_map::extractObject (const GALGAS_object & 
                                                           COMMA_LOCATION_ARGS) {
   GALGAS_prefix_5F_map result ;
   const GALGAS_prefix_5F_map * p = (const GALGAS_prefix_5F_map *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_prefix_5F_map *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_prefix_5F_map *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("prefix_map", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -6546,7 +5444,7 @@ bool cMapElement_stringset_5F_map::isValid (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapElement * cMapElement_stringset_5F_map::copy (void) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   macroMyNew (result, cMapElement_stringset_5F_map (mProperty_lkey, mProperty_ids COMMA_HERE)) ;
   return result ;
 }
@@ -6622,7 +5520,7 @@ void GALGAS_stringset_5F_map::addAssign_operation (const GALGAS_lstring & inKey,
                                                    const GALGAS_stringset & inArgument0,
                                                    C_Compiler * inCompiler
                                                    COMMA_LOCATION_ARGS) {
-  cMapElement_stringset_5F_map * p = NULL ;
+  cMapElement_stringset_5F_map * p = nullptr ;
   macroMyNew (p, cMapElement_stringset_5F_map (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -6652,7 +5550,7 @@ void GALGAS_stringset_5F_map::setter_add (GALGAS_lstring inKey,
                                           GALGAS_stringset inArgument0,
                                           C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) {
-  cMapElement_stringset_5F_map * p = NULL ;
+  cMapElement_stringset_5F_map * p = nullptr ;
   macroMyNew (p, cMapElement_stringset_5F_map (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -6676,7 +5574,7 @@ void GALGAS_stringset_5F_map::method_get (GALGAS_lstring inKey,
                                                                                                  inCompiler,
                                                                                                  kSearchErrorMessage_stringset_5F_map_get
                                                                                                  COMMA_THERE) ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_stringset_5F_map) ;
@@ -6694,7 +5592,7 @@ void GALGAS_stringset_5F_map::setter_delete (GALGAS_lstring inKey,
   capCollectionElement attributes ;
   performRemove (inKey, attributes, inCompiler, kRemoveErrorMessage COMMA_THERE) ;
   cMapElement_stringset_5F_map * p = (cMapElement_stringset_5F_map *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_stringset_5F_map) ;
@@ -6710,7 +5608,7 @@ GALGAS_stringset GALGAS_stringset_5F_map::getter_idsForKey (const GALGAS_string 
   const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   const cMapElement_stringset_5F_map * p = (const cMapElement_stringset_5F_map *) attributes ;
   GALGAS_stringset result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_stringset_5F_map) ;
     result = p->mProperty_ids ;
   }
@@ -6725,7 +5623,7 @@ void GALGAS_stringset_5F_map::setter_setIdsForKey (GALGAS_stringset inAttributeV
                                                    COMMA_LOCATION_ARGS) {
   cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_stringset_5F_map * p = (cMapElement_stringset_5F_map *) attributes ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_stringset_5F_map) ;
     p->mProperty_ids = inAttributeValue ;
   }
@@ -6778,7 +5676,7 @@ GALGAS_stringset cEnumerator_stringset_5F_map::current_ids (LOCATION_ARGS) const
 bool GALGAS_stringset_5F_map::optional_searchKey (const GALGAS_string & inKey,
                                                   GALGAS_stringset & outArgument0) const {
   const cMapElement_stringset_5F_map * p = (const cMapElement_stringset_5F_map *) searchForKey (inKey) ;
-  const bool result = NULL != p ;
+  const bool result = nullptr != p ;
   if (result) {
     macroValidSharedObject (p, cMapElement_stringset_5F_map) ;
     outArgument0 = p->mProperty_ids ;
@@ -6796,7 +5694,7 @@ bool GALGAS_stringset_5F_map::optional_searchKey (const GALGAS_string & inKey,
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_stringset_5F_map ("stringset_map",
-                                         NULL) ;
+                                         nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -6807,7 +5705,7 @@ const C_galgas_type_descriptor * GALGAS_stringset_5F_map::staticTypeDescriptor (
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_stringset_5F_map::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_stringset_5F_map (*this)) ;
   }
@@ -6821,8 +5719,8 @@ GALGAS_stringset_5F_map GALGAS_stringset_5F_map::extractObject (const GALGAS_obj
                                                                 COMMA_LOCATION_ARGS) {
   GALGAS_stringset_5F_map result ;
   const GALGAS_stringset_5F_map * p = (const GALGAS_stringset_5F_map *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_stringset_5F_map *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_stringset_5F_map *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("stringset_map", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -6876,13 +5774,13 @@ mObject (inElement.mProperty_obj_5F_name) {
 //----------------------------------------------------------------------------------------------------------------------
 
 bool cCollectionElement_ident_5F_list::isValid (void) const {
-  return true ; // return mObject.isValid () ;
+  return true ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 cCollectionElement * cCollectionElement_ident_5F_list::copy (void) {
-  cCollectionElement * result = NULL ;
+  cCollectionElement * result = nullptr ;
   macroMyNew (result, cCollectionElement_ident_5F_list (mObject.mProperty_obj_5F_name COMMA_HERE)) ;
   return result ;
 }
@@ -6941,7 +5839,7 @@ GALGAS_ident_5F_list GALGAS_ident_5F_list::constructor_listWithValue (const GALG
 void GALGAS_ident_5F_list::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                       const GALGAS_lstring & in_obj_5F_name
                                                       COMMA_LOCATION_ARGS) {
-  cCollectionElement_ident_5F_list * p = NULL ;
+  cCollectionElement_ident_5F_list * p = nullptr ;
   macroMyNew (p, cCollectionElement_ident_5F_list (in_obj_5F_name COMMA_THERE)) ;
   outAttributes.setPointer (p) ;
   macroDetachSharedObject (p) ;
@@ -6953,7 +5851,7 @@ void GALGAS_ident_5F_list::addAssign_operation (const GALGAS_lstring & inOperand
                                                 COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inOperand0.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_ident_5F_list (inOperand0 COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -6972,7 +5870,7 @@ void GALGAS_ident_5F_list::setter_append (GALGAS_ident_5F_list_2D_element inElem
                                           COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inElement.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_ident_5F_list (inElement COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -6992,7 +5890,7 @@ void GALGAS_ident_5F_list::setter_insertAtIndex (const GALGAS_lstring inOperand0
                                                  COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inInsertionIndex.isValid () && inOperand0.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_ident_5F_list (inOperand0 COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -7015,7 +5913,7 @@ void GALGAS_ident_5F_list::setter_removeAtIndex (GALGAS_lstring & outOperand0,
       capCollectionElement attributes ;
       removeObjectAtIndex (attributes, inRemoveIndex.uintValue (), inCompiler COMMA_THERE) ;
       cCollectionElement_ident_5F_list * p = (cCollectionElement_ident_5F_list *) attributes.ptr () ;
-      if (NULL == p) {
+      if (nullptr == p) {
         outOperand0.drop () ;
         drop () ;
       }else{
@@ -7039,7 +5937,7 @@ void GALGAS_ident_5F_list::setter_popFirst (GALGAS_lstring & outOperand0,
   capCollectionElement attributes ;
   removeFirstObject (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_ident_5F_list * p = (cCollectionElement_ident_5F_list *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_ident_5F_list) ;
@@ -7055,7 +5953,7 @@ void GALGAS_ident_5F_list::setter_popLast (GALGAS_lstring & outOperand0,
   capCollectionElement attributes ;
   removeLastObject (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_ident_5F_list * p = (cCollectionElement_ident_5F_list *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_ident_5F_list) ;
@@ -7071,7 +5969,7 @@ void GALGAS_ident_5F_list::method_first (GALGAS_lstring & outOperand0,
   capCollectionElement attributes ;
   readFirst (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_ident_5F_list * p = (cCollectionElement_ident_5F_list *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_ident_5F_list) ;
@@ -7087,7 +5985,7 @@ void GALGAS_ident_5F_list::method_last (GALGAS_lstring & outOperand0,
   capCollectionElement attributes ;
   readLast (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_ident_5F_list * p = (cCollectionElement_ident_5F_list *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_ident_5F_list) ;
@@ -7153,7 +6051,7 @@ void GALGAS_ident_5F_list::setter_setObj_5F_nameAtIndex (GALGAS_lstring inOperan
                                                          C_Compiler * inCompiler
                                                          COMMA_LOCATION_ARGS) {
   cCollectionElement_ident_5F_list * p = (cCollectionElement_ident_5F_list *) uniquelyReferencedPointerAtIndex (inIndex, inCompiler COMMA_THERE) ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cCollectionElement_ident_5F_list) ;
     macroUniqueSharedObject (p) ;
     p->mObject.mProperty_obj_5F_name = inOperand ;
@@ -7168,7 +6066,7 @@ GALGAS_lstring GALGAS_ident_5F_list::getter_obj_5F_nameAtIndex (const GALGAS_uin
   capCollectionElement attributes = readObjectAtIndex (inIndex, inCompiler COMMA_THERE) ;
   cCollectionElement_ident_5F_list * p = (cCollectionElement_ident_5F_list *) attributes.ptr () ;
   GALGAS_lstring result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cCollectionElement_ident_5F_list) ;
     result = p->mObject.mProperty_obj_5F_name ;
   }
@@ -7213,7 +6111,7 @@ GALGAS_lstring cEnumerator_ident_5F_list::current_obj_5F_name (LOCATION_ARGS) co
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_ident_5F_list ("ident_list",
-                                      NULL) ;
+                                      nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -7224,7 +6122,7 @@ const C_galgas_type_descriptor * GALGAS_ident_5F_list::staticTypeDescriptor (voi
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_ident_5F_list::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_ident_5F_list (*this)) ;
   }
@@ -7238,8 +6136,8 @@ GALGAS_ident_5F_list GALGAS_ident_5F_list::extractObject (const GALGAS_object & 
                                                           COMMA_LOCATION_ARGS) {
   GALGAS_ident_5F_list result ;
   const GALGAS_ident_5F_list * p = (const GALGAS_ident_5F_list *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_ident_5F_list *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_ident_5F_list *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("ident_list", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -7266,7 +6164,7 @@ bool cMapElement_ident_5F_list_5F_map::isValid (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapElement * cMapElement_ident_5F_list_5F_map::copy (void) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   macroMyNew (result, cMapElement_ident_5F_list_5F_map (mProperty_lkey, mProperty_objs COMMA_HERE)) ;
   return result ;
 }
@@ -7342,7 +6240,7 @@ void GALGAS_ident_5F_list_5F_map::addAssign_operation (const GALGAS_lstring & in
                                                        const GALGAS_ident_5F_list & inArgument0,
                                                        C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) {
-  cMapElement_ident_5F_list_5F_map * p = NULL ;
+  cMapElement_ident_5F_list_5F_map * p = nullptr ;
   macroMyNew (p, cMapElement_ident_5F_list_5F_map (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -7372,7 +6270,7 @@ void GALGAS_ident_5F_list_5F_map::setter_add (GALGAS_lstring inKey,
                                               GALGAS_ident_5F_list inArgument0,
                                               C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) {
-  cMapElement_ident_5F_list_5F_map * p = NULL ;
+  cMapElement_ident_5F_list_5F_map * p = nullptr ;
   macroMyNew (p, cMapElement_ident_5F_list_5F_map (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -7396,7 +6294,7 @@ void GALGAS_ident_5F_list_5F_map::method_get (GALGAS_lstring inKey,
                                                                                                          inCompiler,
                                                                                                          kSearchErrorMessage_ident_5F_list_5F_map_get
                                                                                                          COMMA_THERE) ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_ident_5F_list_5F_map) ;
@@ -7414,7 +6312,7 @@ void GALGAS_ident_5F_list_5F_map::setter_delete (GALGAS_lstring inKey,
   capCollectionElement attributes ;
   performRemove (inKey, attributes, inCompiler, kRemoveErrorMessage COMMA_THERE) ;
   cMapElement_ident_5F_list_5F_map * p = (cMapElement_ident_5F_list_5F_map *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_ident_5F_list_5F_map) ;
@@ -7430,7 +6328,7 @@ GALGAS_ident_5F_list GALGAS_ident_5F_list_5F_map::getter_objsForKey (const GALGA
   const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   const cMapElement_ident_5F_list_5F_map * p = (const cMapElement_ident_5F_list_5F_map *) attributes ;
   GALGAS_ident_5F_list result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_ident_5F_list_5F_map) ;
     result = p->mProperty_objs ;
   }
@@ -7445,7 +6343,7 @@ void GALGAS_ident_5F_list_5F_map::setter_setObjsForKey (GALGAS_ident_5F_list inA
                                                         COMMA_LOCATION_ARGS) {
   cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_ident_5F_list_5F_map * p = (cMapElement_ident_5F_list_5F_map *) attributes ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_ident_5F_list_5F_map) ;
     p->mProperty_objs = inAttributeValue ;
   }
@@ -7498,7 +6396,7 @@ GALGAS_ident_5F_list cEnumerator_ident_5F_list_5F_map::current_objs (LOCATION_AR
 bool GALGAS_ident_5F_list_5F_map::optional_searchKey (const GALGAS_string & inKey,
                                                       GALGAS_ident_5F_list & outArgument0) const {
   const cMapElement_ident_5F_list_5F_map * p = (const cMapElement_ident_5F_list_5F_map *) searchForKey (inKey) ;
-  const bool result = NULL != p ;
+  const bool result = nullptr != p ;
   if (result) {
     macroValidSharedObject (p, cMapElement_ident_5F_list_5F_map) ;
     outArgument0 = p->mProperty_objs ;
@@ -7516,7 +6414,7 @@ bool GALGAS_ident_5F_list_5F_map::optional_searchKey (const GALGAS_string & inKe
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_ident_5F_list_5F_map ("ident_list_map",
-                                             NULL) ;
+                                             nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -7527,7 +6425,7 @@ const C_galgas_type_descriptor * GALGAS_ident_5F_list_5F_map::staticTypeDescript
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_ident_5F_list_5F_map::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_ident_5F_list_5F_map (*this)) ;
   }
@@ -7541,8 +6439,8 @@ GALGAS_ident_5F_list_5F_map GALGAS_ident_5F_list_5F_map::extractObject (const GA
                                                                         COMMA_LOCATION_ARGS) {
   GALGAS_ident_5F_list_5F_map result ;
   const GALGAS_ident_5F_list_5F_map * p = (const GALGAS_ident_5F_list_5F_map *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_ident_5F_list_5F_map *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_ident_5F_list_5F_map *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("ident_list_map", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -7588,7 +6486,7 @@ AC_GALGAS_value_class (inSourcePtr) {
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_location GALGAS_autostart_5F_obj::readProperty_location (void) const {
-  if (NULL == mObjectPtr) {
+  if (nullptr == mObjectPtr) {
     return GALGAS_location () ;
   }else{
     const cPtr_autostart_5F_obj * p = (const cPtr_autostart_5F_obj *) mObjectPtr ;
@@ -7607,7 +6505,7 @@ GALGAS_location cPtr_autostart_5F_obj::getter_location (UNUSED_LOCATION_ARGS) co
 
 void GALGAS_autostart_5F_obj::setter_setLocation (GALGAS_location inValue
                                                   COMMA_LOCATION_ARGS) {
-  if (NULL != mObjectPtr) {
+  if (nullptr != mObjectPtr) {
     insulate (THERE) ;
     cPtr_autostart_5F_obj * p = (cPtr_autostart_5F_obj *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_autostart_5F_obj) ;
@@ -7641,7 +6539,7 @@ mProperty_location (in_location) {
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_autostart_5F_obj ("autostart_obj",
-                                         NULL) ;
+                                         nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -7652,7 +6550,7 @@ const C_galgas_type_descriptor * GALGAS_autostart_5F_obj::staticTypeDescriptor (
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_autostart_5F_obj::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_autostart_5F_obj (*this)) ;
   }
@@ -7666,8 +6564,8 @@ GALGAS_autostart_5F_obj GALGAS_autostart_5F_obj::extractObject (const GALGAS_obj
                                                                 COMMA_LOCATION_ARGS) {
   GALGAS_autostart_5F_obj result ;
   const GALGAS_autostart_5F_obj * p = (const GALGAS_autostart_5F_obj *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_autostart_5F_obj *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_autostart_5F_obj *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("autostart_obj", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -7764,7 +6662,7 @@ void cPtr_autostart_5F_void::description (C_String & ioString,
 //----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_autostart_5F_void::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
+  acPtr_class * ptr = nullptr ;
   macroMyNew (ptr, cPtr_autostart_5F_void (mProperty_location COMMA_THERE)) ;
   return ptr ;
 }
@@ -7789,7 +6687,7 @@ const C_galgas_type_descriptor * GALGAS_autostart_5F_void::staticTypeDescriptor 
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_autostart_5F_void::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_autostart_5F_void (*this)) ;
   }
@@ -7803,8 +6701,8 @@ GALGAS_autostart_5F_void GALGAS_autostart_5F_void::extractObject (const GALGAS_o
                                                                   COMMA_LOCATION_ARGS) {
   GALGAS_autostart_5F_void result ;
   const GALGAS_autostart_5F_void * p = (const GALGAS_autostart_5F_void *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_autostart_5F_void *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_autostart_5F_void *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("autostart_void", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -7901,7 +6799,7 @@ void cPtr_autostart_5F_false::description (C_String & ioString,
 //----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_autostart_5F_false::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
+  acPtr_class * ptr = nullptr ;
   macroMyNew (ptr, cPtr_autostart_5F_false (mProperty_location COMMA_THERE)) ;
   return ptr ;
 }
@@ -7926,7 +6824,7 @@ const C_galgas_type_descriptor * GALGAS_autostart_5F_false::staticTypeDescriptor
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_autostart_5F_false::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_autostart_5F_false (*this)) ;
   }
@@ -7940,8 +6838,8 @@ GALGAS_autostart_5F_false GALGAS_autostart_5F_false::extractObject (const GALGAS
                                                                     COMMA_LOCATION_ARGS) {
   GALGAS_autostart_5F_false result ;
   const GALGAS_autostart_5F_false * p = (const GALGAS_autostart_5F_false *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_autostart_5F_false *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_autostart_5F_false *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("autostart_false", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -8098,7 +6996,7 @@ bool cMapElement_objectsMap::isValid (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapElement * cMapElement_objectsMap::copy (void) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   macroMyNew (result, cMapElement_objectsMap (mProperty_lkey, mProperty_objectsOfKind COMMA_HERE)) ;
   return result ;
 }
@@ -8174,7 +7072,7 @@ void GALGAS_objectsMap::addAssign_operation (const GALGAS_lstring & inKey,
                                              const GALGAS_objectKind & inArgument0,
                                              C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) {
-  cMapElement_objectsMap * p = NULL ;
+  cMapElement_objectsMap * p = nullptr ;
   macroMyNew (p, cMapElement_objectsMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -8204,7 +7102,7 @@ void GALGAS_objectsMap::setter_put (GALGAS_lstring inKey,
                                     GALGAS_objectKind inArgument0,
                                     C_Compiler * inCompiler
                                     COMMA_LOCATION_ARGS) {
-  cMapElement_objectsMap * p = NULL ;
+  cMapElement_objectsMap * p = nullptr ;
   macroMyNew (p, cMapElement_objectsMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -8228,7 +7126,7 @@ void GALGAS_objectsMap::method_get (GALGAS_lstring inKey,
                                                                                      inCompiler,
                                                                                      kSearchErrorMessage_objectsMap_get
                                                                                      COMMA_THERE) ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_objectsMap) ;
@@ -8246,7 +7144,7 @@ void GALGAS_objectsMap::setter_del (GALGAS_lstring inKey,
   capCollectionElement attributes ;
   performRemove (inKey, attributes, inCompiler, kRemoveErrorMessage COMMA_THERE) ;
   cMapElement_objectsMap * p = (cMapElement_objectsMap *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_objectsMap) ;
@@ -8262,7 +7160,7 @@ GALGAS_objectKind GALGAS_objectsMap::getter_objectsOfKindForKey (const GALGAS_st
   const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   const cMapElement_objectsMap * p = (const cMapElement_objectsMap *) attributes ;
   GALGAS_objectKind result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_objectsMap) ;
     result = p->mProperty_objectsOfKind ;
   }
@@ -8277,7 +7175,7 @@ void GALGAS_objectsMap::setter_setObjectsOfKindForKey (GALGAS_objectKind inAttri
                                                        COMMA_LOCATION_ARGS) {
   cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_objectsMap * p = (cMapElement_objectsMap *) attributes ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_objectsMap) ;
     p->mProperty_objectsOfKind = inAttributeValue ;
   }
@@ -8330,7 +7228,7 @@ GALGAS_objectKind cEnumerator_objectsMap::current_objectsOfKind (LOCATION_ARGS) 
 bool GALGAS_objectsMap::optional_searchKey (const GALGAS_string & inKey,
                                             GALGAS_objectKind & outArgument0) const {
   const cMapElement_objectsMap * p = (const cMapElement_objectsMap *) searchForKey (inKey) ;
-  const bool result = NULL != p ;
+  const bool result = nullptr != p ;
   if (result) {
     macroValidSharedObject (p, cMapElement_objectsMap) ;
     outArgument0 = p->mProperty_objectsOfKind ;
@@ -8348,7 +7246,7 @@ bool GALGAS_objectsMap::optional_searchKey (const GALGAS_string & inKey,
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_objectsMap ("objectsMap",
-                                   NULL) ;
+                                   nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -8359,7 +7257,7 @@ const C_galgas_type_descriptor * GALGAS_objectsMap::staticTypeDescriptor (void) 
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_objectsMap::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_objectsMap (*this)) ;
   }
@@ -8373,8 +7271,8 @@ GALGAS_objectsMap GALGAS_objectsMap::extractObject (const GALGAS_object & inObje
                                                     COMMA_LOCATION_ARGS) {
   GALGAS_objectsMap result ;
   const GALGAS_objectsMap * p = (const GALGAS_objectsMap *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_objectsMap *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_objectsMap *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("objectsMap", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -8438,7 +7336,7 @@ bool cMapElement_objectKindMap::isValid (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapElement * cMapElement_objectKindMap::copy (void) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   macroMyNew (result, cMapElement_objectKindMap (mProperty_lkey, mProperty_attributes COMMA_HERE)) ;
   return result ;
 }
@@ -8514,7 +7412,7 @@ void GALGAS_objectKindMap::addAssign_operation (const GALGAS_lstring & inKey,
                                                 const GALGAS_objectAttributes & inArgument0,
                                                 C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) {
-  cMapElement_objectKindMap * p = NULL ;
+  cMapElement_objectKindMap * p = nullptr ;
   macroMyNew (p, cMapElement_objectKindMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -8544,7 +7442,7 @@ void GALGAS_objectKindMap::setter_put (GALGAS_lstring inKey,
                                        GALGAS_objectAttributes inArgument0,
                                        C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) {
-  cMapElement_objectKindMap * p = NULL ;
+  cMapElement_objectKindMap * p = nullptr ;
   macroMyNew (p, cMapElement_objectKindMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -8568,7 +7466,7 @@ void GALGAS_objectKindMap::method_get (GALGAS_lstring inKey,
                                                                                            inCompiler,
                                                                                            kSearchErrorMessage_objectKindMap_get
                                                                                            COMMA_THERE) ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_objectKindMap) ;
@@ -8586,7 +7484,7 @@ void GALGAS_objectKindMap::setter_del (GALGAS_lstring inKey,
   capCollectionElement attributes ;
   performRemove (inKey, attributes, inCompiler, kRemoveErrorMessage COMMA_THERE) ;
   cMapElement_objectKindMap * p = (cMapElement_objectKindMap *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_objectKindMap) ;
@@ -8602,7 +7500,7 @@ GALGAS_objectAttributes GALGAS_objectKindMap::getter_attributesForKey (const GAL
   const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   const cMapElement_objectKindMap * p = (const cMapElement_objectKindMap *) attributes ;
   GALGAS_objectAttributes result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_objectKindMap) ;
     result = p->mProperty_attributes ;
   }
@@ -8617,7 +7515,7 @@ void GALGAS_objectKindMap::setter_setAttributesForKey (GALGAS_objectAttributes i
                                                        COMMA_LOCATION_ARGS) {
   cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_objectKindMap * p = (cMapElement_objectKindMap *) attributes ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_objectKindMap) ;
     p->mProperty_attributes = inAttributeValue ;
   }
@@ -8670,7 +7568,7 @@ GALGAS_objectAttributes cEnumerator_objectKindMap::current_attributes (LOCATION_
 bool GALGAS_objectKindMap::optional_searchKey (const GALGAS_string & inKey,
                                                GALGAS_objectAttributes & outArgument0) const {
   const cMapElement_objectKindMap * p = (const cMapElement_objectKindMap *) searchForKey (inKey) ;
-  const bool result = NULL != p ;
+  const bool result = nullptr != p ;
   if (result) {
     macroValidSharedObject (p, cMapElement_objectKindMap) ;
     outArgument0 = p->mProperty_attributes ;
@@ -8688,7 +7586,7 @@ bool GALGAS_objectKindMap::optional_searchKey (const GALGAS_string & inKey,
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_objectKindMap ("objectKindMap",
-                                      NULL) ;
+                                      nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -8699,7 +7597,7 @@ const C_galgas_type_descriptor * GALGAS_objectKindMap::staticTypeDescriptor (voi
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_objectKindMap::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_objectKindMap (*this)) ;
   }
@@ -8713,8 +7611,8 @@ GALGAS_objectKindMap GALGAS_objectKindMap::extractObject (const GALGAS_object & 
                                                           COMMA_LOCATION_ARGS) {
   GALGAS_objectKindMap result ;
   const GALGAS_objectKindMap * p = (const GALGAS_objectKindMap *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_objectKindMap *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_objectKindMap *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("objectKindMap", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -9016,8 +7914,7 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_description_i4_ (GALGAS_lstring
     GALGAS_string var_result_4448 = var_partialString_4394.readProperty_string () ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
-      switch (select_goil_5F_syntax_4 (inCompiler)) {
-      case 2: {
+      if (select_goil_5F_syntax_4 (inCompiler) == 2) {
         var_partialString_4394 = inCompiler->synthetizedAttribute_a_5F_string () ;
         inCompiler->acceptTerminal (C_Lexique_goil_5F_lexique::kToken_string COMMA_SOURCE_FILE ("goil_syntax.galgas", 160)) ;
         GALGAS_string var_toappend_4545 = var_partialString_4394.readProperty_string () ;
@@ -9029,10 +7926,8 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_description_i4_ (GALGAS_lstring
           }
         }
         var_result_4448.plusAssign_operation(var_toappend_4545, inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 165)) ;
-      } break ;
-      default:
+      }else{
         repeatFlag_0 = false ;
-        break ;
       }
     }
     outArgument_desc = GALGAS_lstring::constructor_new (var_result_4448.getter_stringByReplacingStringByString (GALGAS_string ("\\n"), GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 167)), var_partialString_4394.readProperty_location ()  COMMA_SOURCE_FILE ("goil_syntax.galgas", 167)) ;
@@ -9053,13 +7948,10 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_description_i4_parse (C_Lexique
     inCompiler->acceptTerminal (C_Lexique_goil_5F_lexique::kToken_string COMMA_SOURCE_FILE ("goil_syntax.galgas", 156)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
-      switch (select_goil_5F_syntax_4 (inCompiler)) {
-      case 2: {
+      if (select_goil_5F_syntax_4 (inCompiler) == 2) {
         inCompiler->acceptTerminal (C_Lexique_goil_5F_lexique::kToken_string COMMA_SOURCE_FILE ("goil_syntax.galgas", 160)) ;
-      } break ;
-      default:
+      }else{
         repeatFlag_0 = false ;
-        break ;
       }
     }
   } break ;
@@ -9080,13 +7972,10 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_description_i4_indexing (C_Lexi
     inCompiler->acceptTerminal (C_Lexique_goil_5F_lexique::kToken_string COMMA_SOURCE_FILE ("goil_syntax.galgas", 156)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
-      switch (select_goil_5F_syntax_4 (inCompiler)) {
-      case 2: {
+      if (select_goil_5F_syntax_4 (inCompiler) == 2) {
         inCompiler->acceptTerminal (C_Lexique_goil_5F_lexique::kToken_string COMMA_SOURCE_FILE ("goil_syntax.galgas", 160)) ;
-      } break ;
-      default:
+      }else{
         repeatFlag_0 = false ;
-        break ;
       }
     }
   } break ;
@@ -10256,7 +9145,7 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_include_5F_object_5F_level_i13_
 #define NONTERMINAL(nt) ((-nt)-1)
 #define END_PRODUCTION  (0)
 
-static const int16_t gProductions_goil_object_level_include [] = {
+static const int32_t gProductions_goil_object_level_include [] = {
 // At index 0 : <start>, in file 'goil_syntax.ggs', line 38
   NONTERMINAL (6) // <OIL_version>
 , NONTERMINAL (2) // <file>
@@ -10566,7 +9455,7 @@ static const cProductionNameDescriptor gProductionNames_goil_object_level_includ
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gProductionIndexes_goil_object_level_include [62] = {
+static const int32_t gProductionIndexes_goil_object_level_include [62] = {
 0, // index 0 : <start>, in file 'goil_syntax.ggs', line 38
 3, // index 1 : <file>, in file 'goil_syntax.ggs', line 110
 5, // index 2 : <file_without_include>, in file 'goil_syntax.ggs', line 126
@@ -10637,7 +9526,7 @@ static const int16_t gProductionIndexes_goil_object_level_include [62] = {
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gFirstProductionIndexes_goil_object_level_include [36] = {
+static const int32_t gFirstProductionIndexes_goil_object_level_include [36] = {
 0, // at 0 : <implementation_definition>
 0, // at 1 : <start>
 1, // at 2 : <file>
@@ -10681,7 +9570,7 @@ static const int16_t gFirstProductionIndexes_goil_object_level_include [36] = {
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gDecision_goil_object_level_include [] = {
+static const int32_t gDecision_goil_object_level_include [] = {
 // At index 0 : <implementation_definition> no production
 // At index 0 : <start> only one production, no choice
   -1,
@@ -10807,7 +9696,7 @@ C_Lexique_goil_5F_lexique::kToken_string, -1, // Choice 2
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gDecisionIndexes_goil_object_level_include [36] = {
+static const int32_t gDecisionIndexes_goil_object_level_include [36] = {
 0, // at 0 : <implementation_definition>
 0, // at 1 : <start>
 1, // at 2 : <file>
@@ -11462,7 +10351,7 @@ int32_t cGrammar_goil_5F_object_5F_level_5F_include::select_goil_5F_syntax_18 (C
 #define NONTERMINAL(nt) ((-nt)-1)
 #define END_PRODUCTION  (0)
 
-static const int16_t gProductions_goil_cpu_level_include [] = {
+static const int32_t gProductions_goil_cpu_level_include [] = {
 // At index 0 : <start>, in file 'goil_syntax.ggs', line 38
   NONTERMINAL (6) // <OIL_version>
 , NONTERMINAL (2) // <file>
@@ -11772,7 +10661,7 @@ static const cProductionNameDescriptor gProductionNames_goil_cpu_level_include [
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gProductionIndexes_goil_cpu_level_include [62] = {
+static const int32_t gProductionIndexes_goil_cpu_level_include [62] = {
 0, // index 0 : <start>, in file 'goil_syntax.ggs', line 38
 3, // index 1 : <file>, in file 'goil_syntax.ggs', line 110
 5, // index 2 : <file_without_include>, in file 'goil_syntax.ggs', line 126
@@ -11843,7 +10732,7 @@ static const int16_t gProductionIndexes_goil_cpu_level_include [62] = {
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gFirstProductionIndexes_goil_cpu_level_include [36] = {
+static const int32_t gFirstProductionIndexes_goil_cpu_level_include [36] = {
 0, // at 0 : <implementation_definition>
 0, // at 1 : <start>
 1, // at 2 : <file>
@@ -11887,7 +10776,7 @@ static const int16_t gFirstProductionIndexes_goil_cpu_level_include [36] = {
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gDecision_goil_cpu_level_include [] = {
+static const int32_t gDecision_goil_cpu_level_include [] = {
 // At index 0 : <implementation_definition> no production
 // At index 0 : <start> only one production, no choice
   -1,
@@ -12013,7 +10902,7 @@ C_Lexique_goil_5F_lexique::kToken_string, -1, // Choice 2
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gDecisionIndexes_goil_cpu_level_include [36] = {
+static const int32_t gDecisionIndexes_goil_cpu_level_include [36] = {
 0, // at 0 : <implementation_definition>
 0, // at 1 : <start>
 1, // at 2 : <file>
@@ -12663,13 +11552,10 @@ void cParser_options_5F_parser::rule_options_5F_parser_option_5F_parser_5F_start
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
     nt_option_5F_item_ (outArgument_options, inCompiler) ;
-    switch (select_options_5F_parser_0 (inCompiler)) {
-    case 2: {
+    if (select_options_5F_parser_0 (inCompiler) == 2) {
       inCompiler->acceptTerminal (C_Lexique_options_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("options_parser.galgas", 35)) ;
-    } break ;
-    default:
+    }else{
       repeatFlag_0 = false ;
-      break ;
     }
   }
 }
@@ -12680,13 +11566,10 @@ void cParser_options_5F_parser::rule_options_5F_parser_option_5F_parser_5F_start
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
     nt_option_5F_item_parse (inCompiler) ;
-    switch (select_options_5F_parser_0 (inCompiler)) {
-    case 2: {
+    if (select_options_5F_parser_0 (inCompiler) == 2) {
       inCompiler->acceptTerminal (C_Lexique_options_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("options_parser.galgas", 35)) ;
-    } break ;
-    default:
+    }else{
       repeatFlag_0 = false ;
-      break ;
     }
   }
   inCompiler->resetTemplateString () ;
@@ -12698,13 +11581,10 @@ void cParser_options_5F_parser::rule_options_5F_parser_option_5F_parser_5F_start
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
     nt_option_5F_item_indexing (inCompiler) ;
-    switch (select_options_5F_parser_0 (inCompiler)) {
-    case 2: {
+    if (select_options_5F_parser_0 (inCompiler) == 2) {
       inCompiler->acceptTerminal (C_Lexique_options_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("options_parser.galgas", 35)) ;
-    } break ;
-    default:
+    }else{
       repeatFlag_0 = false ;
-      break ;
     }
   }
 }
@@ -12928,13 +11808,10 @@ void cParser_options_5F_parser::rule_options_5F_parser_list_5F_option_5F_value_i
     GALGAS_gtlData var_item_2024 ;
     nt_option_5F_value_ (var_item_2024, inCompiler) ;
     var_listOption_1952.addAssign_operation (var_item_2024  COMMA_SOURCE_FILE ("options_parser.galgas", 101)) ;
-    switch (select_options_5F_parser_3 (inCompiler)) {
-    case 2: {
+    if (select_options_5F_parser_3 (inCompiler) == 2) {
       inCompiler->acceptTerminal (C_Lexique_options_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("options_parser.galgas", 102)) ;
-    } break ;
-    default:
+    }else{
       repeatFlag_0 = false ;
-      break ;
     }
   }
   outArgument_opt = GALGAS_gtlList::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("options_parser.galgas", 104)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 104)), var_listOption_1952  COMMA_SOURCE_FILE ("options_parser.galgas", 104)) ;
@@ -12948,13 +11825,10 @@ void cParser_options_5F_parser::rule_options_5F_parser_list_5F_option_5F_value_i
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
     nt_option_5F_value_parse (inCompiler) ;
-    switch (select_options_5F_parser_3 (inCompiler)) {
-    case 2: {
+    if (select_options_5F_parser_3 (inCompiler) == 2) {
       inCompiler->acceptTerminal (C_Lexique_options_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("options_parser.galgas", 102)) ;
-    } break ;
-    default:
+    }else{
       repeatFlag_0 = false ;
-      break ;
     }
   }
   inCompiler->acceptTerminal (C_Lexique_options_5F_scanner::kToken__29_ COMMA_SOURCE_FILE ("options_parser.galgas", 105)) ;
@@ -12968,13 +11842,10 @@ void cParser_options_5F_parser::rule_options_5F_parser_list_5F_option_5F_value_i
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
     nt_option_5F_value_indexing (inCompiler) ;
-    switch (select_options_5F_parser_3 (inCompiler)) {
-    case 2: {
+    if (select_options_5F_parser_3 (inCompiler) == 2) {
       inCompiler->acceptTerminal (C_Lexique_options_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("options_parser.galgas", 102)) ;
-    } break ;
-    default:
+    }else{
       repeatFlag_0 = false ;
-      break ;
     }
   }
   inCompiler->acceptTerminal (C_Lexique_options_5F_scanner::kToken__29_ COMMA_SOURCE_FILE ("options_parser.galgas", 105)) ;
@@ -13024,57 +11895,23 @@ static const char * gLexicalMessage_arxml_5F_scanner_incorrectAttributeEnd = "at
 static const char * gLexicalMessage_arxml_5F_scanner_incorrectCommentError = "incorrect XML comment" ;
 
 //----------------------------------------------------------------------------------------------------------------------
-//          Syntax error messages, for every terminal symbol                                     
-//----------------------------------------------------------------------------------------------------------------------
-
-//--- Syntax error message for terminal '$comment$' :
-static const char * gSyntaxErrorMessage_arxml_5F_scanner_comment = "a comment" ;
-
-//--- Syntax error message for terminal '$name$' :
-static const char * gSyntaxErrorMessage_arxml_5F_scanner_name = "a name" ;
-
-//--- Syntax error message for terminal '$value$' :
-static const char * gSyntaxErrorMessage_arxml_5F_scanner_value = "an attribute value" ;
-
-//--- Syntax error message for terminal '$<$' :
-static const char * gSyntaxErrorMessage_arxml_5F_scanner__3C_ = "the '<' delimitor" ;
-
-//--- Syntax error message for terminal '$<?$' :
-static const char * gSyntaxErrorMessage_arxml_5F_scanner__3C__3F_ = "the '<\?' delimitor" ;
-
-//--- Syntax error message for terminal '$>$' :
-static const char * gSyntaxErrorMessage_arxml_5F_scanner__3E_ = "the '>' delimitor" ;
-
-//--- Syntax error message for terminal '$?>$' :
-static const char * gSyntaxErrorMessage_arxml_5F_scanner__3F__3E_ = "the '\?>' delimitor" ;
-
-//--- Syntax error message for terminal '$/>$' :
-static const char * gSyntaxErrorMessage_arxml_5F_scanner__2F__3E_ = "the '/>' delimitor" ;
-
-//--- Syntax error message for terminal '$</$' :
-static const char * gSyntaxErrorMessage_arxml_5F_scanner__3C__2F_ = "the '</' delimitor" ;
-
-//--- Syntax error message for terminal '$=$' :
-static const char * gSyntaxErrorMessage_arxml_5F_scanner__3D_ = "the '=' delimitor" ;
-
-//----------------------------------------------------------------------------------------------------------------------
 //                getMessageForTerminal                                                          
 //----------------------------------------------------------------------------------------------------------------------
 
-C_String C_Lexique_arxml_5F_scanner::getMessageForTerminal (const int16_t inTerminalIndex) const {
+C_String C_Lexique_arxml_5F_scanner::getMessageForTerminal (const int32_t inTerminalIndex) const {
   C_String result = "<unknown>" ;
   if ((inTerminalIndex >= 0) && (inTerminalIndex < 11)) {
     static const char * syntaxErrorMessageArray [11] = {kEndOfSourceLexicalErrorMessage,
-        gSyntaxErrorMessage_arxml_5F_scanner_comment,
-        gSyntaxErrorMessage_arxml_5F_scanner_name,
-        gSyntaxErrorMessage_arxml_5F_scanner_value,
-        gSyntaxErrorMessage_arxml_5F_scanner__3C_,
-        gSyntaxErrorMessage_arxml_5F_scanner__3C__3F_,
-        gSyntaxErrorMessage_arxml_5F_scanner__3E_,
-        gSyntaxErrorMessage_arxml_5F_scanner__3F__3E_,
-        gSyntaxErrorMessage_arxml_5F_scanner__2F__3E_,
-        gSyntaxErrorMessage_arxml_5F_scanner__3C__2F_,
-        gSyntaxErrorMessage_arxml_5F_scanner__3D_
+        "a comment",
+        "a name",
+        "an attribute value",
+        "the '<' delimitor",
+        "the '<\?' delimitor",
+        "the '>' delimitor",
+        "the '\?>' delimitor",
+        "the '/>' delimitor",
+        "the '</' delimitor",
+        "the '=' delimitor"
     } ;
     result = syntaxErrorMessageArray [inTerminalIndex] ;
   }
@@ -13245,7 +12082,7 @@ static const C_unicode_lexique_table_entry ktable_for_arxml_5F_scanner_xmlDelimi
   C_unicode_lexique_table_entry (kUnicodeString_arxml_5F_scanner__3F__3E_, 2, C_Lexique_arxml_5F_scanner::kToken__3F__3E_)
 } ;
 
-int16_t C_Lexique_arxml_5F_scanner::search_into_xmlDelimitorsList (const C_String & inSearchedString) {
+int32_t C_Lexique_arxml_5F_scanner::search_into_xmlDelimitorsList (const C_String & inSearchedString) {
   return searchInList (inSearchedString, ktable_for_arxml_5F_scanner_xmlDelimitorsList, ktable_size_arxml_5F_scanner_xmlDelimitorsList) ;
 }
 
@@ -13257,7 +12094,7 @@ int16_t C_Lexique_arxml_5F_scanner::search_into_xmlDelimitorsList (const C_Strin
 C_String C_Lexique_arxml_5F_scanner::getCurrentTokenString (const cToken * inTokenPtr) const {
   const cTokenFor_arxml_5F_scanner * ptr = (const cTokenFor_arxml_5F_scanner *) inTokenPtr ;
   C_String s ;
-  if (ptr == NULL) {
+  if (ptr == nullptr) {
     s.appendCString("$$") ;
   }else{
     switch (ptr->mTokenCode) {
@@ -13332,7 +12169,7 @@ C_String C_Lexique_arxml_5F_scanner::getCurrentTokenString (const cToken * inTok
 //----------------------------------------------------------------------------------------------------------------------
 
 static const cTemplateDelimiter arxml_5F_scanner_kTemplateDefinitionArray [1] = {
-  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__3C_, 1, NULL, 0, NULL, false)
+  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__3C_, 1, nullptr, 0, nullptr, false)
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -13340,11 +12177,11 @@ static const cTemplateDelimiter arxml_5F_scanner_kTemplateDefinitionArray [1] = 
 //----------------------------------------------------------------------------------------------------------------------
 
 static const cTemplateDelimiter arxml_5F_scanner_kTemplateReplacementArray [6] = {
-  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_amp_3B_, 5, kUnicodeString_arxml_5F_scanner__26_, 1, NULL, true),
-  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_lt_3B_, 4, kUnicodeString_arxml_5F_scanner__3C_, 1, NULL, true),
-  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_gt_3B_, 4, kUnicodeString_arxml_5F_scanner__3E_, 1, NULL, true),
-  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_quot_3B_, 6, kUnicodeString_arxml_5F_scanner__22_, 1, NULL, true),
-  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_apos_3B_, 6, kUnicodeString_arxml_5F_scanner__27_, 1, NULL, true),
+  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_amp_3B_, 5, kUnicodeString_arxml_5F_scanner__26_, 1, nullptr, true),
+  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_lt_3B_, 4, kUnicodeString_arxml_5F_scanner__3C_, 1, nullptr, true),
+  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_gt_3B_, 4, kUnicodeString_arxml_5F_scanner__3E_, 1, nullptr, true),
+  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_quot_3B_, 6, kUnicodeString_arxml_5F_scanner__22_, 1, nullptr, true),
+  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_apos_3B_, 6, kUnicodeString_arxml_5F_scanner__27_, 1, nullptr, true),
   cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26__23_, 2, kUnicodeString_arxml_5F_scanner__3B_, 1, scanner_routine_codePointToUnicode, true)
 } ;
 
@@ -13508,7 +12345,7 @@ bool C_Lexique_arxml_5F_scanner::parseLexicalToken (void) {
       while (replacementIndex >= 0) {
         replacementIndex = findTemplateDelimiterIndex (arxml_5F_scanner_kTemplateReplacementArray, 6) ;
         if (replacementIndex >= 0) {
-          if (arxml_5F_scanner_kTemplateReplacementArray [replacementIndex].mReplacementFunction == NULL) {
+          if (arxml_5F_scanner_kTemplateReplacementArray [replacementIndex].mReplacementFunction == nullptr) {
             token.mTemplateStringBeforeToken << arxml_5F_scanner_kTemplateReplacementArray [replacementIndex].mEndString ;
           }else{
             C_String s ;
@@ -13548,7 +12385,7 @@ bool C_Lexique_arxml_5F_scanner::parseLexicalToken (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_Lexique_arxml_5F_scanner::enterToken (cTokenFor_arxml_5F_scanner & ioToken) {
-  cTokenFor_arxml_5F_scanner * ptr = NULL ;
+  cTokenFor_arxml_5F_scanner * ptr = nullptr ;
   macroMyNew (ptr, cTokenFor_arxml_5F_scanner ()) ;
   ptr->mTokenCode = ioToken.mTokenCode ;
   // ptr->mIsOptional = ioToken.mIsOptional ;
@@ -13689,7 +12526,7 @@ bool cMapElement_arxmlAttributeMap::isValid (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapElement * cMapElement_arxmlAttributeMap::copy (void) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   macroMyNew (result, cMapElement_arxmlAttributeMap (mProperty_lkey, mProperty_value COMMA_HERE)) ;
   return result ;
 }
@@ -13765,7 +12602,7 @@ void GALGAS_arxmlAttributeMap::addAssign_operation (const GALGAS_lstring & inKey
                                                     const GALGAS_lstring & inArgument0,
                                                     C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) {
-  cMapElement_arxmlAttributeMap * p = NULL ;
+  cMapElement_arxmlAttributeMap * p = nullptr ;
   macroMyNew (p, cMapElement_arxmlAttributeMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -13795,7 +12632,7 @@ void GALGAS_arxmlAttributeMap::setter_insertKey (GALGAS_lstring inKey,
                                                  GALGAS_lstring inArgument0,
                                                  C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) {
-  cMapElement_arxmlAttributeMap * p = NULL ;
+  cMapElement_arxmlAttributeMap * p = nullptr ;
   macroMyNew (p, cMapElement_arxmlAttributeMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -13819,7 +12656,7 @@ void GALGAS_arxmlAttributeMap::method_searchKey (GALGAS_lstring inKey,
                                                                                                    inCompiler,
                                                                                                    kSearchErrorMessage_arxmlAttributeMap_searchKey
                                                                                                    COMMA_THERE) ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_arxmlAttributeMap) ;
@@ -13835,7 +12672,7 @@ GALGAS_lstring GALGAS_arxmlAttributeMap::getter_valueForKey (const GALGAS_string
   const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   const cMapElement_arxmlAttributeMap * p = (const cMapElement_arxmlAttributeMap *) attributes ;
   GALGAS_lstring result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_arxmlAttributeMap) ;
     result = p->mProperty_value ;
   }
@@ -13850,7 +12687,7 @@ void GALGAS_arxmlAttributeMap::setter_setValueForKey (GALGAS_lstring inAttribute
                                                       COMMA_LOCATION_ARGS) {
   cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_arxmlAttributeMap * p = (cMapElement_arxmlAttributeMap *) attributes ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_arxmlAttributeMap) ;
     p->mProperty_value = inAttributeValue ;
   }
@@ -13903,7 +12740,7 @@ GALGAS_lstring cEnumerator_arxmlAttributeMap::current_value (LOCATION_ARGS) cons
 bool GALGAS_arxmlAttributeMap::optional_searchKey (const GALGAS_string & inKey,
                                                    GALGAS_lstring & outArgument0) const {
   const cMapElement_arxmlAttributeMap * p = (const cMapElement_arxmlAttributeMap *) searchForKey (inKey) ;
-  const bool result = NULL != p ;
+  const bool result = nullptr != p ;
   if (result) {
     macroValidSharedObject (p, cMapElement_arxmlAttributeMap) ;
     outArgument0 = p->mProperty_value ;
@@ -13921,7 +12758,7 @@ bool GALGAS_arxmlAttributeMap::optional_searchKey (const GALGAS_string & inKey,
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlAttributeMap ("arxmlAttributeMap",
-                                          NULL) ;
+                                          nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -13932,7 +12769,7 @@ const C_galgas_type_descriptor * GALGAS_arxmlAttributeMap::staticTypeDescriptor 
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_arxmlAttributeMap::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_arxmlAttributeMap (*this)) ;
   }
@@ -13946,8 +12783,8 @@ GALGAS_arxmlAttributeMap GALGAS_arxmlAttributeMap::extractObject (const GALGAS_o
                                                                   COMMA_LOCATION_ARGS) {
   GALGAS_arxmlAttributeMap result ;
   const GALGAS_arxmlAttributeMap * p = (const GALGAS_arxmlAttributeMap *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_arxmlAttributeMap *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_arxmlAttributeMap *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("arxmlAttributeMap", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -14028,13 +12865,13 @@ mObject (inElement.mProperty_node) {
 //----------------------------------------------------------------------------------------------------------------------
 
 bool cCollectionElement_arxmlNodeList::isValid (void) const {
-  return true ; // return mObject.isValid () ;
+  return true ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 cCollectionElement * cCollectionElement_arxmlNodeList::copy (void) {
-  cCollectionElement * result = NULL ;
+  cCollectionElement * result = nullptr ;
   macroMyNew (result, cCollectionElement_arxmlNodeList (mObject.mProperty_node COMMA_HERE)) ;
   return result ;
 }
@@ -14093,7 +12930,7 @@ GALGAS_arxmlNodeList GALGAS_arxmlNodeList::constructor_listWithValue (const GALG
 void GALGAS_arxmlNodeList::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                       const GALGAS_arxmlNode & in_node
                                                       COMMA_LOCATION_ARGS) {
-  cCollectionElement_arxmlNodeList * p = NULL ;
+  cCollectionElement_arxmlNodeList * p = nullptr ;
   macroMyNew (p, cCollectionElement_arxmlNodeList (in_node COMMA_THERE)) ;
   outAttributes.setPointer (p) ;
   macroDetachSharedObject (p) ;
@@ -14105,7 +12942,7 @@ void GALGAS_arxmlNodeList::addAssign_operation (const GALGAS_arxmlNode & inOpera
                                                 COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inOperand0.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_arxmlNodeList (inOperand0 COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -14124,7 +12961,7 @@ void GALGAS_arxmlNodeList::setter_append (GALGAS_arxmlNodeList_2D_element inElem
                                           COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inElement.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_arxmlNodeList (inElement COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -14144,7 +12981,7 @@ void GALGAS_arxmlNodeList::setter_insertAtIndex (const GALGAS_arxmlNode inOperan
                                                  COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inInsertionIndex.isValid () && inOperand0.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_arxmlNodeList (inOperand0 COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -14167,7 +13004,7 @@ void GALGAS_arxmlNodeList::setter_removeAtIndex (GALGAS_arxmlNode & outOperand0,
       capCollectionElement attributes ;
       removeObjectAtIndex (attributes, inRemoveIndex.uintValue (), inCompiler COMMA_THERE) ;
       cCollectionElement_arxmlNodeList * p = (cCollectionElement_arxmlNodeList *) attributes.ptr () ;
-      if (NULL == p) {
+      if (nullptr == p) {
         outOperand0.drop () ;
         drop () ;
       }else{
@@ -14191,7 +13028,7 @@ void GALGAS_arxmlNodeList::setter_popFirst (GALGAS_arxmlNode & outOperand0,
   capCollectionElement attributes ;
   removeFirstObject (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_arxmlNodeList * p = (cCollectionElement_arxmlNodeList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_arxmlNodeList) ;
@@ -14207,7 +13044,7 @@ void GALGAS_arxmlNodeList::setter_popLast (GALGAS_arxmlNode & outOperand0,
   capCollectionElement attributes ;
   removeLastObject (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_arxmlNodeList * p = (cCollectionElement_arxmlNodeList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_arxmlNodeList) ;
@@ -14223,7 +13060,7 @@ void GALGAS_arxmlNodeList::method_first (GALGAS_arxmlNode & outOperand0,
   capCollectionElement attributes ;
   readFirst (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_arxmlNodeList * p = (cCollectionElement_arxmlNodeList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_arxmlNodeList) ;
@@ -14239,7 +13076,7 @@ void GALGAS_arxmlNodeList::method_last (GALGAS_arxmlNode & outOperand0,
   capCollectionElement attributes ;
   readLast (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_arxmlNodeList * p = (cCollectionElement_arxmlNodeList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_arxmlNodeList) ;
@@ -14305,7 +13142,7 @@ void GALGAS_arxmlNodeList::setter_setNodeAtIndex (GALGAS_arxmlNode inOperand,
                                                   C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) {
   cCollectionElement_arxmlNodeList * p = (cCollectionElement_arxmlNodeList *) uniquelyReferencedPointerAtIndex (inIndex, inCompiler COMMA_THERE) ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cCollectionElement_arxmlNodeList) ;
     macroUniqueSharedObject (p) ;
     p->mObject.mProperty_node = inOperand ;
@@ -14320,7 +13157,7 @@ GALGAS_arxmlNode GALGAS_arxmlNodeList::getter_nodeAtIndex (const GALGAS_uint & i
   capCollectionElement attributes = readObjectAtIndex (inIndex, inCompiler COMMA_THERE) ;
   cCollectionElement_arxmlNodeList * p = (cCollectionElement_arxmlNodeList *) attributes.ptr () ;
   GALGAS_arxmlNode result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cCollectionElement_arxmlNodeList) ;
     result = p->mObject.mProperty_node ;
   }
@@ -14365,7 +13202,7 @@ GALGAS_arxmlNode cEnumerator_arxmlNodeList::current_node (LOCATION_ARGS) const {
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlNodeList ("arxmlNodeList",
-                                      NULL) ;
+                                      nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -14376,7 +13213,7 @@ const C_galgas_type_descriptor * GALGAS_arxmlNodeList::staticTypeDescriptor (voi
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_arxmlNodeList::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_arxmlNodeList (*this)) ;
   }
@@ -14390,8 +13227,8 @@ GALGAS_arxmlNodeList GALGAS_arxmlNodeList::extractObject (const GALGAS_object & 
                                                           COMMA_LOCATION_ARGS) {
   GALGAS_arxmlNodeList result ;
   const GALGAS_arxmlNodeList * p = (const GALGAS_arxmlNodeList *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_arxmlNodeList *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_arxmlNodeList *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("arxmlNodeList", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -14451,7 +13288,7 @@ acPtr_class (THERE) {
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlNode ("arxmlNode",
-                                  NULL) ;
+                                  nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -14462,7 +13299,7 @@ const C_galgas_type_descriptor * GALGAS_arxmlNode::staticTypeDescriptor (void) c
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_arxmlNode::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_arxmlNode (*this)) ;
   }
@@ -14476,8 +13313,8 @@ GALGAS_arxmlNode GALGAS_arxmlNode::extractObject (const GALGAS_object & inObject
                                                   COMMA_LOCATION_ARGS) {
   GALGAS_arxmlNode result ;
   const GALGAS_arxmlNode * p = (const GALGAS_arxmlNode *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_arxmlNode *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_arxmlNode *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("arxmlNode", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -14617,13 +13454,13 @@ mObject (inElement.mProperty_node) {
 //----------------------------------------------------------------------------------------------------------------------
 
 bool cCollectionElement_arxmlElementList::isValid (void) const {
-  return true ; // return mObject.isValid () ;
+  return true ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 cCollectionElement * cCollectionElement_arxmlElementList::copy (void) {
-  cCollectionElement * result = NULL ;
+  cCollectionElement * result = nullptr ;
   macroMyNew (result, cCollectionElement_arxmlElementList (mObject.mProperty_node COMMA_HERE)) ;
   return result ;
 }
@@ -14682,7 +13519,7 @@ GALGAS_arxmlElementList GALGAS_arxmlElementList::constructor_listWithValue (cons
 void GALGAS_arxmlElementList::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                          const GALGAS_arxmlElementNode & in_node
                                                          COMMA_LOCATION_ARGS) {
-  cCollectionElement_arxmlElementList * p = NULL ;
+  cCollectionElement_arxmlElementList * p = nullptr ;
   macroMyNew (p, cCollectionElement_arxmlElementList (in_node COMMA_THERE)) ;
   outAttributes.setPointer (p) ;
   macroDetachSharedObject (p) ;
@@ -14694,7 +13531,7 @@ void GALGAS_arxmlElementList::addAssign_operation (const GALGAS_arxmlElementNode
                                                    COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inOperand0.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_arxmlElementList (inOperand0 COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -14713,7 +13550,7 @@ void GALGAS_arxmlElementList::setter_append (GALGAS_arxmlElementList_2D_element 
                                              COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inElement.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_arxmlElementList (inElement COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -14733,7 +13570,7 @@ void GALGAS_arxmlElementList::setter_insertAtIndex (const GALGAS_arxmlElementNod
                                                     COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     if (inInsertionIndex.isValid () && inOperand0.isValid ()) {
-      cCollectionElement * p = NULL ;
+      cCollectionElement * p = nullptr ;
       macroMyNew (p, cCollectionElement_arxmlElementList (inOperand0 COMMA_THERE)) ;
       capCollectionElement attributes ;
       attributes.setPointer (p) ;
@@ -14756,7 +13593,7 @@ void GALGAS_arxmlElementList::setter_removeAtIndex (GALGAS_arxmlElementNode & ou
       capCollectionElement attributes ;
       removeObjectAtIndex (attributes, inRemoveIndex.uintValue (), inCompiler COMMA_THERE) ;
       cCollectionElement_arxmlElementList * p = (cCollectionElement_arxmlElementList *) attributes.ptr () ;
-      if (NULL == p) {
+      if (nullptr == p) {
         outOperand0.drop () ;
         drop () ;
       }else{
@@ -14780,7 +13617,7 @@ void GALGAS_arxmlElementList::setter_popFirst (GALGAS_arxmlElementNode & outOper
   capCollectionElement attributes ;
   removeFirstObject (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_arxmlElementList * p = (cCollectionElement_arxmlElementList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_arxmlElementList) ;
@@ -14796,7 +13633,7 @@ void GALGAS_arxmlElementList::setter_popLast (GALGAS_arxmlElementNode & outOpera
   capCollectionElement attributes ;
   removeLastObject (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_arxmlElementList * p = (cCollectionElement_arxmlElementList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_arxmlElementList) ;
@@ -14812,7 +13649,7 @@ void GALGAS_arxmlElementList::method_first (GALGAS_arxmlElementNode & outOperand
   capCollectionElement attributes ;
   readFirst (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_arxmlElementList * p = (cCollectionElement_arxmlElementList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_arxmlElementList) ;
@@ -14828,7 +13665,7 @@ void GALGAS_arxmlElementList::method_last (GALGAS_arxmlElementNode & outOperand0
   capCollectionElement attributes ;
   readLast (attributes, inCompiler COMMA_THERE) ;
   cCollectionElement_arxmlElementList * p = (cCollectionElement_arxmlElementList *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outOperand0.drop () ;
   }else{
     macroValidSharedObject (p, cCollectionElement_arxmlElementList) ;
@@ -14894,7 +13731,7 @@ void GALGAS_arxmlElementList::setter_setNodeAtIndex (GALGAS_arxmlElementNode inO
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) {
   cCollectionElement_arxmlElementList * p = (cCollectionElement_arxmlElementList *) uniquelyReferencedPointerAtIndex (inIndex, inCompiler COMMA_THERE) ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cCollectionElement_arxmlElementList) ;
     macroUniqueSharedObject (p) ;
     p->mObject.mProperty_node = inOperand ;
@@ -14909,7 +13746,7 @@ GALGAS_arxmlElementNode GALGAS_arxmlElementList::getter_nodeAtIndex (const GALGA
   capCollectionElement attributes = readObjectAtIndex (inIndex, inCompiler COMMA_THERE) ;
   cCollectionElement_arxmlElementList * p = (cCollectionElement_arxmlElementList *) attributes.ptr () ;
   GALGAS_arxmlElementNode result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cCollectionElement_arxmlElementList) ;
     result = p->mObject.mProperty_node ;
   }
@@ -14954,7 +13791,7 @@ GALGAS_arxmlElementNode cEnumerator_arxmlElementList::current_node (LOCATION_ARG
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlElementList ("arxmlElementList",
-                                         NULL) ;
+                                         nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -14965,7 +13802,7 @@ const C_galgas_type_descriptor * GALGAS_arxmlElementList::staticTypeDescriptor (
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_arxmlElementList::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_arxmlElementList (*this)) ;
   }
@@ -14979,8 +13816,8 @@ GALGAS_arxmlElementList GALGAS_arxmlElementList::extractObject (const GALGAS_obj
                                                                 COMMA_LOCATION_ARGS) {
   GALGAS_arxmlElementList result ;
   const GALGAS_arxmlElementList * p = (const GALGAS_arxmlElementList *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_arxmlElementList *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_arxmlElementList *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("arxmlElementList", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -15203,7 +14040,7 @@ void cPtr_arxmlDocument::description (C_String & ioString,
 //----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_arxmlDocument::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
+  acPtr_class * ptr = nullptr ;
   macroMyNew (ptr, cPtr_arxmlDocument (THERE)) ;
   return ptr ;
 }
@@ -15217,7 +14054,7 @@ acPtr_class * cPtr_arxmlDocument::duplicate (LOCATION_ARGS) const {
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlDocument ("arxmlDocument",
-                                      NULL) ;
+                                      nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -15228,7 +14065,7 @@ const C_galgas_type_descriptor * GALGAS_arxmlDocument::staticTypeDescriptor (voi
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_arxmlDocument::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_arxmlDocument (*this)) ;
   }
@@ -15242,8 +14079,8 @@ GALGAS_arxmlDocument GALGAS_arxmlDocument::extractObject (const GALGAS_object & 
                                                           COMMA_LOCATION_ARGS) {
   GALGAS_arxmlDocument result ;
   const GALGAS_arxmlDocument * p = (const GALGAS_arxmlDocument *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_arxmlDocument *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_arxmlDocument *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("arxmlDocument", p->dynamicTypeDescriptor () COMMA_THERE) ;
@@ -15270,7 +14107,7 @@ bool cMapElement_arxmlElementValueMap::isValid (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 cMapElement * cMapElement_arxmlElementValueMap::copy (void) {
-  cMapElement * result = NULL ;
+  cMapElement * result = nullptr ;
   macroMyNew (result, cMapElement_arxmlElementValueMap (mProperty_lkey, mProperty_values COMMA_HERE)) ;
   return result ;
 }
@@ -15346,7 +14183,7 @@ void GALGAS_arxmlElementValueMap::addAssign_operation (const GALGAS_lstring & in
                                                        const GALGAS_arxmlElementValueList & inArgument0,
                                                        C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) {
-  cMapElement_arxmlElementValueMap * p = NULL ;
+  cMapElement_arxmlElementValueMap * p = nullptr ;
   macroMyNew (p, cMapElement_arxmlElementValueMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -15376,7 +14213,7 @@ void GALGAS_arxmlElementValueMap::setter_insertKey (GALGAS_lstring inKey,
                                                     GALGAS_arxmlElementValueList inArgument0,
                                                     C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) {
-  cMapElement_arxmlElementValueMap * p = NULL ;
+  cMapElement_arxmlElementValueMap * p = nullptr ;
   macroMyNew (p, cMapElement_arxmlElementValueMap (inKey, inArgument0 COMMA_HERE)) ;
   capCollectionElement attributes ;
   attributes.setPointer (p) ;
@@ -15400,7 +14237,7 @@ void GALGAS_arxmlElementValueMap::method_searchKey (GALGAS_lstring inKey,
                                                                                                          inCompiler,
                                                                                                          kSearchErrorMessage_arxmlElementValueMap_searchKey
                                                                                                          COMMA_THERE) ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_arxmlElementValueMap) ;
@@ -15418,7 +14255,7 @@ void GALGAS_arxmlElementValueMap::setter_removeKey (GALGAS_lstring inKey,
   capCollectionElement attributes ;
   performRemove (inKey, attributes, inCompiler, kRemoveErrorMessage COMMA_THERE) ;
   cMapElement_arxmlElementValueMap * p = (cMapElement_arxmlElementValueMap *) attributes.ptr () ;
-  if (NULL == p) {
+  if (nullptr == p) {
     outArgument0.drop () ;
   }else{
     macroValidSharedObject (p, cMapElement_arxmlElementValueMap) ;
@@ -15434,7 +14271,7 @@ GALGAS_arxmlElementValueList GALGAS_arxmlElementValueMap::getter_valuesForKey (c
   const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
   const cMapElement_arxmlElementValueMap * p = (const cMapElement_arxmlElementValueMap *) attributes ;
   GALGAS_arxmlElementValueList result ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_arxmlElementValueMap) ;
     result = p->mProperty_values ;
   }
@@ -15449,7 +14286,7 @@ void GALGAS_arxmlElementValueMap::setter_setValuesForKey (GALGAS_arxmlElementVal
                                                           COMMA_LOCATION_ARGS) {
   cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_arxmlElementValueMap * p = (cMapElement_arxmlElementValueMap *) attributes ;
-  if (NULL != p) {
+  if (nullptr != p) {
     macroValidSharedObject (p, cMapElement_arxmlElementValueMap) ;
     p->mProperty_values = inAttributeValue ;
   }
@@ -15502,7 +14339,7 @@ GALGAS_arxmlElementValueList cEnumerator_arxmlElementValueMap::current_values (L
 bool GALGAS_arxmlElementValueMap::optional_searchKey (const GALGAS_string & inKey,
                                                       GALGAS_arxmlElementValueList & outArgument0) const {
   const cMapElement_arxmlElementValueMap * p = (const cMapElement_arxmlElementValueMap *) searchForKey (inKey) ;
-  const bool result = NULL != p ;
+  const bool result = nullptr != p ;
   if (result) {
     macroValidSharedObject (p, cMapElement_arxmlElementValueMap) ;
     outArgument0 = p->mProperty_values ;
@@ -15520,7 +14357,7 @@ bool GALGAS_arxmlElementValueMap::optional_searchKey (const GALGAS_string & inKe
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlElementValueMap ("arxmlElementValueMap",
-                                             NULL) ;
+                                             nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -15531,7 +14368,7 @@ const C_galgas_type_descriptor * GALGAS_arxmlElementValueMap::staticTypeDescript
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_arxmlElementValueMap::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
+  AC_GALGAS_root * result = nullptr ;
   if (isValid ()) {
     macroMyNew (result, GALGAS_arxmlElementValueMap (*this)) ;
   }
@@ -15545,12 +14382,2809 @@ GALGAS_arxmlElementValueMap GALGAS_arxmlElementValueMap::extractObject (const GA
                                                                         COMMA_LOCATION_ARGS) {
   GALGAS_arxmlElementValueMap result ;
   const GALGAS_arxmlElementValueMap * p = (const GALGAS_arxmlElementValueMap *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_arxmlElementValueMap *> (p)) {
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_arxmlElementValueMap *> (p)) {
       result = *p ;
     }else{
       inCompiler->castError ("arxmlElementValueMap", p->dynamicTypeDescriptor () COMMA_THERE) ;
     }  
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Class for element of '@arxmlElementValueList' list
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cCollectionElement_arxmlElementValueList : public cCollectionElement {
+  public: GALGAS_arxmlElementValueList_2D_element mObject ;
+
+//--- Constructors
+  public: cCollectionElement_arxmlElementValueList (const GALGAS_arxmlElementValue & in_value
+                                                    COMMA_LOCATION_ARGS) ;
+  public: cCollectionElement_arxmlElementValueList (const GALGAS_arxmlElementValueList_2D_element & inElement COMMA_LOCATION_ARGS) ;
+
+//--- Virtual method for comparing elements
+  public: virtual typeComparisonResult compare (const cCollectionElement * inOperand) const ;
+
+//--- Virtual method that checks that all attributes are valid
+  public: virtual bool isValid (void) const ;
+
+//--- Virtual method that returns a copy of current object
+  public: virtual cCollectionElement * copy (void) ;
+
+//--- Description
+  public: virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+cCollectionElement_arxmlElementValueList::cCollectionElement_arxmlElementValueList (const GALGAS_arxmlElementValue & in_value
+                                                                                    COMMA_LOCATION_ARGS) :
+cCollectionElement (THERE),
+mObject (in_value) {
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+cCollectionElement_arxmlElementValueList::cCollectionElement_arxmlElementValueList (const GALGAS_arxmlElementValueList_2D_element & inElement COMMA_LOCATION_ARGS) :
+cCollectionElement (THERE),
+mObject (inElement.mProperty_value) {
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+bool cCollectionElement_arxmlElementValueList::isValid (void) const {
+  return true ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+cCollectionElement * cCollectionElement_arxmlElementValueList::copy (void) {
+  cCollectionElement * result = nullptr ;
+  macroMyNew (result, cCollectionElement_arxmlElementValueList (mObject.mProperty_value COMMA_HERE)) ;
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cCollectionElement_arxmlElementValueList::description (C_String & ioString, const int32_t inIndentation) const {
+  ioString << "\n" ;
+  ioString.writeStringMultiple ("| ", inIndentation) ;
+  ioString << "value" ":" ;
+  mObject.mProperty_value.description (ioString, inIndentation) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+typeComparisonResult cCollectionElement_arxmlElementValueList::compare (const cCollectionElement * inOperand) const {
+  cCollectionElement_arxmlElementValueList * operand = (cCollectionElement_arxmlElementValueList *) inOperand ;
+  macroValidSharedObject (operand, cCollectionElement_arxmlElementValueList) ;
+  return mObject.objectCompare (operand->mObject) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_arxmlElementValueList::GALGAS_arxmlElementValueList (void) :
+AC_GALGAS_list () {
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_arxmlElementValueList::GALGAS_arxmlElementValueList (const capCollectionElementArray & inSharedArray) :
+AC_GALGAS_list (inSharedArray) {
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_arxmlElementValueList GALGAS_arxmlElementValueList::constructor_emptyList (UNUSED_LOCATION_ARGS) {
+  return GALGAS_arxmlElementValueList  (capCollectionElementArray ()) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_arxmlElementValueList GALGAS_arxmlElementValueList::constructor_listWithValue (const GALGAS_arxmlElementValue & inOperand0
+                                                                                      COMMA_LOCATION_ARGS) {
+  GALGAS_arxmlElementValueList result ;
+  if (inOperand0.isValid ()) {
+    result = GALGAS_arxmlElementValueList (capCollectionElementArray ()) ;
+    capCollectionElement attributes ;
+    GALGAS_arxmlElementValueList::makeAttributesFromObjects (attributes, inOperand0 COMMA_THERE) ;
+    result.appendObject (attributes) ;
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValueList::makeAttributesFromObjects (capCollectionElement & outAttributes,
+                                                              const GALGAS_arxmlElementValue & in_value
+                                                              COMMA_LOCATION_ARGS) {
+  cCollectionElement_arxmlElementValueList * p = nullptr ;
+  macroMyNew (p, cCollectionElement_arxmlElementValueList (in_value COMMA_THERE)) ;
+  outAttributes.setPointer (p) ;
+  macroDetachSharedObject (p) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValueList::addAssign_operation (const GALGAS_arxmlElementValue & inOperand0
+                                                        COMMA_LOCATION_ARGS) {
+  if (isValid ()) {
+    if (inOperand0.isValid ()) {
+      cCollectionElement * p = nullptr ;
+      macroMyNew (p, cCollectionElement_arxmlElementValueList (inOperand0 COMMA_THERE)) ;
+      capCollectionElement attributes ;
+      attributes.setPointer (p) ;
+      macroDetachSharedObject (p) ;
+      appendObject (attributes) ;
+    }else{ // Destroy receiver
+      drop () ;
+    }
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValueList::setter_append (GALGAS_arxmlElementValueList_2D_element inElement,
+                                                  C_Compiler * /* inCompiler */
+                                                  COMMA_LOCATION_ARGS) {
+  if (isValid ()) {
+    if (inElement.isValid ()) {
+      cCollectionElement * p = nullptr ;
+      macroMyNew (p, cCollectionElement_arxmlElementValueList (inElement COMMA_THERE)) ;
+      capCollectionElement attributes ;
+      attributes.setPointer (p) ;
+      macroDetachSharedObject (p) ;
+      appendObject (attributes) ;
+    }else{
+      drop () ;
+    }
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValueList::setter_insertAtIndex (const GALGAS_arxmlElementValue inOperand0,
+                                                         const GALGAS_uint inInsertionIndex,
+                                                         C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) {
+  if (isValid ()) {
+    if (inInsertionIndex.isValid () && inOperand0.isValid ()) {
+      cCollectionElement * p = nullptr ;
+      macroMyNew (p, cCollectionElement_arxmlElementValueList (inOperand0 COMMA_THERE)) ;
+      capCollectionElement attributes ;
+      attributes.setPointer (p) ;
+      macroDetachSharedObject (p) ;
+      insertObjectAtIndex (attributes, inInsertionIndex.uintValue (), inCompiler COMMA_THERE) ;
+    }else{
+      drop () ;
+    }
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValueList::setter_removeAtIndex (GALGAS_arxmlElementValue & outOperand0,
+                                                         const GALGAS_uint inRemoveIndex,
+                                                         C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) {
+  if (isValid ()) {
+    if (inRemoveIndex.isValid ()) {
+      capCollectionElement attributes ;
+      removeObjectAtIndex (attributes, inRemoveIndex.uintValue (), inCompiler COMMA_THERE) ;
+      cCollectionElement_arxmlElementValueList * p = (cCollectionElement_arxmlElementValueList *) attributes.ptr () ;
+      if (nullptr == p) {
+        outOperand0.drop () ;
+        drop () ;
+      }else{
+        macroValidSharedObject (p, cCollectionElement_arxmlElementValueList) ;
+        outOperand0 = p->mObject.mProperty_value ;
+      }
+    }else{
+      outOperand0.drop () ;
+      drop () ;    
+    }
+  }else{
+    outOperand0.drop () ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValueList::setter_popFirst (GALGAS_arxmlElementValue & outOperand0,
+                                                    C_Compiler * inCompiler
+                                                    COMMA_LOCATION_ARGS) {
+  capCollectionElement attributes ;
+  removeFirstObject (attributes, inCompiler COMMA_THERE) ;
+  cCollectionElement_arxmlElementValueList * p = (cCollectionElement_arxmlElementValueList *) attributes.ptr () ;
+  if (nullptr == p) {
+    outOperand0.drop () ;
+  }else{
+    macroValidSharedObject (p, cCollectionElement_arxmlElementValueList) ;
+    outOperand0 = p->mObject.mProperty_value ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValueList::setter_popLast (GALGAS_arxmlElementValue & outOperand0,
+                                                   C_Compiler * inCompiler
+                                                   COMMA_LOCATION_ARGS) {
+  capCollectionElement attributes ;
+  removeLastObject (attributes, inCompiler COMMA_THERE) ;
+  cCollectionElement_arxmlElementValueList * p = (cCollectionElement_arxmlElementValueList *) attributes.ptr () ;
+  if (nullptr == p) {
+    outOperand0.drop () ;
+  }else{
+    macroValidSharedObject (p, cCollectionElement_arxmlElementValueList) ;
+    outOperand0 = p->mObject.mProperty_value ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValueList::method_first (GALGAS_arxmlElementValue & outOperand0,
+                                                 C_Compiler * inCompiler
+                                                 COMMA_LOCATION_ARGS) const {
+  capCollectionElement attributes ;
+  readFirst (attributes, inCompiler COMMA_THERE) ;
+  cCollectionElement_arxmlElementValueList * p = (cCollectionElement_arxmlElementValueList *) attributes.ptr () ;
+  if (nullptr == p) {
+    outOperand0.drop () ;
+  }else{
+    macroValidSharedObject (p, cCollectionElement_arxmlElementValueList) ;
+    outOperand0 = p->mObject.mProperty_value ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValueList::method_last (GALGAS_arxmlElementValue & outOperand0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) const {
+  capCollectionElement attributes ;
+  readLast (attributes, inCompiler COMMA_THERE) ;
+  cCollectionElement_arxmlElementValueList * p = (cCollectionElement_arxmlElementValueList *) attributes.ptr () ;
+  if (nullptr == p) {
+    outOperand0.drop () ;
+  }else{
+    macroValidSharedObject (p, cCollectionElement_arxmlElementValueList) ;
+    outOperand0 = p->mObject.mProperty_value ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_arxmlElementValueList GALGAS_arxmlElementValueList::add_operation (const GALGAS_arxmlElementValueList & inOperand,
+                                                                          C_Compiler * /* inCompiler */
+                                                                          COMMA_UNUSED_LOCATION_ARGS) const {
+  GALGAS_arxmlElementValueList result ;
+  if (isValid () && inOperand.isValid ()) {
+    result = *this ;
+    result.appendList (inOperand) ;
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_arxmlElementValueList GALGAS_arxmlElementValueList::getter_subListWithRange (const GALGAS_range & inRange,
+                                                                                    C_Compiler * inCompiler
+                                                                                    COMMA_LOCATION_ARGS) const {
+  GALGAS_arxmlElementValueList result = GALGAS_arxmlElementValueList::constructor_emptyList (THERE) ;
+  subListWithRange (result, inRange, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_arxmlElementValueList GALGAS_arxmlElementValueList::getter_subListFromIndex (const GALGAS_uint & inIndex,
+                                                                                    C_Compiler * inCompiler
+                                                                                    COMMA_LOCATION_ARGS) const {
+  GALGAS_arxmlElementValueList result = GALGAS_arxmlElementValueList::constructor_emptyList (THERE) ;
+  subListFromIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_arxmlElementValueList GALGAS_arxmlElementValueList::getter_subListToIndex (const GALGAS_uint & inIndex,
+                                                                                  C_Compiler * inCompiler
+                                                                                  COMMA_LOCATION_ARGS) const {
+  GALGAS_arxmlElementValueList result = GALGAS_arxmlElementValueList::constructor_emptyList (THERE) ;
+  subListToIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValueList::plusAssign_operation (const GALGAS_arxmlElementValueList inOperand,
+                                                         C_Compiler * /* inCompiler */
+                                                         COMMA_UNUSED_LOCATION_ARGS) {
+  appendList (inOperand) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValueList::setter_setValueAtIndex (GALGAS_arxmlElementValue inOperand,
+                                                           GALGAS_uint inIndex,
+                                                           C_Compiler * inCompiler
+                                                           COMMA_LOCATION_ARGS) {
+  cCollectionElement_arxmlElementValueList * p = (cCollectionElement_arxmlElementValueList *) uniquelyReferencedPointerAtIndex (inIndex, inCompiler COMMA_THERE) ;
+  if (nullptr != p) {
+    macroValidSharedObject (p, cCollectionElement_arxmlElementValueList) ;
+    macroUniqueSharedObject (p) ;
+    p->mObject.mProperty_value = inOperand ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_arxmlElementValue GALGAS_arxmlElementValueList::getter_valueAtIndex (const GALGAS_uint & inIndex,
+                                                                            C_Compiler * inCompiler
+                                                                            COMMA_LOCATION_ARGS) const {
+  capCollectionElement attributes = readObjectAtIndex (inIndex, inCompiler COMMA_THERE) ;
+  cCollectionElement_arxmlElementValueList * p = (cCollectionElement_arxmlElementValueList *) attributes.ptr () ;
+  GALGAS_arxmlElementValue result ;
+  if (nullptr != p) {
+    macroValidSharedObject (p, cCollectionElement_arxmlElementValueList) ;
+    result = p->mObject.mProperty_value ;
+  }
+  return result ;
+}
+
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+cEnumerator_arxmlElementValueList::cEnumerator_arxmlElementValueList (const GALGAS_arxmlElementValueList & inEnumeratedObject,
+                                                                      const typeEnumerationOrder inOrder) :
+cGenericAbstractEnumerator (inOrder) {
+  inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_arxmlElementValueList_2D_element cEnumerator_arxmlElementValueList::current (LOCATION_ARGS) const {
+  const cCollectionElement_arxmlElementValueList * p = (const cCollectionElement_arxmlElementValueList *) currentObjectPtr (THERE) ;
+  macroValidSharedObject (p, cCollectionElement_arxmlElementValueList) ;
+  return p->mObject ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_arxmlElementValue cEnumerator_arxmlElementValueList::current_value (LOCATION_ARGS) const {
+  const cCollectionElement_arxmlElementValueList * p = (const cCollectionElement_arxmlElementValueList *) currentObjectPtr (THERE) ;
+  macroValidSharedObject (p, cCollectionElement_arxmlElementValueList) ;
+  return p->mObject.mProperty_value ;
+}
+
+
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//     @arxmlElementValueList generic code implementation
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_arxmlElementValueList ("arxmlElementValueList",
+                                              nullptr) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+const C_galgas_type_descriptor * GALGAS_arxmlElementValueList::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_arxmlElementValueList ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+AC_GALGAS_root * GALGAS_arxmlElementValueList::clonedObject (void) const {
+  AC_GALGAS_root * result = nullptr ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_arxmlElementValueList (*this)) ;
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_arxmlElementValueList GALGAS_arxmlElementValueList::extractObject (const GALGAS_object & inObject,
+                                                                          C_Compiler * inCompiler
+                                                                          COMMA_LOCATION_ARGS) {
+  GALGAS_arxmlElementValueList result ;
+  const GALGAS_arxmlElementValueList * p = (const GALGAS_arxmlElementValueList *) inObject.embeddedObject () ;
+  if (nullptr != p) {
+    if (nullptr != dynamic_cast <const GALGAS_arxmlElementValueList *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("arxmlElementValueList", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//     L E X I Q U E                                                                             
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+#include "strings/unicode_character_cpp.h"
+#include "galgas2/scanner_actions.h"
+#include "galgas2/cLexiqueIntrospection.h"
+
+//----------------------------------------------------------------------------------------------------------------------
+
+cTokenFor_arxmlmetaparser_5F_scanner::cTokenFor_arxmlmetaparser_5F_scanner (void) :
+mLexicalAttribute_tokenString () {
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_Lexique_arxmlmetaparser_5F_scanner::C_Lexique_arxmlmetaparser_5F_scanner (C_Compiler * inCallerCompiler,
+                                                                            const C_String & inSourceFileName
+                                                                            COMMA_LOCATION_ARGS) :
+C_Lexique (inCallerCompiler, inSourceFileName COMMA_THERE),
+mMatchedTemplateDelimiterIndex (-1) {
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_Lexique_arxmlmetaparser_5F_scanner::C_Lexique_arxmlmetaparser_5F_scanner (C_Compiler * inCallerCompiler,
+                                                                            const C_String & inSourceString,
+                                                                            const C_String & inStringForError
+                                                                            COMMA_LOCATION_ARGS) :
+C_Lexique (inCallerCompiler, inSourceString, inStringForError COMMA_THERE),
+mMatchedTemplateDelimiterIndex (-1) {
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//                        Lexical error message list                                             
+//----------------------------------------------------------------------------------------------------------------------
+
+static const char * gLexicalMessage_arxmlmetaparser_5F_scanner_incorrectAttributeEnd = "attribute value should be enclosed between apostrophes (') or quotation marks (\")" ;
+
+static const char * gLexicalMessage_arxmlmetaparser_5F_scanner_incorrectCommentError = "incorrect XML comment" ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//                getMessageForTerminal                                                          
+//----------------------------------------------------------------------------------------------------------------------
+
+C_String C_Lexique_arxmlmetaparser_5F_scanner::getMessageForTerminal (const int32_t inTerminalIndex) const {
+  C_String result = "<unknown>" ;
+  if ((inTerminalIndex >= 0) && (inTerminalIndex < 77)) {
+    static const char * syntaxErrorMessageArray [77] = {kEndOfSourceLexicalErrorMessage,
+        "a comment",
+        "a name",
+        "an attribute value",
+        "an identifier",
+        "the '<' delimitor",
+        "the '<xsd:' delimitor",
+        "the '</xsd:' delimitor",
+        "the '<\?xml' delimitor",
+        "the '>' delimitor",
+        "the '\?>' delimitor",
+        "the '/>' delimitor",
+        "the '</' delimitor",
+        "the '=' delimitor",
+        "the 'group' keyword",
+        "the 'annotation' keyword",
+        "the 'appinfo' keyword",
+        "the 'attribute' keyword",
+        "the 'attributeGroup' keyword",
+        "the 'choice' keyword",
+        "the 'complexType' keyword",
+        "the 'documentation' keyword",
+        "the 'element' keyword",
+        "the 'enumeration' keyword",
+        "the 'extension' keyword",
+        "the 'import' keyword",
+        "the 'maxLength' keyword",
+        "the 'pattern' keyword",
+        "the 'restriction' keyword",
+        "the 'schema' keyword",
+        "the 'sequence' keyword",
+        "the 'simpleContent' keyword",
+        "the 'simpleType' keyword",
+        "the 'whiteSpace' keyword",
+        "the 'abstract' keyword",
+        "the 'attributeFormDefault' keyword",
+        "the 'attributeRef' keyword",
+        "the 'base' keyword",
+        "the 'category' keyword",
+        "the 'CATEGORY' keyword",
+        "the 'color' keyword",
+        "the 'customType' keyword",
+        "the 'elementFormDefault' keyword",
+        "the 'encoding' keyword",
+        "the 'enforceMinMultiplicity' keyword",
+        "the 'globalElement' keyword",
+        "the 'id' keyword",
+        "the 'latestBindingTime' keyword",
+        "the 'maxOccurs' keyword",
+        "the 'minOccurs' keyword",
+        "the 'mixed' keyword",
+        "the 'name' keyword",
+        "the 'namePlural' keyword",
+        "the 'namespace' keyword",
+        "the 'noteType' keyword",
+        "the 'nsPrefix' keyword",
+        "the 'qualifiedName' keyword",
+        "the 'recommendedPackage' keyword",
+        "the 'ref' keyword",
+        "the 'roleElement' keyword",
+        "the 'roleWrapperElement' keyword",
+        "the 'schemaLocation' keyword",
+        "the 'sequenceOffset' keyword",
+        "the 'source' keyword",
+        "the 'Splitkey' keyword",
+        "the 'Status' keyword",
+        "the 'StatusRevisionBegin' keyword",
+        "the 'targetNamespace' keyword",
+        "the 'type' keyword",
+        "the 'typeElement' keyword",
+        "the 'typeWrapperElement' keyword",
+        "the 'use' keyword",
+        "the 'value' keyword",
+        "the 'version' keyword",
+        "the 'xmlns:AR' keyword",
+        "the 'xmlns:xsd' keyword",
+        "the 'TODO' keyword"
+    } ;
+    result = syntaxErrorMessageArray [inTerminalIndex] ;
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//                      U N I C O D E    S T R I N G S                                           
+//----------------------------------------------------------------------------------------------------------------------
+
+//--- Unicode string for '$_22_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__22_ [] = {
+  TO_UNICODE ('\"'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_26_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__26_ [] = {
+  TO_UNICODE ('&'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_26__23_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__26__23_ [] = {
+  TO_UNICODE ('&'),
+  TO_UNICODE ('#'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_26_amp_3B_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__26_amp_3B_ [] = {
+  TO_UNICODE ('&'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('p'),
+  TO_UNICODE (';'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_26_apos_3B_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__26_apos_3B_ [] = {
+  TO_UNICODE ('&'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('s'),
+  TO_UNICODE (';'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_26_gt_3B_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__26_gt_3B_ [] = {
+  TO_UNICODE ('&'),
+  TO_UNICODE ('g'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (';'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_26_lt_3B_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__26_lt_3B_ [] = {
+  TO_UNICODE ('&'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (';'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_26_quot_3B_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__26_quot_3B_ [] = {
+  TO_UNICODE ('&'),
+  TO_UNICODE ('q'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (';'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_27_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__27_ [] = {
+  TO_UNICODE ('\''),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_2D__2D__3E_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__2D__2D__3E_ [] = {
+  TO_UNICODE ('-'),
+  TO_UNICODE ('-'),
+  TO_UNICODE ('>'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_2F__3E_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__2F__3E_ [] = {
+  TO_UNICODE ('/'),
+  TO_UNICODE ('>'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3B_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__3B_ [] = {
+  TO_UNICODE (';'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3C_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__3C_ [] = {
+  TO_UNICODE ('<'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3C__21__2D__2D_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__3C__21__2D__2D_ [] = {
+  TO_UNICODE ('<'),
+  TO_UNICODE ('!'),
+  TO_UNICODE ('-'),
+  TO_UNICODE ('-'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3C__2F_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__3C__2F_ [] = {
+  TO_UNICODE ('<'),
+  TO_UNICODE ('/'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3C__2F_xsd_3A_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__3C__2F_xsd_3A_ [] = {
+  TO_UNICODE ('<'),
+  TO_UNICODE ('/'),
+  TO_UNICODE ('x'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('d'),
+  TO_UNICODE (':'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3C__3F_xml$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__3C__3F_xml [] = {
+  TO_UNICODE ('<'),
+  TO_UNICODE ('\?'),
+  TO_UNICODE ('x'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('l'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3C_xsd_3A_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__3C_xsd_3A_ [] = {
+  TO_UNICODE ('<'),
+  TO_UNICODE ('x'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('d'),
+  TO_UNICODE (':'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3D_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__3D_ [] = {
+  TO_UNICODE ('='),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3E_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__3E_ [] = {
+  TO_UNICODE ('>'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3F__3E_$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner__3F__3E_ [] = {
+  TO_UNICODE ('\?'),
+  TO_UNICODE ('>'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$CATEGORY$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_CATEGORY [] = {
+  TO_UNICODE ('C'),
+  TO_UNICODE ('A'),
+  TO_UNICODE ('T'),
+  TO_UNICODE ('E'),
+  TO_UNICODE ('G'),
+  TO_UNICODE ('O'),
+  TO_UNICODE ('R'),
+  TO_UNICODE ('Y'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$Splitkey$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_Splitkey [] = {
+  TO_UNICODE ('S'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('k'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('y'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$Status$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_Status [] = {
+  TO_UNICODE ('S'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('s'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$StatusRevisionBegin$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_StatusRevisionBegin [] = {
+  TO_UNICODE ('S'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('R'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('v'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('B'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('g'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$TODO$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_TODO [] = {
+  TO_UNICODE ('T'),
+  TO_UNICODE ('O'),
+  TO_UNICODE ('D'),
+  TO_UNICODE ('O'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$abstract$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_abstract [] = {
+  TO_UNICODE ('a'),
+  TO_UNICODE ('b'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$annotation$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_annotation [] = {
+  TO_UNICODE ('a'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('n'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$appinfo$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_appinfo [] = {
+  TO_UNICODE ('a'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('f'),
+  TO_UNICODE ('o'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$attribute$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_attribute [] = {
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('b'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$attributeFormDefault$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_attributeFormDefault [] = {
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('b'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('F'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('D'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('f'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$attributeGroup$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_attributeGroup [] = {
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('b'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('G'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('p'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$attributeRef$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_attributeRef [] = {
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('b'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('R'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('f'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$base$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_base [] = {
+  TO_UNICODE ('b'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$category$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_category [] = {
+  TO_UNICODE ('c'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('g'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('y'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$choice$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_choice [] = {
+  TO_UNICODE ('c'),
+  TO_UNICODE ('h'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$color$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_color [] = {
+  TO_UNICODE ('c'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('r'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$complexType$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_complexType [] = {
+  TO_UNICODE ('c'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('x'),
+  TO_UNICODE ('T'),
+  TO_UNICODE ('y'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$customType$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_customType [] = {
+  TO_UNICODE ('c'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('T'),
+  TO_UNICODE ('y'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$documentation$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_documentation [] = {
+  TO_UNICODE ('d'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('n'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$element$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_element [] = {
+  TO_UNICODE ('e'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$elementFormDefault$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_elementFormDefault [] = {
+  TO_UNICODE ('e'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('F'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('D'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('f'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$encoding$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_encoding [] = {
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('g'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$enforceMinMultiplicity$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_enforceMinMultiplicity [] = {
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('f'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('M'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('M'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('y'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$enumeration$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_enumeration [] = {
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('n'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$extension$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_extension [] = {
+  TO_UNICODE ('e'),
+  TO_UNICODE ('x'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('n'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$globalElement$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_globalElement [] = {
+  TO_UNICODE ('g'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('b'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('E'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$group$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_group [] = {
+  TO_UNICODE ('g'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('p'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$id$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_id [] = {
+  TO_UNICODE ('i'),
+  TO_UNICODE ('d'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$import$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_import [] = {
+  TO_UNICODE ('i'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$latestBindingTime$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_latestBindingTime [] = {
+  TO_UNICODE ('l'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('B'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('g'),
+  TO_UNICODE ('T'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$maxLength$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_maxLength [] = {
+  TO_UNICODE ('m'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('x'),
+  TO_UNICODE ('L'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('g'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('h'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$maxOccurs$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_maxOccurs [] = {
+  TO_UNICODE ('m'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('x'),
+  TO_UNICODE ('O'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('s'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$minOccurs$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_minOccurs [] = {
+  TO_UNICODE ('m'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('O'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('s'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$mixed$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_mixed [] = {
+  TO_UNICODE ('m'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('x'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('d'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$name$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_name [] = {
+  TO_UNICODE ('n'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$namePlural$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_namePlural [] = {
+  TO_UNICODE ('n'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('P'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('l'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$namespace$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_namespace [] = {
+  TO_UNICODE ('n'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$noteType$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_noteType [] = {
+  TO_UNICODE ('n'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('T'),
+  TO_UNICODE ('y'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$nsPrefix$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_nsPrefix [] = {
+  TO_UNICODE ('n'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('P'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('f'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('x'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$pattern$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_pattern [] = {
+  TO_UNICODE ('p'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('n'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$qualifiedName$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_qualifiedName [] = {
+  TO_UNICODE ('q'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('f'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('N'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$recommendedPackage$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_recommendedPackage [] = {
+  TO_UNICODE ('r'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('P'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('k'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('g'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$ref$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_ref [] = {
+  TO_UNICODE ('r'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('f'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$restriction$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_restriction [] = {
+  TO_UNICODE ('r'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('n'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$roleElement$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_roleElement [] = {
+  TO_UNICODE ('r'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('E'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$roleWrapperElement$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_roleWrapperElement [] = {
+  TO_UNICODE ('r'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('W'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('E'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$schema$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_schema [] = {
+  TO_UNICODE ('s'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('h'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('a'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$schemaLocation$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_schemaLocation [] = {
+  TO_UNICODE ('s'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('h'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('L'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('n'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$sequence$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_sequence [] = {
+  TO_UNICODE ('s'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('q'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$sequenceOffset$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_sequenceOffset [] = {
+  TO_UNICODE ('s'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('q'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('O'),
+  TO_UNICODE ('f'),
+  TO_UNICODE ('f'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$simpleContent$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_simpleContent [] = {
+  TO_UNICODE ('s'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('C'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$simpleType$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_simpleType [] = {
+  TO_UNICODE ('s'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('T'),
+  TO_UNICODE ('y'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$source$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_source [] = {
+  TO_UNICODE ('s'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$targetNamespace$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_targetNamespace [] = {
+  TO_UNICODE ('t'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('g'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('N'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$type$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_type [] = {
+  TO_UNICODE ('t'),
+  TO_UNICODE ('y'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$typeElement$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_typeElement [] = {
+  TO_UNICODE ('t'),
+  TO_UNICODE ('y'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('E'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$typeWrapperElement$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_typeWrapperElement [] = {
+  TO_UNICODE ('t'),
+  TO_UNICODE ('y'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('W'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('E'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$use$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_use [] = {
+  TO_UNICODE ('u'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$value$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_value [] = {
+  TO_UNICODE ('v'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$version$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_version [] = {
+  TO_UNICODE ('v'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('n'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$whiteSpace$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_whiteSpace [] = {
+  TO_UNICODE ('w'),
+  TO_UNICODE ('h'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('S'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$xmlns_3A_AR$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_xmlns_3A_AR [] = {
+  TO_UNICODE ('x'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('s'),
+  TO_UNICODE (':'),
+  TO_UNICODE ('A'),
+  TO_UNICODE ('R'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$xmlns_3A_xsd$'
+static const utf32 kUnicodeString_arxmlmetaparser_5F_scanner_xmlns_3A_xsd [] = {
+  TO_UNICODE ('x'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('s'),
+  TO_UNICODE (':'),
+  TO_UNICODE ('x'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('d'),
+  TO_UNICODE (0)
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//             Key words table 'keyWordList'      
+//----------------------------------------------------------------------------------------------------------------------
+
+static const int32_t ktable_size_arxmlmetaparser_5F_scanner_keyWordList = 63 ;
+
+static const C_unicode_lexique_table_entry ktable_for_arxmlmetaparser_5F_scanner_keyWordList [ktable_size_arxmlmetaparser_5F_scanner_keyWordList] = {
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_id, 2, C_Lexique_arxmlmetaparser_5F_scanner::kToken_id),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_ref, 3, C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_use, 3, C_Lexique_arxmlmetaparser_5F_scanner::kToken_use),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_TODO, 4, C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_base, 4, C_Lexique_arxmlmetaparser_5F_scanner::kToken_base),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_name, 4, C_Lexique_arxmlmetaparser_5F_scanner::kToken_name),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_type, 4, C_Lexique_arxmlmetaparser_5F_scanner::kToken_type),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_color, 5, C_Lexique_arxmlmetaparser_5F_scanner::kToken_color),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_group, 5, C_Lexique_arxmlmetaparser_5F_scanner::kToken_group),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_mixed, 5, C_Lexique_arxmlmetaparser_5F_scanner::kToken_mixed),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_value, 5, C_Lexique_arxmlmetaparser_5F_scanner::kToken_value),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_Status, 6, C_Lexique_arxmlmetaparser_5F_scanner::kToken_Status),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_choice, 6, C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_import, 6, C_Lexique_arxmlmetaparser_5F_scanner::kToken_import),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_schema, 6, C_Lexique_arxmlmetaparser_5F_scanner::kToken_schema),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_source, 6, C_Lexique_arxmlmetaparser_5F_scanner::kToken_source),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_appinfo, 7, C_Lexique_arxmlmetaparser_5F_scanner::kToken_appinfo),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_element, 7, C_Lexique_arxmlmetaparser_5F_scanner::kToken_element),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_pattern, 7, C_Lexique_arxmlmetaparser_5F_scanner::kToken_pattern),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_version, 7, C_Lexique_arxmlmetaparser_5F_scanner::kToken_version),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_CATEGORY, 8, C_Lexique_arxmlmetaparser_5F_scanner::kToken_CATEGORY),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_Splitkey, 8, C_Lexique_arxmlmetaparser_5F_scanner::kToken_Splitkey),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_abstract, 8, C_Lexique_arxmlmetaparser_5F_scanner::kToken_abstract),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_category, 8, C_Lexique_arxmlmetaparser_5F_scanner::kToken_category),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_encoding, 8, C_Lexique_arxmlmetaparser_5F_scanner::kToken_encoding),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_noteType, 8, C_Lexique_arxmlmetaparser_5F_scanner::kToken_noteType),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_nsPrefix, 8, C_Lexique_arxmlmetaparser_5F_scanner::kToken_nsPrefix),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_sequence, 8, C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_xmlns_3A_AR, 8, C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlns_3A_AR),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_attribute, 9, C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_extension, 9, C_Lexique_arxmlmetaparser_5F_scanner::kToken_extension),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_maxLength, 9, C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxLength),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_maxOccurs, 9, C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxOccurs),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_minOccurs, 9, C_Lexique_arxmlmetaparser_5F_scanner::kToken_minOccurs),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_namespace, 9, C_Lexique_arxmlmetaparser_5F_scanner::kToken_namespace),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_xmlns_3A_xsd, 9, C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlns_3A_xsd),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_annotation, 10, C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_customType, 10, C_Lexique_arxmlmetaparser_5F_scanner::kToken_customType),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_namePlural, 10, C_Lexique_arxmlmetaparser_5F_scanner::kToken_namePlural),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_simpleType, 10, C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_whiteSpace, 10, C_Lexique_arxmlmetaparser_5F_scanner::kToken_whiteSpace),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_complexType, 11, C_Lexique_arxmlmetaparser_5F_scanner::kToken_complexType),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_enumeration, 11, C_Lexique_arxmlmetaparser_5F_scanner::kToken_enumeration),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_restriction, 11, C_Lexique_arxmlmetaparser_5F_scanner::kToken_restriction),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_roleElement, 11, C_Lexique_arxmlmetaparser_5F_scanner::kToken_roleElement),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_typeElement, 11, C_Lexique_arxmlmetaparser_5F_scanner::kToken_typeElement),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_attributeRef, 12, C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeRef),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_documentation, 13, C_Lexique_arxmlmetaparser_5F_scanner::kToken_documentation),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_globalElement, 13, C_Lexique_arxmlmetaparser_5F_scanner::kToken_globalElement),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_qualifiedName, 13, C_Lexique_arxmlmetaparser_5F_scanner::kToken_qualifiedName),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_simpleContent, 13, C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleContent),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_attributeGroup, 14, C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_schemaLocation, 14, C_Lexique_arxmlmetaparser_5F_scanner::kToken_schemaLocation),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_sequenceOffset, 14, C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequenceOffset),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_targetNamespace, 15, C_Lexique_arxmlmetaparser_5F_scanner::kToken_targetNamespace),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_latestBindingTime, 17, C_Lexique_arxmlmetaparser_5F_scanner::kToken_latestBindingTime),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_elementFormDefault, 18, C_Lexique_arxmlmetaparser_5F_scanner::kToken_elementFormDefault),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_recommendedPackage, 18, C_Lexique_arxmlmetaparser_5F_scanner::kToken_recommendedPackage),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_roleWrapperElement, 18, C_Lexique_arxmlmetaparser_5F_scanner::kToken_roleWrapperElement),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_typeWrapperElement, 18, C_Lexique_arxmlmetaparser_5F_scanner::kToken_typeWrapperElement),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_StatusRevisionBegin, 19, C_Lexique_arxmlmetaparser_5F_scanner::kToken_StatusRevisionBegin),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_attributeFormDefault, 20, C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeFormDefault),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner_enforceMinMultiplicity, 22, C_Lexique_arxmlmetaparser_5F_scanner::kToken_enforceMinMultiplicity)
+} ;
+
+int32_t C_Lexique_arxmlmetaparser_5F_scanner::search_into_keyWordList (const C_String & inSearchedString) {
+  return searchInList (inSearchedString, ktable_for_arxmlmetaparser_5F_scanner_keyWordList, ktable_size_arxmlmetaparser_5F_scanner_keyWordList) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//             Key words table 'xmlDelimitorsList'      
+//----------------------------------------------------------------------------------------------------------------------
+
+static const int32_t ktable_size_arxmlmetaparser_5F_scanner_xmlDelimitorsList = 9 ;
+
+static const C_unicode_lexique_table_entry ktable_for_arxmlmetaparser_5F_scanner_xmlDelimitorsList [ktable_size_arxmlmetaparser_5F_scanner_xmlDelimitorsList] = {
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner__3C_, 1, C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner__3D_, 1, C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner__3E_, 1, C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner__2F__3E_, 2, C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner__3C__2F_, 2, C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner__3F__3E_, 2, C_Lexique_arxmlmetaparser_5F_scanner::kToken__3F__3E_),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner__3C__3F_xml, 5, C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__3F_xml),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner__3C_xsd_3A_, 5, C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_),
+  C_unicode_lexique_table_entry (kUnicodeString_arxmlmetaparser_5F_scanner__3C__2F_xsd_3A_, 6, C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_)
+} ;
+
+int32_t C_Lexique_arxmlmetaparser_5F_scanner::search_into_xmlDelimitorsList (const C_String & inSearchedString) {
+  return searchInList (inSearchedString, ktable_for_arxmlmetaparser_5F_scanner_xmlDelimitorsList, ktable_size_arxmlmetaparser_5F_scanner_xmlDelimitorsList) ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//                          getCurrentTokenString                                                
+//----------------------------------------------------------------------------------------------------------------------
+
+C_String C_Lexique_arxmlmetaparser_5F_scanner::getCurrentTokenString (const cToken * inTokenPtr) const {
+  const cTokenFor_arxmlmetaparser_5F_scanner * ptr = (const cTokenFor_arxmlmetaparser_5F_scanner *) inTokenPtr ;
+  C_String s ;
+  if (ptr == nullptr) {
+    s.appendCString("$$") ;
+  }else{
+    switch (ptr->mTokenCode) {
+    case kToken_:
+      s.appendCString("$$") ;
+      break ;
+    case kToken_comment:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("comment") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendUnicodeCharacter (TO_UNICODE (' ') COMMA_HERE) ;
+      s.appendCLiteralStringConstant (ptr->mLexicalAttribute_tokenString) ;
+      break ;
+    case kToken_xmlTag:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("xmlTag") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendUnicodeCharacter (TO_UNICODE (' ') COMMA_HERE) ;
+      s.appendCLiteralStringConstant (ptr->mLexicalAttribute_tokenString) ;
+      break ;
+    case kToken_xmlTagValue:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("xmlTagValue") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendUnicodeCharacter (TO_UNICODE (' ') COMMA_HERE) ;
+      s.appendCLiteralStringConstant (ptr->mLexicalAttribute_tokenString) ;
+      break ;
+    case kToken_identifier:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("identifier") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendUnicodeCharacter (TO_UNICODE (' ') COMMA_HERE) ;
+      s.appendCLiteralStringConstant (ptr->mLexicalAttribute_tokenString) ;
+      break ;
+    case kToken__3C_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("<") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__3C_xsd_3A_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("<xsd:") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__3C__2F_xsd_3A_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("</xsd:") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__3C__3F_xml:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("<\?xml") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__3E_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString (">") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__3F__3E_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("\?>") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__2F__3E_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("/>") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__3C__2F_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("</") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__3D_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("=") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_group:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("group") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_annotation:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("annotation") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_appinfo:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("appinfo") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_attribute:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("attribute") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_attributeGroup:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("attributeGroup") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_choice:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("choice") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_complexType:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("complexType") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_documentation:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("documentation") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_element:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("element") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_enumeration:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("enumeration") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_extension:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("extension") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_import:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("import") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_maxLength:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("maxLength") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_pattern:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("pattern") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_restriction:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("restriction") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_schema:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("schema") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_sequence:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("sequence") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_simpleContent:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("simpleContent") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_simpleType:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("simpleType") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_whiteSpace:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("whiteSpace") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_abstract:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("abstract") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_attributeFormDefault:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("attributeFormDefault") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_attributeRef:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("attributeRef") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_base:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("base") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_category:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("category") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_CATEGORY:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("CATEGORY") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_color:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("color") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_customType:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("customType") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_elementFormDefault:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("elementFormDefault") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_encoding:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("encoding") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_enforceMinMultiplicity:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("enforceMinMultiplicity") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_globalElement:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("globalElement") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_id:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("id") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_latestBindingTime:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("latestBindingTime") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_maxOccurs:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("maxOccurs") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_minOccurs:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("minOccurs") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_mixed:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("mixed") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_name:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("name") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_namePlural:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("namePlural") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_namespace:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("namespace") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_noteType:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("noteType") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_nsPrefix:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("nsPrefix") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_qualifiedName:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("qualifiedName") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_recommendedPackage:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("recommendedPackage") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_ref:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("ref") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_roleElement:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("roleElement") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_roleWrapperElement:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("roleWrapperElement") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_schemaLocation:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("schemaLocation") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_sequenceOffset:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("sequenceOffset") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_source:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("source") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_Splitkey:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("Splitkey") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_Status:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("Status") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_StatusRevisionBegin:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("StatusRevisionBegin") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_targetNamespace:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("targetNamespace") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_type:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("type") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_typeElement:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("typeElement") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_typeWrapperElement:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("typeWrapperElement") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_use:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("use") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_value:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("value") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_version:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("version") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_xmlns_3A_AR:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("xmlns:AR") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_xmlns_3A_xsd:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("xmlns:xsd") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_TODO:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("TODO") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    default:
+      break ;
+    }
+  }
+  return s ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//                           Template Delimiters                                                 
+//----------------------------------------------------------------------------------------------------------------------
+
+static const cTemplateDelimiter arxmlmetaparser_5F_scanner_kTemplateDefinitionArray [1] = {
+  cTemplateDelimiter (kUnicodeString_arxmlmetaparser_5F_scanner__3C_, 1, nullptr, 0, nullptr, false)
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//                           Template Replacements                                               
+//----------------------------------------------------------------------------------------------------------------------
+
+static const cTemplateDelimiter arxmlmetaparser_5F_scanner_kTemplateReplacementArray [6] = {
+  cTemplateDelimiter (kUnicodeString_arxmlmetaparser_5F_scanner__26_amp_3B_, 5, kUnicodeString_arxmlmetaparser_5F_scanner__26_, 1, nullptr, true),
+  cTemplateDelimiter (kUnicodeString_arxmlmetaparser_5F_scanner__26_lt_3B_, 4, kUnicodeString_arxmlmetaparser_5F_scanner__3C_, 1, nullptr, true),
+  cTemplateDelimiter (kUnicodeString_arxmlmetaparser_5F_scanner__26_gt_3B_, 4, kUnicodeString_arxmlmetaparser_5F_scanner__3E_, 1, nullptr, true),
+  cTemplateDelimiter (kUnicodeString_arxmlmetaparser_5F_scanner__26_quot_3B_, 6, kUnicodeString_arxmlmetaparser_5F_scanner__22_, 1, nullptr, true),
+  cTemplateDelimiter (kUnicodeString_arxmlmetaparser_5F_scanner__26_apos_3B_, 6, kUnicodeString_arxmlmetaparser_5F_scanner__27_, 1, nullptr, true),
+  cTemplateDelimiter (kUnicodeString_arxmlmetaparser_5F_scanner__26__23_, 2, kUnicodeString_arxmlmetaparser_5F_scanner__3B_, 1, scanner_routine_codePointToUnicode, true)
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//            Terminal Symbols as end of script in template mark                                 
+//----------------------------------------------------------------------------------------------------------------------
+
+static const bool arxmlmetaparser_5F_scanner_kEndOfScriptInTemplateArray [76] = {
+  true /* comment */,
+  false /* xmlTag */,
+  false /* xmlTagValue */,
+  false /* identifier */,
+  false /* < */,
+  false /* <xsd: */,
+  false /* </xsd: */,
+  false /* <?xml */,
+  true /* > */,
+  true /* ?> */,
+  true /* /> */,
+  false /* </ */,
+  false /* = */,
+  false /* group */,
+  false /* annotation */,
+  false /* appinfo */,
+  false /* attribute */,
+  false /* attributeGroup */,
+  false /* choice */,
+  false /* complexType */,
+  false /* documentation */,
+  false /* element */,
+  false /* enumeration */,
+  false /* extension */,
+  false /* import */,
+  false /* maxLength */,
+  false /* pattern */,
+  false /* restriction */,
+  false /* schema */,
+  false /* sequence */,
+  false /* simpleContent */,
+  false /* simpleType */,
+  false /* whiteSpace */,
+  false /* abstract */,
+  false /* attributeFormDefault */,
+  false /* attributeRef */,
+  false /* base */,
+  false /* category */,
+  false /* CATEGORY */,
+  false /* color */,
+  false /* customType */,
+  false /* elementFormDefault */,
+  false /* encoding */,
+  false /* enforceMinMultiplicity */,
+  false /* globalElement */,
+  false /* id */,
+  false /* latestBindingTime */,
+  false /* maxOccurs */,
+  false /* minOccurs */,
+  false /* mixed */,
+  false /* name */,
+  false /* namePlural */,
+  false /* namespace */,
+  false /* noteType */,
+  false /* nsPrefix */,
+  false /* qualifiedName */,
+  false /* recommendedPackage */,
+  false /* ref */,
+  false /* roleElement */,
+  false /* roleWrapperElement */,
+  false /* schemaLocation */,
+  false /* sequenceOffset */,
+  false /* source */,
+  false /* Splitkey */,
+  false /* Status */,
+  false /* StatusRevisionBegin */,
+  false /* targetNamespace */,
+  false /* type */,
+  false /* typeElement */,
+  false /* typeWrapperElement */,
+  false /* use */,
+  false /* value */,
+  false /* version */,
+  false /* xmlns:AR */,
+  false /* xmlns:xsd */,
+  false /* TODO */
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//               INTERNAL PARSE LEXICAL TOKEN                                         
+//----------------------------------------------------------------------------------------------------------------------
+
+void C_Lexique_arxmlmetaparser_5F_scanner::internalParseLexicalToken (cTokenFor_arxmlmetaparser_5F_scanner & token) {
+  bool loop = true ;
+  token.mLexicalAttribute_tokenString.setLengthToZero () ;
+  mTokenStartLocation = mCurrentLocation ;
+  try{
+    if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__3C__21__2D__2D_, 4, true)) {
+      do {
+        if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_amp_3B_, 5, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('&')) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_lt_3B_, 4, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('<')) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_gt_3B_, 4, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('>')) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_quot_3B_, 6, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('\"')) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_apos_3B_, 6, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('\'')) ;
+        }else if (testForInputUTF32CharRange (TO_UNICODE (1), TO_UNICODE (',')) || testForInputUTF32CharRange (TO_UNICODE ('.'), TO_UNICODE (1114111))) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, previousChar ()) ;
+        }else if (notTestForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__2D__2D__3E_, 3, gLexicalMessage_arxmlmetaparser_5F_scanner_incorrectCommentError COMMA_LINE_AND_SOURCE_FILE)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('-')) ;
+        }else{
+          loop = false ;
+        }
+      }while (loop) ;
+      loop = true ;
+      enterDroppedTerminal (kToken_comment) ;
+    }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__3C__2F_xsd_3A_, 6, true)) {
+      token.mTokenCode = kToken__3C__2F_xsd_3A_ ;
+      enterToken (token) ;
+    }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__3C_xsd_3A_, 5, true)) {
+      token.mTokenCode = kToken__3C_xsd_3A_ ;
+      enterToken (token) ;
+    }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__3C__3F_xml, 5, true)) {
+      token.mTokenCode = kToken__3C__3F_xml ;
+      enterToken (token) ;
+    }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__3F__3E_, 2, true)) {
+      token.mTokenCode = kToken__3F__3E_ ;
+      enterToken (token) ;
+    }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__3C__2F_, 2, true)) {
+      token.mTokenCode = kToken__3C__2F_ ;
+      enterToken (token) ;
+    }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__2F__3E_, 2, true)) {
+      token.mTokenCode = kToken__2F__3E_ ;
+      enterToken (token) ;
+    }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__3E_, 1, true)) {
+      token.mTokenCode = kToken__3E_ ;
+      enterToken (token) ;
+    }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__3D_, 1, true)) {
+      token.mTokenCode = kToken__3D_ ;
+      enterToken (token) ;
+    }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__3C_, 1, true)) {
+      token.mTokenCode = kToken__3C_ ;
+      enterToken (token) ;
+    }else if (testForCharWithFunction (isUnicodeLetter)) {
+      do {
+        ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, previousChar ()) ;
+        if (testForCharWithFunction (isUnicodeLetter) || testForInputUTF32CharRange (TO_UNICODE ('0'), TO_UNICODE ('9')) || testForInputUTF32Char (TO_UNICODE ('-')) || testForInputUTF32Char (TO_UNICODE (':'))) {
+        }else{
+          loop = false ;
+        }
+      }while (loop) ;
+      loop = true ;
+      if (token.mTokenCode == -1) {
+        token.mTokenCode = search_into_keyWordList (token.mLexicalAttribute_tokenString) ;
+      }
+      if (token.mTokenCode == -1) {
+        token.mTokenCode = kToken_xmlTag ;
+      }
+      enterToken (token) ;
+    }else if (testForInputUTF32Char (TO_UNICODE ('\"'))) {
+      do {
+        if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_amp_3B_, 5, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('&')) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_lt_3B_, 4, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('<')) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_gt_3B_, 4, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('>')) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_quot_3B_, 6, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('\"')) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_apos_3B_, 6, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('\'')) ;
+        }else if (notTestForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__22_, 1, gLexicalMessage_arxmlmetaparser_5F_scanner_incorrectAttributeEnd COMMA_LINE_AND_SOURCE_FILE)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, previousChar ()) ;
+        }else{
+          loop = false ;
+        }
+      }while (loop) ;
+      loop = true ;
+      token.mTokenCode = kToken_xmlTagValue ;
+      enterToken (token) ;
+    }else if (testForInputUTF32Char (TO_UNICODE ('\''))) {
+      do {
+        if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_amp_3B_, 5, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('&')) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_lt_3B_, 4, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('<')) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_gt_3B_, 4, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('>')) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_quot_3B_, 6, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('\"')) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__26_apos_3B_, 6, true)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('\'')) ;
+        }else if (notTestForInputUTF32String (kUnicodeString_arxmlmetaparser_5F_scanner__27_, 1, gLexicalMessage_arxmlmetaparser_5F_scanner_incorrectAttributeEnd COMMA_LINE_AND_SOURCE_FILE)) {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, previousChar ()) ;
+        }else{
+          loop = false ;
+        }
+      }while (loop) ;
+      loop = true ;
+      token.mTokenCode = kToken_xmlTagValue ;
+      enterToken (token) ;
+    }else if (testForInputUTF32CharRange (TO_UNICODE (1), TO_UNICODE (' '))) {
+    }else if (testForInputUTF32CharRange (TO_UNICODE (1), TO_UNICODE (';')) || testForInputUTF32CharRange (TO_UNICODE ('='), TO_UNICODE (1114111))) {
+      do {
+        ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, previousChar ()) ;
+        if (testForInputUTF32CharRange (TO_UNICODE (1), TO_UNICODE (';')) || testForInputUTF32CharRange (TO_UNICODE ('='), TO_UNICODE (1114111))) {
+        }else{
+          loop = false ;
+        }
+      }while (loop) ;
+      loop = true ;
+      if (token.mTokenCode == -1) {
+        token.mTokenCode = search_into_keyWordList (token.mLexicalAttribute_tokenString) ;
+      }
+      if (token.mTokenCode == -1) {
+        token.mTokenCode = kToken_identifier ;
+      }
+      enterToken (token) ;
+    }else if (testForInputUTF32Char (TO_UNICODE ('\0'))) { // End of source text ? 
+      token.mTokenCode = kToken_ ; // Empty string code
+    }else{ // Unknown input character
+      unknownCharacterLexicalError (LINE_AND_SOURCE_FILE) ;
+      token.mTokenCode = -1 ; // No token
+      advance () ; // ... go throught unknown character
+    }
+  }catch (const C_lexicalErrorException &) {
+    token.mTokenCode = -1 ; // No token
+    advance () ; // ... go throught unknown character
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//               P A R S E    L E X I C A L    T O K E N                                         
+//----------------------------------------------------------------------------------------------------------------------
+
+bool C_Lexique_arxmlmetaparser_5F_scanner::parseLexicalToken (void) {
+  cTokenFor_arxmlmetaparser_5F_scanner token ;
+  token.mTokenCode = -1 ;
+  while ((token.mTokenCode < 0) && (UNICODE_VALUE (mCurrentChar) != '\0')) {
+    if ((mMatchedTemplateDelimiterIndex >= 0)
+     && (arxmlmetaparser_5F_scanner_kTemplateDefinitionArray [mMatchedTemplateDelimiterIndex].mEndStringLength > 0)
+     && (UNICODE_VALUE (mCurrentChar) != '\0')) {
+      const bool foundEndDelimitor = testForInputUTF32String (arxmlmetaparser_5F_scanner_kTemplateDefinitionArray [mMatchedTemplateDelimiterIndex].mEndString,
+                                                              arxmlmetaparser_5F_scanner_kTemplateDefinitionArray [mMatchedTemplateDelimiterIndex].mEndStringLength,
+                                                              true) ;
+      if (foundEndDelimitor) {
+        mMatchedTemplateDelimiterIndex = -1 ;
+      }
+    }
+    while ((mMatchedTemplateDelimiterIndex < 0) && (UNICODE_VALUE (mCurrentChar) != '\0')) {
+      int32_t replacementIndex = 0 ;
+      while (replacementIndex >= 0) {
+        replacementIndex = findTemplateDelimiterIndex (arxmlmetaparser_5F_scanner_kTemplateReplacementArray, 6) ;
+        if (replacementIndex >= 0) {
+          if (arxmlmetaparser_5F_scanner_kTemplateReplacementArray [replacementIndex].mReplacementFunction == nullptr) {
+            token.mTemplateStringBeforeToken << arxmlmetaparser_5F_scanner_kTemplateReplacementArray [replacementIndex].mEndString ;
+          }else{
+            C_String s ;
+            while (notTestForInputUTF32String (arxmlmetaparser_5F_scanner_kTemplateReplacementArray [replacementIndex].mEndString,
+                                               arxmlmetaparser_5F_scanner_kTemplateReplacementArray [replacementIndex].mEndStringLength,
+                                               kEndOfSourceLexicalErrorMessage
+                                               COMMA_HERE)) {
+              s.appendUnicodeCharacter (previousChar () COMMA_HERE) ;
+            }
+            arxmlmetaparser_5F_scanner_kTemplateReplacementArray [replacementIndex].mReplacementFunction (*this, s, token.mTemplateStringBeforeToken) ;
+          }
+        }
+      }
+      mMatchedTemplateDelimiterIndex = findTemplateDelimiterIndex (arxmlmetaparser_5F_scanner_kTemplateDefinitionArray, 1) ;
+      if (mMatchedTemplateDelimiterIndex < 0) {
+        token.mTemplateStringBeforeToken.appendUnicodeCharacter (mCurrentChar COMMA_HERE) ;
+        advance () ;
+      }
+    }
+    if ((mMatchedTemplateDelimiterIndex >= 0) && (UNICODE_VALUE (mCurrentChar) != '\0')) {
+      internalParseLexicalToken (token) ;
+    }
+    if ((token.mTokenCode > 0) && arxmlmetaparser_5F_scanner_kEndOfScriptInTemplateArray [token.mTokenCode - 1]) {
+      mMatchedTemplateDelimiterIndex = -1 ;
+    }
+  
+  }
+  if (UNICODE_VALUE (mCurrentChar) == '\0') {
+    token.mTokenCode = 0 ;
+    enterToken (token) ;
+  }
+  return token.mTokenCode > 0 ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//                         E N T E R    T O K E N                                                
+//----------------------------------------------------------------------------------------------------------------------
+
+void C_Lexique_arxmlmetaparser_5F_scanner::enterToken (cTokenFor_arxmlmetaparser_5F_scanner & ioToken) {
+  cTokenFor_arxmlmetaparser_5F_scanner * ptr = nullptr ;
+  macroMyNew (ptr, cTokenFor_arxmlmetaparser_5F_scanner ()) ;
+  ptr->mTokenCode = ioToken.mTokenCode ;
+  // ptr->mIsOptional = ioToken.mIsOptional ;
+  ptr->mStartLocation = mTokenStartLocation ;
+  ptr->mEndLocation = mTokenEndLocation ;
+  ptr->mTemplateStringBeforeToken = ioToken.mTemplateStringBeforeToken ;
+  ioToken.mTemplateStringBeforeToken = "" ;
+  ptr->mLexicalAttribute_tokenString = ioToken.mLexicalAttribute_tokenString ;
+  enterTokenFromPointer (ptr) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//               A T T R I B U T E   A C C E S S                                                 
+//----------------------------------------------------------------------------------------------------------------------
+
+C_String C_Lexique_arxmlmetaparser_5F_scanner::attributeValue_tokenString (void) const {
+  cTokenFor_arxmlmetaparser_5F_scanner * ptr = (cTokenFor_arxmlmetaparser_5F_scanner *) currentTokenPtr (HERE) ;
+  return ptr->mLexicalAttribute_tokenString ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//         A S S I G N    F R O M    A T T R I B U T E                                           
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_lstring C_Lexique_arxmlmetaparser_5F_scanner::synthetizedAttribute_tokenString (void) const {
+  cTokenFor_arxmlmetaparser_5F_scanner * ptr = (cTokenFor_arxmlmetaparser_5F_scanner *) currentTokenPtr (HERE) ;
+  macroValidSharedObject (ptr, cTokenFor_arxmlmetaparser_5F_scanner) ;
+  GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
+  GALGAS_string value (ptr->mLexicalAttribute_tokenString) ;
+  GALGAS_lstring result (value, currentLocation) ;
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//                         I N T R O S P E C T I O N                                             
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_stringlist C_Lexique_arxmlmetaparser_5F_scanner::symbols (LOCATION_ARGS) {
+  GALGAS_stringlist result = GALGAS_stringlist::constructor_emptyList (THERE) ;
+  result.addAssign_operation (GALGAS_string ("comment") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("xmlTag") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("xmlTagValue") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("identifier") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("<") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("<xsd:") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("</xsd:") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("<\?xml") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string (">") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("\?>") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("/>") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("</") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("=") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("group") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("annotation") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("appinfo") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("attribute") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("attributeGroup") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("choice") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("complexType") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("documentation") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("element") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("enumeration") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("extension") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("import") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("maxLength") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("pattern") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("restriction") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("schema") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("sequence") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("simpleContent") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("simpleType") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("whiteSpace") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("abstract") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("attributeFormDefault") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("attributeRef") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("base") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("category") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("CATEGORY") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("color") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("customType") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("elementFormDefault") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("encoding") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("enforceMinMultiplicity") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("globalElement") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("id") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("latestBindingTime") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("maxOccurs") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("minOccurs") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("mixed") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("name") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("namePlural") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("namespace") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("noteType") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("nsPrefix") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("qualifiedName") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("recommendedPackage") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("ref") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("roleElement") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("roleWrapperElement") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("schemaLocation") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("sequenceOffset") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("source") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("Splitkey") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("Status") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("StatusRevisionBegin") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("targetNamespace") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("type") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("typeElement") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("typeWrapperElement") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("use") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("value") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("version") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("xmlns:AR") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("xmlns:xsd") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("TODO") COMMA_THERE) ;
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void getKeywordLists_arxmlmetaparser_5F_scanner (TC_UniqueArray <C_String> & ioList) {
+  ioList.appendObject ("arxmlmetaparser_scanner:keyWordList") ;
+  ioList.appendObject ("arxmlmetaparser_scanner:xmlDelimitorsList") ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void getKeywordsForIdentifier_arxmlmetaparser_5F_scanner (const C_String & inIdentifier,
+                                                                 bool & ioFound,
+                                                                 TC_UniqueArray <C_String> & ioList) {
+  if (inIdentifier == "arxmlmetaparser_scanner:keyWordList") {
+    ioFound = true ;
+    ioList.appendObject ("id") ;
+    ioList.appendObject ("ref") ;
+    ioList.appendObject ("use") ;
+    ioList.appendObject ("TODO") ;
+    ioList.appendObject ("base") ;
+    ioList.appendObject ("name") ;
+    ioList.appendObject ("type") ;
+    ioList.appendObject ("color") ;
+    ioList.appendObject ("group") ;
+    ioList.appendObject ("mixed") ;
+    ioList.appendObject ("value") ;
+    ioList.appendObject ("Status") ;
+    ioList.appendObject ("choice") ;
+    ioList.appendObject ("import") ;
+    ioList.appendObject ("schema") ;
+    ioList.appendObject ("source") ;
+    ioList.appendObject ("appinfo") ;
+    ioList.appendObject ("element") ;
+    ioList.appendObject ("pattern") ;
+    ioList.appendObject ("version") ;
+    ioList.appendObject ("CATEGORY") ;
+    ioList.appendObject ("Splitkey") ;
+    ioList.appendObject ("abstract") ;
+    ioList.appendObject ("category") ;
+    ioList.appendObject ("encoding") ;
+    ioList.appendObject ("noteType") ;
+    ioList.appendObject ("nsPrefix") ;
+    ioList.appendObject ("sequence") ;
+    ioList.appendObject ("xmlns:AR") ;
+    ioList.appendObject ("attribute") ;
+    ioList.appendObject ("extension") ;
+    ioList.appendObject ("maxLength") ;
+    ioList.appendObject ("maxOccurs") ;
+    ioList.appendObject ("minOccurs") ;
+    ioList.appendObject ("namespace") ;
+    ioList.appendObject ("xmlns:xsd") ;
+    ioList.appendObject ("annotation") ;
+    ioList.appendObject ("customType") ;
+    ioList.appendObject ("namePlural") ;
+    ioList.appendObject ("simpleType") ;
+    ioList.appendObject ("whiteSpace") ;
+    ioList.appendObject ("complexType") ;
+    ioList.appendObject ("enumeration") ;
+    ioList.appendObject ("restriction") ;
+    ioList.appendObject ("roleElement") ;
+    ioList.appendObject ("typeElement") ;
+    ioList.appendObject ("attributeRef") ;
+    ioList.appendObject ("documentation") ;
+    ioList.appendObject ("globalElement") ;
+    ioList.appendObject ("qualifiedName") ;
+    ioList.appendObject ("simpleContent") ;
+    ioList.appendObject ("attributeGroup") ;
+    ioList.appendObject ("schemaLocation") ;
+    ioList.appendObject ("sequenceOffset") ;
+    ioList.appendObject ("targetNamespace") ;
+    ioList.appendObject ("latestBindingTime") ;
+    ioList.appendObject ("elementFormDefault") ;
+    ioList.appendObject ("recommendedPackage") ;
+    ioList.appendObject ("roleWrapperElement") ;
+    ioList.appendObject ("typeWrapperElement") ;
+    ioList.appendObject ("StatusRevisionBegin") ;
+    ioList.appendObject ("attributeFormDefault") ;
+    ioList.appendObject ("enforceMinMultiplicity") ;
+    ioList.sortArrayUsingCompareMethod() ;
+  }
+  if (inIdentifier == "arxmlmetaparser_scanner:xmlDelimitorsList") {
+    ioFound = true ;
+    ioList.appendObject ("<") ;
+    ioList.appendObject ("=") ;
+    ioList.appendObject (">") ;
+    ioList.appendObject ("/>") ;
+    ioList.appendObject ("</") ;
+    ioList.appendObject ("\?>") ;
+    ioList.appendObject ("<\?xml") ;
+    ioList.appendObject ("<xsd:") ;
+    ioList.appendObject ("</xsd:") ;
+    ioList.sortArrayUsingCompareMethod() ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static cLexiqueIntrospection lexiqueIntrospection_arxmlmetaparser_5F_scanner
+__attribute__ ((used))
+__attribute__ ((unused)) (getKeywordLists_arxmlmetaparser_5F_scanner, getKeywordsForIdentifier_arxmlmetaparser_5F_scanner) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//   S T Y L E   I N D E X    F O R    T E R M I N A L                                           
+//----------------------------------------------------------------------------------------------------------------------
+
+uint32_t C_Lexique_arxmlmetaparser_5F_scanner::styleIndexForTerminal (const int32_t inTerminalIndex) const {
+  static const uint32_t kTerminalSymbolStyles [77] = {0,
+    4 /* arxmlmetaparser_scanner_1_comment */,
+    2 /* arxmlmetaparser_scanner_1_xmlTag */,
+    3 /* arxmlmetaparser_scanner_1_xmlTagValue */,
+    5 /* arxmlmetaparser_scanner_1_identifier */,
+    1 /* arxmlmetaparser_scanner_1__3C_ */,
+    1 /* arxmlmetaparser_scanner_1__3C_xsd_3A_ */,
+    1 /* arxmlmetaparser_scanner_1__3C__2F_xsd_3A_ */,
+    1 /* arxmlmetaparser_scanner_1__3C__3F_xml */,
+    1 /* arxmlmetaparser_scanner_1__3E_ */,
+    1 /* arxmlmetaparser_scanner_1__3F__3E_ */,
+    1 /* arxmlmetaparser_scanner_1__2F__3E_ */,
+    1 /* arxmlmetaparser_scanner_1__3C__2F_ */,
+    1 /* arxmlmetaparser_scanner_1__3D_ */,
+    6 /* arxmlmetaparser_scanner_1_group */,
+    6 /* arxmlmetaparser_scanner_1_annotation */,
+    6 /* arxmlmetaparser_scanner_1_appinfo */,
+    6 /* arxmlmetaparser_scanner_1_attribute */,
+    6 /* arxmlmetaparser_scanner_1_attributeGroup */,
+    6 /* arxmlmetaparser_scanner_1_choice */,
+    6 /* arxmlmetaparser_scanner_1_complexType */,
+    6 /* arxmlmetaparser_scanner_1_documentation */,
+    6 /* arxmlmetaparser_scanner_1_element */,
+    6 /* arxmlmetaparser_scanner_1_enumeration */,
+    6 /* arxmlmetaparser_scanner_1_extension */,
+    6 /* arxmlmetaparser_scanner_1_import */,
+    6 /* arxmlmetaparser_scanner_1_maxLength */,
+    6 /* arxmlmetaparser_scanner_1_pattern */,
+    6 /* arxmlmetaparser_scanner_1_restriction */,
+    6 /* arxmlmetaparser_scanner_1_schema */,
+    6 /* arxmlmetaparser_scanner_1_sequence */,
+    6 /* arxmlmetaparser_scanner_1_simpleContent */,
+    6 /* arxmlmetaparser_scanner_1_simpleType */,
+    6 /* arxmlmetaparser_scanner_1_whiteSpace */,
+    6 /* arxmlmetaparser_scanner_1_abstract */,
+    6 /* arxmlmetaparser_scanner_1_attributeFormDefault */,
+    6 /* arxmlmetaparser_scanner_1_attributeRef */,
+    6 /* arxmlmetaparser_scanner_1_base */,
+    6 /* arxmlmetaparser_scanner_1_category */,
+    6 /* arxmlmetaparser_scanner_1_CATEGORY */,
+    6 /* arxmlmetaparser_scanner_1_color */,
+    6 /* arxmlmetaparser_scanner_1_customType */,
+    6 /* arxmlmetaparser_scanner_1_elementFormDefault */,
+    6 /* arxmlmetaparser_scanner_1_encoding */,
+    6 /* arxmlmetaparser_scanner_1_enforceMinMultiplicity */,
+    6 /* arxmlmetaparser_scanner_1_globalElement */,
+    6 /* arxmlmetaparser_scanner_1_id */,
+    6 /* arxmlmetaparser_scanner_1_latestBindingTime */,
+    6 /* arxmlmetaparser_scanner_1_maxOccurs */,
+    6 /* arxmlmetaparser_scanner_1_minOccurs */,
+    6 /* arxmlmetaparser_scanner_1_mixed */,
+    6 /* arxmlmetaparser_scanner_1_name */,
+    6 /* arxmlmetaparser_scanner_1_namePlural */,
+    6 /* arxmlmetaparser_scanner_1_namespace */,
+    6 /* arxmlmetaparser_scanner_1_noteType */,
+    6 /* arxmlmetaparser_scanner_1_nsPrefix */,
+    6 /* arxmlmetaparser_scanner_1_qualifiedName */,
+    6 /* arxmlmetaparser_scanner_1_recommendedPackage */,
+    6 /* arxmlmetaparser_scanner_1_ref */,
+    6 /* arxmlmetaparser_scanner_1_roleElement */,
+    6 /* arxmlmetaparser_scanner_1_roleWrapperElement */,
+    6 /* arxmlmetaparser_scanner_1_schemaLocation */,
+    6 /* arxmlmetaparser_scanner_1_sequenceOffset */,
+    6 /* arxmlmetaparser_scanner_1_source */,
+    6 /* arxmlmetaparser_scanner_1_Splitkey */,
+    6 /* arxmlmetaparser_scanner_1_Status */,
+    6 /* arxmlmetaparser_scanner_1_StatusRevisionBegin */,
+    6 /* arxmlmetaparser_scanner_1_targetNamespace */,
+    6 /* arxmlmetaparser_scanner_1_type */,
+    6 /* arxmlmetaparser_scanner_1_typeElement */,
+    6 /* arxmlmetaparser_scanner_1_typeWrapperElement */,
+    6 /* arxmlmetaparser_scanner_1_use */,
+    6 /* arxmlmetaparser_scanner_1_value */,
+    6 /* arxmlmetaparser_scanner_1_version */,
+    6 /* arxmlmetaparser_scanner_1_xmlns_3A_AR */,
+    6 /* arxmlmetaparser_scanner_1_xmlns_3A_xsd */,
+    6 /* arxmlmetaparser_scanner_1_TODO */
+  } ;
+  return (inTerminalIndex >= 0) ? kTerminalSymbolStyles [inTerminalIndex] : 0 ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//   S T Y L E   N A M E    F O R    S T Y L E    I N D E X                                      
+//----------------------------------------------------------------------------------------------------------------------
+
+C_String C_Lexique_arxmlmetaparser_5F_scanner::styleNameForIndex (const uint32_t inStyleIndex) const {
+  C_String result ;
+  if (inStyleIndex < 7) {
+    static const char * kStyleArray [7] = {
+      "",
+      "delimitersStyle",
+      "nameStyle",
+      "attributeValue",
+      "commentStyle",
+      "textStyle",
+      "keywordsStyle"
+    } ;
+    result = kStyleArray [inStyleIndex] ;
   }
   return result ;
 }

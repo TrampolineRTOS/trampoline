@@ -27,7 +27,7 @@
 #define NONTERMINAL(nt) ((-nt)-1)
 #define END_PRODUCTION  (0)
 
-static const int16_t gProductions_gtl_module_grammar [] = {
+static const int32_t gProductions_gtl_module_grammar [] = {
 // At index 0 : <gtl_expression>, in file 'gtl_expression_parser.ggs', line 33
   NONTERMINAL (13) // <gtl_relation_term>
 , NONTERMINAL (43) // <select_gtl_5F_expression_5F_parser_0>
@@ -1030,7 +1030,7 @@ static const cProductionNameDescriptor gProductionNames_gtl_module_grammar [194]
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gProductionIndexes_gtl_module_grammar [194] = {
+static const int32_t gProductionIndexes_gtl_module_grammar [194] = {
 0, // index 0 : <gtl_expression>, in file 'gtl_expression_parser.ggs', line 33
 3, // index 1 : <gtl_simple_instruction>, in file 'gtl_instruction_parser.ggs', line 40
 7, // index 2 : <gtl_simple_instruction>, in file 'gtl_instruction_parser.ggs', line 154
@@ -1233,7 +1233,7 @@ static const int16_t gProductionIndexes_gtl_module_grammar [194] = {
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gFirstProductionIndexes_gtl_module_grammar [73] = {
+static const int32_t gFirstProductionIndexes_gtl_module_grammar [73] = {
 0, // at 0 : <gtl_expression>
 1, // at 1 : <gtl_simple_instruction>
 13, // at 2 : <gtl_import>
@@ -1314,7 +1314,7 @@ static const int16_t gFirstProductionIndexes_gtl_module_grammar [73] = {
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gDecision_gtl_module_grammar [] = {
+static const int32_t gDecision_gtl_module_grammar [] = {
 // At index 0 : <gtl_expression> only one production, no choice
   -1,
 // At index 1 : <gtl_simple_instruction>
@@ -1646,7 +1646,7 @@ C_Lexique_gtl_5F_scanner::kToken__2C_, C_Lexique_gtl_5F_scanner::kToken__29_, -1
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gDecisionIndexes_gtl_module_grammar [73] = {
+static const int32_t gDecisionIndexes_gtl_module_grammar [73] = {
 0, // at 0 : <gtl_expression>
 1, // at 1 : <gtl_simple_instruction>
 26, // at 2 : <gtl_import>
@@ -3163,7 +3163,7 @@ int32_t cGrammar_gtl_5F_module_5F_grammar::select_gtl_5F_expression_5F_parser_27
 #define NONTERMINAL(nt) ((-nt)-1)
 #define END_PRODUCTION  (0)
 
-static const int16_t gProductions_gtl_grammar [] = {
+static const int32_t gProductions_gtl_grammar [] = {
 // At index 0 : <gtl_expression>, in file 'gtl_expression_parser.ggs', line 33
   NONTERMINAL (10) // <gtl_relation_term>
 , NONTERMINAL (42) // <select_gtl_5F_expression_5F_parser_0>
@@ -4232,7 +4232,7 @@ static const cProductionNameDescriptor gProductionNames_gtl_grammar [211] = {
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gProductionIndexes_gtl_grammar [211] = {
+static const int32_t gProductionIndexes_gtl_grammar [211] = {
 0, // index 0 : <gtl_expression>, in file 'gtl_expression_parser.ggs', line 33
 3, // index 1 : <gtl_variable>, in file 'gtl_expression_parser.ggs', line 687
 7, // index 2 : <gtl_variable_or_here>, in file 'gtl_expression_parser.ggs', line 722
@@ -4452,7 +4452,7 @@ static const int16_t gProductionIndexes_gtl_grammar [211] = {
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gFirstProductionIndexes_gtl_grammar [79] = {
+static const int32_t gFirstProductionIndexes_gtl_grammar [79] = {
 0, // at 0 : <gtl_expression>
 1, // at 1 : <gtl_variable>
 2, // at 2 : <gtl_variable_or_here>
@@ -4539,7 +4539,7 @@ static const int16_t gFirstProductionIndexes_gtl_grammar [79] = {
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gDecision_gtl_grammar [] = {
+static const int32_t gDecision_gtl_grammar [] = {
 // At index 0 : <gtl_expression> only one production, no choice
   -1,
 // At index 1 : <gtl_variable> only one production, no choice
@@ -4902,7 +4902,7 @@ C_Lexique_gtl_5F_scanner::kToken__3C_, -1, // Choice 2
 //                                                                                                                      
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gDecisionIndexes_gtl_grammar [79] = {
+static const int32_t gDecisionIndexes_gtl_grammar [79] = {
 0, // at 0 : <gtl_expression>
 1, // at 1 : <gtl_variable>
 2, // at 2 : <gtl_variable_or_here>
@@ -6532,7 +6532,7 @@ static const C_galgas_type_descriptor * functionArgs_invokeGTL [4] = {
   & kTypeDescriptor_GALGAS_gtlString,
   & kTypeDescriptor_GALGAS_gtlContext,
   & kTypeDescriptor_GALGAS_gtlData,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6585,7 +6585,7 @@ GALGAS_gtlData function_emptyVarContainer (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_emptyVarContainer [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6627,7 +6627,7 @@ GALGAS_gtlString function_lstringToGtlString (GALGAS_lstring inArgument_input,
 
 static const C_galgas_type_descriptor * functionArgs_lstringToGtlString [2] = {
   & kTypeDescriptor_GALGAS_lstring,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6674,7 +6674,7 @@ GALGAS_gtlString function_stringToGtlString (GALGAS_string inArgument_input,
 
 static const C_galgas_type_descriptor * functionArgs_stringToGtlString [2] = {
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6719,7 +6719,7 @@ GALGAS_gtlContext function_emptyContext (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_emptyContext [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6772,7 +6772,7 @@ GALGAS_string function_pathWithExtension (GALGAS_gtlContext inArgument_context,
 static const C_galgas_type_descriptor * functionArgs_pathWithExtension [3] = {
   & kTypeDescriptor_GALGAS_gtlContext,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6821,7 +6821,7 @@ GALGAS_library function_emptyLib (C_Compiler *
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_emptyLib [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6900,7 +6900,7 @@ GALGAS_gtlData function_wantGtlStruct (GALGAS_gtlData inArgument_inData,
 
 static const C_galgas_type_descriptor * functionArgs_wantGtlStruct [2] = {
   & kTypeDescriptor_GALGAS_gtlData,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6954,7 +6954,7 @@ GALGAS_gtlData function_wantGtlMap (GALGAS_gtlData inArgument_inData,
 
 static const C_galgas_type_descriptor * functionArgs_wantGtlMap [2] = {
   & kTypeDescriptor_GALGAS_gtlData,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7008,7 +7008,7 @@ GALGAS_gtlData function_wantGtlList (GALGAS_gtlData inArgument_inData,
 
 static const C_galgas_type_descriptor * functionArgs_wantGtlList [2] = {
   & kTypeDescriptor_GALGAS_gtlData,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8451,7 +8451,7 @@ GALGAS_gtlData function_validateReturnValue (const GALGAS_lstring & constinArgum
 static const C_galgas_type_descriptor * functionArgs_validateReturnValue [3] = {
   & kTypeDescriptor_GALGAS_lstring,
   & kTypeDescriptor_GALGAS_object,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8910,7 +8910,7 @@ static void releaseOnceFunctionResult_noArgument (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_noArgument (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_noArgument (nullptr,
                                                         releaseOnceFunctionResult_noArgument) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8918,7 +8918,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_noArgument (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_noArgument [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8980,7 +8980,7 @@ static void releaseOnceFunctionResult_intArgument (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_intArgument (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_intArgument (nullptr,
                                                          releaseOnceFunctionResult_intArgument) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8988,7 +8988,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_intArgument (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_intArgument [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9050,7 +9050,7 @@ static void releaseOnceFunctionResult_charArgument (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_charArgument (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_charArgument (nullptr,
                                                           releaseOnceFunctionResult_charArgument) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9058,7 +9058,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_charArgument (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_charArgument [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9121,7 +9121,7 @@ static void releaseOnceFunctionResult_charCharArguments (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_charCharArguments (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_charCharArguments (nullptr,
                                                                releaseOnceFunctionResult_charCharArguments) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9129,7 +9129,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_charCharArguments (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_charCharArguments [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9192,7 +9192,7 @@ static void releaseOnceFunctionResult_charIntArguments (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_charIntArguments (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_charIntArguments (nullptr,
                                                               releaseOnceFunctionResult_charIntArguments) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9200,7 +9200,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_charIntArguments (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_charIntArguments [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9262,7 +9262,7 @@ static void releaseOnceFunctionResult_floatArgument (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_floatArgument (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_floatArgument (nullptr,
                                                            releaseOnceFunctionResult_floatArgument) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9270,7 +9270,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_floatArgument (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_floatArgument [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9332,7 +9332,7 @@ static void releaseOnceFunctionResult_stringArgument (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_stringArgument (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_stringArgument (nullptr,
                                                             releaseOnceFunctionResult_stringArgument) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9340,7 +9340,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_stringArgument (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_stringArgument [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9403,7 +9403,7 @@ static void releaseOnceFunctionResult_stringStringArgument (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_stringStringArgument (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_stringStringArgument (nullptr,
                                                                   releaseOnceFunctionResult_stringStringArgument) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9411,7 +9411,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_stringStringArgument (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_stringStringArgument [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9474,7 +9474,7 @@ static void releaseOnceFunctionResult_boolIntArguments (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_boolIntArguments (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_boolIntArguments (nullptr,
                                                               releaseOnceFunctionResult_boolIntArguments) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9482,7 +9482,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_boolIntArguments (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_boolIntArguments [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9545,7 +9545,7 @@ static void releaseOnceFunctionResult_intIntArguments (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_intIntArguments (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_intIntArguments (nullptr,
                                                              releaseOnceFunctionResult_intIntArguments) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9553,7 +9553,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_intIntArguments (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_intIntArguments [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9616,7 +9616,7 @@ static void releaseOnceFunctionResult_intAnyArguments (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_intAnyArguments (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_intAnyArguments (nullptr,
                                                              releaseOnceFunctionResult_intAnyArguments) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9624,7 +9624,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_intAnyArguments (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_intAnyArguments [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9686,7 +9686,7 @@ static void releaseOnceFunctionResult_anyArgument (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_anyArgument (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_anyArgument (nullptr,
                                                          releaseOnceFunctionResult_anyArgument) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9694,7 +9694,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_anyArgument (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_anyArgument [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9756,7 +9756,7 @@ static void releaseOnceFunctionResult_structArgument (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_structArgument (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_structArgument (nullptr,
                                                             releaseOnceFunctionResult_structArgument) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9764,7 +9764,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_structArgument (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_structArgument [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9826,7 +9826,7 @@ static void releaseOnceFunctionResult_expressionArgument (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_expressionArgument (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_expressionArgument (nullptr,
                                                                 releaseOnceFunctionResult_expressionArgument) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9834,7 +9834,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_expressionArgument (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_expressionArgument [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9896,7 +9896,7 @@ static void releaseOnceFunctionResult_setArgument (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_setArgument (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_setArgument (nullptr,
                                                          releaseOnceFunctionResult_setArgument) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9904,7 +9904,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_setArgument (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_setArgument [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -10008,7 +10008,7 @@ static void releaseOnceFunctionResult_emptylstring (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_emptylstring (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_emptylstring (nullptr,
                                                           releaseOnceFunctionResult_emptylstring) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -10016,7 +10016,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_emptylstring (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_emptylstring [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -10058,7 +10058,7 @@ GALGAS_lstring function_lstring (GALGAS_string inArgument_string,
 
 static const C_galgas_type_descriptor * functionArgs_lstring [2] = {
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -10656,7 +10656,7 @@ static void extensionSetter_gtlUnconstructed_performSetter (cPtr_gtlData * inObj
       }
       GALGAS_gtlString temp_1 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 523)).isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 523)).ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 523)).ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 523)).ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 523)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 523)) ;
@@ -10708,7 +10708,7 @@ static void defineExtensionSetter_gtlUnconstructed_performSetter (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlUnconstructed_performSetter (defineExtensionSetter_gtlUnconstructed_performSetter, NULL) ;
+C_PrologueEpilogue gSetter_gtlUnconstructed_performSetter (defineExtensionSetter_gtlUnconstructed_performSetter, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -11054,7 +11054,7 @@ GALGAS_gtlData cPtr_gtlType::getter_neqOp (const GALGAS_gtlData constinArgument_
     if (kBoolTrue == test_0) {
       GALGAS_gtlType temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlType *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlType *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlType *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlType", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 618)) ;
@@ -11089,7 +11089,7 @@ GALGAS_gtlData cPtr_gtlType::getter_eqOp (const GALGAS_gtlData constinArgument_r
     if (kBoolTrue == test_0) {
       GALGAS_gtlType temp_1 ;
       if (constinArgument_right.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlType *> (constinArgument_right.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlType *> (constinArgument_right.ptr ())) {
           temp_1 = (cPtr_gtlType *) constinArgument_right.ptr () ;
         }else{
           inCompiler->castError ("gtlType", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 625)) ;
@@ -11323,7 +11323,7 @@ static void extensionSetter_gtlType_performSetter (cPtr_gtlData * inObject,
       }
       GALGAS_gtlString temp_1 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 712)).isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 712)).ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 712)).ptr ())) {
           temp_1 = (cPtr_gtlString *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 712)).ptr () ;
         }else{
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 712)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 712)) ;
@@ -11357,7 +11357,7 @@ static void extensionSetter_gtlType_performSetter (cPtr_gtlData * inObject,
           callExtensionMethod_callSetter ((cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("type"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 720)).ptr (), constinArgument_methodName.readProperty_location (), constinArgument_context, constinArgument_lib, var_copy_22939, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 720)) ;
           GALGAS_gtlType temp_5 ;
           if (var_copy_22939.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlType *> (var_copy_22939.ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlType *> (var_copy_22939.ptr ())) {
               temp_5 = (cPtr_gtlType *) var_copy_22939.ptr () ;
             }else{
               inCompiler->castError ("gtlType", var_copy_22939.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 727)) ;
@@ -11384,5 +11384,5 @@ static void defineExtensionSetter_gtlType_performSetter (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_gtlType_performSetter (defineExtensionSetter_gtlType_performSetter, NULL) ;
+C_PrologueEpilogue gSetter_gtlType_performSetter (defineExtensionSetter_gtlType_performSetter, nullptr) ;
 

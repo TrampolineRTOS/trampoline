@@ -39,23 +39,23 @@ class AC_GALGAS_reference_class : public AC_GALGAS_root { // AC_GALGAS_reference
 
 //--- Default constructor
   protected: AC_GALGAS_reference_class (void) ;
-  
+
 //--- Constructor from pointer
   protected: AC_GALGAS_reference_class (const acStrongPtr_class * inPointer) ;
-  
+
 //--- Destructor
   protected: virtual ~ AC_GALGAS_reference_class (void) ;
 
 //--- Is valid
-  public: virtual bool isValid (void) const { return NULL != mObjectPtr ; }
-  
+  public: virtual bool isValid (void) const { return nullptr != mObjectPtr ; }
+
 //--- Drop
   public: virtual void drop (void) ;
-  
+
 //--- Handle copy
   protected: AC_GALGAS_reference_class (const AC_GALGAS_reference_class & inSource) ;
   protected: AC_GALGAS_reference_class & operator = (const AC_GALGAS_reference_class & inSource) ;
-  
+
 //--- Dynamic Type Descriptor
   public: virtual const C_galgas_type_descriptor * dynamicTypeDescriptor (void) const ;
 

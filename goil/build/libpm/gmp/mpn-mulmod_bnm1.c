@@ -309,9 +309,6 @@ mpn_mulmod_bnm1 (mp_ptr rp, mp_size_t rn, mp_srcptr ap, mp_size_t an, mp_srcptr 
 	     area.*/
 	  cy = mpn_sub_n (rp + n, rp, xp, an + bn - n);
 
-	  /* FIXME: This subtraction of the high parts is not really
-	     necessary, we do it to get the carry out, and for sanity
-	     checking. */
 	  cy = xp[n] + mpn_sub_nc (xp + an + bn - n, rp + an + bn - n,
 				   xp + an + bn - n, rn - (an + bn), cy);
 	  ASSERT (an + bn == rn - 1 ||

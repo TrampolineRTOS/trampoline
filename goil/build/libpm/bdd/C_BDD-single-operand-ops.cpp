@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  BDD package (implementation of ROBDD)                                                        
+//  BDD package (implementation of ROBDD)
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
-//  Copyright (C) 1999, ..., 2010 Pierre Molinaro.
+//  Copyright (C) 1999, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -86,7 +86,7 @@ static void clearSingleOperandOperationCache (void) {
 
 static void reallocSingleOperandOperationCache (const uint32_t inNewSize) {
   gSingleOperandOperationCacheMapUsedEntryCount = 0 ;
-  tStructSingleOperandOperationCacheEntry * newCache = NULL ;
+  tStructSingleOperandOperationCacheEntry * newCache = nullptr ;
   if (inNewSize << (1U << gSingleOperandOperationCacheMaxPowerOfTwoSize)) {
     uint32_t newMemoryUsage = C_BDD::currentMemoryUsage () ;
     newMemoryUsage -= singleOperandOperationCacheMemoryUsage () ;
@@ -193,20 +193,16 @@ internalForAllOnBitRange (const uint32_t inValue,
     const uint32_t var = gNodeArray [nodeIndex].mVariableIndex ;
     if (var >= (inFirstBit + inBitCount)) {
       bool cacheSuccess = false ;
-      // int32_t hashCode ;
-      // const uint32_t key = ((uint32_t) inBitCount) | (((uint32_t) inFirstBit) << 16) ;
-  //    gForAllOperationCache.getCacheEntry (inValue, key, cacheSuccess, hashCode, result) ;
       if (! cacheSuccess) {
         result = find_or_add (var,
           internalForAllOnBitRange (gNodeArray [nodeIndex].mELSE ^ complement, inFirstBit, inBitCount),
           internalForAllOnBitRange (gNodeArray [nodeIndex].mTHEN ^ complement, inFirstBit, inBitCount) COMMA_HERE) ;
-  //      gForAllOperationCache.writeCacheEntry (inValue, key, hashCode, result) ;
       }
     }else if (var >= inFirstBit) {
       result = internalANDoperation (
          internalForAllOnBitRange (gNodeArray [nodeIndex].mELSE ^ complement, inFirstBit, inBitCount),
          internalForAllOnBitRange (gNodeArray [nodeIndex].mTHEN ^ complement, inFirstBit, inBitCount)) ;
-    }else{ // var < numeroBit
+    }else{
       result = inValue ;
       gSingleOperandOperationCacheTrivialOperationCount ++ ;
     }
@@ -352,7 +348,7 @@ C_BDD C_BDD::substitution (const uint32_t inSubstitutionArray [],
 
 C_BDD C_BDD::translate (const uint32_t inBDDvariablesCount,
                         const uint32_t inTranslation) const {
-  uint32_t * substitionVector = NULL ;
+  uint32_t * substitionVector = nullptr ;
   macroMyNewArray (substitionVector, uint32_t, inBDDvariablesCount) ;
   for (uint32_t i=0 ; i<inBDDvariablesCount ; i++) {
     substitionVector [i] = (uint32_t) (i + inTranslation) ;
@@ -398,7 +394,7 @@ internalExchangeVariables (const uint32_t inValue,
                      find_or_add (var1, 0, 1 COMMA_HERE),
                      internalExchangeVariables (gNodeArray [nodeIndex].mTHEN ^ complement, var1, var2),
                      internalExchangeVariables (gNodeArray [nodeIndex].mELSE ^ complement, var1, var2)) ;
-    }     
+    }
   }
   return result ;
 }
@@ -446,7 +442,7 @@ internalRollDown (const uint32_t inValue,
                      find_or_add (inHighVar, 0, 1 COMMA_HERE),
                      internalRollDown (gNodeArray [nodeIndex].mTHEN ^ complement, inHighVar, inLowVar),
                      internalRollDown (gNodeArray [nodeIndex].mELSE ^ complement, inHighVar, inLowVar)) ;
-    }     
+    }
   }
   return result ;
 }
@@ -492,7 +488,7 @@ internalRollUp (const uint32_t inValue,
                      find_or_add ((uint32_t) (gNodeArray [nodeIndex].mVariableIndex + 1), 0, 1 COMMA_HERE),
                      internalRollUp (gNodeArray [nodeIndex].mTHEN ^ complement, var1, var2),
                      internalRollUp (gNodeArray [nodeIndex].mELSE ^ complement, var1, var2)) ;
-    }     
+    }
   }
   return result ;
 }

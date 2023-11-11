@@ -270,9 +270,6 @@ mpn_sqrmod_bnm1 (mp_ptr rp, mp_size_t rn, mp_srcptr ap, mp_size_t an, mp_ptr tp)
 	     reconstruction is zero, not B^{rn} - 1. */
 	  cy = mpn_sub_n (rp + n, rp, xp, 2*an - n);
 
-	  /* FIXME: This subtraction of the high parts is not really
-	     necessary, we do it to get the carry out, and for sanity
-	     checking. */
 	  cy = xp[n] + mpn_sub_nc (xp + 2*an - n, rp + 2*an - n,
 				   xp + 2*an - n, rn - 2*an, cy);
 	  ASSERT (mpn_zero_p (xp + 2*an - n+1, rn - 1 - 2*an));

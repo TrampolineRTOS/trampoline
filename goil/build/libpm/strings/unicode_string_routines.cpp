@@ -23,10 +23,6 @@
 #include "strings/unicode_string_routines.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-
-//#include <string.h>
-
-//----------------------------------------------------------------------------------------------------------------------
 //--- From GLIBC, version 2.7 http://ftp.gnu.org/gnu/glibc/glibc-2.7.tar.bz2
 // glibc/wcsmbs/wcscmp.c
 
@@ -104,32 +100,6 @@ int32_t utf32_strlen (const utf32 * inString) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-
-// https://summersoft.fay.ar.us/repos/dwall/tags/uClibc-0.9.28/libc/string/wstring.c
-// Implemention in this file:
-//
-//   Wchar *Wstrstr(const Wchar *s1, const Wchar *s2)
-//   {
-//     register const Wchar *s = s1;
-//     register const Wchar *p = s2;
-
-//     do {
-//       if (!*p) {
-//         return (Wchar *) s1;;
-//       }
-//       if (*p == *s) {
-//         ++p;
-//         ++s;
-//       } else {
-//         p = s2;
-//         if (!*s) {
-//           return nullptr;
-//         }
-//         s = ++s1;
-//       }
-//     } while (1);
-//   }
-//--- My adaptation:
 
 const utf32 * utf32_strstr (const utf32 * haystack, const utf32 * needle) {
   const utf32 * s = haystack;

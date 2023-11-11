@@ -180,36 +180,51 @@ utf32 unicodeToLower (const utf32 inUnicodeCharacter) {
 
 utf32 unicodeToUpper (const utf32 inUnicodeCharacter) {
   utf32 result = inUnicodeCharacter ;
-  // printf ("U+%X", inUnicodeCharacter) ;
   const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gToUpperPageSize ;
   if (pageIndex <= gLastToUpperPage) {
     const uint32_t * page = gToUpperPages [pageIndex] ;
     if (page != NULL) {
-      // printf (", index %u", inUnicodeCharacter % gToUpperPageSize) ;
       const uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gToUpperPageSize] ;
-      // printf (", entry 0x%X", entry) ;
       if (entry != 0) {
         result = TO_UNICODE (entry) ;
       }
     }
   }
-  // printf ("\n") ;
   return result ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 bool isUnicodeLetter (const utf32 inUnicodeCharacter) {
-  return ((0x61 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x7A)) ||
-         ((0x41 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x5A)) ||
-         (0xB5 == UNICODE_VALUE (inUnicodeCharacter)) ||
-         ((0xC0 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0xD6)) ||
-         ((0xD8 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0xF6)) ||
-         ((0xF8 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x2B4)) ||
-         ((0x38E <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x3A1)) ||
-         ((0x3A3 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x3F5)) ||
-         ((0x3F7 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x481)) ||
-         ((0x48A <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x523)) ;
+  bool ok = (0x61 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x7A) ;
+  if (!ok) {
+    ok = (0x41 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x5A) ;
+  }
+  if (!ok) {
+    ok = 0xB5 == UNICODE_VALUE (inUnicodeCharacter) ;
+  }
+  if (!ok) {
+    ok = (0xC0 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0xD6) ;
+  }
+  if (!ok) {
+    ok = (0xD8 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0xF6) ;
+  }
+  if (!ok) {
+    ok = (0xF8 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x2B4) ;
+  }
+  if (!ok) {
+    ok = (0x38E <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x3A1) ;
+  }
+  if (!ok) {
+    ok = (0x3A3 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x3F5) ;
+  }
+  if (!ok) {
+    ok = (0x3F7 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x481) ;
+  }
+  if (!ok) {
+    ok = (0x48A <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x523) ;
+  }
+  return ok ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -498,7 +513,6 @@ utf32 unicodeCharacterForSingleByteCharacter (const char inChar, const PMStringE
 char singleByteCharacterForUnicodeCharacter (const utf32 inUnicodeChar,
                                              const PMStringEncoding inStringEncoding) {
  char result = '\0' ;
- // printf ("unicode 0x%X\n", inUnicodeChar) ;
  if (UNICODE_VALUE (inUnicodeChar) < 128) {
    result = (char) (UNICODE_VALUE (inUnicodeChar) & 255) ;
  }else if (((uint32_t) inStringEncoding) < kMappingDescriptorsSize) {
@@ -507,7 +521,6 @@ char singleByteCharacterForUnicodeCharacter (const utf32 inUnicodeChar,
    const structConvertFromUnicodeEntry * mapping = kMappingDescriptors [inStringEncoding].mMappingFromUnicode ;
    while ((low <= high) && (result == 0)) {
      const uint32_t mid = (low + high) / 2 ;
-    // printf ("<%u, %u> mid %u unicode 0x%X\n", low, high, mid, mapping [mid].mUnicode) ;
      if (UNICODE_VALUE (inUnicodeChar) > mapping [mid].mUnicode) {
        low = mid + 1 ;
      }else if (UNICODE_VALUE (inUnicodeChar) < mapping [mid].mUnicode) {
@@ -563,12 +576,6 @@ int32_t UTF8StringFromUTF32Character (const utf32 inUnicodeChar, char outSequenc
     outSequence [4] = 0 ;
     resultByteCount = 4 ;
   }
-  
-  /*printf ("TO_UNICODE (0x%X) 0x%X ->", UNICODE_VALUE (inUnicodeChar), codePoint) ;
-  for (int32_t i=0 ; i<resultByteCount ; i++) {
-    printf (" 0x%02X", outSequence [i] & 0xFF) ;
-  }
-  printf ("\n") ;*/
   return resultByteCount ;
 }
 
@@ -640,7 +647,6 @@ int32_t UTF8StringFromUTF32Character (const utf32 inUnicodeChar, char outSequenc
     if (! ioOK) {
       result = UNICODE_VALUE (UNICODE_REPLACEMENT_CHARACTER) ;
     }
-    // printf ("UTF8 -> TO_UNICODE 0x%X (%d), ok %d\n", result, result, ioOK) ;
     return TO_UNICODE (result) ;
   }
 #endif

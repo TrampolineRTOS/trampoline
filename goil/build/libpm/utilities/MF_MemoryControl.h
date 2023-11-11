@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Declaration of macros and routines for handling dynamic allocation checking.                 
+//  Declaration of macros and routines for handling dynamic allocation checking.
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 1994, ..., 2012 Pierre Molinaro.
 //
@@ -30,11 +30,11 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//         User macros for allocation                                                            
+//         User macros for allocation
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-#ifndef DO_NOT_GENERATE_CHECKINGS 
+#ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroMyNew(inPointer,instanciation) { \
     macroVoidPointer (inPointer) ; \
     prologueForNew () ; \
@@ -49,7 +49,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#ifndef DO_NOT_GENERATE_CHECKINGS 
+#ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroMyNewArray(inPointer,type,size) { \
     macroVoidPointer (inPointer) ; \
     prologueForNew () ; \
@@ -64,7 +64,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#ifndef DO_NOT_GENERATE_CHECKINGS 
+#ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroMyNewPODArray(inPointer,type,size) { \
     macroVoidPointer (inPointer) ; \
     inPointer = (type *) allocAndRegisterPODArray ((size) * sizeof (type) COMMA_HERE) ; \
@@ -77,7 +77,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#ifndef DO_NOT_GENERATE_CHECKINGS 
+#ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroMyReallocPODArray(inPointer,type,size) { \
     inPointer = (type *) reallocAndRegisterPODArray (inPointer, (size) * sizeof (type) COMMA_HERE) ; \
   }
@@ -89,7 +89,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#ifndef DO_NOT_GENERATE_CHECKINGS 
+#ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroMyNewThere(inPointer,instanciation) { \
     macroVoidPointerThere (inPointer) ; \
     prologueForNew () ; \
@@ -104,7 +104,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#ifndef DO_NOT_GENERATE_CHECKINGS 
+#ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroMyNewPODArrayThere(inPointer,type,size) { \
     macroValidPointerThere (inPointer) ; \
     inPointer = (type *) allocAndRegisterPODArray ((size) * sizeof (type) COMMA_THERE) ; \
@@ -117,7 +117,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#ifndef DO_NOT_GENERATE_CHECKINGS 
+#ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroMyReallocPODArrayThere(inPointer,type,size) { \
     inPointer = (type *) reallocAndRegisterPODArray (inPointer, (size) * sizeof (type) COMMA_THERE) ; \
   }
@@ -129,7 +129,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#ifndef DO_NOT_GENERATE_CHECKINGS 
+#ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroMyNewArrayThere(inPointer,type,size) { \
     macroVoidPointerThere (inPointer) ; \
     prologueForNew () ; \
@@ -144,18 +144,18 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//         User macros for deallocation                                                          
+//         User macros for deallocation
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroMyDelete(inPointer) { \
     routineFreePointer (inPointer COMMA_HERE) ; \
-    delete (inPointer) ; inPointer = NULL ; \
+    delete (inPointer) ; inPointer = nullptr ; \
   }
 #else
   #define macroMyDelete(inPointer) { \
-    delete (inPointer) ; inPointer = NULL ; \
+    delete (inPointer) ; inPointer = nullptr ; \
   }
 #endif
 
@@ -163,11 +163,11 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroMyDeletePODArray(inPointer) { \
-    routineFreePODArrayPointer (inPointer COMMA_HERE) ; inPointer = NULL ; \
+    routineFreePODArrayPointer (inPointer COMMA_HERE) ; inPointer = nullptr ; \
   }
 #else
   #define macroMyDeletePODArray(inPointer) { \
-    free (inPointer) ; inPointer = NULL ; \
+    free (inPointer) ; inPointer = nullptr ; \
   }
 #endif
 
@@ -176,17 +176,17 @@
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroMyDeleteArray(inPointer) { \
     routineFreeArrayPointer (inPointer COMMA_HERE) ; \
-    delete [] (inPointer) ; inPointer = NULL ; \
+    delete [] (inPointer) ; inPointer = nullptr ; \
   }
 #else
   #define macroMyDeleteArray(inPointer) { \
-    delete [] (inPointer) ; inPointer = NULL ; \
+    delete [] (inPointer) ; inPointer = nullptr ; \
   }
 #endif
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//         Assertion macros for checking pointers                                                
+//         Assertion macros for checking pointers
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -194,7 +194,7 @@
   #define macroValidPointer(inPointer) routineValidPointer (inPointer COMMA_HERE)
 #else
   #define macroValidPointer(inPointer)
-#endif 
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -202,11 +202,11 @@
   #define macroValidPointerThere(inPointer) routineValidPointer (inPointer COMMA_THERE)
 #else
   #define macroValidPointerThere(inPointer)
-#endif 
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//         Assertion for checking if a pointer is void                                           
+//         Assertion for checking if a pointer is void
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -214,7 +214,7 @@
   #define macroVoidPointer(inPointer) routineVoidPointer (inPointer COMMA_HERE)
 #else
   #define macroVoidPointer(inPointer)
-#endif 
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -222,11 +222,11 @@
   #define macroVoidPointerThere(inPointer) routineVoidPointer (inPointer COMMA_THERE)
 #else
   #define macroVoidPointerThere(inPointer)
-#endif 
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//         Routine to call for displaying currently allocated pointers                           
+//         Routine to call for displaying currently allocated pointers
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -234,11 +234,11 @@ void displayAllocatedBlocksInfo (void) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//         Internal routines (do not call them directly)                                         
+//         Internal routines (do not call them directly)
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-#ifndef DO_NOT_GENERATE_CHECKINGS 
+#ifndef DO_NOT_GENERATE_CHECKINGS
   void registerPointer (const void * inPointer COMMA_LOCATION_ARGS) ;
   void * allocAndRegisterPODArray (const size_t inSize COMMA_LOCATION_ARGS) ;
   void registerArray (const void * inPointer COMMA_LOCATION_ARGS) ;

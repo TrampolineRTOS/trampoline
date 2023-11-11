@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Declaration of the template class 'TC_FIFO'.                                                 
+//  Declaration of the template class 'TC_FIFO'.
 //
 //  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR AND ASSIGNMENT OPERATOR.                    *
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2001, ..., 2019 Pierre Molinaro.
 //  e-mail : pierre@pcmolinaro.name
@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//           FIFO template class declaration                                                     
+//           FIFO template class declaration
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ template <typename TYPE> class TC_FIFO {
 //--- Constructor and destructor
   public: TC_FIFO (void) ;
   public: virtual ~TC_FIFO (void) ;
-  
+
 //--- No copy
   private: TC_FIFO <TYPE> (TC_FIFO <TYPE> &) ;
   private: void operator = (TC_FIFO <TYPE> &) ;
@@ -51,7 +51,7 @@ template <typename TYPE> class TC_FIFO {
 //--- Empty ?
   public: inline bool isEmpty (void) const { return mListLength == 0 ; }
 
-//--- Insert a new element at head 
+//--- Insert a new element at head
   public: void insertByCopy (const TYPE & inInfo) ;
   public: void insertByExchange (TYPE & ioInfo) ;
 
@@ -79,7 +79,7 @@ template <typename TYPE> class TC_FIFO {
   //--- No copy
     private: TC_FIFO_element (TC_FIFO_element &) ;
     private: void operator = (TC_FIFO_element &) ;
-  
+
   //--- Friend
     friend class TC_FIFO <TYPE> ;
   } ;
@@ -93,36 +93,36 @@ template <typename TYPE> class TC_FIFO {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//           FIFO template class implementation                                                  
+//           FIFO template class implementation
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> TC_FIFO <TYPE>::TC_FIFO_element::TC_FIFO_element (void) :
 mInfo (),
-mNextItem (NULL) {
+mNextItem (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> TC_FIFO <TYPE>::TC_FIFO_element::TC_FIFO_element (const TYPE & inSource) :
 mInfo (inSource),
-mNextItem (NULL) {
+mNextItem (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> TC_FIFO <TYPE>::TC_FIFO (void) :
-mFirstItem (NULL),
-mLastItem (NULL),
+mFirstItem (nullptr),
+mLastItem (nullptr),
 mListLength (0),
-mItemsArray (NULL) {
+mItemsArray (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> TC_FIFO<TYPE>::~TC_FIFO (void) {
   macroMyDeleteArray (mItemsArray) ;
-  while (mFirstItem != (TC_FIFO_element *) NULL) {
+  while (mFirstItem != (TC_FIFO_element *) nullptr) {
     mLastItem = mFirstItem->mNextItem ;
     macroMyDelete (mFirstItem) ;
     mFirstItem = mLastItem ;
@@ -133,9 +133,9 @@ template <typename TYPE> TC_FIFO<TYPE>::~TC_FIFO (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> void TC_FIFO<TYPE>::insertByCopy (const TYPE & inInfo) {
-  TC_FIFO_element * p = NULL ;
+  TC_FIFO_element * p = nullptr ;
   macroMyNew (p, TC_FIFO_element (inInfo)) ; // Copy
-  if (mLastItem == NULL) {
+  if (mLastItem == nullptr) {
     mFirstItem = p ;
   }else{
     mLastItem->mNextItem = p ;
@@ -148,10 +148,10 @@ template <typename TYPE> void TC_FIFO<TYPE>::insertByCopy (const TYPE & inInfo) 
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> void TC_FIFO<TYPE>::insertByExchange (TYPE & ioInfo) {
-  TC_FIFO_element * p = NULL ;
+  TC_FIFO_element * p = nullptr ;
   macroMyNew (p, TC_FIFO_element ()) ;
   swap (p->mInfo, ioInfo) ; // Exchange
-  if (mLastItem == NULL) {
+  if (mLastItem == nullptr) {
     mFirstItem = p ;
   }else{
     mLastItem->mNextItem = p ;
@@ -164,13 +164,13 @@ template <typename TYPE> void TC_FIFO<TYPE>::insertByExchange (TYPE & ioInfo) {
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> void TC_FIFO<TYPE>::deleteLastItem (void) {
-  if (mFirstItem != NULL) {
+  if (mFirstItem != nullptr) {
     TC_FIFO_element * p = mFirstItem->mNextItem ;
     macroMyDelete (mFirstItem) ;
     mFirstItem = p ;
     mListLength -- ;
-    if (mFirstItem == NULL) {
-      mLastItem = NULL ;
+    if (mFirstItem == nullptr) {
+      mLastItem = nullptr ;
     }
   }
   macroMyDeleteArray (mItemsArray) ;
@@ -179,13 +179,13 @@ template <typename TYPE> void TC_FIFO<TYPE>::deleteLastItem (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> void TC_FIFO <TYPE>::getByCopyAndSuppressLastItem (TYPE & outInfo) {
-  if (mFirstItem != NULL) {
+  if (mFirstItem != nullptr) {
     outInfo = mFirstItem->mInfo ;
     TC_FIFO_element * p = mFirstItem->mNextItem ;
     macroMyDelete (mFirstItem) ;
     mListLength -- ;
-    if (mFirstItem == NULL) {
-      mLastItem = NULL ;
+    if (mFirstItem == nullptr) {
+      mLastItem = nullptr ;
     }
   }
   macroMyDeleteArray (mItemsArray) ;
@@ -194,14 +194,14 @@ template <typename TYPE> void TC_FIFO <TYPE>::getByCopyAndSuppressLastItem (TYPE
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> void TC_FIFO<TYPE>::getByExchangeAndSuppressLastItem (TYPE & outInfo) {
-  if (mFirstItem != NULL) {
+  if (mFirstItem != nullptr) {
     swap (outInfo, mFirstItem->mInfo) ;
     TC_FIFO_element * p = mFirstItem->mNextItem ;
     macroMyDelete (mFirstItem) ;
     mFirstItem = p ;
     mListLength -- ;
-    if (mFirstItem == NULL) {
-      mLastItem = NULL ;
+    if (mFirstItem == nullptr) {
+      mLastItem = nullptr ;
     }
   }
   macroMyDeleteArray (mItemsArray) ;
@@ -212,13 +212,13 @@ template <typename TYPE> void TC_FIFO<TYPE>::getByExchangeAndSuppressLastItem (T
 template <typename TYPE>TYPE & TC_FIFO<TYPE>::operator () (const int32_t inIndex COMMA_LOCATION_ARGS) {
    MF_AssertThere (inIndex >= 0, "inIndex (%ld) < 0", inIndex, 0) ;
    MF_AssertThere (inIndex < mListLength, "inIndex (%ld) >= mListLength (%ld)", inIndex, mListLength) ;
-   TC_FIFO_element * p = (TC_FIFO_element *) NULL ;
+   TC_FIFO_element * p = (TC_FIFO_element *) nullptr ;
    if (inIndex == 0) {
      p = mFirstItem ;
    }else if (inIndex == (mListLength - 1)) {
      p = mLastItem ;
    }else{
-     if (mItemsArray == NULL) {
+     if (mItemsArray == nullptr) {
        macroMyNewArray (mItemsArray, TC_FIFO_element *, uint32_t (mListLength)) ;
        p = mFirstItem ;
        for (int32_t i=0 ; i<mListLength ; i++) {
@@ -236,13 +236,13 @@ template <typename TYPE>TYPE & TC_FIFO<TYPE>::operator () (const int32_t inIndex
 template <typename TYPE> TYPE & TC_FIFO <TYPE>::operator () (const int32_t inIndex COMMA_LOCATION_ARGS) const {
    MF_AssertThere (inIndex >= 0, "inIndex (%ld) < 0", inIndex, 0) ;
    MF_AssertThere (inIndex < mListLength, "inIndex (%ld) >= mListLength (%ld)", inIndex, mListLength) ;
-   TC_FIFO_element * p = (TC_FIFO_element *) NULL ;
+   TC_FIFO_element * p = (TC_FIFO_element *) nullptr ;
    if (inIndex == 0) {
      p = mFirstItem ;
    }else if (inIndex == (mListLength - 1)) {
      p = mLastItem ;
    }else{
-     if (mItemsArray == NULL) {
+     if (mItemsArray == nullptr) {
        macroMyNewArray (mItemsArray, TC_FIFO_element *, uint32_t (mListLength)) ;
        p = mFirstItem ;
        for (int32_t i=0 ; i<mListLength ; i++) {

@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  AC_GALGAS_map : Base class for GALGAS map                                                    
+//  AC_GALGAS_map : Base class for GALGAS map
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2008, ..., 2021 Pierre Molinaro.
 //
@@ -48,7 +48,7 @@ class cMapNode ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//     M A P                                                                                     
+//     M A P
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -67,7 +67,7 @@ class AC_GALGAS_map : public AC_GALGAS_root {
   public: VIRTUAL_IN_DEBUG uint32_t count (void) const ;
 
 //--- isValid
-  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return mSharedMap != NULL ; }
+  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return mSharedMap != nullptr ; }
 
 //--- drop
   public: VIRTUAL_IN_DEBUG void drop (void) override ;
@@ -83,9 +83,9 @@ class AC_GALGAS_map : public AC_GALGAS_root {
 
 //--------------------------------- Insert
   private: VIRTUAL_IN_DEBUG void insulate (LOCATION_ARGS) ;
-  
+
   private: VIRTUAL_IN_DEBUG void insulateCurrentAndOverridenMaps (LOCATION_ARGS) ;
-  
+
   protected: VIRTUAL_IN_DEBUG void performInsert (const capCollectionElement & inAttributes,
                                                    C_Compiler * inCompiler,
                                                    const char * inInsertErrorMessage,

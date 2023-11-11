@@ -1,14 +1,14 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Declaration and implementation of the template class 'TC_Array2'                             
+//  Declaration and implementation of the template class 'TC_Array2'
 //
-//  It implements a generic two dimensions dynamic sized array.                                  
+//  It implements a generic two dimensions dynamic sized array.
 //
-//  COPY OF ITS INSTANCES IS ALLOWED AND FULLY IMPLEMENTED BY DUPLICATION.                       
+//  COPY OF ITS INSTANCES IS ALLOWED AND FULLY IMPLEMENTED BY DUPLICATION.
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
-//  Copyright (C) 1997 Pierre Molinaro.                                                          
+//  Copyright (C) 1997 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -112,12 +112,12 @@ template <typename TYPE> class TC_Array2 {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                         Implementation                                                        
+//                         Implementation
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> TC_Array2 <TYPE>::TC_Array2 (void) :
-mArray (NULL),
+mArray (nullptr),
 mCurrentRowCount (0),
 mCurrentColumnCount (0),
 mCapacity (0) {
@@ -126,7 +126,7 @@ mCapacity (0) {
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> TC_Array2 <TYPE>::TC_Array2 (TC_Array2 <TYPE> & inSource) :
-mArray (NULL),
+mArray (nullptr),
 mCurrentRowCount (0),
 mCurrentColumnCount (0),
 mCapacity (0) {
@@ -138,7 +138,7 @@ mCapacity (0) {
 template <typename TYPE> TC_Array2 <TYPE>::TC_Array2 (const int32_t inRowCount,
                                                       const int32_t inColumnCount
                                                       COMMA_LOCATION_ARGS)  :
-mArray (NULL),
+mArray (nullptr),
 mCurrentRowCount (0),
 mCurrentColumnCount (0),
 mCapacity (0){
@@ -196,7 +196,7 @@ template <typename TYPE> void TC_Array2<TYPE>::reallocArray (const int32_t inRow
     while (newCapacity < newNeededSize) {
       newCapacity <<= 1 ;
     }
-    TYPE * newArray = NULL ;
+    TYPE * newArray = nullptr ;
     macroMyNewArray (newArray, TYPE, (size_t) newCapacity) ;
     const int32_t maxLigne = (mCurrentRowCount < inRowCount) ? mCurrentRowCount : inRowCount ;
     const int32_t maxColonne = (mCurrentColumnCount < inColumnCount) ? mCurrentColumnCount : inColumnCount ;
@@ -206,7 +206,7 @@ template <typename TYPE> void TC_Array2<TYPE>::reallocArray (const int32_t inRow
       }
     }
     macroMyDeleteArray (mArray) ;
-    mArray = newArray ; newArray = NULL ;
+    mArray = newArray ; newArray = nullptr ;
     mCurrentColumnCount = inColumnCount ;
     mCurrentRowCount = inRowCount ;
     mCapacity = newCapacity ;

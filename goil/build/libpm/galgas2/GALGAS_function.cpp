@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  GALGAS_function : this class implements introspection for GALGAS functions                   
+//  GALGAS_function : this class implements introspection for GALGAS functions
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2002, ..., 2011 Pierre Molinaro.
 //
@@ -26,13 +26,13 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                     'GALGAS_function' class                                                   
+//                     'GALGAS_function' class
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_function::GALGAS_function (void) :
 AC_GALGAS_root (),
-mFunctionDescriptor (NULL) {
+mFunctionDescriptor (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ GALGAS_function::~ GALGAS_function (void) {
 void GALGAS_function::description (C_String & ioString,
                                    const int32_t /* inIndentation */) const {
   ioString << "<@function:" ;
-  if (NULL == mFunctionDescriptor) {
+  if (nullptr == mFunctionDescriptor) {
     ioString << "not built" ;
   }else{
     ioString << mFunctionDescriptor->mFunctionName << " [" ;
@@ -86,7 +86,7 @@ void GALGAS_function::description (C_String & ioString,
 GALGAS_functionlist GALGAS_function::constructor_functionList (LOCATION_ARGS) {
   GALGAS_functionlist result = GALGAS_functionlist::constructor_emptyList (THERE) ;
   const C_galgas_function_descriptor * p = C_galgas_function_descriptor::functionListRoot () ;
-  while (NULL != p) {
+  while (nullptr != p) {
     result.addAssign_operation (GALGAS_function (p) COMMA_HERE) ;
     p = p->mNextFunction ;
   }
@@ -102,7 +102,7 @@ GALGAS_bool GALGAS_function::constructor_isFunctionDefined (const GALGAS_string 
     bool resultValue = false ;
     const C_String functionName = inFunctionName.stringValue () ;
     const C_galgas_function_descriptor * p = C_galgas_function_descriptor::functionListRoot () ;
-    while ((NULL != p) && ! resultValue) {
+    while ((nullptr != p) && ! resultValue) {
       resultValue = functionName == p->mFunctionName ;
       p = p->mNextFunction ;
     }
@@ -119,7 +119,7 @@ GALGAS_function GALGAS_function::constructor_functionWithName (const GALGAS_stri
   if (inFunctionName.isValid ()) {
     const C_String functionName = inFunctionName.stringValue () ;
     const C_galgas_function_descriptor * p = C_galgas_function_descriptor::functionListRoot () ;
-    while ((NULL != p) && ! result.isValid ()) {
+    while ((nullptr != p) && ! result.isValid ()) {
       if (functionName == p->mFunctionName) {
         result = GALGAS_function (p) ;
       }
@@ -162,7 +162,7 @@ GALGAS_object GALGAS_function::getter_invoke (const GALGAS_objectlist & inObject
   bool ok = mFunctionDescriptor->mParameterCount == argumentsArray.count () ;
   if (! ok) {
     C_String errorMessage ;
-    errorMessage << "the '" << mFunctionDescriptor->mFunctionName << "' function is called with " 
+    errorMessage << "the '" << mFunctionDescriptor->mFunctionName << "' function is called with "
                  << cStringWithUnsigned (argumentsArray.count ())
                  << " actual parameter"
                  << ((argumentsArray.count () > 1) ? "s" : "")
@@ -177,7 +177,7 @@ GALGAS_object GALGAS_function::getter_invoke (const GALGAS_objectlist & inObject
     if (ok) {
       const C_galgas_type_descriptor * t = parameter.getter_objectStaticType (HERE).typeValue () ;
       ok = t == mFunctionDescriptor->mFormalParameterTypeList [i] ;
-      while ((! ok) && (NULL != t->mSuperclassDescriptor)) {
+      while ((! ok) && (nullptr != t->mSuperclassDescriptor)) {
         t = t->mSuperclassDescriptor ;
         ok = t == mFunctionDescriptor->mFormalParameterTypeList [i] ;
       }

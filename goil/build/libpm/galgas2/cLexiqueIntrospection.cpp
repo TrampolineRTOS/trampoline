@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Lexique introspection                                                                        
+//  Lexique introspection
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2016, ..., 2016 Pierre Molinaro.
 //
@@ -25,7 +25,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-static cLexiqueIntrospection * gLexiqueIntrospectionRoot = NULL ;
+static cLexiqueIntrospection * gLexiqueIntrospectionRoot = nullptr ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -42,7 +42,7 @@ mGetKeywordsForIdentifier (getKeywordsForIdentifier) {
 void cLexiqueIntrospection::getKeywordListNames (TC_UniqueArray <C_String> & outList) {
   outList.setCountToZero () ;
   cLexiqueIntrospection * p = gLexiqueIntrospectionRoot ;
-  while (NULL != p) {
+  while (nullptr != p) {
     p->mAppendKeywordListNames (outList) ;
     p = p->mNext ;
   }
@@ -56,7 +56,7 @@ void cLexiqueIntrospection::getKeywordListForIdentifier (const C_String & inIden
   outFound = false ;
   outList.setCountToZero () ;
   cLexiqueIntrospection * p = gLexiqueIntrospectionRoot ;
-  while ((NULL != p) && !outFound) {
+  while ((nullptr != p) && !outFound) {
     p->mGetKeywordsForIdentifier (inIdentifier, outFound, outList) ;
     p = p->mNext ;
   }

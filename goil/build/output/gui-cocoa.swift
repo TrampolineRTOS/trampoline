@@ -130,7 +130,7 @@ class SWIFT_Tokenizer_0_goil_lexique : SWIFT_Lexique_goil_lexique, SWIFT_Tokeniz
 
 - (NSString *) textMacroTitleAtIndex: (const UInt32) inIndex {
   static NSString * kTextMacroTitle [1] = {
-    NULL
+    nullptr
   } ;
   return kTextMacroTitle [inIndex] ;
 }
@@ -139,7 +139,7 @@ class SWIFT_Tokenizer_0_goil_lexique : SWIFT_Lexique_goil_lexique, SWIFT_Tokeniz
 
 - (NSString *) textMacroContentAtIndex: (const UInt32) inIndex {
   static NSString * kTextMacroContent [1] = {
-    NULL
+    nullptr
   } ;
   return kTextMacroContent [inIndex] ;
 }
@@ -225,7 +225,7 @@ class SWIFT_Tokenizer_1_gtl_scanner : SWIFT_Lexique_gtl_scanner, SWIFT_Tokenizer
 
 - (NSString *) textMacroTitleAtIndex: (const UInt32) inIndex {
   static NSString * kTextMacroTitle [1] = {
-    NULL
+    nullptr
   } ;
   return kTextMacroTitle [inIndex] ;
 }
@@ -234,7 +234,7 @@ class SWIFT_Tokenizer_1_gtl_scanner : SWIFT_Lexique_gtl_scanner, SWIFT_Tokenizer
 
 - (NSString *) textMacroContentAtIndex: (const UInt32) inIndex {
   static NSString * kTextMacroContent [1] = {
-    NULL
+    nullptr
   } ;
   return kTextMacroContent [inIndex] ;
 }

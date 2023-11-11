@@ -75,7 +75,7 @@ DO_mpn_addlsh_n(mp_ptr dst, mp_srcptr src, mp_size_t n, unsigned int s, mp_ptr w
 #ifdef HAVE_NATIVE_mpn_subrsh
 #define DO_mpn_subrsh(dst,nd,src,ns,s,ws) mpn_subrsh(dst,nd,src,ns,s)
 #else
-/* FIXME: This is not a correct definition, it assumes no carry */
+
 #define DO_mpn_subrsh(dst,nd,src,ns,s,ws)				\
 do {									\
   mp_limb_t __cy;							\
@@ -98,7 +98,6 @@ do {									\
 #error Not implemented: Hard to adapt...
 #endif
 
-/* FIXME: tuneup should decide the best variant */
 #ifndef AORSMUL_FASTER_AORS_AORSLSH
 #define AORSMUL_FASTER_AORS_AORSLSH 1
 #endif
@@ -118,7 +117,6 @@ do {									\
 #define BINVERT_255 \
   (GMP_NUMB_MAX - ((GMP_NUMB_MAX / 255) << (8 - GMP_NUMB_BITS % 8)))
 
-  /* FIXME: find some more general expressions for 2835^-1, 42525^-1 */
 #if GMP_LIMB_BITS == 32
 #define BINVERT_2835  (GMP_NUMB_MASK &		CNST_LIMB(0x53E3771B))
 #define BINVERT_42525 (GMP_NUMB_MASK &		CNST_LIMB(0x9F314C35))

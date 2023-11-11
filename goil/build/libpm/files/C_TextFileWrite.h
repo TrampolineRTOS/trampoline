@@ -24,7 +24,7 @@
 
 #include "strings/C_String.h"
 #include "streams/AC_OutputStream.h"
-#include "files/AC_FileHandleForWriting.h"
+#include "files/AC_FileHandle.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ const int32_t kFileBufferSize = 10000 ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_TextFileWrite : public AC_OutputStream, public AC_FileHandleForWriting {
+class C_TextFileWrite : public AC_OutputStream, public AC_FileHandle {
 //--- Constructor : if inFileName is the empty string, no file is opened.
 //    Otherwise, it tries to open the file for writing;
 //    The destructor will close the file (is successfully opened)

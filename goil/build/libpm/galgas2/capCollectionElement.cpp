@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  GALGAS_enumerable : Base class for GALGAS enumerable object                                  
+//  GALGAS_enumerable : Base class for GALGAS enumerable object
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2010, ..., 2013 Pierre Molinaro.
 //
@@ -25,7 +25,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 capCollectionElement::capCollectionElement (void) :
-mPtr (NULL) {
+mPtr (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ capCollectionElement:: ~capCollectionElement (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 capCollectionElement::capCollectionElement (const capCollectionElement & inSource) :
-mPtr (NULL) {
+mPtr (nullptr) {
   macroAssignSharedObject (mPtr, inSource.mPtr) ;
 }
 
@@ -57,7 +57,7 @@ capCollectionElement & capCollectionElement::operator = (const capCollectionElem
 //----------------------------------------------------------------------------------------------------------------------
 
 bool capCollectionElement::isValid (void) const {
-  bool result = NULL != mPtr ;
+  bool result = nullptr != mPtr ;
   if (result) {
     result = mPtr->isValid () ;
   }
@@ -91,9 +91,9 @@ void capCollectionElement::drop (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void capCollectionElement::insulate (void) {
-  if ((NULL != mPtr) && !mPtr->isUniquelyReferenced ()) {
+  if ((nullptr != mPtr) && !mPtr->isUniquelyReferenced ()) {
     cCollectionElement * p = mPtr->copy () ;
-    macroAssignSharedObject (mPtr, p) ;  
+    macroAssignSharedObject (mPtr, p) ;
     macroDetachSharedObject (p) ;
   }
 }
@@ -101,7 +101,7 @@ void capCollectionElement::insulate (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void capCollectionElement::description (C_String & ioString, const int32_t inIndentation) const {
-  if (NULL == mPtr) {
+  if (nullptr == mPtr) {
     ioString << "NULL" ;
   }else{
     mPtr->description (ioString, inIndentation) ;

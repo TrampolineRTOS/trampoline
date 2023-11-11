@@ -50,7 +50,7 @@ see https://www.gnu.org/licenses/.  */
    mpn_pi1_bdiv_q_1 or mpn_divexact_1.  The former has less overhead and is
    many faster if it is native.  For now, since mpn_divexact_1 is native on
    several platforms where mpn_pi1_bdiv_q_1 does not yet exist, do not use
-   mpn_pi1_bdiv_q_1 unconditionally.  FIXME.  */
+   mpn_pi1_bdiv_q_1 unconditionally.  */
 
 /* For odd divisors, mpn_divexact_1 works fine with two's complement. */
 #ifndef mpn_divexact_by3

@@ -23,7 +23,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 #include "strings/C_String.h"
-#include "files/AC_FileHandleForWriting.h"
+#include "files/AC_FileHandle.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_BinaryFileWrite : public AC_FileHandleForWriting {
+class C_BinaryFileWrite : public AC_FileHandle {
 //--- Constructor : if inFileName is the empty string, no file is opened.
 //    Otherwise, it tries to open the file for writing;
 //    outSuccessfullyOpened is returned true is inFileName is empty or if file is successfully opened

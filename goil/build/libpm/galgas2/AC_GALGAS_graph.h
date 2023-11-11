@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  AC_GALGAS_graph : Base class for GALGAS graph                                                
+//  AC_GALGAS_graph : Base class for GALGAS graph
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2008, ..., 2022 Pierre Molinaro.
 //
@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  A C _ G A L G A S _ g r a p h                                                                
+//  A C _ G A L G A S _ g r a p h
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -38,7 +38,7 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
 
 //--- Default constructor
   public: AC_GALGAS_graph (void) ;
-  
+
 //--- Virtual destructor
   public: virtual ~ AC_GALGAS_graph (void) ;
 
@@ -46,7 +46,7 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
   public: VIRTUAL_IN_DEBUG uint32_t count (void) const ;
 
 //--- isValid
-  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return mSharedGraph != NULL ; }
+  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return mSharedGraph != nullptr ; }
 
 //--- drop
   public: VIRTUAL_IN_DEBUG void drop (void) override ;

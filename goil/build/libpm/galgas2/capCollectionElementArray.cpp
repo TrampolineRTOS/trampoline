@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  capCollectionElementArray                                                                    
+//  capCollectionElementArray
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
-//  Copyright (C) 2010, ..., 2016 Pierre Molinaro.
+//  Copyright (C) 2010, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -24,7 +24,7 @@
 #include "galgas2/C_Compiler.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-//   capCollectionRoot                                                                           
+//   capCollectionRoot
 //----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
@@ -36,17 +36,17 @@
 class capCollectionRoot : public C_SharedObject {
 //--- Default constructor
   public: capCollectionRoot (void) ;
-  
+
 //--- Special copy constructor
   public: capCollectionRoot (const capCollectionRoot * inSource) ;
-  
+
 //--- Destructor
   public: virtual ~ capCollectionRoot (void) ;
 
 //--- No copy
   private: capCollectionRoot (const capCollectionRoot &) ;
   private: capCollectionRoot & operator = (const capCollectionRoot &) ;
-  
+
 //--- Private properties
   private: capCollectionElement * mArray ;
   private: uint32_t mCapacity ;
@@ -60,7 +60,7 @@ class capCollectionRoot : public C_SharedObject {
 
 capCollectionRoot::capCollectionRoot (void) :
 C_SharedObject (HERE),
-mArray (NULL),
+mArray (nullptr),
 mCapacity (0),
 mCount (0) {
 }
@@ -69,7 +69,7 @@ mCount (0) {
 
 capCollectionRoot::capCollectionRoot (const capCollectionRoot * inSource) :
 C_SharedObject (HERE),
-mArray (NULL),
+mArray (nullptr),
 mCapacity (0),
 mCount (0) {
   macroValidPointer (inSource) ;
@@ -90,7 +90,7 @@ capCollectionRoot::~ capCollectionRoot (void) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//   capCollectionElementArray                                                                   
+//   capCollectionElementArray
 //----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
@@ -100,20 +100,20 @@ capCollectionRoot::~ capCollectionRoot (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 capCollectionElementArray::capCollectionElementArray (void) :
-mSharedRoot (NULL) {
+mSharedRoot (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 capCollectionElementArray::capCollectionElementArray (const uint32_t inCapacity) :
-mSharedRoot (NULL) {
+mSharedRoot (nullptr) {
   setCapacity (inCapacity) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 capCollectionElementArray::capCollectionElementArray (const capCollectionElementArray & inSource) :
-mSharedRoot (NULL) {
+mSharedRoot (nullptr) {
   macroAssignSharedObject (mSharedRoot, inSource.mSharedRoot) ;
 }
 
@@ -135,22 +135,22 @@ capCollectionElementArray::~capCollectionElementArray (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 uint32_t capCollectionElementArray::count (void) const {
-  return (NULL == mSharedRoot) ? 0 : mSharedRoot->mCount ;
+  return (nullptr == mSharedRoot) ? 0 : mSharedRoot->mCount ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 uint32_t capCollectionElementArray::capacity (void) const {
-  return (NULL == mSharedRoot) ? 0 : mSharedRoot->mCapacity ;
+  return (nullptr == mSharedRoot) ? 0 : mSharedRoot->mCapacity ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 void capCollectionElementArray::insulateOrCreate (void) {
-  if (NULL == mSharedRoot) {
+  if (nullptr == mSharedRoot) {
     macroMyNew (mSharedRoot, capCollectionRoot) ;
   }else if (!mSharedRoot->isUniquelyReferenced()) { // Copy
-    capCollectionRoot * newRoot = NULL ;
+    capCollectionRoot * newRoot = nullptr ;
     macroMyNew (newRoot, capCollectionRoot (mSharedRoot)) ;
     macroAssignSharedObject (mSharedRoot, newRoot) ;
     macroDetachSharedObject (newRoot) ;
@@ -167,8 +167,7 @@ void capCollectionElementArray::setCapacity (const uint32_t inNewCapacity) {
     while (newCapacity < inNewCapacity) {
       newCapacity <<= 1 ;
     }
-    // printf ("inNewCapacity %u, current %u, new %u\n", inNewCapacity, mCapacity, newCapacity) ;
-    capCollectionElement * newArray = NULL ;
+    capCollectionElement * newArray = nullptr ;
     macroMyNewArray (newArray, capCollectionElement, newCapacity) ;
     for (uint32_t i=0 ; i<count () ; i++) {
       newArray [i] = mSharedRoot->mArray [i] ;

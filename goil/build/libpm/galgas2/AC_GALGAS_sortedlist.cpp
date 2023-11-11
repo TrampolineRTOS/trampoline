@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  AC_GALGAS_sortedlist                                                                         
+//  AC_GALGAS_sortedlist
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2005, ..., 2016 Pierre Molinaro.
 //
@@ -27,7 +27,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  c S t r i n g s e t N o d e                                                                  
+//  c S t r i n g s e t N o d e
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ class cSortedListNode {
   public: cSortedListNode * mPreviousPtr ;
   public: capSortedListElement mProperties ;
 
-//---  
+//---
   public: cSortedListNode (const capSortedListElement & inAttributes) ;
 
   public: cSortedListNode (cSortedListNode * inNode) ;
@@ -52,30 +52,30 @@ class cSortedListNode {
 //----------------------------------------------------------------------------------------------------------------------
 
 cSortedListNode::cSortedListNode (const capSortedListElement & inAttributes) :
-mInfPtr (NULL),
-mSupPtr (NULL),
+mInfPtr (nullptr),
+mSupPtr (nullptr),
 mBalance (0),
-mNextPtr (NULL),
-mPreviousPtr (NULL),
+mNextPtr (nullptr),
+mPreviousPtr (nullptr),
 mProperties (inAttributes) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 cSortedListNode::cSortedListNode (cSortedListNode * inNode) :
-mInfPtr (NULL),
-mSupPtr (NULL),
+mInfPtr (nullptr),
+mSupPtr (nullptr),
 mBalance (0),
-mNextPtr (NULL),
-mPreviousPtr (NULL),
+mNextPtr (nullptr),
+mPreviousPtr (nullptr),
 mProperties () {
   macroValidPointer (inNode) ;
   mProperties = inNode->mProperties ;
   mBalance = inNode->mBalance ;
-  if (inNode->mInfPtr != NULL) {
+  if (inNode->mInfPtr != nullptr) {
     macroMyNew (mInfPtr, cSortedListNode (inNode->mInfPtr)) ;
   }
-  if (inNode->mSupPtr != NULL) {
+  if (inNode->mSupPtr != nullptr) {
     macroMyNew (mSupPtr, cSortedListNode (inNode->mSupPtr)) ;
   }
 }
@@ -83,7 +83,7 @@ mProperties () {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void disposeNodes (cSortedListNode * inNode) {
-  if (NULL != inNode) {
+  if (nullptr != inNode) {
     disposeNodes (inNode->mInfPtr) ;
     disposeNodes (inNode->mSupPtr) ;
     macroMyDelete (inNode) ;
@@ -98,7 +98,7 @@ static void disposeNodes (cSortedListNode * inNode) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    cSharedSortedListRoot                                                                      
+//    cSharedSortedListRoot
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -172,9 +172,9 @@ class cSharedSortedListRoot : public C_SharedObject {
 
 cSharedSortedListRoot::cSharedSortedListRoot (LOCATION_ARGS) :
 C_SharedObject (THERE),
-mRoot (NULL),
-mFirst (NULL),
-mLast (NULL),
+mRoot (nullptr),
+mFirst (nullptr),
+mLast (nullptr),
 mCount (0) {
 }
 
@@ -196,10 +196,9 @@ cSharedSortedListRoot::~ cSharedSortedListRoot (void) {
   static void populateCheckArray (const cSortedListNode * inNode,
                                   uint32_t & ioIndex,
                                   const cSortedListNode * * ioArray) {
-    if (NULL != inNode) {
+    if (nullptr != inNode) {
       macroValidSharedObject (inNode, cSortedListNode) ;
       populateCheckArray (inNode->mInfPtr, ioIndex, ioArray) ;
-      // printf ("Node %p at index %u\n", inNode, ioIndex) ;
       ioArray [ioIndex] = inNode ;
       ioIndex ++ ;
       populateCheckArray (inNode->mSupPtr, ioIndex, ioArray) ;
@@ -215,16 +214,15 @@ cSharedSortedListRoot::~ cSharedSortedListRoot (void) {
                                const cSortedListNode * inFirst,
                                const cSortedListNode * inLast
                                COMMA_LOCATION_ARGS) {
-    const cSortedListNode * * array = NULL ;
-    macroMyNewPODArray (array, const cSortedListNode *, inCount) ; 
+    const cSortedListNode * * array = nullptr ;
+    macroMyNewPODArray (array, const cSortedListNode *, inCount) ;
     uint32_t idx = 0 ;
-    // printf ("-----\n") ;
     populateCheckArray (inRoot, idx, array) ;
     MF_AssertThere (idx == inCount, "a: idx (%lld) != inCount (%lld)", idx, inCount) ;
 
     const cSortedListNode * p = inFirst ;
     idx = 0 ;
-    while (p != NULL) {
+    while (p != nullptr) {
       MF_AssertThere (p == array [idx], "b: p (%p) != array [idx] (%p)", (int64_t) p, (int64_t) array [idx]) ;
       idx ++ ;
       p = p->mNextPtr ;
@@ -233,7 +231,7 @@ cSharedSortedListRoot::~ cSharedSortedListRoot (void) {
 
     p = inLast ;
     idx = inCount ;
-    while (p != NULL) {
+    while (p != nullptr) {
       idx -- ;
       MF_AssertThere (p == array [idx], "d: p (%p) != array [idx] (%p)", (int64_t) p, (int64_t) array [idx]) ;
       p = p->mPreviousPtr ;
@@ -252,8 +250,8 @@ cSharedSortedListRoot::~ cSharedSortedListRoot (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_sortedlist::insulate (LOCATION_ARGS) {
-  if ((mSharedRoot != NULL) && !mSharedRoot->isUniquelyReferenced ()) {
-    cSharedSortedListRoot * p = NULL ;
+  if ((mSharedRoot != nullptr) && !mSharedRoot->isUniquelyReferenced ()) {
+    cSharedSortedListRoot * p = nullptr ;
     macroMyNew (p, cSharedSortedListRoot (THERE)) ;
     p->copyFrom (mSharedRoot) ;
     macroAssignSharedObject (mSharedRoot, p) ;
@@ -265,7 +263,7 @@ void AC_GALGAS_sortedlist::insulate (LOCATION_ARGS) {
 
 static void buildDirectLinksOnCopy (cSortedListNode * inNode,
                                     cSortedListNode * & ioFirst) {
-  if (NULL != inNode) {
+  if (nullptr != inNode) {
     buildDirectLinksOnCopy (inNode->mSupPtr, ioFirst) ;
     inNode->mNextPtr = ioFirst ;
     ioFirst = inNode ;
@@ -277,7 +275,7 @@ static void buildDirectLinksOnCopy (cSortedListNode * inNode,
 
 static void buildReverseLinksOnCopy (cSortedListNode * inNode,
                                      cSortedListNode * & ioLast) {
-  if (NULL != inNode) {
+  if (nullptr != inNode) {
     buildReverseLinksOnCopy (inNode->mInfPtr, ioLast) ;
     inNode->mPreviousPtr = ioLast ;
     ioLast = inNode ;
@@ -288,7 +286,7 @@ static void buildReverseLinksOnCopy (cSortedListNode * inNode,
 //----------------------------------------------------------------------------------------------------------------------
 
 void cSharedSortedListRoot::copyFrom (const cSharedSortedListRoot * inList) {
-  if ((inList != NULL) && (inList->mRoot != NULL)) {
+  if ((inList != nullptr) && (inList->mRoot != nullptr)) {
     #ifndef DO_NOT_GENERATE_CHECKINGS
       checkSortedList (inList->mRoot, inList->mCount, inList->mFirst, inList->mLast COMMA_HERE) ;
     #endif
@@ -296,9 +294,9 @@ void cSharedSortedListRoot::copyFrom (const cSharedSortedListRoot * inList) {
     macroValidSharedObject (inList, cSharedSortedListRoot) ;
     mCount = inList->mCount ;
     macroMyNew (mRoot, cSortedListNode (inList->mRoot)) ;
-    MF_Assert (mFirst == NULL, "mFirst (%p) != NULL", (int64_t) mFirst, 0) ;
+    MF_Assert (mFirst == nullptr, "mFirst (%p) != nullptr", (int64_t) mFirst, 0) ;
     buildDirectLinksOnCopy (mRoot, mFirst) ;
-    MF_Assert (mLast == NULL, "mLast (%p) != NULL", (int64_t) mLast, 0) ;
+    MF_Assert (mLast == nullptr, "mLast (%p) != nullptr", (int64_t) mLast, 0) ;
     buildReverseLinksOnCopy (mRoot, mLast) ;
   }
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -316,7 +314,7 @@ void cSharedSortedListRoot::copyFrom (const cSharedSortedListRoot * inList) {
 
 typeComparisonResult cSharedSortedListRoot::objectCompare (const cSharedSortedListRoot * inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
-  if (NULL != inOperand) {
+  if (nullptr != inOperand) {
     result = kOperandEqual ;
     if (mCount < inOperand->mCount) {
       result = kFirstOperandLowerThanSecond ;
@@ -325,7 +323,7 @@ typeComparisonResult cSharedSortedListRoot::objectCompare (const cSharedSortedLi
     }else{
       cSortedListNode * p1 = mFirst ;
       cSortedListNode * p2 = inOperand->mFirst ;
-      while ((NULL != p1) && (NULL != p2) && (result == kOperandEqual)) {
+      while ((nullptr != p1) && (nullptr != p2) && (result == kOperandEqual)) {
         result = p1->mProperties.compare (p2->mProperties) ;
         p1 = p1->mNextPtr ;
         p2 = p1->mNextPtr ;
@@ -378,7 +376,7 @@ static void rotateRight (cSortedListNode * & ioRootPtr) {
   cSortedListNode * b = ioRootPtr->mInfPtr ;
   ioRootPtr->mInfPtr = b->mSupPtr ;
   b->mSupPtr = ioRootPtr ;
- 
+
   if (b->mBalance > 0) {
     ioRootPtr->mBalance += -b->mBalance - 1 ;
   }else{
@@ -398,11 +396,11 @@ void cSharedSortedListRoot::addEntry (cSortedListNode * & ioRootPtr,
                                       cSortedListNode * inBeforeNode,
                                       const capSortedListElement & inAttributes,
                                       bool & ioExtension) {
-  if (ioRootPtr == NULL) {
+  if (ioRootPtr == nullptr) {
     macroMyNew (ioRootPtr, cSortedListNode (inAttributes)) ;
-    if (inBeforeNode == NULL) { // New node is the first one
+    if (inBeforeNode == nullptr) { // New node is the first one
       ioRootPtr->mNextPtr = mFirst ;
-      if (mFirst == NULL) {
+      if (mFirst == nullptr) {
         mLast = ioRootPtr ;
       }else{
         mFirst->mPreviousPtr = ioRootPtr ;
@@ -410,7 +408,7 @@ void cSharedSortedListRoot::addEntry (cSortedListNode * & ioRootPtr,
       mFirst = ioRootPtr ;
     }else{ // Insert new node just after 'inBeforeNode'
       cSortedListNode * next = inBeforeNode->mNextPtr ;
-      if (next == NULL) {  // new node becomes the last one
+      if (next == nullptr) {  // new node becomes the last one
         mLast = ioRootPtr ;
       }else{
         next->mPreviousPtr = ioRootPtr ;
@@ -458,32 +456,14 @@ void cSharedSortedListRoot::addEntry (cSortedListNode * & ioRootPtr,
 
 //----------------------------------------------------------------------------------------------------------------------
 
-/* static void imprimerArbre (cSortedListNode * inRoot,
-                           const uint32_t inElementSize) {
-  if (inRoot != NULL) {
-    imprimerArbre (inRoot->mInfPtr, inElementSize) ;
-    C_String s ;
-    for (uint32_t i=0 ; i<inElementSize ; i++) {
-      inRoot->mProperties [i]->description (s, 0) ;
-    }
-    printf ("%s\n", s.cString (HERE)) ;
-    imprimerArbre (inRoot->mSupPtr, inElementSize) ;
-  }
-} */
-
-//----------------------------------------------------------------------------------------------------------------------
-
 void cSharedSortedListRoot::appendObject (capSortedListElement & inAttributes) {
   if (inAttributes.isValid ()) {
     bool extension = false ; // Unused here
-    addEntry (mRoot, NULL, inAttributes, extension) ;
+    addEntry (mRoot, nullptr, inAttributes, extension) ;
   }
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkSortedList (mRoot, mCount, mFirst, mLast COMMA_HERE) ;
   #endif
-//  printf ("*** ARBRE\n") ;
-//  imprimerArbre (mRoot, mElementSize) ;
-//  printf ("*** FIN\n") ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -491,7 +471,7 @@ void cSharedSortedListRoot::appendObject (capSortedListElement & inAttributes) {
 void AC_GALGAS_sortedlist::appendObject (capSortedListElement & inAttributes) {
   if (isValid ()) {
     insulate (HERE) ;
-    if (NULL != mSharedRoot) {
+    if (nullptr != mSharedRoot) {
       mSharedRoot->appendObject (inAttributes) ;
     }
   }
@@ -508,9 +488,9 @@ void AC_GALGAS_sortedlist::appendObject (capSortedListElement & inAttributes) {
 void cSharedSortedListRoot::appendSortedList (const cSharedSortedListRoot * inList) {
   macroValidPointer (inList) ;
   const cSortedListNode * p = inList->mFirst ;
-  while (p != NULL) {
+  while (p != nullptr) {
     bool extension = false ; // Unused here
-    addEntry (mRoot, NULL, p->mProperties, extension) ;
+    addEntry (mRoot, nullptr, p->mProperties, extension) ;
     p = p->mNextPtr ;
   }
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -521,7 +501,7 @@ void cSharedSortedListRoot::appendSortedList (const cSharedSortedListRoot * inLi
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_sortedlist::appendSortedList (const AC_GALGAS_sortedlist & inList) {
-  if ((NULL != mSharedRoot) && (NULL != inList.mSharedRoot)) {
+  if ((nullptr != mSharedRoot) && (nullptr != inList.mSharedRoot)) {
     mSharedRoot->appendSortedList (inList.mSharedRoot) ;
   }else{
     drop () ;
@@ -596,14 +576,14 @@ static void infBranchDecreased (cSortedListNode * & ioRoot,
 
 static void internalRemoveLowestElement (cSortedListNode * & ioRoot,
                                          bool & ioBranchHasBeenRemoved) {
-  if (ioRoot->mInfPtr != NULL) {
+  if (ioRoot->mInfPtr != nullptr) {
     internalRemoveLowestElement (ioRoot->mInfPtr, ioBranchHasBeenRemoved) ;
     if (ioBranchHasBeenRemoved) {
       infBranchDecreased (ioRoot, ioBranchHasBeenRemoved) ;
     }
   }else{
     cSortedListNode * p = ioRoot->mSupPtr ;
-    ioRoot->mSupPtr = NULL ;
+    ioRoot->mSupPtr = nullptr ;
     macroMyDelete (ioRoot) ;
     ioRoot = p ;
     ioBranchHasBeenRemoved = true ;
@@ -618,22 +598,22 @@ void cSharedSortedListRoot::removeSmallestObject (capSortedListElement & outAttr
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkSortedList (mRoot, mCount, mFirst, mLast COMMA_HERE) ;
   #endif
-  if (mFirst == NULL) {
+  if (mFirst == nullptr) {
     inCompiler->onTheFlyRunTimeError ("'popSmallest' method invoked on an empty list" COMMA_THERE) ;
   }else{
     outAttributes = mFirst->mProperties ;
     mFirst->mProperties.drop () ;
   //--- Remove from sequential List
     mFirst = mFirst->mNextPtr ;
-    if (mFirst == NULL) {
-      mLast = NULL ;
+    if (mFirst == nullptr) {
+      mLast = nullptr ;
     }else{
-      mFirst->mPreviousPtr = NULL ;
+      mFirst->mPreviousPtr = nullptr ;
     }
   //--- Remove from AVL tree
    bool branchHasBeenRemoved = false ; // Unused here
    internalRemoveLowestElement (mRoot, branchHasBeenRemoved) ;
-  //--- 
+  //---
     mCount -- ;
   }
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -646,7 +626,7 @@ void cSharedSortedListRoot::removeSmallestObject (capSortedListElement & outAttr
 void AC_GALGAS_sortedlist::removeSmallestObject (capSortedListElement & outAttributes,
                                               C_Compiler * inCompiler
                                               COMMA_UNUSED_LOCATION_ARGS) {
-  if (NULL != mSharedRoot) {
+  if (nullptr != mSharedRoot) {
     mSharedRoot->removeSmallestObject (outAttributes, inCompiler COMMA_HERE) ;
   }
 }
@@ -661,14 +641,14 @@ void AC_GALGAS_sortedlist::removeSmallestObject (capSortedListElement & outAttri
 
 static void internalRemoveGreatestElement (cSortedListNode * & ioRoot,
                                            bool & ioBranchHasBeenRemoved) {
-  if (ioRoot->mSupPtr != NULL) {
+  if (ioRoot->mSupPtr != nullptr) {
     internalRemoveGreatestElement (ioRoot->mSupPtr, ioBranchHasBeenRemoved) ;
     if (ioBranchHasBeenRemoved) {
       supBranchDecreased (ioRoot, ioBranchHasBeenRemoved) ;
     }
   }else{
     cSortedListNode * p = ioRoot->mInfPtr ;
-    ioRoot->mInfPtr = NULL ;
+    ioRoot->mInfPtr = nullptr ;
     macroMyDelete (ioRoot) ;
     ioRoot = p ;
     ioBranchHasBeenRemoved = true ;
@@ -683,22 +663,22 @@ void cSharedSortedListRoot::removeGreatestObject (capSortedListElement & outAttr
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkSortedList (mRoot, mCount, mFirst, mLast COMMA_HERE) ;
   #endif
-  if (mLast == NULL) {
+  if (mLast == nullptr) {
     inCompiler->onTheFlyRunTimeError ("'popGreatest' method invoked on an empty list" COMMA_THERE) ;
   }else{
     outAttributes = mLast->mProperties ;
     mLast->mProperties.drop () ;
   //--- Remove from sequential List
     mLast = mLast->mPreviousPtr ;
-    if (mLast == NULL) {
-      mFirst = NULL ;
+    if (mLast == nullptr) {
+      mFirst = nullptr ;
     }else{
-      mLast->mNextPtr = NULL ;
+      mLast->mNextPtr = nullptr ;
     }
   //--- Remove from AVL tree
    bool branchHasBeenRemoved = false ; // Unused here
    internalRemoveGreatestElement (mRoot, branchHasBeenRemoved) ;
-  //--- 
+  //---
     mCount -- ;
   }
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -711,7 +691,7 @@ void cSharedSortedListRoot::removeGreatestObject (capSortedListElement & outAttr
 void AC_GALGAS_sortedlist::removeGreatestObject (capSortedListElement & outAttributes,
                                               C_Compiler * inCompiler
                                               COMMA_UNUSED_LOCATION_ARGS) {
-  if (NULL != mSharedRoot) {
+  if (nullptr != mSharedRoot) {
     mSharedRoot->removeGreatestObject (outAttributes, inCompiler COMMA_HERE) ;
   }
 }
@@ -725,14 +705,14 @@ void AC_GALGAS_sortedlist::removeGreatestObject (capSortedListElement & outAttri
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_sortedlist::AC_GALGAS_sortedlist (void) :
-mSharedRoot (NULL) {
+mSharedRoot (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_sortedlist::AC_GALGAS_sortedlist (const AC_GALGAS_sortedlist & inSource) :
 AC_GALGAS_root (),
-mSharedRoot (NULL) {
+mSharedRoot (nullptr) {
   macroAssignSharedObject (mSharedRoot, inSource.mSharedRoot) ;
 }
 
@@ -777,7 +757,7 @@ void cSharedSortedListRoot::description (C_String & ioString,
            << "): " ;
   const cSortedListNode * p = mFirst ;
   uint32_t idx = 0 ;
-  while (p != NULL) {
+  while (p != nullptr) {
     ioString << "\n" ;
     ioString.writeStringMultiple ("| ", inIndentation) ;
     ioString << "|-at " << cStringWithUnsigned (idx) ;
@@ -793,7 +773,7 @@ void cSharedSortedListRoot::description (C_String & ioString,
 void AC_GALGAS_sortedlist::description (C_String & ioString,
                                      const int32_t inIndentation) const {
   ioString << "<@"<< staticTypeDescriptor ()->mGalgasTypeName ;
-  if (NULL == mSharedRoot) {
+  if (nullptr == mSharedRoot) {
     ioString << " not built" ;
   }else{
     mSharedRoot->description (ioString, inIndentation) ;
@@ -838,7 +818,7 @@ uint32_t AC_GALGAS_sortedlist::count () const {
 void cSharedSortedListRoot::smallestObjectAttributeList (capSortedListElement & outAttributes,
                                                          C_Compiler * inCompiler
                                                          COMMA_LOCATION_ARGS) const {
-  if (mFirst == NULL) {
+  if (mFirst == nullptr) {
     inCompiler->onTheFlyRunTimeError ("'smallest' method invoked on an empty list" COMMA_THERE) ;
   }else{
     outAttributes = mFirst->mProperties ;
@@ -850,7 +830,7 @@ void cSharedSortedListRoot::smallestObjectAttributeList (capSortedListElement & 
 void AC_GALGAS_sortedlist::smallestObjectAttributeList (capSortedListElement & outAttributes,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) const {
-  if (mSharedRoot != NULL) {
+  if (mSharedRoot != nullptr) {
     mSharedRoot->smallestObjectAttributeList (outAttributes, inCompiler COMMA_THERE) ;
   }
 }
@@ -860,7 +840,7 @@ void AC_GALGAS_sortedlist::smallestObjectAttributeList (capSortedListElement & o
 void cSharedSortedListRoot::greatestObjectAttributeList (capSortedListElement & outAttributes,
                                                          C_Compiler * inCompiler
                                                          COMMA_LOCATION_ARGS) const {
-  if (mLast == NULL) {
+  if (mLast == nullptr) {
     inCompiler->onTheFlyRunTimeError ("'greatest' method invoked on an empty list" COMMA_THERE) ;
   }else{
     outAttributes = mLast->mProperties ;
@@ -872,7 +852,7 @@ void cSharedSortedListRoot::greatestObjectAttributeList (capSortedListElement & 
 void AC_GALGAS_sortedlist::greatestObjectAttributeList (capSortedListElement & outAttributes,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) const {
-  if (mSharedRoot != NULL) {
+  if (mSharedRoot != nullptr) {
     mSharedRoot->greatestObjectAttributeList (outAttributes, inCompiler COMMA_THERE) ;
   }
 }
@@ -885,14 +865,14 @@ void AC_GALGAS_sortedlist::greatestObjectAttributeList (capSortedListElement & o
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                 'AC_GALGAS_sortedlist::cEnumerator' class                                     
+//                 'AC_GALGAS_sortedlist::cEnumerator' class
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 void cSharedSortedListRoot::populateEnumerationArray (capCollectionElementArray & inEnumerationArray) const {
   inEnumerationArray.setCapacity (mCount) ;
   cSortedListNode * p = mFirst ;
-  while (p != NULL) {
+  while (p != nullptr) {
     capCollectionElement object ;
     object.setPointer (p->mProperties.ptr ()) ;
     inEnumerationArray.appendObject (object) ;
@@ -907,7 +887,7 @@ void cSharedSortedListRoot::populateEnumerationArray (capCollectionElementArray 
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_sortedlist::populateEnumerationArray (capCollectionElementArray & inEnumerationArray) const {
-  if (mSharedRoot != NULL) {
+  if (mSharedRoot != nullptr) {
     mSharedRoot->populateEnumerationArray (inEnumerationArray) ;
   }
 }

@@ -38,6 +38,7 @@ grammar goil_object_level_include "LL1" {
   unused <start>
   unused <object_definition_list>
   unused <include_cpu_level>
+  unused <file_without_include>
 }
 
 # vim:ft=ggs:ts=4:sw=4

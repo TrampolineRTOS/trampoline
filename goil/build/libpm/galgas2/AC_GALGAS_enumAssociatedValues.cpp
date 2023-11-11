@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  AC_GALGAS_enumAssociatedValues : class for enum associated values                            
+//  AC_GALGAS_enumAssociatedValues : class for enum associated values
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2014, ..., 2014 Pierre Molinaro.
 //
@@ -29,7 +29,7 @@ C_SharedObject (THERE) {
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_enumAssociatedValues::AC_GALGAS_enumAssociatedValues (void) :
-mSharedPtr (NULL) {
+mSharedPtr (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ void AC_GALGAS_enumAssociatedValues::setPointer (const cEnumAssociatedValues * i
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_enumAssociatedValues::AC_GALGAS_enumAssociatedValues (const AC_GALGAS_enumAssociatedValues & inSource) :
-mSharedPtr (NULL) {
+mSharedPtr (nullptr) {
   macroAssignSharedObject (mSharedPtr, inSource.mSharedPtr) ;
 }
 
@@ -64,7 +64,7 @@ AC_GALGAS_enumAssociatedValues::~ AC_GALGAS_enumAssociatedValues (void) {
 
 void AC_GALGAS_enumAssociatedValues::description (C_String & ioString,
                                                   const int32_t inIndentation) const {
-  if (NULL != mSharedPtr) {
+  if (nullptr != mSharedPtr) {
     macroValidSharedObject (mSharedPtr, cEnumAssociatedValues) ;
     mSharedPtr->description (ioString, inIndentation) ;
   }

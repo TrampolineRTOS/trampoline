@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2011, ..., 2011 Pierre Molinaro.
+//  Copyright (C) 2011, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -85,17 +85,6 @@ bool C_ColoredConsole::usesTextAttributes (void) {
 
 #if COMPILE_FOR_WINDOWS == 1
   void C_ColoredConsole::setForeColor (const consoleForeColorEnum /* inForeColor */) {
-    /* HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-      switch (inForeColor) {
-      case kBlackForeColor   : SetConsoleTextAttribute (hOut, 0) ; break ;
-      case kRedForeColor     : SetConsoleTextAttribute (hOut, FOREGROUND_RED) ; break ;
-      case kGreenForeColor   : SetConsoleTextAttribute (hOut, FOREGROUND_GREEN) ; break ;
-      case kYellowForeColor  : SetConsoleTextAttribute (hOut, FOREGROUND_GREEN | FOREGROUND_RED) ; break ;
-      case kBlueForeColor    : SetConsoleTextAttribute (hOut, FOREGROUND_BLUE) ; break ;
-      case kMagentaForeColor : SetConsoleTextAttribute (hOut, FOREGROUND_BLUE | FOREGROUND_RED) ; break ;
-      case kCyanForeColor    : SetConsoleTextAttribute (hOut, FOREGROUND_BLUE | FOREGROUND_GREEN) ; break ;
-      case kWhiteForeColor   : SetConsoleTextAttribute (hOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY) ; break ;
-      } */
   }
 #endif
 

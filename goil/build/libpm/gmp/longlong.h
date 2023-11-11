@@ -53,6 +53,9 @@ see https://www.gnu.org/licenses/.  */
    expected.
 */
 
+// pragma once added by PM (nov 7 2023)
+#pragma once
+
 #define __BITS4 (W_TYPE_SIZE / 4)
 #define __ll_B ((UWtype) 1 << (W_TYPE_SIZE / 2))
 #define __ll_lowpart(t) ((UWtype) (t) & (__ll_B - 1))
@@ -179,9 +182,6 @@ see https://www.gnu.org/licenses/.  */
   } while (0)
 #endif
 
-
-/* FIXME: The macros using external routines like __MPN(count_leading_zeros)
-   don't need to be under !NO_ASM */
 #if ! defined (NO_ASM)
 
 #if defined (__alpha) && W_TYPE_SIZE == 64
@@ -543,8 +543,6 @@ extern UWtype __MPN(udiv_qrnnd) (UWtype *, UWtype, UWtype, UWtype);
 #endif /* __arm__ */
 
 #if defined (__aarch64__) && W_TYPE_SIZE == 64
-/* FIXME: Extend the immediate range for the low word by using both
-   ADDS and SUBS, since they set carry in the same way.  */
 #define add_ssaaaa(sh, sl, ah, al, bh, bl) \
   __asm__ ("adds\t%1, %x4, %5\n\tadc\t%0, %x2, %x3"			\
 	   : "=r" (sh), "=&r" (sl)					\
@@ -733,8 +731,6 @@ extern UWtype __MPN(udiv_qrnnd) (UWtype *, UWtype, UWtype, UWtype);
   } while (0)
 #else
 #if 0
-/* FIXME: this fails if gcc knows about the 64-bit registers.  Use only
-   with a new enough processor pretending we have 32-bit registers.  */
 #define umul_ppmm(xh, xl, m0, m1)					\
   do {									\
     union {UDItype __ll;						\
@@ -762,8 +758,6 @@ extern UWtype __MPN(udiv_qrnnd) (UWtype *, UWtype, UWtype, UWtype);
 #endif /* if 0 */
 #endif
 #if 0
-/* FIXME: this fails if gcc knows about the 64-bit registers.  Use only
-   with a new enough processor pretending we have 32-bit registers.  */
 #define udiv_qrnnd(q, r, n1, n0, d)					\
   do {									\
     union {UDItype __ll;						\
@@ -787,7 +781,7 @@ extern UWtype __MPN(udiv_qrnnd) (UWtype *, UWtype, UWtype, UWtype);
   } while (0)
 #endif /* if 0 */
 #else /* if __zarch__ */
-/* FIXME: this fails if gcc knows about the 64-bit registers.  */
+
 #define smul_ppmm(xh, xl, m0, m1)					\
   do {									\
     union {DItype __ll;							\
@@ -798,7 +792,7 @@ extern UWtype __MPN(udiv_qrnnd) (UWtype *, UWtype, UWtype, UWtype);
 	     : "%0" (m0), "r" (m1));					\
     (xh) = __x.__i.__h; (xl) = __x.__i.__l;				\
   } while (0)
-/* FIXME: this fails if gcc knows about the 64-bit registers.  */
+
 #define sdiv_qrnnd(q, r, n1, n0, d)					\
   do {									\
     union {DItype __ll;							\
@@ -853,7 +847,7 @@ extern UWtype __MPN(udiv_qrnnd) (UWtype *, UWtype, UWtype, UWtype);
 	     : "0" (__x.__ll), "r" ((UDItype)(d)));			\
     (q) = __x.__i.__l; (r) = __x.__i.__h;				\
   } while (0)
-#if 0 /* FIXME: Enable for z10 (?) */
+#if 0
 #define count_leading_zeros(cnt, x)					\
   do {									\
     union {unsigned int __attribute__ ((mode(TI))) __ll;		\
@@ -1581,8 +1575,6 @@ extern UWtype __MPN(udiv_qrnnd) (UWtype *, UWtype, UWtype, UWtype);
 	   : "=r" (sh), "=&r" (sl)					\
 	   : "rJ" (ah), "rI" (bh), "rJ" (al), "rI" (bl)	\
 	   __CLOBBER_CC)
-/* FIXME: When gcc -mcpu=v9 is used on solaris, gcc/config/sol2-sld-64.h
-   doesn't define anything to indicate that to us, it only sets __sparcv8. */
 #if defined (__sparc_v9__) || defined (__sparcv9)
 /* Perhaps we should use floating-point operations here?  */
 #if 0
@@ -1824,8 +1816,6 @@ extern UWtype __MPN(udiv_qrnnd) (UWtype *, UWtype, UWtype, UWtype);
 	     : "=g" (q), "=g" (r) : "g" (__x.__ll), "g" (d));		\
   } while (0)
 #if 0
-/* FIXME: This instruction appears to be unimplemented on some systems (vax
-   8800 maybe). */
 #define count_trailing_zeros(count,x)					\
   do {									\
     __asm__ ("ffs 0, 31, %1, %0"					\
@@ -1865,8 +1855,6 @@ extern UWtype __MPN(udiv_qrnnd) (UWtype *, UWtype, UWtype, UWtype);
 
 #endif /* NO_ASM */
 
-
-/* FIXME: "sidi" here is highly doubtful, should sometimes be "diti".  */
 #if !defined (umul_ppmm) && defined (__umulsidi3)
 #define umul_ppmm(ph, pl, m0, m1) \
   {									\

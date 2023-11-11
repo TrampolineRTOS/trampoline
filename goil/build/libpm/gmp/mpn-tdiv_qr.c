@@ -268,7 +268,7 @@ mpn_tdiv_qr (mp_ptr qp, mp_ptr rp, mp_size_t qxn,
 		qp[0] = q0;
 	      }
 	    else if (qn == 2)
-	      mpn_divrem_2 (qp, 0L, n2p, 4L, d2p); /* FIXME: obsolete function */
+	      mpn_divrem_2 (qp, 0L, n2p, 4L, d2p); 
 	    else
 	      {
 		invert_pi1 (dinv, d2p[qn - 1], d2p[qn - 2]);

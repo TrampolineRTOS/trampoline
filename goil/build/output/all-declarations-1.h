@@ -10,90 +10,6 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-// Phase 1: @gtlInstructionListContextStack_2D_element struct
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_gtlInstructionListContextStack_2D_element : public AC_GALGAS_root {
-//--------------------------------- Properties
-  public: GALGAS_uint mProperty_nextInstructionIndex ;
-  public: inline GALGAS_uint readProperty_nextInstructionIndex (void) const {
-    return mProperty_nextInstructionIndex ;
-  }
-
-  public: GALGAS_gtlInstructionList mProperty_instructionList ;
-  public: inline GALGAS_gtlInstructionList readProperty_instructionList (void) const {
-    return mProperty_instructionList ;
-  }
-
-//--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
-  public: VIRTUAL_IN_DEBUG void drop (void) override ;
-
-//--------------------------------- Default GALGAS constructor
-  public: static GALGAS_gtlInstructionListContextStack_2D_element constructor_default (LOCATION_ARGS) ;
-
-//--------------------------------- Default constructor
-  public: GALGAS_gtlInstructionListContextStack_2D_element (void) ;
-
-//--------------------------------- Property setters
-  public: inline void setter_setNextInstructionIndex (const GALGAS_uint & inValue COMMA_UNUSED_LOCATION_ARGS) {
-    mProperty_nextInstructionIndex = inValue ;
-  }
-
-  public: inline void setter_setInstructionList (const GALGAS_gtlInstructionList & inValue COMMA_UNUSED_LOCATION_ARGS) {
-    mProperty_instructionList = inValue ;
-  }
-
-//--------------------------------- Virtual destructor (in debug mode)
-  public: virtual ~ GALGAS_gtlInstructionListContextStack_2D_element (void) ;
-
-//--------------------------------- Native constructor
-  public: GALGAS_gtlInstructionListContextStack_2D_element (const GALGAS_uint & in_nextInstructionIndex,
-                                                            const GALGAS_gtlInstructionList & in_instructionList) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
-
-//--------------------------------- Object extraction
-  public: static GALGAS_gtlInstructionListContextStack_2D_element extractObject (const GALGAS_object & inObject,
-                                                                                 C_Compiler * inCompiler
-                                                                                 COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public: static class GALGAS_gtlInstructionListContextStack_2D_element constructor_new (const class GALGAS_uint & inOperand0,
-                                                                                         const class GALGAS_gtlInstructionList & inOperand1
-                                                                                         COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Implementation of getter 'description'
-  public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const override ;
-//--------------------------------- Comparison
-  public: typeComparisonResult objectCompare (const GALGAS_gtlInstructionListContextStack_2D_element & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Optional Methods
-
-//--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
- 
-} ; // End of GALGAS_gtlInstructionListContextStack_2D_element class
-
-
-//----------------------------------------------------------------------------------------------------------------------
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlInstructionListContextStack_2D_element ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
 //Extension getter '@gtlVarPath stringRepresentation' (as function)
 //
 //----------------------------------------------------------------------------------------------------------------------
@@ -3429,25 +3345,25 @@ class C_Lexique_goil_5F_lexique : public C_Lexique {
    kToken_includeifexists} ;
 
 //--- Key words table 'oilVersion'
-  public: static int16_t search_into_oilVersion (const C_String & inSearchedString) ;
+  public: static int32_t search_into_oilVersion (const C_String & inSearchedString) ;
 
 //--- Key words table 'oilDefinitions'
-  public: static int16_t search_into_oilDefinitions (const C_String & inSearchedString) ;
+  public: static int32_t search_into_oilDefinitions (const C_String & inSearchedString) ;
 
 //--- Key words table 'dataTypes'
-  public: static int16_t search_into_dataTypes (const C_String & inSearchedString) ;
+  public: static int32_t search_into_dataTypes (const C_String & inSearchedString) ;
 
 //--- Key words table 'miscSpecifiers'
-  public: static int16_t search_into_miscSpecifiers (const C_String & inSearchedString) ;
+  public: static int32_t search_into_miscSpecifiers (const C_String & inSearchedString) ;
 
 //--- Key words table 'boolean'
-  public: static int16_t search_into_boolean (const C_String & inSearchedString) ;
+  public: static int32_t search_into_boolean (const C_String & inSearchedString) ;
 
 //--- Key words table 'OILDelimiters'
-  public: static int16_t search_into_OILDelimiters (const C_String & inSearchedString) ;
+  public: static int32_t search_into_OILDelimiters (const C_String & inSearchedString) ;
 
 //--- Key words table 'commands'
-  public: static int16_t search_into_commands (const C_String & inSearchedString) ;
+  public: static int32_t search_into_commands (const C_String & inSearchedString) ;
   
 
 //--- Assign from attribute
@@ -3473,10 +3389,10 @@ class C_Lexique_goil_5F_lexique : public C_Lexique {
   protected: virtual bool parseLexicalToken (void) override ;
 
 //--- Get terminal message
-  protected: virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const override ;
+  protected: virtual C_String getMessageForTerminal (const int32_t inTerminalSymbol) const override ;
 
 //--- Get terminal count
-  public: virtual int16_t terminalVocabularyCount (void) const override { return 40 ; }
+  public: virtual int32_t terminalVocabularyCount (void) const override { return 40 ; }
 
 //--- Get Token String
   public: virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const override ;
@@ -5269,6 +5185,662 @@ class cPtr_attributeRange : public acPtr_class {
   public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override = 0 ;
 
   public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override = 0 ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Abstract extension method '@attributeRange enclose'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionMethod_enclose (class cPtr_attributeRange * inObject,
+                                  class GALGAS_bool & out_isWithin,
+                                  const class GALGAS_attributeRange constin_value,
+                                  class C_Compiler * inCompiler
+                                  COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @noRange  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_noRange : public GALGAS_attributeRange {
+//--------------------------------- Default constructor
+  public: GALGAS_noRange (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_noRange constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_noRange * ptr (void) const {
+    return (const cPtr_noRange *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_noRange (const cPtr_noRange * inSourcePtr) ;
+
+//--------------------------------- Property read access
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_noRange extractObject (const GALGAS_object & inObject,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_noRange constructor_new (const class GALGAS_location & inOperand0
+                                                       COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_noRange & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_noRange class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_noRange ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @noRange class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_noRange : public cPtr_attributeRange {
+
+//--- Extension getter contains
+  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension getter string
+  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method enclose
+  public: virtual void method_enclose (class GALGAS_bool & isWithin,
+           const class GALGAS_attributeRange value,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+
+//--- Constructor
+  public: cPtr_noRange (const GALGAS_location & in_location
+                        COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @uint_33__32_AttributeSet  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_uint_33__32_AttributeSet : public GALGAS_attributeRange {
+//--------------------------------- Default constructor
+  public: GALGAS_uint_33__32_AttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_uint_33__32_AttributeSet constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_uint_33__32_AttributeSet * ptr (void) const {
+    return (const cPtr_uint_33__32_AttributeSet *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_uint_33__32_AttributeSet (const cPtr_uint_33__32_AttributeSet * inSourcePtr) ;
+
+//--------------------------------- Property read access
+  public: class GALGAS_uint_33__32_List readProperty_valueList (void) const ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_uint_33__32_AttributeSet extractObject (const GALGAS_object & inObject,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_uint_33__32_AttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                        const class GALGAS_uint_33__32_List & inOperand1
+                                                                        COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_uint_33__32_AttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (class GALGAS_uint_33__32_List inArgument0
+                                                     COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_uint_33__32_AttributeSet class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_33__32_AttributeSet ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @uint32AttributeSet class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_uint_33__32_AttributeSet : public cPtr_attributeRange {
+
+//--- Extension getter contains
+  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension getter string
+  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method enclose
+  public: virtual void method_enclose (class GALGAS_bool & isWithin,
+           const class GALGAS_attributeRange value,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+  public: GALGAS_uint_33__32_List mProperty_valueList ;
+
+//--- Constructor
+  public: cPtr_uint_33__32_AttributeSet (const GALGAS_location & in_location,
+                                         const GALGAS_uint_33__32_List & in_valueList
+                                         COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+  public: VIRTUAL_IN_DEBUG GALGAS_uint_33__32_List getter_valueList (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (GALGAS_uint_33__32_List inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @uint_36__34_AttributeSet  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_uint_36__34_AttributeSet : public GALGAS_attributeRange {
+//--------------------------------- Default constructor
+  public: GALGAS_uint_36__34_AttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_uint_36__34_AttributeSet constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_uint_36__34_AttributeSet * ptr (void) const {
+    return (const cPtr_uint_36__34_AttributeSet *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_uint_36__34_AttributeSet (const cPtr_uint_36__34_AttributeSet * inSourcePtr) ;
+
+//--------------------------------- Property read access
+  public: class GALGAS_uint_36__34_List readProperty_valueList (void) const ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_uint_36__34_AttributeSet extractObject (const GALGAS_object & inObject,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_uint_36__34_AttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                        const class GALGAS_uint_36__34_List & inOperand1
+                                                                        COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_uint_36__34_AttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (class GALGAS_uint_36__34_List inArgument0
+                                                     COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_uint_36__34_AttributeSet class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_36__34_AttributeSet ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @uint64AttributeSet class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_uint_36__34_AttributeSet : public cPtr_attributeRange {
+
+//--- Extension getter contains
+  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension getter string
+  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method enclose
+  public: virtual void method_enclose (class GALGAS_bool & isWithin,
+           const class GALGAS_attributeRange value,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+  public: GALGAS_uint_36__34_List mProperty_valueList ;
+
+//--- Constructor
+  public: cPtr_uint_36__34_AttributeSet (const GALGAS_location & in_location,
+                                         const GALGAS_uint_36__34_List & in_valueList
+                                         COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+  public: VIRTUAL_IN_DEBUG GALGAS_uint_36__34_List getter_valueList (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (GALGAS_uint_36__34_List inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @sint_33__32_AttributeSet  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_sint_33__32_AttributeSet : public GALGAS_attributeRange {
+//--------------------------------- Default constructor
+  public: GALGAS_sint_33__32_AttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_sint_33__32_AttributeSet constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_sint_33__32_AttributeSet * ptr (void) const {
+    return (const cPtr_sint_33__32_AttributeSet *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_sint_33__32_AttributeSet (const cPtr_sint_33__32_AttributeSet * inSourcePtr) ;
+
+//--------------------------------- Property read access
+  public: class GALGAS_sint_33__32_List readProperty_valueList (void) const ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_sint_33__32_AttributeSet extractObject (const GALGAS_object & inObject,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_sint_33__32_AttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                        const class GALGAS_sint_33__32_List & inOperand1
+                                                                        COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_sint_33__32_AttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (class GALGAS_sint_33__32_List inArgument0
+                                                     COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_sint_33__32_AttributeSet class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_33__32_AttributeSet ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @sint32AttributeSet class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_sint_33__32_AttributeSet : public cPtr_attributeRange {
+
+//--- Extension getter contains
+  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension getter string
+  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method enclose
+  public: virtual void method_enclose (class GALGAS_bool & isWithin,
+           const class GALGAS_attributeRange value,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+  public: GALGAS_sint_33__32_List mProperty_valueList ;
+
+//--- Constructor
+  public: cPtr_sint_33__32_AttributeSet (const GALGAS_location & in_location,
+                                         const GALGAS_sint_33__32_List & in_valueList
+                                         COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+  public: VIRTUAL_IN_DEBUG GALGAS_sint_33__32_List getter_valueList (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (GALGAS_sint_33__32_List inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @sint_36__34_AttributeSet  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_sint_36__34_AttributeSet : public GALGAS_attributeRange {
+//--------------------------------- Default constructor
+  public: GALGAS_sint_36__34_AttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_sint_36__34_AttributeSet constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_sint_36__34_AttributeSet * ptr (void) const {
+    return (const cPtr_sint_36__34_AttributeSet *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_sint_36__34_AttributeSet (const cPtr_sint_36__34_AttributeSet * inSourcePtr) ;
+
+//--------------------------------- Property read access
+  public: class GALGAS_sint_36__34_List readProperty_valueList (void) const ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_sint_36__34_AttributeSet extractObject (const GALGAS_object & inObject,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_sint_36__34_AttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                        const class GALGAS_sint_36__34_List & inOperand1
+                                                                        COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_sint_36__34_AttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (class GALGAS_sint_36__34_List inArgument0
+                                                     COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_sint_36__34_AttributeSet class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_36__34_AttributeSet ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @sint64AttributeSet class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_sint_36__34_AttributeSet : public cPtr_attributeRange {
+
+//--- Extension getter contains
+  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension getter string
+  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method enclose
+  public: virtual void method_enclose (class GALGAS_bool & isWithin,
+           const class GALGAS_attributeRange value,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+  public: GALGAS_sint_36__34_List mProperty_valueList ;
+
+//--- Constructor
+  public: cPtr_sint_36__34_AttributeSet (const GALGAS_location & in_location,
+                                         const GALGAS_sint_36__34_List & in_valueList
+                                         COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+  public: VIRTUAL_IN_DEBUG GALGAS_sint_36__34_List getter_valueList (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (GALGAS_sint_36__34_List inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @floatAttributeSet  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_floatAttributeSet : public GALGAS_attributeRange {
+//--------------------------------- Default constructor
+  public: GALGAS_floatAttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_floatAttributeSet constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_floatAttributeSet * ptr (void) const {
+    return (const cPtr_floatAttributeSet *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_floatAttributeSet (const cPtr_floatAttributeSet * inSourcePtr) ;
+
+//--------------------------------- Property read access
+  public: class GALGAS_floatList readProperty_valueList (void) const ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_floatAttributeSet extractObject (const GALGAS_object & inObject,
+                                                         C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_floatAttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                 const class GALGAS_floatList & inOperand1
+                                                                 COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_floatAttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (class GALGAS_floatList inArgument0
+                                                     COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_floatAttributeSet class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_floatAttributeSet ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @floatAttributeSet class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_floatAttributeSet : public cPtr_attributeRange {
+
+//--- Extension getter contains
+  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension getter string
+  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method enclose
+  public: virtual void method_enclose (class GALGAS_bool & isWithin,
+           const class GALGAS_attributeRange value,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+  public: GALGAS_floatList mProperty_valueList ;
+
+//--- Constructor
+  public: cPtr_floatAttributeSet (const GALGAS_location & in_location,
+                                  const GALGAS_floatList & in_valueList
+                                  COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+  public: VIRTUAL_IN_DEBUG GALGAS_floatList getter_valueList (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (GALGAS_floatList inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
 
 } ;
 

@@ -32,7 +32,7 @@ void cPtr_gtlIfStatementInstruction::method_execute (GALGAS_gtlContext & ioArgum
         if (kBoolTrue == test_1) {
           GALGAS_gtlBool temp_2 ;
           if (var_dataCondition_16861.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlBool *> (var_dataCondition_16861.ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlBool *> (var_dataCondition_16861.ptr ())) {
               temp_2 = (cPtr_gtlBool *) var_dataCondition_16861.ptr () ;
             }else{
               inCompiler->castError ("gtlBool", var_dataCondition_16861.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_instructions.galgas", 582)) ;
@@ -164,7 +164,7 @@ void cPtr_gtlLoopStatementInstruction::method_execute (GALGAS_gtlContext & ioArg
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (var_startData_22936.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (var_startData_22936.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (var_startData_22936.ptr ())) {
           temp_1 = (cPtr_gtlInt *) var_startData_22936.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", var_startData_22936.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_instructions.galgas", 783)) ;
@@ -184,7 +184,7 @@ void cPtr_gtlLoopStatementInstruction::method_execute (GALGAS_gtlContext & ioArg
     if (kBoolTrue == test_3) {
       GALGAS_gtlInt temp_4 ;
       if (var_stopData_23000.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (var_stopData_23000.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (var_stopData_23000.ptr ())) {
           temp_4 = (cPtr_gtlInt *) var_stopData_23000.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", var_stopData_23000.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_instructions.galgas", 788)) ;
@@ -204,7 +204,7 @@ void cPtr_gtlLoopStatementInstruction::method_execute (GALGAS_gtlContext & ioArg
     if (kBoolTrue == test_6) {
       GALGAS_gtlInt temp_7 ;
       if (var_stepData_23064.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (var_stepData_23064.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (var_stepData_23064.ptr ())) {
           temp_7 = (cPtr_gtlInt *) var_stepData_23064.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", var_stepData_23064.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_instructions.galgas", 793)) ;
@@ -284,7 +284,7 @@ void cPtr_gtlRepeatStatementInstruction::method_execute (GALGAS_gtlContext & ioA
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (var_limitData_24976.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (var_limitData_24976.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (var_limitData_24976.ptr ())) {
           temp_1 = (cPtr_gtlInt *) var_limitData_24976.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", var_limitData_24976.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_instructions.galgas", 839)) ;
@@ -310,7 +310,7 @@ void cPtr_gtlRepeatStatementInstruction::method_execute (GALGAS_gtlContext & ioA
           if (kBoolTrue == test_3) {
             GALGAS_gtlBool temp_4 ;
             if (var_conditionData_25295.isValid ()) {
-              if (NULL != dynamic_cast <const cPtr_gtlBool *> (var_conditionData_25295.ptr ())) {
+              if (nullptr != dynamic_cast <const cPtr_gtlBool *> (var_conditionData_25295.ptr ())) {
                 temp_4 = (cPtr_gtlBool *) var_conditionData_25295.ptr () ;
               }else{
                 inCompiler->castError ("gtlBool", var_conditionData_25295.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_instructions.galgas", 848)) ;
@@ -369,7 +369,7 @@ void cPtr_gtlErrorStatementInstruction::method_execute (GALGAS_gtlContext & ioAr
     if (kBoolTrue == test_1) {
       GALGAS_gtlString temp_2 ;
       if (var_errorMessageData_26336.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (var_errorMessageData_26336.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (var_errorMessageData_26336.ptr ())) {
           temp_2 = (cPtr_gtlString *) var_errorMessageData_26336.ptr () ;
         }else{
           inCompiler->castError ("gtlString", var_errorMessageData_26336.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_instructions.galgas", 881)) ;
@@ -417,7 +417,7 @@ void cPtr_gtlWarningStatementInstruction::method_execute (GALGAS_gtlContext & io
     if (kBoolTrue == test_1) {
       GALGAS_gtlString temp_2 ;
       if (var_warningMessageData_27324.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (var_warningMessageData_27324.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (var_warningMessageData_27324.ptr ())) {
           temp_2 = (cPtr_gtlString *) var_warningMessageData_27324.ptr () ;
         }else{
           inCompiler->castError ("gtlString", var_warningMessageData_27324.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_instructions.galgas", 911)) ;
@@ -576,7 +576,7 @@ void cPtr_gtlTabStatementInstruction::method_execute (GALGAS_gtlContext & ioArgu
     if (kBoolTrue == test_0) {
       GALGAS_gtlInt temp_1 ;
       if (var_tabValueData_33422.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlInt *> (var_tabValueData_33422.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlInt *> (var_tabValueData_33422.ptr ())) {
           temp_1 = (cPtr_gtlInt *) var_tabValueData_33422.ptr () ;
         }else{
           inCompiler->castError ("gtlInt", var_tabValueData_33422.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1127)) ;
@@ -854,7 +854,7 @@ GALGAS_string function_trueFalse (const GALGAS_bool & constinArgument_inBool,
 
 static const C_galgas_type_descriptor * functionArgs_trueFalse [2] = {
   & kTypeDescriptor_GALGAS_bool,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -910,7 +910,7 @@ GALGAS_string function_TrueFalse (const GALGAS_bool & constinArgument_inBool,
 
 static const C_galgas_type_descriptor * functionArgs_TrueFalse [2] = {
   & kTypeDescriptor_GALGAS_bool,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -966,7 +966,7 @@ GALGAS_string function_yesNo (const GALGAS_bool & constinArgument_inBool,
 
 static const C_galgas_type_descriptor * functionArgs_yesNo [2] = {
   & kTypeDescriptor_GALGAS_bool,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1022,7 +1022,7 @@ GALGAS_string function_TRUEFALSE (const GALGAS_bool & constinArgument_inBool,
 
 static const C_galgas_type_descriptor * functionArgs_TRUEFALSE [2] = {
   & kTypeDescriptor_GALGAS_bool,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1088,7 +1088,7 @@ GALGAS_list function_listOfSize (GALGAS_bigint inArgument_inSize,
 
 static const C_galgas_type_descriptor * functionArgs_listOfSize [2] = {
   & kTypeDescriptor_GALGAS_bigint,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1133,7 +1133,7 @@ GALGAS_string function_version (C_Compiler *
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_version [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1184,7 +1184,7 @@ GALGAS_bigint function_majorVersion (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_majorVersion [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1235,7 +1235,7 @@ GALGAS_bigint function_minorVersion (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_minorVersion [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1286,7 +1286,7 @@ GALGAS_bigint function_revision (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_revision [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1326,7 +1326,7 @@ GALGAS_string function_currentDir (C_Compiler *
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_currentDir [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1366,7 +1366,7 @@ GALGAS_string function_homeDir (C_Compiler *
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_homeDir [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1406,7 +1406,7 @@ GALGAS_string function_currentDateTime (C_Compiler *
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_currentDateTime [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1446,7 +1446,7 @@ GALGAS_bigint function_max_38_bitsUnsignedInt (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_max_38_bitsUnsignedInt [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1486,7 +1486,7 @@ GALGAS_bigint function_max_38_bitsSignedInt (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_max_38_bitsSignedInt [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1526,7 +1526,7 @@ GALGAS_bigint function_min_38_bitsSignedInt (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_min_38_bitsSignedInt [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1566,7 +1566,7 @@ GALGAS_bigint function_max_31__36_bitsUnsignedInt (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_max_31__36_bitsUnsignedInt [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1606,7 +1606,7 @@ GALGAS_bigint function_max_31__36_bitsSignedInt (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_max_31__36_bitsSignedInt [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1646,7 +1646,7 @@ GALGAS_bigint function_min_31__36_bitsSignedInt (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_min_31__36_bitsSignedInt [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1686,7 +1686,7 @@ GALGAS_bigint function_max_33__32_bitsUnsignedInt (C_Compiler *
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_max_33__32_bitsUnsignedInt [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1726,7 +1726,7 @@ GALGAS_bigint function_max_33__32_bitsSignedInt (C_Compiler *
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_max_33__32_bitsSignedInt [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1766,7 +1766,7 @@ GALGAS_bigint function_min_33__32_bitsSignedInt (C_Compiler *
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_min_33__32_bitsSignedInt [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1806,7 +1806,7 @@ GALGAS_bigint function_max_36__34_bitsUnsignedInt (C_Compiler *
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_max_36__34_bitsUnsignedInt [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1846,7 +1846,7 @@ GALGAS_bigint function_max_36__34_bitsSignedInt (C_Compiler *
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_max_36__34_bitsSignedInt [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1886,7 +1886,7 @@ GALGAS_bigint function_min_36__34_bitsSignedInt (C_Compiler *
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_min_36__34_bitsSignedInt [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1926,7 +1926,7 @@ GALGAS_double function_pi (C_Compiler *
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_pi [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2017,7 +2017,7 @@ GALGAS_string function_signature (GALGAS_location inArgument_loc,
 
 static const C_galgas_type_descriptor * functionArgs_signature [2] = {
   & kTypeDescriptor_GALGAS_location,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2084,7 +2084,7 @@ static void releaseOnceFunctionResult_bold (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_bold (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_bold (nullptr,
                                                   releaseOnceFunctionResult_bold) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2092,7 +2092,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_bold (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_bold [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2154,7 +2154,7 @@ static void releaseOnceFunctionResult_underline (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_underline (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_underline (nullptr,
                                                        releaseOnceFunctionResult_underline) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2162,7 +2162,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_underline (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_underline [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2224,7 +2224,7 @@ static void releaseOnceFunctionResult_blink (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_blink (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_blink (nullptr,
                                                    releaseOnceFunctionResult_blink) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2232,7 +2232,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_blink (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_blink [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2294,7 +2294,7 @@ static void releaseOnceFunctionResult_black (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_black (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_black (nullptr,
                                                    releaseOnceFunctionResult_black) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2302,7 +2302,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_black (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_black [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2364,7 +2364,7 @@ static void releaseOnceFunctionResult_red (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_red (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_red (nullptr,
                                                  releaseOnceFunctionResult_red) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2372,7 +2372,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_red (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_red [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2434,7 +2434,7 @@ static void releaseOnceFunctionResult_green (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_green (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_green (nullptr,
                                                    releaseOnceFunctionResult_green) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2442,7 +2442,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_green (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_green [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2504,7 +2504,7 @@ static void releaseOnceFunctionResult_yellow (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_yellow (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_yellow (nullptr,
                                                     releaseOnceFunctionResult_yellow) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2512,7 +2512,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_yellow (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_yellow [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2574,7 +2574,7 @@ static void releaseOnceFunctionResult_blue (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_blue (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_blue (nullptr,
                                                   releaseOnceFunctionResult_blue) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2582,7 +2582,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_blue (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_blue [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2644,7 +2644,7 @@ static void releaseOnceFunctionResult_magenta (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_magenta (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_magenta (nullptr,
                                                      releaseOnceFunctionResult_magenta) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2652,7 +2652,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_magenta (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_magenta [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2714,7 +2714,7 @@ static void releaseOnceFunctionResult_cyan (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_cyan (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_cyan (nullptr,
                                                   releaseOnceFunctionResult_cyan) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2722,7 +2722,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_cyan (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_cyan [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2784,7 +2784,7 @@ static void releaseOnceFunctionResult_darkred (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_darkred (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_darkred (nullptr,
                                                      releaseOnceFunctionResult_darkred) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2792,7 +2792,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_darkred (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_darkred [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2854,7 +2854,7 @@ static void releaseOnceFunctionResult_darkgreen (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_darkgreen (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_darkgreen (nullptr,
                                                        releaseOnceFunctionResult_darkgreen) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2862,7 +2862,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_darkgreen (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_darkgreen [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2924,7 +2924,7 @@ static void releaseOnceFunctionResult_darkyellow (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_darkyellow (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_darkyellow (nullptr,
                                                         releaseOnceFunctionResult_darkyellow) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2932,7 +2932,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_darkyellow (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_darkyellow [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2994,7 +2994,7 @@ static void releaseOnceFunctionResult_darkblue (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_darkblue (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_darkblue (nullptr,
                                                       releaseOnceFunctionResult_darkblue) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3002,7 +3002,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_darkblue (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_darkblue [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3064,7 +3064,7 @@ static void releaseOnceFunctionResult_darkmagenta (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_darkmagenta (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_darkmagenta (nullptr,
                                                          releaseOnceFunctionResult_darkmagenta) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3072,7 +3072,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_darkmagenta (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_darkmagenta [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3134,7 +3134,7 @@ static void releaseOnceFunctionResult_darkcyan (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_darkcyan (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_darkcyan (nullptr,
                                                       releaseOnceFunctionResult_darkcyan) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3142,7 +3142,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_darkcyan (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_darkcyan [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3204,7 +3204,7 @@ static void releaseOnceFunctionResult_white (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_white (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_white (nullptr,
                                                    releaseOnceFunctionResult_white) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3212,7 +3212,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_white (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_white [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3274,7 +3274,7 @@ static void releaseOnceFunctionResult_endc (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_endc (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_endc (nullptr,
                                                   releaseOnceFunctionResult_endc) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3282,7 +3282,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_endc (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_endc [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3322,7 +3322,7 @@ GALGAS_debuggerContext function_defaultDebugSettings (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_defaultDebugSettings [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5270,7 +5270,7 @@ GALGAS_bool function_checkEnums (const GALGAS_impEnumType & constinArgument_prev
 static const C_galgas_type_descriptor * functionArgs_checkEnums [3] = {
   & kTypeDescriptor_GALGAS_impEnumType,
   & kTypeDescriptor_GALGAS_impEnumType,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5341,7 +5341,7 @@ GALGAS_bool function_checkRanged (const GALGAS_impRangedType & constinArgument_p
 static const C_galgas_type_descriptor * functionArgs_checkRanged [3] = {
   & kTypeDescriptor_GALGAS_impRangedType,
   & kTypeDescriptor_GALGAS_impRangedType,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5438,7 +5438,7 @@ static const C_galgas_type_descriptor * functionArgs_checkNewTypeWithinPreviousT
   & kTypeDescriptor_GALGAS_lstring,
   & kTypeDescriptor_GALGAS_impType,
   & kTypeDescriptor_GALGAS_impType,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5544,7 +5544,7 @@ static const C_galgas_type_descriptor * functionArgs_buildRange [4] = {
   & kTypeDescriptor_GALGAS_dataType,
   & kTypeDescriptor_GALGAS_object_5F_t,
   & kTypeDescriptor_GALGAS_object_5F_t,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5607,7 +5607,7 @@ GALGAS_string function_stringWithUInt_33__32_List (const GALGAS_uint_33__32_List
 
 static const C_galgas_type_descriptor * functionArgs_stringWithUInt_33__32_List [2] = {
   & kTypeDescriptor_GALGAS_uint_33__32_List,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5662,7 +5662,7 @@ GALGAS_string function_stringWithUInt_36__34_List (const GALGAS_uint_36__34_List
 
 static const C_galgas_type_descriptor * functionArgs_stringWithUInt_36__34_List [2] = {
   & kTypeDescriptor_GALGAS_uint_36__34_List,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5717,7 +5717,7 @@ GALGAS_string function_stringWithSInt_33__32_List (const GALGAS_sint_33__32_List
 
 static const C_galgas_type_descriptor * functionArgs_stringWithSInt_33__32_List [2] = {
   & kTypeDescriptor_GALGAS_sint_33__32_List,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5772,7 +5772,7 @@ GALGAS_string function_stringWithSInt_36__34_List (const GALGAS_sint_36__34_List
 
 static const C_galgas_type_descriptor * functionArgs_stringWithSInt_36__34_List [2] = {
   & kTypeDescriptor_GALGAS_sint_36__34_List,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5827,7 +5827,7 @@ GALGAS_string function_stringWithFloatList (const GALGAS_floatList & constinArgu
 
 static const C_galgas_type_descriptor * functionArgs_stringWithFloatList [2] = {
   & kTypeDescriptor_GALGAS_floatList,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5879,7 +5879,7 @@ GALGAS_uint_33__32_List function_uint_33__32_ListWithNumberList (const GALGAS_nu
 
 static const C_galgas_type_descriptor * functionArgs_uint_33__32_ListWithNumberList [2] = {
   & kTypeDescriptor_GALGAS_numberList,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5931,7 +5931,7 @@ GALGAS_sint_33__32_List function_sint_33__32_ListWithNumberList (const GALGAS_nu
 
 static const C_galgas_type_descriptor * functionArgs_sint_33__32_ListWithNumberList [2] = {
   & kTypeDescriptor_GALGAS_numberList,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5983,7 +5983,7 @@ GALGAS_uint_36__34_List function_uint_36__34_ListWithNumberList (const GALGAS_nu
 
 static const C_galgas_type_descriptor * functionArgs_uint_36__34_ListWithNumberList [2] = {
   & kTypeDescriptor_GALGAS_numberList,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6035,7 +6035,7 @@ GALGAS_sint_36__34_List function_sint_36__34_ListWithNumberList (const GALGAS_nu
 
 static const C_galgas_type_descriptor * functionArgs_sint_36__34_ListWithNumberList [2] = {
   & kTypeDescriptor_GALGAS_numberList,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6087,7 +6087,7 @@ GALGAS_floatList function_floatListWithNumberList (const GALGAS_numberList & con
 
 static const C_galgas_type_descriptor * functionArgs_floatListWithNumberList [2] = {
   & kTypeDescriptor_GALGAS_numberList,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6610,7 +6610,7 @@ GALGAS_attributeRange function_attributeRangeWithNumberList (const GALGAS_number
 static const C_galgas_type_descriptor * functionArgs_attributeRangeWithNumberList [3] = {
   & kTypeDescriptor_GALGAS_numberList,
   & kTypeDescriptor_GALGAS_dataType,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6651,7 +6651,7 @@ GALGAS_impType cPtr_impStructType::getter_mergeWithType (GALGAS_impType inArgume
   GALGAS_impType result_mergedType ; // Returned variable
   GALGAS_impStructType temp_0 ;
   if (inArgument_typeToMerge.isValid ()) {
-    if (NULL != dynamic_cast <const cPtr_impStructType *> (inArgument_typeToMerge.ptr ())) {
+    if (nullptr != dynamic_cast <const cPtr_impStructType *> (inArgument_typeToMerge.ptr ())) {
       temp_0 = (cPtr_impStructType *) inArgument_typeToMerge.ptr () ;
     }else{
       inCompiler->castError ("impStructType", inArgument_typeToMerge.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("implementation_types.galgas", 467)) ;
@@ -6736,7 +6736,7 @@ static void defineExtensionSetter_impAutoDefaultType_setDefValue (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_impAutoDefaultType_setDefValue (defineExtensionSetter_impAutoDefaultType_setDefValue, NULL) ;
+C_PrologueEpilogue gSetter_impAutoDefaultType_setDefValue (defineExtensionSetter_impAutoDefaultType_setDefValue, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -6800,7 +6800,7 @@ GALGAS_impType cPtr_refType::getter_mergeWithType (GALGAS_impType inArgument_typ
   GALGAS_impType result_mergedType ; // Returned variable
   GALGAS_refType temp_0 ;
   if (inArgument_typeToMerge.isValid ()) {
-    if (NULL != dynamic_cast <const cPtr_refType *> (inArgument_typeToMerge.ptr ())) {
+    if (nullptr != dynamic_cast <const cPtr_refType *> (inArgument_typeToMerge.ptr ())) {
       temp_0 = (cPtr_refType *) inArgument_typeToMerge.ptr () ;
     }else{
       inCompiler->castError ("refType", inArgument_typeToMerge.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("implementation_types.galgas", 558)) ;
@@ -6858,7 +6858,7 @@ GALGAS_string function_valueList (const GALGAS_enumValues & constinArgument_valu
 
 static const C_galgas_type_descriptor * functionArgs_valueList [2] = {
   & kTypeDescriptor_GALGAS_enumValues,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6895,7 +6895,7 @@ GALGAS_impType cPtr_impRangedType::getter_mergeWithType (GALGAS_impType inArgume
   GALGAS_impType result_mergedType ; // Returned variable
   GALGAS_impRangedType temp_0 ;
   if (inArgument_typeToMerge.isValid ()) {
-    if (NULL != dynamic_cast <const cPtr_impRangedType *> (inArgument_typeToMerge.ptr ())) {
+    if (nullptr != dynamic_cast <const cPtr_impRangedType *> (inArgument_typeToMerge.ptr ())) {
       temp_0 = (cPtr_impRangedType *) inArgument_typeToMerge.ptr () ;
     }else{
       inCompiler->castError ("impRangedType", inArgument_typeToMerge.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("implementation_types.galgas", 614)) ;
@@ -6931,7 +6931,7 @@ GALGAS_impType cPtr_impBoolType::getter_mergeWithType (GALGAS_impType inArgument
   GALGAS_impType result_mergedType ; // Returned variable
   GALGAS_impBoolType temp_0 ;
   if (inArgument_typeToMerge.isValid ()) {
-    if (NULL != dynamic_cast <const cPtr_impBoolType *> (inArgument_typeToMerge.ptr ())) {
+    if (nullptr != dynamic_cast <const cPtr_impBoolType *> (inArgument_typeToMerge.ptr ())) {
       temp_0 = (cPtr_impBoolType *) inArgument_typeToMerge.ptr () ;
     }else{
       inCompiler->castError ("impBoolType", inArgument_typeToMerge.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("implementation_types.galgas", 631)) ;
@@ -7099,7 +7099,7 @@ GALGAS_impType cPtr_impEnumType::getter_mergeWithType (GALGAS_impType inArgument
   GALGAS_impType result_mergedType ; // Returned variable
   GALGAS_impEnumType temp_0 ;
   if (inArgument_typeToMerge.isValid ()) {
-    if (NULL != dynamic_cast <const cPtr_impEnumType *> (inArgument_typeToMerge.ptr ())) {
+    if (nullptr != dynamic_cast <const cPtr_impEnumType *> (inArgument_typeToMerge.ptr ())) {
       temp_0 = (cPtr_impEnumType *) inArgument_typeToMerge.ptr () ;
     }else{
       inCompiler->castError ("impEnumType", inArgument_typeToMerge.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("implementation_types.galgas", 754)) ;
@@ -7244,7 +7244,7 @@ static const C_galgas_type_descriptor * functionArgs_checkAndGetIntegerNumber [5
   & kTypeDescriptor_GALGAS_dataType,
   & kTypeDescriptor_GALGAS_luint_36__34_,
   & kTypeDescriptor_GALGAS_bool,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7340,7 +7340,7 @@ static const C_galgas_type_descriptor * functionArgs_checkAndGetFloatNumber [5] 
   & kTypeDescriptor_GALGAS_dataType,
   & kTypeDescriptor_GALGAS_ldouble,
   & kTypeDescriptor_GALGAS_bool,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7462,7 +7462,7 @@ static const C_galgas_type_descriptor * functionArgs_boolSubAttributes [4] = {
   & kTypeDescriptor_GALGAS_implementationObject,
   & kTypeDescriptor_GALGAS_string,
   & kTypeDescriptor_GALGAS_bool,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7541,7 +7541,7 @@ static const C_galgas_type_descriptor * functionArgs_enumSubAttributes [4] = {
   & kTypeDescriptor_GALGAS_implementationObject,
   & kTypeDescriptor_GALGAS_string,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7695,7 +7695,7 @@ void routine_setDefaultsForType (const GALGAS_implementationObjectMap constinArg
   cEnumerator_implementationObjectMap enumerator_29147 (constinArgument_impObject, kENUMERATION_UP) ;
   while (enumerator_29147.hasCurrentObject ()) {
     if (enumerator_29147.current_type (HERE).isValid ()) {
-      if (NULL != dynamic_cast <const cPtr_impAutoDefaultType *> (enumerator_29147.current_type (HERE).ptr ())) {
+      if (nullptr != dynamic_cast <const cPtr_impAutoDefaultType *> (enumerator_29147.current_type (HERE).ptr ())) {
         GALGAS_impAutoDefaultType cast_29213_defaultType ((cPtr_impAutoDefaultType *) enumerator_29147.current_type (HERE).ptr ()) ;
         callExtensionMethod_setDefault ((cPtr_impAutoDefaultType *) cast_29213_defaultType.ptr (), ioArgument_objectParams, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1015)) ;
       }
@@ -8263,7 +8263,7 @@ static void releaseOnceFunctionResult_emptyLString (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gEpilogueForOnceFunction_emptyLString (NULL,
+C_PrologueEpilogue gEpilogueForOnceFunction_emptyLString (nullptr,
                                                           releaseOnceFunctionResult_emptyLString) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8271,7 +8271,7 @@ C_PrologueEpilogue gEpilogueForOnceFunction_emptyLString (NULL,
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_emptyLString [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8311,7 +8311,7 @@ GALGAS_objectAttributes function_emptyObject (C_Compiler *
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_emptyObject [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8359,7 +8359,7 @@ static void defineExtensionSetter_multipleAttribute_mergeSubAttributes (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_multipleAttribute_mergeSubAttributes (defineExtensionSetter_multipleAttribute_mergeSubAttributes, NULL) ;
+C_PrologueEpilogue gSetter_multipleAttribute_mergeSubAttributes (defineExtensionSetter_multipleAttribute_mergeSubAttributes, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -8394,7 +8394,7 @@ GALGAS_identifierList function_multipleAttributeOrError (const GALGAS_object_5F_
 static const C_galgas_type_descriptor * functionArgs_multipleAttributeOrError [3] = {
   & kTypeDescriptor_GALGAS_object_5F_t,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8461,7 +8461,7 @@ static void defineExtensionSetter_boolAttribute_mergeSubAttributes (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_boolAttribute_mergeSubAttributes (defineExtensionSetter_boolAttribute_mergeSubAttributes, NULL) ;
+C_PrologueEpilogue gSetter_boolAttribute_mergeSubAttributes (defineExtensionSetter_boolAttribute_mergeSubAttributes, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -8496,7 +8496,7 @@ GALGAS_bool function_boolAttributeOrError (GALGAS_object_5F_t inArgument_t,
 static const C_galgas_type_descriptor * functionArgs_boolAttributeOrError [3] = {
   & kTypeDescriptor_GALGAS_object_5F_t,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8563,7 +8563,7 @@ static void defineExtensionSetter_enumAttribute_mergeSubAttributes (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_enumAttribute_mergeSubAttributes (defineExtensionSetter_enumAttribute_mergeSubAttributes, NULL) ;
+C_PrologueEpilogue gSetter_enumAttribute_mergeSubAttributes (defineExtensionSetter_enumAttribute_mergeSubAttributes, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -8598,7 +8598,7 @@ GALGAS_uint function_uint_33__32__5F_or_5F_error (GALGAS_object_5F_t inArgument_
 static const C_galgas_type_descriptor * functionArgs_uint_33__32__5F_or_5F_error [3] = {
   & kTypeDescriptor_GALGAS_object_5F_t,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8660,7 +8660,7 @@ GALGAS_uint function_uint_33__32_OrError (GALGAS_object_5F_t inArgument_t,
 static const C_galgas_type_descriptor * functionArgs_uint_33__32_OrError [3] = {
   & kTypeDescriptor_GALGAS_object_5F_t,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8722,7 +8722,7 @@ GALGAS_sint function_sint_33__32_OrError (GALGAS_object_5F_t inArgument_t,
 static const C_galgas_type_descriptor * functionArgs_sint_33__32_OrError [3] = {
   & kTypeDescriptor_GALGAS_object_5F_t,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8784,7 +8784,7 @@ GALGAS_uint_36__34_ function_uint_36__34_OrError (GALGAS_object_5F_t inArgument_
 static const C_galgas_type_descriptor * functionArgs_uint_36__34_OrError [3] = {
   & kTypeDescriptor_GALGAS_object_5F_t,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8846,7 +8846,7 @@ GALGAS_luint_36__34_ function_luint_36__34_OrError (GALGAS_object_5F_t inArgumen
 static const C_galgas_type_descriptor * functionArgs_luint_36__34_OrError [3] = {
   & kTypeDescriptor_GALGAS_object_5F_t,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8908,7 +8908,7 @@ GALGAS_sint_36__34_ function_sint_36__34_OrError (GALGAS_object_5F_t inArgument_
 static const C_galgas_type_descriptor * functionArgs_sint_36__34_OrError [3] = {
   & kTypeDescriptor_GALGAS_object_5F_t,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8970,7 +8970,7 @@ GALGAS_double function_floatOrError (GALGAS_object_5F_t inArgument_t,
 static const C_galgas_type_descriptor * functionArgs_floatOrError [3] = {
   & kTypeDescriptor_GALGAS_object_5F_t,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9032,7 +9032,7 @@ GALGAS_lstring function_stringAttributeOrError (const GALGAS_object_5F_t & const
 static const C_galgas_type_descriptor * functionArgs_stringAttributeOrError [3] = {
   & kTypeDescriptor_GALGAS_object_5F_t,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9099,7 +9099,7 @@ static void defineExtensionSetter_structAttribute_mergeSubAttributes (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_structAttribute_mergeSubAttributes (defineExtensionSetter_structAttribute_mergeSubAttributes, NULL) ;
+C_PrologueEpilogue gSetter_structAttribute_mergeSubAttributes (defineExtensionSetter_structAttribute_mergeSubAttributes, nullptr) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -9121,7 +9121,7 @@ GALGAS_lstring function_empty_5F_lstring (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_empty_5F_lstring [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9161,7 +9161,7 @@ GALGAS_object_5F_t function_void_5F_obj (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_void_5F_obj [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9203,7 +9203,7 @@ GALGAS_luint_36__34_ function_luint_36__34__5F_value (const GALGAS_uint_36__34__
 
 static const C_galgas_type_descriptor * functionArgs_luint_36__34__5F_value [2] = {
   & kTypeDescriptor_GALGAS_uint_36__34__5F_class,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9255,7 +9255,7 @@ GALGAS_string function_projectName (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_projectName [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9295,7 +9295,7 @@ GALGAS_string function_oil_5F_dir (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_oil_5F_dir [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9336,7 +9336,7 @@ GALGAS_string function_arch (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_arch [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9386,7 +9386,7 @@ GALGAS_string function_chip (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_chip [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9444,7 +9444,7 @@ GALGAS_string function_board (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_board [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9491,7 +9491,7 @@ GALGAS_list function_targetPathList (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_targetPathList [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9544,7 +9544,7 @@ GALGAS_string function_add_5F_path_5F_component (GALGAS_string inArgument_path,
 static const C_galgas_type_descriptor * functionArgs_add_5F_path_5F_component [3] = {
   & kTypeDescriptor_GALGAS_string,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9636,7 +9636,7 @@ GALGAS_string function_rootTemplatesDirectory (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_rootTemplatesDirectory [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9707,7 +9707,7 @@ GALGAS_string function_templates_5F_directory (GALGAS_string inArgument_prefix,
 
 static const C_galgas_type_descriptor * functionArgs_templates_5F_directory [2] = {
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9799,7 +9799,7 @@ GALGAS_string function_templateFilePath (const GALGAS_string & constinArgument_p
 static const C_galgas_type_descriptor * functionArgs_templateFilePath [3] = {
   & kTypeDescriptor_GALGAS_string,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9860,7 +9860,7 @@ GALGAS_stringlist function_allTemplatePaths (const GALGAS_string & constinArgume
 
 static const C_galgas_type_descriptor * functionArgs_allTemplatePaths [2] = {
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -10001,7 +10001,7 @@ GALGAS_stringlist function_allTemplateFilePaths (const GALGAS_string & constinAr
 static const C_galgas_type_descriptor * functionArgs_allTemplateFilePaths [3] = {
   & kTypeDescriptor_GALGAS_string,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -10308,7 +10308,7 @@ GALGAS_bool function_isInLstringlist (GALGAS_lstringlist inArgument_l,
 static const C_galgas_type_descriptor * functionArgs_isInLstringlist [3] = {
   & kTypeDescriptor_GALGAS_lstringlist,
   & kTypeDescriptor_GALGAS_lstring,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -10439,7 +10439,7 @@ GALGAS_lstring function_lstringWith (GALGAS_string inArgument_s,
 
 static const C_galgas_type_descriptor * functionArgs_lstringWith [2] = {
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -10576,7 +10576,7 @@ GALGAS_string function_stripString (GALGAS_string inArgument_s,
 
 static const C_galgas_type_descriptor * functionArgs_stripString [2] = {
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -10654,7 +10654,7 @@ GALGAS_string function_stringLBool (const GALGAS_lbool & constinArgument_boolVal
 
 static const C_galgas_type_descriptor * functionArgs_stringLBool [2] = {
   & kTypeDescriptor_GALGAS_lbool,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -10724,7 +10724,7 @@ void cPtr_boolAttribute::method_set (const GALGAS_lstring constinArgument_name,
   if (kBoolTrue == test_0) {
     GALGAS_gtlStruct temp_1 ;
     if (var_subAttrs_1655.isValid ()) {
-      if (NULL != dynamic_cast <const cPtr_gtlStruct *> (var_subAttrs_1655.ptr ())) {
+      if (nullptr != dynamic_cast <const cPtr_gtlStruct *> (var_subAttrs_1655.ptr ())) {
         temp_1 = (cPtr_gtlStruct *) var_subAttrs_1655.ptr () ;
       }else{
         inCompiler->castError ("gtlStruct", var_subAttrs_1655.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("systemConfig.galgas", 54)) ;
@@ -10764,7 +10764,7 @@ void cPtr_enumAttribute::method_set (const GALGAS_lstring constinArgument_name,
   if (kBoolTrue == test_0) {
     GALGAS_gtlStruct temp_1 ;
     if (var_subAttrs_2277.isValid ()) {
-      if (NULL != dynamic_cast <const cPtr_gtlStruct *> (var_subAttrs_2277.ptr ())) {
+      if (nullptr != dynamic_cast <const cPtr_gtlStruct *> (var_subAttrs_2277.ptr ())) {
         temp_1 = (cPtr_gtlStruct *) var_subAttrs_2277.ptr () ;
       }else{
         inCompiler->castError ("gtlStruct", var_subAttrs_2277.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("systemConfig.galgas", 68)) ;
@@ -10859,7 +10859,7 @@ void cPtr_multipleAttribute::method_set (const GALGAS_lstring constinArgument_na
         if (kBoolTrue == test_0) {
           GALGAS_gtlStruct temp_1 ;
           if (var_subAttrs_3571.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlStruct *> (var_subAttrs_3571.ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlStruct *> (var_subAttrs_3571.ptr ())) {
               temp_1 = (cPtr_gtlStruct *) var_subAttrs_3571.ptr () ;
             }else{
               inCompiler->castError ("gtlStruct", var_subAttrs_3571.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("systemConfig.galgas", 102)) ;
@@ -10869,7 +10869,7 @@ void cPtr_multipleAttribute::method_set (const GALGAS_lstring constinArgument_na
           if (kBoolTrue == test_0) {
             GALGAS_gtlStruct temp_2 ;
             if (var_subAttrs_3571.isValid ()) {
-              if (NULL != dynamic_cast <const cPtr_gtlStruct *> (var_subAttrs_3571.ptr ())) {
+              if (nullptr != dynamic_cast <const cPtr_gtlStruct *> (var_subAttrs_3571.ptr ())) {
                 temp_2 = (cPtr_gtlStruct *) var_subAttrs_3571.ptr () ;
               }else{
                 inCompiler->castError ("gtlStruct", var_subAttrs_3571.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("systemConfig.galgas", 103)) ;
@@ -11016,13 +11016,13 @@ void routine_setDefaults (const GALGAS_implementation constinArgument_imp,
   cEnumerator_lstringlist enumerator_948 (var_objects_870.getter_keyList (SOURCE_FILE ("defaults.galgas", 35)), kENUMERATION_UP) ;
   while (enumerator_948.hasCurrentObject ()) {
     cMapElement_objectsMap * objectArray_989 = (cMapElement_objectsMap *) var_objects_870.readWriteAccessForWithInstructionWithErrorMessage (inCompiler, enumerator_948.current_mValue (HERE), kSearchErrorMessage_objectsMap_get  COMMA_SOURCE_FILE ("defaults.galgas", 36)) ;
-    if (NULL != objectArray_989) {
+    if (nullptr != objectArray_989) {
       macroValidSharedObject (objectArray_989, cMapElement_objectsMap) ;
       GALGAS_objectKindMap var_objOfKind_1061 = objectArray_989->mProperty_objectsOfKind.readProperty_objects () ;
       cEnumerator_lstringlist enumerator_1117 (var_objOfKind_1061.getter_keyList (SOURCE_FILE ("defaults.galgas", 38)), kENUMERATION_UP) ;
       while (enumerator_1117.hasCurrentObject ()) {
         cMapElement_objectKindMap * objectArray_1164 = (cMapElement_objectKindMap *) var_objOfKind_1061.readWriteAccessForWithInstructionWithErrorMessage (inCompiler, enumerator_1117.current_mValue (HERE), kSearchErrorMessage_objectKindMap_get  COMMA_SOURCE_FILE ("defaults.galgas", 39)) ;
-        if (NULL != objectArray_1164) {
+        if (nullptr != objectArray_1164) {
           macroValidSharedObject (objectArray_1164, cMapElement_objectKindMap) ;
           GALGAS_implementationObject var_impObject_1253 = callExtensionGetter_impObject ((const cPtr_implementation *) constinArgument_imp.ptr (), enumerator_948.current_mValue (HERE).readProperty_string (), inCompiler COMMA_SOURCE_FILE ("defaults.galgas", 40)) ;
           {
@@ -11307,7 +11307,7 @@ GALGAS_bool function_attributeAllowsAuto (const GALGAS_impType & constinArgument
   GALGAS_bool result_allowsAuto ; // Returned variable
   result_allowsAuto = GALGAS_bool (true) ;
   if (constinArgument_type.isValid ()) {
-    if (NULL != dynamic_cast <const cPtr_impAutoDefaultType *> (constinArgument_type.ptr ())) {
+    if (nullptr != dynamic_cast <const cPtr_impAutoDefaultType *> (constinArgument_type.ptr ())) {
       GALGAS_impAutoDefaultType cast_6579_autoType ((cPtr_impAutoDefaultType *) constinArgument_type.ptr ()) ;
       enumGalgasBool test_0 = kBoolTrue ;
       if (kBoolTrue == test_0) {
@@ -11331,7 +11331,7 @@ GALGAS_bool function_attributeAllowsAuto (const GALGAS_impType & constinArgument
 
 static const C_galgas_type_descriptor * functionArgs_attributeAllowsAuto [2] = {
   & kTypeDescriptor_GALGAS_impType,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -11444,7 +11444,7 @@ void cPtr_boolAttribute::method_verifyCrossReferences (const GALGAS_objectsMap c
                                                        COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_impBoolType temp_0 ;
   if (constinArgument_type.isValid ()) {
-    if (NULL != dynamic_cast <const cPtr_impBoolType *> (constinArgument_type.ptr ())) {
+    if (nullptr != dynamic_cast <const cPtr_impBoolType *> (constinArgument_type.ptr ())) {
       temp_0 = (cPtr_impBoolType *) constinArgument_type.ptr () ;
     }else{
       inCompiler->castError ("impBoolType", constinArgument_type.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("semantic_verification.galgas", 625)) ;
@@ -11474,7 +11474,7 @@ void cPtr_enumAttribute::method_verifyCrossReferences (const GALGAS_objectsMap c
                                                        COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_impEnumType temp_0 ;
   if (constinArgument_type.isValid ()) {
-    if (NULL != dynamic_cast <const cPtr_impEnumType *> (constinArgument_type.ptr ())) {
+    if (nullptr != dynamic_cast <const cPtr_impEnumType *> (constinArgument_type.ptr ())) {
       temp_0 = (cPtr_impEnumType *) constinArgument_type.ptr () ;
     }else{
       inCompiler->castError ("impEnumType", constinArgument_type.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("semantic_verification.galgas", 637)) ;
@@ -11498,7 +11498,7 @@ void cPtr_structAttribute::method_verifyCrossReferences (const GALGAS_objectsMap
                                                          COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_impStructType temp_0 ;
   if (constinArgument_type.isValid ()) {
-    if (NULL != dynamic_cast <const cPtr_impStructType *> (constinArgument_type.ptr ())) {
+    if (nullptr != dynamic_cast <const cPtr_impStructType *> (constinArgument_type.ptr ())) {
       temp_0 = (cPtr_impStructType *) constinArgument_type.ptr () ;
     }else{
       inCompiler->castError ("impStructType", constinArgument_type.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("semantic_verification.galgas", 647)) ;
@@ -11519,7 +11519,7 @@ void cPtr_objectRefAttribute::method_verifyCrossReferences (const GALGAS_objects
                                                             COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_refType temp_0 ;
   if (constinArgument_type.isValid ()) {
-    if (NULL != dynamic_cast <const cPtr_refType *> (constinArgument_type.ptr ())) {
+    if (nullptr != dynamic_cast <const cPtr_refType *> (constinArgument_type.ptr ())) {
       temp_0 = (cPtr_refType *) constinArgument_type.ptr () ;
     }else{
       inCompiler->castError ("refType", constinArgument_type.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("semantic_verification.galgas", 655)) ;
@@ -11575,7 +11575,7 @@ GALGAS_applicationDefinition function_emptyApplicationDefinition (C_Compiler * i
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_emptyApplicationDefinition [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -11622,7 +11622,7 @@ GALGAS_objectAttributes function_osObject (const GALGAS_objectsMap & constinArgu
 
 static const C_galgas_type_descriptor * functionArgs_osObject [2] = {
   & kTypeDescriptor_GALGAS_objectsMap,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -11693,7 +11693,7 @@ static const C_galgas_type_descriptor * functionArgs_objectForKindAndName [4] = 
   & kTypeDescriptor_GALGAS_objectsMap,
   & kTypeDescriptor_GALGAS_string,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -11806,7 +11806,7 @@ GALGAS_objectKind function_objectsForKind (const GALGAS_objectsMap & constinArgu
 static const C_galgas_type_descriptor * functionArgs_objectsForKind [3] = {
   & kTypeDescriptor_GALGAS_objectsMap,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -11862,7 +11862,7 @@ GALGAS_identifierList function_listInOS (const GALGAS_objectsMap & constinArgume
 static const C_galgas_type_descriptor * functionArgs_listInOS [3] = {
   & kTypeDescriptor_GALGAS_objectsMap,
   & kTypeDescriptor_GALGAS_string,
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -12055,7 +12055,7 @@ GALGAS_lstring cPtr_goilContext::getter_fullPrefix (const GALGAS_gtlData constin
       callExtensionMethod_structField ((cPtr_gtlData *) constinArgument_vars.ptr (), function_lstring (GALGAS_string ("COMPILER"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 691)), var_compiler_22438, joker_22447, inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 691)) ;
       GALGAS_gtlString temp_1 ;
       if (var_compiler_22438.isValid ()) {
-        if (NULL != dynamic_cast <const cPtr_gtlString *> (var_compiler_22438.ptr ())) {
+        if (nullptr != dynamic_cast <const cPtr_gtlString *> (var_compiler_22438.ptr ())) {
           temp_1 = (cPtr_gtlString *) var_compiler_22438.ptr () ;
         }else{
           inCompiler->castError ("gtlString", var_compiler_22438.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("goil_code_generation.galgas", 692)) ;
@@ -12074,7 +12074,7 @@ GALGAS_lstring cPtr_goilContext::getter_fullPrefix (const GALGAS_gtlData constin
         callExtensionMethod_structField ((cPtr_gtlData *) constinArgument_vars.ptr (), function_lstring (GALGAS_string ("LINKER"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 694)), var_linker_22596, joker_22603, inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 694)) ;
         GALGAS_gtlString temp_3 ;
         if (var_linker_22596.isValid ()) {
-          if (NULL != dynamic_cast <const cPtr_gtlString *> (var_linker_22596.ptr ())) {
+          if (nullptr != dynamic_cast <const cPtr_gtlString *> (var_linker_22596.ptr ())) {
             temp_3 = (cPtr_gtlString *) var_linker_22596.ptr () ;
           }else{
             inCompiler->castError ("gtlString", var_linker_22596.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("goil_code_generation.galgas", 695)) ;
@@ -12093,7 +12093,7 @@ GALGAS_lstring cPtr_goilContext::getter_fullPrefix (const GALGAS_gtlData constin
           callExtensionMethod_structField ((cPtr_gtlData *) constinArgument_vars.ptr (), function_lstring (GALGAS_string ("ASSEMBLER"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 697)), var_assembler_22756, joker_22766, inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 697)) ;
           GALGAS_gtlString temp_5 ;
           if (var_assembler_22756.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlString *> (var_assembler_22756.ptr ())) {
+            if (nullptr != dynamic_cast <const cPtr_gtlString *> (var_assembler_22756.ptr ())) {
               temp_5 = (cPtr_gtlString *) var_assembler_22756.ptr () ;
             }else{
               inCompiler->castError ("gtlString", var_assembler_22756.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("goil_code_generation.galgas", 698)) ;
@@ -12139,7 +12139,7 @@ GALGAS_goilContext function_emptyGoilContext (C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_emptyGoilContext [1] = {
-  NULL
+  nullptr
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

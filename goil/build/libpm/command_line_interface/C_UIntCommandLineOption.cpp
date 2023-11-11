@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Generic Unsigned Command Line Interface Option                                               
+//  Generic Unsigned Command Line Interface Option
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2009, ..., 2018 Pierre Molinaro.
 //
@@ -39,10 +39,10 @@ C_UIntCommandLineOption::C_UIntCommandLineOption (const char * inDomainName,
                                                   const char * inComment,
                                                   const uint32_t inDefaultValue) :
 C_CommandLineOption (inDomainName, inIdentifier, inChar, inString, inComment),
-mNext (NULL),
+mNext (nullptr),
 mValue (inDefaultValue),
 mDefaultValue (inDefaultValue) {
-  if (NULL == gFirstIntOption) {
+  if (nullptr == gFirstIntOption) {
     gFirstIntOption = this ;
   }else{
     gLastIntOption->mNext = this ;
@@ -67,7 +67,7 @@ setUIntOptionForCommandChar (const char * inCommandCommandLineOptionString,
   outFound = false ;
   C_UIntCommandLineOption * p = gFirstIntOption ;
   if (outCommandLineOptionStringIsValid) {
-    while ((p != NULL) && ! outFound) {
+    while ((p != nullptr) && ! outFound) {
       outFound = inCommandCommandLineOptionString [0] == p->mCommandChar ;
       if (outFound) {
         p->mValue = optionValue ;
@@ -108,8 +108,8 @@ setUIntOptionForCommandString (const char * inCommandCommandLineOptionString,
   outFound = false ;
   if (outCommandLineOptionStringIsValid) {
     C_UIntCommandLineOption * p = gFirstIntOption ;
-    while ((p != NULL) && ! outFound) {
-      outFound = (strlen (p->mCommandString) == equalSignIndex) && 
+    while ((p != nullptr) && ! outFound) {
+      outFound = (strlen (p->mCommandString) == equalSignIndex) &&
                   (strncmp (inCommandCommandLineOptionString, p->mCommandString, equalSignIndex) == 0) ;
       if (outFound) {
         p->mValue = optionValue ;
@@ -123,7 +123,7 @@ setUIntOptionForCommandString (const char * inCommandCommandLineOptionString,
 
 void C_UIntCommandLineOption::printUsageOfUIntOptions (void) {
   C_UIntCommandLineOption * p = gFirstIntOption ;
-  while (p != NULL) {
+  while (p != nullptr) {
     const char c = p->mCommandChar ;
     if (c != '\0') {
       printf (" [-%c=number]", c) ;
@@ -140,7 +140,7 @@ void C_UIntCommandLineOption::printUsageOfUIntOptions (void) {
 
 void C_UIntCommandLineOption::printUIntOptions (void) {
   C_UIntCommandLineOption * p = gFirstIntOption ;
-  while (p != NULL) {
+  while (p != nullptr) {
     if (p->mCommandChar != '\0') {
       co.setForeColor (kBlueForeColor) ;
       co.setTextAttribute (kBoldTextAttribute) ;
@@ -166,7 +166,7 @@ void C_UIntCommandLineOption::printUIntOptions (void) {
 
 void C_UIntCommandLineOption::getUIntOptionNameList (TC_UniqueArray <C_String> & outArray) {
   C_UIntCommandLineOption * p = gFirstIntOption ;
-  while (p != NULL) {
+  while (p != nullptr) {
     outArray.appendObject (p->mDomainName) ;
     outArray.appendObject (p->mIdentifier) ;
     p = p->mNext ;
@@ -180,7 +180,7 @@ utf32 C_UIntCommandLineOption::getUIntOptionInvocationLetter (const C_String & i
   utf32 result = TO_UNICODE (0) ;
   C_UIntCommandLineOption * p = gFirstIntOption ;
   bool found = false ;
-  while ((p != NULL) && not found) {
+  while ((p != nullptr) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
     result = TO_UNICODE ((uint32_t) p->mCommandChar) ;
     p = p->mNext ;
@@ -195,7 +195,7 @@ C_String C_UIntCommandLineOption::getUIntOptionInvocationString (const C_String 
   C_String result ;
   C_UIntCommandLineOption * p = gFirstIntOption ;
   bool found = false ;
-  while ((p != NULL) && not found) {
+  while ((p != nullptr) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
     result = p->mCommandString ;
     p = p->mNext ;
@@ -210,7 +210,7 @@ C_String C_UIntCommandLineOption::getUIntOptionCommentString (const C_String & i
   C_String result ;
   C_UIntCommandLineOption * p = gFirstIntOption ;
   bool found = false ;
-  while ((p != NULL) && not found) {
+  while ((p != nullptr) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
     result = p->mComment ;
     p = p->mNext ;
@@ -225,7 +225,7 @@ uint32_t C_UIntCommandLineOption::getUIntOptionValue (const C_String & inDomainN
   uint32_t result = 0 ;
   C_UIntCommandLineOption * p = gFirstIntOption ;
   bool found = false ;
-  while ((p != NULL) && not found) {
+  while ((p != nullptr) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
     result = p->mValue ;
     p = p->mNext ;
@@ -240,7 +240,7 @@ void C_UIntCommandLineOption::setUIntOptionValue (const C_String & inDomainName,
                                                   const uint32_t inValue) {
   C_UIntCommandLineOption * p = gFirstIntOption ;
   bool found = false ;
-  while ((p != NULL) && not found) {
+  while ((p != nullptr) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
     if (found) {
       p->mValue = inValue ;

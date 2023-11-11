@@ -65,13 +65,6 @@ see https://www.gnu.org/licenses/.  */
   (MUL_TOOM44_THRESHOLD >= 3 * MUL_TOOM33_THRESHOLD)
 #endif
 
-/* FIXME: TOOM33_MUL_N_REC is not quite right for a balanced
-   multiplication at the infinity point. We may have
-   MAYBE_mul_basecase == 0, and still get s just below
-   MUL_TOOM22_THRESHOLD. If MUL_TOOM33_THRESHOLD == 7, we can even get
-   s == 1 and mpn_toom22_mul will crash.
-*/
-
 #define TOOM33_MUL_N_REC(p, a, b, n, ws)				\
   do {									\
     if (MAYBE_mul_basecase						\

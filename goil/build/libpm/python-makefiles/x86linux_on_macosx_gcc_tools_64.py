@@ -6,20 +6,18 @@
 import sys, time, os, json
 import makefile, default_build_options
 import generic_galgas_makefile
-import tool_chain_installation_path
-import cross_compiler_download
 
 #-----------------------------------------------------------------------------------------
 
 def buildForLinux64OnMacOSX (dictionary, jsonFilePath, EXECUTABLE, BUILD_DIR_NAME, GOAL, maxParallelJobs, displayCommands) :
-#--- Too chain installation
-  GCC_VERSION = "10.2.0"
-  BINUTILS_VERSION = "2.35.1"
-  TOOL_CHAIN_NAME = "binutils-" + BINUTILS_VERSION + "-gcc-" + GCC_VERSION + "-for-linux64"
-  installDir = tool_chain_installation_path.toolChainInstallationPath ()
-  TOOL_CHAIN_INSTALL_PATH = installDir + "/" + TOOL_CHAIN_NAME
-  if not os.path.exists (TOOL_CHAIN_INSTALL_PATH):
-    cross_compiler_download.downloadToolChain (TOOL_CHAIN_NAME)
+  executable = makefile.find_executable ("x86_64-linux-gnu-gcc")
+  if executable == None:
+    print (makefile.BOLD_RED () + "*** Cannot find 'x86_64-linux-gnu-gcc' executable ***" + makefile.ENDC ())
+    print ("The x86_64 Linux cross compiler can be installed under howebrew:")
+    print ("  brew tap messense/macos-cross-toolchains")
+    print ("  brew install x86_64-unknown-linux-gnu")
+    print ("See: https://github.com/messense/homebrew-macos-cross-toolchains")
+    sys.exit (1)
 #---
   gmf = generic_galgas_makefile.GenericGalgasMakefile ()
   gmf.mJSONfilePath = jsonFilePath
@@ -28,17 +26,16 @@ def buildForLinux64OnMacOSX (dictionary, jsonFilePath, EXECUTABLE, BUILD_DIR_NAM
   gmf.mGoal = GOAL
   gmf.mMaxParallelJobs = maxParallelJobs
   gmf.mDisplayCommands = displayCommands
-  gmf.mTargetName = "x86linux64"
+  gmf.mTargetName = "x86_64-linux"
   gmf.mBuildDirName = BUILD_DIR_NAME
 #---
-  UNIX_TOOL_PREFIX = TOOL_CHAIN_INSTALL_PATH + "/bin/x86_64-pc-linux"
-  gmf.mCompilerTool = [UNIX_TOOL_PREFIX + "-gcc"]
-  gmf.mLinkerTool = [UNIX_TOOL_PREFIX + "-g++", "-static-libgcc", "-Wl,--gc-sections"]
-  gmf.mStripTool = [UNIX_TOOL_PREFIX + "-strip", "--strip-all"]
-  gmf.mCompilationMessage = "Compiling for Linux64"
-  gmf.mLinkingMessage = "Linking for Linux64"
+  gmf.mCompilerTool = ["x86_64-linux-gnu-gcc"]
+  gmf.mLinkerTool = ["x86_64-linux-gnu-g++"] # , "-static-libgcc", "-Wl,--gc-sections"]
+  gmf.mStripTool = ["x86_64-linux-gnu-strip", "--strip-all"]
+  gmf.mCompilationMessage = "Compiling for x86_64 Linux"
+  gmf.mLinkingMessage = "Linking for x86_64 Linux"
   gmf.mStripMessage = "Stripping"
-  gmf.mCrossCompilation = "Linux-x86_64"
+  gmf.mCrossCompilation = "x86_64 Linux"
 #--- Options for all compilers
   gmf.mAllCompilerOptions = default_build_options.allCompilerOptions (["-Wconversion"])
 #--- Options for release mode

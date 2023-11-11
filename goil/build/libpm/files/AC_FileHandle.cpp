@@ -24,16 +24,19 @@
 
 AC_FileHandle::AC_FileHandle (const C_String & inFilePath,
                               const char * inMode) :
-mFilePtr ((inFilePath.length () == 0) ? NULL : ::fopen (C_FileManager::nativePathWithUnixPath (inFilePath).cString (HERE), inMode)),
+mFilePtr ((inFilePath.length () == 0)
+  ? nullptr :
+  ::fopen (C_FileManager::nativePathWithUnixPath (inFilePath).cString (HERE), inMode)
+),
 mFilePath (inFilePath) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 AC_FileHandle::~AC_FileHandle (void) {
-  if (NULL != mFilePtr) {
+  if (nullptr != mFilePtr) {
     fclose (mFilePtr) ;
-    mFilePtr = NULL ;
+    mFilePtr = nullptr ;
   }
 }
 

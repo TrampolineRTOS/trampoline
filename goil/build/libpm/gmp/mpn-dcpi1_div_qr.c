@@ -180,7 +180,7 @@ mpn_dcpi1_div_qr (mp_ptr qp,
 	{
 	  /* Do a 2qn / qn division */
 	  if (qn == 2)
-	    qh = mpn_divrem_2 (qp, 0L, np - 2, 4, dp - 2); /* FIXME: obsolete function. Use 5/3 division? */
+	    qh = mpn_divrem_2 (qp, 0L, np - 2, 4, dp - 2);
 	  else if (BELOW_THRESHOLD (qn, DC_DIV_QR_THRESHOLD))
 	    qh = mpn_sbpi1_div_qr (qp, np - qn, 2 * qn, dp - qn, qn, dinv->inv32);
 	  else

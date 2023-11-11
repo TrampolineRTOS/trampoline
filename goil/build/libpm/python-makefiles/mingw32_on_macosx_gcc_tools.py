@@ -6,20 +6,16 @@
 import sys, time, os, json
 import makefile, default_build_options
 import generic_galgas_makefile
-import tool_chain_installation_path
-import cross_compiler_download
 
 #-----------------------------------------------------------------------------------------
 
 def buildForWin32OnMacOSX (dictionary, jsonFilePath, EXECUTABLE, BUILD_DIR_NAME, GOAL, maxParallelJobs, displayCommands) :
-#--- Too chain installation
-  GCC_VERSION = "7.2.0"
-  BINUTILS_VERSION = "2.28"
-  TOOL_CHAIN_NAME = "binutils-" + BINUTILS_VERSION + "-gcc-" + GCC_VERSION + "-for-mingw32"
-  installDir = tool_chain_installation_path.toolChainInstallationPath ()
-  TOOL_CHAIN_INSTALL_PATH = installDir + "/" + TOOL_CHAIN_NAME
-  if not os.path.exists (TOOL_CHAIN_INSTALL_PATH):
-    cross_compiler_download.downloadToolChain (TOOL_CHAIN_NAME)
+  executable = makefile.find_executable ("x86_64-w64-mingw32-gcc")
+  if executable == None:
+    print (makefile.BOLD_RED () + "*** Cannot find 'x86_64-w64-mingw32-gcc' executable ***" + makefile.ENDC ())
+    print ("The mingw32 cross compiler can be installed under howebrew:")
+    print ("  brew install mingw-w64")
+    sys.exit (1)
 #---
   gmf = generic_galgas_makefile.GenericGalgasMakefile ()
   gmf.mJSONfilePath = jsonFilePath
@@ -33,9 +29,9 @@ def buildForWin32OnMacOSX (dictionary, jsonFilePath, EXECUTABLE, BUILD_DIR_NAME,
   gmf.mExecutableSuffix = ".exe"
   gmf.mBuildDirName = BUILD_DIR_NAME
 #---
-  gmf.mCompilerTool = [TOOL_CHAIN_INSTALL_PATH + "/bin/i586-mingw32-gcc", "-m32", "-D_WIN32_WINNT=0x501"]
-  gmf.mLinkerTool = [TOOL_CHAIN_INSTALL_PATH + "/bin/i586-mingw32-g++", "-m32", "--enable-auto-import", "-Wl,--gc-sections"]
-  gmf.mStripTool = [TOOL_CHAIN_INSTALL_PATH + "/bin/i586-mingw32-strip", "--strip-all"]
+  gmf.mCompilerTool = ["x86_64-w64-mingw32-gcc"]
+  gmf.mLinkerTool = ["x86_64-w64-mingw32-g++", "-std=c++11"]
+  gmf.mStripTool = ["x86_64-w64-mingw32-strip", "--strip-all"]
   gmf.mCompilationMessage = "Compiling for Win32"
   gmf.mLinkingMessage = "Linking for Win32"
   gmf.mStripMessage = "Stripping"

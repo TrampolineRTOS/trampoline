@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  'C_Compiler' : the compiler base class ;                                                     
+//  'C_Compiler' : the compiler base class ;
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2009, ..., 2016 Pierre Molinaro.
 //
@@ -43,7 +43,7 @@ class C_galgas_type_descriptor ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                 Compiler class                                                                
+//                 Compiler class
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -57,7 +57,7 @@ class C_Compiler : public C_SharedObject {
   private: C_Compiler (const C_Compiler &) = delete ;
   private: C_Compiler & operator = (const C_Compiler &) = delete ;
 
-//--- Caller compiler (is NULL for top compiler)
+//--- Caller compiler (is nullptr for top compiler)
   protected: C_Compiler * mCallerCompiler ;
 
 //--- Issue array
@@ -65,7 +65,7 @@ class C_Compiler : public C_SharedObject {
   public: void appendIssue (const cIssueDescriptor & inIssue) ;
   public: void writeIssueJSONFile (const C_String & inFile) ;
 
-//--- Sent string 
+//--- Sent string
   private: C_String mSentString ;
   private: bool mSentStringIsValid ;
   public: GALGAS_string sentString (void) const ;
@@ -119,9 +119,9 @@ class C_Compiler : public C_SharedObject {
     return mCurrentLocation.lineNumber () ;
   }
 
-//  public: inline int32_t columnNumber (void) const {
-//    return mCurrentLocation.columnNumber () ;
-//  }
+  public: inline int32_t columnNumber (void) const {
+    return mCurrentLocation.columnNumber () ;
+  }
 
 //--- Get separator string
   public: virtual C_String separatorString (void) const { return "" ; }
@@ -190,9 +190,9 @@ class C_Compiler : public C_SharedObject {
 
 //--- File read logging
   public: static bool performLogFileRead (void) ;
-  
+
   public: void logFileRead (const C_String & inFilePath) ;
-  
+
 //--- File generation
   public: static bool performGeneration (void) ;
 

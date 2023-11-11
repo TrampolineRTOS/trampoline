@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Timer class.                                                                                 
+//  Timer class.
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
-//  Copyright (C) 1999, ..., 2010 Pierre Molinaro.
+//  Copyright (C) 1999, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -24,23 +24,9 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#if COMPILE_FOR_WINDOWS == 0
-  static timeval gTime ;
-  static timeval now (void) {
-    gettimeofday (& gTime, NULL) ;
-    return gTime ;
-  }
-#else
-  static clock_t now (void) {
-    return ::clock () ;
-  }
-#endif
-
-//----------------------------------------------------------------------------------------------------------------------
-
 C_Timer::C_Timer (void) :
-mStart (now ()),
-mEnd (now ()),
+mStart (::clock ()),
+mEnd (::clock ()),
 mRunning (true) {
   mEnd = mStart ;
 }
@@ -49,11 +35,7 @@ mRunning (true) {
 
 void C_Timer::stopTimer (void) {
   if (mRunning) {
-    #if COMPILE_FOR_WINDOWS == 0
-      gettimeofday (& mEnd, NULL) ;
-    #else
-      mEnd = ::clock () ;
-    #endif
+    mEnd = ::clock () ;
     mRunning = false ;
   }
 }
@@ -61,11 +43,7 @@ void C_Timer::stopTimer (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_Timer::startTimer (void) {
-  #if COMPILE_FOR_WINDOWS == 0
-    gettimeofday (& mStart, NULL) ;
-  #else
-    mStart = ::clock () ;
-  #endif
+  mStart = ::clock () ;
   mEnd = mStart ;
   mRunning = true ;
 }
@@ -73,26 +51,14 @@ void C_Timer::startTimer (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 uint32_t C_Timer::msFromStart (void) const {
-  #if COMPILE_FOR_WINDOWS == 0
-    timeval t ;
-    if (mRunning) {
-      timeval now ;
-      gettimeofday (& now, NULL) ;
-      timersub (& now, & mStart, & t) ;
-    }else{
-      timersub (& mEnd, & mStart, & t) ;
-    }
-    const uint32_t duration = ((uint32_t) t.tv_sec) * 1000 + (uint32_t) (t.tv_usec / 1000) ;
-  #else
-    uint32_t duration ;
-    if (mRunning) {
-      duration = (uint32_t) (::clock () - mStart) ;
-    }else{
-      duration = (uint32_t) (mEnd - mStart) ;
-    }
-    duration /= CLOCKS_PER_SEC / 1000 ;
-  #endif
-  return duration ;
+  clock_t duration ;
+  if (mRunning) {
+    duration = ::clock () - mStart ;
+  }else{
+    duration = mEnd - mStart ;
+  }
+  duration /= CLOCKS_PER_SEC / 1000 ;
+  return uint32_t (duration) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -100,8 +66,8 @@ uint32_t C_Timer::msFromStart (void) const {
 C_String C_Timer::timeString (void) const {
   const uint32_t d = msFromStart () ;
   const uint32_t ms = d % 1000 ;
-  const uint32_t secondes = (d / 1000) % 60 ; // (uint32_t) ((((uint32_t) duration.tv_sec) % 60) & UINT32_MAX) ;
-  const uint32_t minutes  = d / 60000 ; // (uint32_t) ((((uint32_t) duration.tv_sec) / 60) & UINT32_MAX) ;
+  const uint32_t secondes = (d / 1000) % 60 ;
+  const uint32_t minutes  = d / 60000 ;
   C_String result ;
   if (minutes > 0) {
     result.appendUnsigned (minutes) ;
@@ -119,30 +85,16 @@ C_String C_Timer::timeString (void) const {
 
 AC_OutputStream & operator << (AC_OutputStream & inStream,
                                const C_Timer & inTimer) {
-  #if COMPILE_FOR_WINDOWS == 0
-    timeval duration ;
-    if (inTimer.mRunning) {
-      timeval now ;
-      gettimeofday (& now, NULL) ;
-      timersub (& now, & inTimer.mStart, & duration) ;
-    }else{
-      timersub (& inTimer.mEnd, & inTimer.mStart, & duration) ;
-    }
-    const uint32_t cs = (uint32_t) (duration.tv_usec / 10000) ;
-    const uint32_t secondes = (uint32_t) ((((uint32_t) duration.tv_sec) % 60) & UINT32_MAX) ;
-    const uint32_t minutes  = (uint32_t) ((((uint32_t) duration.tv_sec) / 60) & UINT32_MAX) ;
-  #else
-    uint32_t duration ;
-    if (inTimer.mRunning) {
-      duration = (uint32_t) (::clock () - inTimer.mStart) ;
-    }else{
-      duration = (uint32_t) (inTimer.mEnd - inTimer.mStart) ;
-    }
-    duration /= CLOCKS_PER_SEC / 100 ;
-    const uint32_t cs = (uint32_t) (duration % 100) ;
-    const uint32_t secondes = (uint32_t) ((duration / 100) % 60) ;
-    const uint32_t minutes = (uint32_t) (duration / 6000) ;
-  #endif
+  clock_t duration ;
+  if (inTimer.mRunning) {
+    duration = ::clock () - inTimer.mStart ;
+  }else{
+    duration = inTimer.mEnd - inTimer.mStart ;
+  }
+  duration /= CLOCKS_PER_SEC / 100 ;
+  const clock_t cs = duration % 100 ;
+  const clock_t secondes = (duration / 100) % 60 ;
+  const clock_t minutes = duration / 6000 ;
   if (minutes > 0) {
     inStream.appendUnsigned (minutes) ;
     inStream << " min " ;

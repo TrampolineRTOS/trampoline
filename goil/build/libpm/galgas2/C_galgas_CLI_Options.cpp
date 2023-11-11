@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Built-in GALGAS Command Line Interface Options                                               
+//  Built-in GALGAS Command Line Interface Options
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2006, ..., 2023 Pierre Molinaro.
 //
@@ -20,7 +20,7 @@
 
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "galgas2/C_galgas_CLI_Options.h"
-#include "streams/C_TCPSocketOut.h"
+//#include "streams/C_TCPSocketOut.h"
 #include "utilities/C_PrologueEpilogue.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -98,7 +98,7 @@ C_StringCommandLineOption gOption_galgas_5F_builtin_5F_options_outputKeywordList
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   EXECUTION MODE                                                                              
+//   EXECUTION MODE
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -194,7 +194,7 @@ static void epilogueAction (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue prologueEpilogue (NULL, epilogueAction) ;
+C_PrologueEpilogue prologueEpilogue (nullptr, epilogueAction) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 

@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  acPtr_class : Base class for GALGAS class                                                    
+//  acPtr_class : Base class for GALGAS class
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2008, ..., 2010 Pierre Molinaro.
 //
@@ -26,7 +26,7 @@
 
 cPtr_object::cPtr_object (LOCATION_ARGS) :
 C_SharedObject (THERE),
-mEmbeddedObjectPtr (NULL) {
+mEmbeddedObjectPtr (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -34,9 +34,9 @@ mEmbeddedObjectPtr (NULL) {
 cPtr_object::cPtr_object (AC_GALGAS_root * inObjectPointer
                           COMMA_LOCATION_ARGS) :
 C_SharedObject (THERE),
-mEmbeddedObjectPtr (NULL) {
+mEmbeddedObjectPtr (nullptr) {
   mEmbeddedObjectPtr = inObjectPointer ;
-} 
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -48,7 +48,7 @@ cPtr_object::~cPtr_object (void) {
 
 GALGAS_type cPtr_object::objectStaticType (void) const {
   GALGAS_type result ;
-  if (NULL != mEmbeddedObjectPtr) {
+  if (nullptr != mEmbeddedObjectPtr) {
     result = mEmbeddedObjectPtr->getter_staticType (HERE) ;
   }
   return result ;
@@ -58,7 +58,7 @@ GALGAS_type cPtr_object::objectStaticType (void) const {
 
 GALGAS_type cPtr_object::objectDynamicType (void) const {
   GALGAS_type result ;
-  if (NULL != mEmbeddedObjectPtr) {
+  if (nullptr != mEmbeddedObjectPtr) {
     result = mEmbeddedObjectPtr->getter_dynamicType (HERE) ;
   }
   return result ;

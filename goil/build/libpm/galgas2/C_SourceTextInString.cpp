@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  'C_SourceTextInString'                                                                       
+//  'C_SourceTextInString'
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 1996, ..., 2016 Pierre Molinaro.
 //
@@ -24,7 +24,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 C_SourceTextInString::C_SourceTextInString (void) :
-mObject (NULL) {
+mObject (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ mObject (NULL) {
 C_SourceTextInString::C_SourceTextInString (const C_String & inSourceString,
                                             const C_String & inFilePath,
                                             const bool inShowSourceOnDetailledErrorMessage) :
-mObject (NULL) {
+mObject (nullptr) {
   macroMyNew (mObject, cSourceTextInString (inSourceString, inFilePath, inShowSourceOnDetailledErrorMessage COMMA_HERE)) ;
 }
 
@@ -45,7 +45,7 @@ C_SourceTextInString::~ C_SourceTextInString (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 C_SourceTextInString::C_SourceTextInString (const C_SourceTextInString & inSource) :
-mObject (NULL) {
+mObject (nullptr) {
   macroAssignSharedObject (mObject, inSource.mObject) ;
 }
 
@@ -62,7 +62,7 @@ C_SourceTextInString & C_SourceTextInString::operator = (const C_SourceTextInStr
 
 C_String C_SourceTextInString::getLineForLocation (const C_LocationInSource & inLocation) const {
   C_String errorLine ;
-  if (NULL != mObject) {
+  if (nullptr != mObject) {
     const int32_t sourceTextLength = mObject->mSourceString.length () ;
     int32_t index = 0 ;
     int32_t currentLine = 1 ;
@@ -86,7 +86,7 @@ C_String C_SourceTextInString::getLineForLocation (const C_LocationInSource & in
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_SourceTextInString::appendSourceContents (C_String & ioMessage) const {
-  if ((NULL != mObject) && mObject->mShowSourceOnDetailledErrorMessage) {
+  if ((nullptr != mObject) && mObject->mShowSourceOnDetailledErrorMessage) {
     const bool insertCarriageReturn = (mObject->mSourceString.length () > 0) && (UNICODE_VALUE (mObject->mSourceString.lastCharacter (HERE)) != '\n')  ;
     ioMessage << "-- SOURCE STRING (--verbose option) --\n"
               << mObject->mSourceString

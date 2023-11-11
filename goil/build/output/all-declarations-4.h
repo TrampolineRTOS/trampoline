@@ -10,123 +10,6 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//Extension setter '@gtlData deleteMapItem'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-typedef void (*extensionSetterSignature_gtlData_deleteMapItem) (class cPtr_gtlData * inObject,
-                                                                const class GALGAS_lstring constinArgument0,
-                                                                class C_Compiler * inCompiler
-                                                                COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void enterExtensionSetter_deleteMapItem (const int32_t inClassIndex,
-                                         extensionSetterSignature_gtlData_deleteMapItem inModifier) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void callExtensionSetter_deleteMapItem (class cPtr_gtlData * inObject,
-                                        const GALGAS_lstring constin_name,
-                                        C_Compiler * inCompiler
-                                        COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension method '@gtlData itemAtIndex'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void callExtensionMethod_itemAtIndex (class cPtr_gtlData * inObject,
-                                      class GALGAS_gtlData & out_result,
-                                      const class GALGAS_gtlInt constin_index,
-                                      C_Compiler * inCompiler
-                                      COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension getter '@gtlData hasItemAtIndex'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_bool callExtensionGetter_hasItemAtIndex (const cPtr_gtlData * inObject,
-                                                      const class GALGAS_gtlInt constin_index,
-                                                      class C_Compiler * inCompiler
-                                                      COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension setter '@gtlData setItemAtIndex'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-typedef void (*extensionSetterSignature_gtlData_setItemAtIndex) (class cPtr_gtlData * inObject,
-                                                                 const class GALGAS_gtlData constinArgument0,
-                                                                 const class GALGAS_gtlInt constinArgument1,
-                                                                 class C_Compiler * inCompiler
-                                                                 COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void enterExtensionSetter_setItemAtIndex (const int32_t inClassIndex,
-                                          extensionSetterSignature_gtlData_setItemAtIndex inModifier) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void callExtensionSetter_setItemAtIndex (class cPtr_gtlData * inObject,
-                                         const GALGAS_gtlData constin_data,
-                                         const GALGAS_gtlInt constin_index,
-                                         C_Compiler * inCompiler
-                                         COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension setter '@gtlData deleteItemAtIndex'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-typedef void (*extensionSetterSignature_gtlData_deleteItemAtIndex) (class cPtr_gtlData * inObject,
-                                                                    const class GALGAS_gtlInt constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void enterExtensionSetter_deleteItemAtIndex (const int32_t inClassIndex,
-                                             extensionSetterSignature_gtlData_deleteItemAtIndex inModifier) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void callExtensionSetter_deleteItemAtIndex (class cPtr_gtlData * inObject,
-                                            const GALGAS_gtlInt constin_index,
-                                            C_Compiler * inCompiler
-                                            COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension setter '@gtlData appendItem'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-typedef void (*extensionSetterSignature_gtlData_appendItem) (class cPtr_gtlData * inObject,
-                                                             const class GALGAS_gtlData constinArgument0,
-                                                             class C_Compiler * inCompiler
-                                                             COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void enterExtensionSetter_appendItem (const int32_t inClassIndex,
-                                      extensionSetterSignature_gtlData_appendItem inModifier) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void callExtensionSetter_appendItem (class cPtr_gtlData * inObject,
-                                     const GALGAS_gtlData constin_item,
-                                     C_Compiler * inCompiler
-                                     COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
 //Extension method '@gtlExecutableEntity checkArguments'
 //
 //----------------------------------------------------------------------------------------------------------------------
@@ -2425,4 +2308,252 @@ void callExtensionSetter_getCommand (class cPtr_debuggerContext * inObject,
 class GALGAS_string callExtensionGetter_stringRepresentation (const class cPtr_gtlData * inObject,
                                                               class C_Compiler * inCompiler
                                                               COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @void  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_void : public GALGAS_object_5F_t {
+//--------------------------------- Default constructor
+  public: GALGAS_void (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_void constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_void * ptr (void) const {
+    return (const cPtr_void *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_void (const cPtr_void * inSourcePtr) ;
+
+//--------------------------------- Property read access
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_void extractObject (const GALGAS_object & inObject,
+                                            C_Compiler * inCompiler
+                                            COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_void constructor_new (const class GALGAS_lstring & inOperand0,
+                                                    const class GALGAS_location & inOperand1
+                                                    COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_void & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_void class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @void class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_void : public cPtr_object_5F_t {
+
+
+//--- Properties
+
+//--- Constructor
+  public: cPtr_void (const GALGAS_lstring & in_oil_5F_desc,
+                     const GALGAS_location & in_location
+                     COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@impType setDefValue'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+typedef void (*extensionSetterSignature_impType_setDefValue) (class cPtr_impType * inObject,
+                                                              class GALGAS_object_5F_t inArgument0,
+                                                              class C_Compiler * inCompiler
+                                                              COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void enterExtensionSetter_setDefValue (const int32_t inClassIndex,
+                                       extensionSetterSignature_impType_setDefValue inModifier) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionSetter_setDefValue (class cPtr_impType * inObject,
+                                      GALGAS_object_5F_t in_inDefaultValue,
+                                      C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@impAutoDefaultType setDefault'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionMethod_setDefault (class cPtr_impAutoDefaultType * inObject,
+                                     class GALGAS_objectAttributes & io_attributes,
+                                     C_Compiler * inCompiler
+                                     COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @refType  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_refType : public GALGAS_impType {
+//--------------------------------- Default constructor
+  public: GALGAS_refType (void) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_refType * ptr (void) const {
+    return (const cPtr_refType *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_refType (const cPtr_refType * inSourcePtr) ;
+
+//--------------------------------- Property read access
+  public: class GALGAS_lstring readProperty_ref (void) const ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_refType extractObject (const GALGAS_object & inObject,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_refType constructor_new (const class GALGAS_locationList & inOperand0,
+                                                       const class GALGAS_dataType & inOperand1,
+                                                       const class GALGAS_lstring & inOperand2,
+                                                       const class GALGAS_bool & inOperand3,
+                                                       const class GALGAS_lstringlist & inOperand4,
+                                                       const class GALGAS_lstring & inOperand5
+                                                       COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_refType & inOperand) const ;
+
+//--------------------------------- Setters
+  public: VIRTUAL_IN_DEBUG void setter_setRef (class GALGAS_lstring inArgument0
+                                               COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_refType class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_refType ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @refType class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_refType : public cPtr_impType {
+
+//--- Extension getter mergeWithType
+  public: virtual class GALGAS_impType getter_mergeWithType (const class GALGAS_impType typeToMerge,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method checkAttributeReferences
+  public: virtual void method_checkAttributeReferences (const class GALGAS_implementation imp,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+//--- Extension method verifyType
+  public: virtual void method_verifyType (const class GALGAS_object_5F_t attr,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+  public: GALGAS_lstring mProperty_ref ;
+
+//--- Constructor
+  public: cPtr_refType (const GALGAS_locationList & in_locations,
+                        const GALGAS_dataType & in_type,
+                        const GALGAS_lstring & in_name,
+                        const GALGAS_bool & in_multiple,
+                        const GALGAS_lstringlist & in_descs,
+                        const GALGAS_lstring & in_ref
+                        COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+  public: VIRTUAL_IN_DEBUG GALGAS_lstring getter_ref (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setRef (GALGAS_lstring inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension getter '@implementationObject mergeImplementationObjectWith'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_implementationObject callExtensionGetter_mergeImplementationObjectWith (const cPtr_implementationObject * inObject,
+                                                                                     const class GALGAS_implementationObject constin_objToMerge,
+                                                                                     class C_Compiler * inCompiler
+                                                                                     COMMA_LOCATION_ARGS) ;
 

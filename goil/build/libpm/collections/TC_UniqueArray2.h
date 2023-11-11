@@ -1,12 +1,12 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Declaration and implementation of the template class 'TC_UniqueArray2'                       
+//  Declaration and implementation of the template class 'TC_UniqueArray2'
 //
-//  It implements a generic two dimensions dynamic sized array.                                  
+//  It implements a generic two dimensions dynamic sized array.
 //
-//  COPY OF ITS INSTANCES IS NOT ALLOWED.                                                        
+//  COPY OF ITS INSTANCES IS NOT ALLOWED.
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2008, ..., 2014 Pierre Molinaro.
 //
@@ -99,7 +99,7 @@ template <typename TYPE> class TC_UniqueArray2 {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                         Implementation                                                        
+//                         Implementation
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -107,7 +107,7 @@ template <typename TYPE>
 TC_UniqueArray2 <TYPE>::
 TC_UniqueArray2 (const int32_t inRowCount,
                  const int32_t inColumnCount) :
-mArray (NULL),
+mArray (nullptr),
 mCurrentRowCount (0),
 mCurrentColumnCount (0) {
   if ((inRowCount > 0) && (inColumnCount > 0)) {
@@ -161,7 +161,7 @@ void TC_UniqueArray2 <TYPE>::setObjectAtIndexes (const TYPE & inObject,
                                                  const int32_t inColumnIndex
                                                  COMMA_LOCATION_ARGS) {
   const size_t idx = long2size_t (inRowIndex, inColumnIndex COMMA_THERE) ;
-  if (NULL != mArray) {
+  if (nullptr != mArray) {
     mArray [idx] = inObject ;
   }
 }

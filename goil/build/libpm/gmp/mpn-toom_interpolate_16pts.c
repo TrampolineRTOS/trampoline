@@ -82,7 +82,7 @@ DO_mpn_addlsh_n(mp_ptr dst, mp_srcptr src, mp_size_t n, unsigned int s, mp_ptr w
 #ifdef HAVE_NATIVE_mpn_subrsh
 #define DO_mpn_subrsh(dst,nd,src,ns,s,ws) mpn_subrsh(dst,nd,src,ns,s)
 #else
-/* FIXME: This is not a correct definition, it assumes no carry */
+
 #define DO_mpn_subrsh(dst,nd,src,ns,s,ws)				\
 do {									\
   mp_limb_t __cy;							\
@@ -93,7 +93,6 @@ do {									\
 #endif
 
 
-/* FIXME: tuneup should decide the best variant */
 #ifndef AORSMUL_FASTER_AORS_AORSLSH
 #define AORSMUL_FASTER_AORS_AORSLSH 1
 #endif
@@ -121,7 +120,6 @@ do {									\
 #define BINVERT_255 \
   (GMP_NUMB_MAX - ((GMP_NUMB_MAX / 255) << (8 - GMP_NUMB_BITS % 8)))
 
-  /* FIXME: find some more general expressions for inverses */
 #if GMP_LIMB_BITS == 32
 #define BINVERT_2835  (GMP_NUMB_MASK &		CNST_LIMB(0x53E3771B))
 #define BINVERT_42525 (GMP_NUMB_MASK &		CNST_LIMB(0x9F314C35))
@@ -195,7 +193,7 @@ do {									\
 #ifndef  mpn_divexact_by255x182712915
 #if GMP_NUMB_BITS < 36
 #if HAVE_NATIVE_mpn_bdiv_q_2_pi2 && defined(BINVERT_255x182712915H)
-/* FIXME: use mpn_bdiv_q_2_pi2 */
+
 #endif
 #if HAVE_NATIVE_mpn_pi1_bdiv_q_1 && defined(BINVERT_182712915)
 #define mpn_divexact_by255x182712915(dst,src,size)				\
@@ -223,7 +221,7 @@ do {									\
 #ifndef  mpn_divexact_by255x188513325
 #if GMP_NUMB_BITS < 36
 #if HAVE_NATIVE_mpn_bdiv_q_1_pi2 && defined(BINVERT_255x188513325H)
-/* FIXME: use mpn_bdiv_q_1_pi2 */
+
 #endif
 #if HAVE_NATIVE_mpn_pi1_bdiv_q_1 && defined(BINVERT_188513325)
 #define mpn_divexact_by255x188513325(dst,src,size)			\
@@ -314,7 +312,7 @@ mpn_toom_interpolate_16pts (mp_ptr pp, mp_ptr r1, mp_ptr r3, mp_ptr r5, mp_ptr r
     cy = mpn_sub_1 (r1 + spt + BIT_CORRECTION, r1 + spt + BIT_CORRECTION,
 		    n3p1 - spt - BIT_CORRECTION, cy);
     ASSERT (BIT_CORRECTION > 0 || cy == 0);
-    /* FIXME: assumes r7[n3p1] is writable (it is if r5 follows). */
+
     cy = r7[n3p1];
     r7[n3p1] = 0x80;
 #else
@@ -322,7 +320,7 @@ mpn_toom_interpolate_16pts (mp_ptr pp, mp_ptr r1, mp_ptr r3, mp_ptr r5, mp_ptr r
 #endif
     DO_mpn_subrsh(r7, n3p1 + BIT_CORRECTION, r0, spt, 6, wsi);
 #if BIT_CORRECTION
-    /* FIXME: assumes r7[n3p1] is writable. */
+
     ASSERT ( BIT_CORRECTION > 0 || r7[n3p1] == 0x80 );
     r7[n3p1] = cy;
 #endif

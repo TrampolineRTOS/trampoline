@@ -98,7 +98,7 @@ class cToken {
   public: C_LocationInSource mEndLocation ;
   public: C_String mTemplateStringBeforeToken ; // Template string before the token
   public: C_String mSeparatorStringBeforeToken ;
-  public: int16_t mTokenCode ;
+  public: int32_t mTokenCode ;
 
   public: cToken (void) ;
   public: virtual ~cToken (void) ;

@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  cObjectArray                                                                                 
+//  cObjectArray
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2010, ..., 2010 Pierre Molinaro.
 //
@@ -26,7 +26,7 @@
 cObjectArray::cObjectArray (const GALGAS_objectlist & inObjectList,
                             C_Compiler * inCompiler
                             COMMA_LOCATION_ARGS) :
-mArray (NULL),
+mArray (nullptr),
 mCount (0) {
   mCount = inObjectList.count () ;
   macroMyNewArray (mArray, GALGAS_object, mCount) ;

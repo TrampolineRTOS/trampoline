@@ -455,7 +455,7 @@ mpn_get_str (unsigned char *str, int base, mp_ptr up, mp_size_t un)
     size_t ndig;
 
     DIGITS_IN_BASE_PER_LIMB (ndig, un, base);
-    xn = 1 + ndig / mp_bases[base].chars_per_limb; /* FIXME: scalar integer division */
+    xn = 1 + ndig / mp_bases[base].chars_per_limb; 
 
     n_pows = 0;
     for (pn = xn; pn != 1; pn = (pn + 1) >> 1)

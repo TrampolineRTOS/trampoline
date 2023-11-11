@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  'AC_FileHandle' : an abstract class for handling files handles                               
+//  'AC_FileHandle' : an abstract class for handling files handles
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2012, ..., 2012 Pierre Molinaro.
 //
@@ -27,13 +27,13 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 class AC_FileHandle {
-//--- 
+//---
   protected: FILE * mFilePtr ;
   protected: C_String mFilePath ;
 
 //--- Protected constructor
   protected: AC_FileHandle (const C_String & inFilePath,
-                             const char * inMode) ;
+                            const char * inMode) ;
 
 //--- No copy
   private: AC_FileHandle (const AC_FileHandle &) ;
@@ -43,7 +43,7 @@ class AC_FileHandle {
   public: virtual ~ AC_FileHandle (void) ;
 
 //---
-  public: inline bool isOpened (void) const { return NULL != mFilePtr ; }
+  public: inline bool isOpened (void) const { return nullptr != mFilePtr ; }
   public: inline C_String filePath (void) const { return mFilePath ; }
 } ;
 

@@ -72,8 +72,7 @@ see https://www.gnu.org/licenses/.  */
    MUL_TOOM33_THRESHOLD / MUL_TOOM22_THRESHOLD is large, an initially small
    relative unbalance will become a larger and larger relative unbalance with
    each recursion (the difference s-t will be invariant over recursive calls).
-   Therefore, we need to call toom32_mul.  FIXME: Suppress depending on
-   MUL_TOOM33_THRESHOLD / MUL_TOOM22_THRESHOLD and on MUL_TOOM22_THRESHOLD.  */
+   Therefore, we need to call toom32_mul. */
 #define TOOM22_MUL_REC(p, a, an, b, bn, ws)				\
   do {									\
     if (! MAYBE_mul_toom22						\

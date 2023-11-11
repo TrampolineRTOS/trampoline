@@ -36,7 +36,7 @@ int
 _mpz_cmp_si (mpz_srcptr u, signed long int v_digit) __GMP_NOTHROW
 {
 #if GMP_NAIL_BITS != 0
-  /* FIXME.  This isn't very pretty.  */
+
   mpz_t tmp;
   mp_limb_t tt[2];
   PTR(tmp) = tt;

@@ -40,17 +40,11 @@ You should have received copies of the GNU General Public License and the
 GNU Lesser General Public License along with the GNU MP Library.  If not,
 see https://www.gnu.org/licenses/.  */
 
-/* FIXME: Remove NULL and TMP_*, as soon as all the callers properly
-   allocate and pass the scratch to the function. */
 #include <stdlib.h>		/* for NULL */
 
 #include "gmp.h"
 #include "gmp-impl.h"
 #include "longlong.h"
-
-/* FIXME: The iterative version splits the operand in two slightly unbalanced
-   parts, the use of log_2 (or counting the bits) underestimate the maximum
-   number of iterations.  */
 
 #ifdef TUNE_PROGRAM_BUILD
 #define NPOWS \
@@ -112,7 +106,6 @@ mpn_bc_invertappr (mp_ptr ip, mp_srcptr dp, mp_size_t n, mp_ptr tp)
 
     /* Now xp contains B^2n - {dp,n}*B^n - 1 */
 
-    /* FIXME: if mpn_*pi1_divappr_q handles n==2, use it! */
     if (n == 2) {
       mpn_divrem_2 (ip, 0, xp, 4, dp);
     } else {
@@ -150,9 +143,7 @@ mpn_bc_invertappr (mp_ptr ip, mp_srcptr dp, mp_size_t n, mp_ptr tp)
    happen only if A=B^{n}/2, but this implies X_h = B^{h}*2-1 i.e., AX_h =
    B^{n+h} - A, then we get into the "negative" branch, where X_h is not
    incremented (because A < B^n).
-
-   FIXME: the scratch for mulmod_bnm1 does not currently fit in the scratch, it
-   is allocated apart.  */
+   */
 
 #define USE_MUL_N 1
 
@@ -215,7 +206,7 @@ mpn_ni_invertappr (mp_ptr ip, mp_srcptr dp, mp_size_t n, mp_ptr scratch)
     /* Compute i_jd . */
     if (BELOW_THRESHOLD (n, INV_MULMOD_BNM1_THRESHOLD)
 	|| ((mn = mpn_mulmod_bnm1_next_size (n + 1)) > (n + rn))) {
-      /* FIXME: We do only need {xp,n+1}*/
+
       mpn_mul (xp, dp - n, n, ip - rn, rn);
       mpn_add_n (xp + rn, xp + rn, dp - n, n - rn + 1);
       method = 1; /* Remember we used (truncated) product */
@@ -261,7 +252,6 @@ mpn_ni_invertappr (mp_ptr ip, mp_srcptr dp, mp_size_t n, mp_ptr scratch)
 #endif
     }
 
-    /* Compute x_ju_j. FIXME:We need {rp+rn,rn}, mulhi? */
 #if USE_MUL_N
     mpn_mul_n (rp, xp + n - rn, ip - rn, rn);
 #else

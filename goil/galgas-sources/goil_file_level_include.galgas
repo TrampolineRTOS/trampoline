@@ -36,6 +36,7 @@ grammar goil_file_level_include "LL1" {
 
   unused <start>
   unused <OIL_version>
+  unused <file_without_include>
 }
 
 grammar goil_file_level_include_without_include "LL1" {
@@ -46,8 +47,10 @@ grammar goil_file_level_include_without_include "LL1" {
       ?!@implementation imp
       ?!@applicationDefinition application
     
-    unused <start>
-    unused <OIL_version>
+  unused <start>
+  unused <OIL_version>
+  unused <file>
+  unused <include_file_level>
 }
 
 # vim:ft=ggs:ts=4:sw=4

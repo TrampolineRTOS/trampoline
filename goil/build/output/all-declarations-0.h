@@ -4047,10 +4047,10 @@ class C_Lexique_gtl_5F_scanner : public C_Lexique {
    kToken__40__3F_} ;
 
 //--- Key words table 'goilTemplateKeyWordList'
-  public: static int16_t search_into_goilTemplateKeyWordList (const C_String & inSearchedString) ;
+  public: static int32_t search_into_goilTemplateKeyWordList (const C_String & inSearchedString) ;
 
 //--- Key words table 'galgasDelimitorsList'
-  public: static int16_t search_into_galgasDelimitorsList (const C_String & inSearchedString) ;
+  public: static int32_t search_into_galgasDelimitorsList (const C_String & inSearchedString) ;
   
 
 //--- Assign from attribute
@@ -4082,10 +4082,10 @@ class C_Lexique_gtl_5F_scanner : public C_Lexique {
   protected: virtual bool parseLexicalToken (void) override ;
 
 //--- Get terminal message
-  protected: virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const override ;
+  protected: virtual C_String getMessageForTerminal (const int32_t inTerminalSymbol) const override ;
 
 //--- Get terminal count
-  public: virtual int16_t terminalVocabularyCount (void) const override { return 114 ; }
+  public: virtual int32_t terminalVocabularyCount (void) const override { return 114 ; }
 
 //--- Get Token String
   public: virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const override ;
@@ -14407,10 +14407,10 @@ class C_Lexique_gtl_5F_debugger_5F_scanner : public C_Lexique {
    kToken__40__21_} ;
 
 //--- Key words table 'goilTemplateKeyWordList'
-  public: static int16_t search_into_goilTemplateKeyWordList (const C_String & inSearchedString) ;
+  public: static int32_t search_into_goilTemplateKeyWordList (const C_String & inSearchedString) ;
 
 //--- Key words table 'galgasDelimitorsList'
-  public: static int16_t search_into_galgasDelimitorsList (const C_String & inSearchedString) ;
+  public: static int32_t search_into_galgasDelimitorsList (const C_String & inSearchedString) ;
   
 
 //--- Assign from attribute
@@ -14442,10 +14442,10 @@ class C_Lexique_gtl_5F_debugger_5F_scanner : public C_Lexique {
   protected: virtual bool parseLexicalToken (void) override ;
 
 //--- Get terminal message
-  protected: virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const override ;
+  protected: virtual C_String getMessageForTerminal (const int32_t inTerminalSymbol) const override ;
 
 //--- Get terminal count
-  public: virtual int16_t terminalVocabularyCount (void) const override { return 95 ; }
+  public: virtual int32_t terminalVocabularyCount (void) const override { return 95 ; }
 
 //--- Get Token String
   public: virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const override ;
@@ -17457,4 +17457,88 @@ class GALGAS_gtlBreakpointList_2D_element : public AC_GALGAS_root {
 //----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlBreakpointList_2D_element ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @gtlInstructionListContextStack_2D_element struct
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_gtlInstructionListContextStack_2D_element : public AC_GALGAS_root {
+//--------------------------------- Properties
+  public: GALGAS_uint mProperty_nextInstructionIndex ;
+  public: inline GALGAS_uint readProperty_nextInstructionIndex (void) const {
+    return mProperty_nextInstructionIndex ;
+  }
+
+  public: GALGAS_gtlInstructionList mProperty_instructionList ;
+  public: inline GALGAS_gtlInstructionList readProperty_instructionList (void) const {
+    return mProperty_instructionList ;
+  }
+
+//--------------------------------- Accessors
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_gtlInstructionListContextStack_2D_element constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Default constructor
+  public: GALGAS_gtlInstructionListContextStack_2D_element (void) ;
+
+//--------------------------------- Property setters
+  public: inline void setter_setNextInstructionIndex (const GALGAS_uint & inValue COMMA_UNUSED_LOCATION_ARGS) {
+    mProperty_nextInstructionIndex = inValue ;
+  }
+
+  public: inline void setter_setInstructionList (const GALGAS_gtlInstructionList & inValue COMMA_UNUSED_LOCATION_ARGS) {
+    mProperty_instructionList = inValue ;
+  }
+
+//--------------------------------- Virtual destructor (in debug mode)
+  public: virtual ~ GALGAS_gtlInstructionListContextStack_2D_element (void) ;
+
+//--------------------------------- Native constructor
+  public: GALGAS_gtlInstructionListContextStack_2D_element (const GALGAS_uint & in_nextInstructionIndex,
+                                                            const GALGAS_gtlInstructionList & in_instructionList) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_gtlInstructionListContextStack_2D_element extractObject (const GALGAS_object & inObject,
+                                                                                 C_Compiler * inCompiler
+                                                                                 COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_gtlInstructionListContextStack_2D_element constructor_new (const class GALGAS_uint & inOperand0,
+                                                                                         const class GALGAS_gtlInstructionList & inOperand1
+                                                                                         COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Implementation of getter 'description'
+  public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
+                                              const int32_t inIndentation) const override ;
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_gtlInstructionListContextStack_2D_element & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_gtlInstructionListContextStack_2D_element class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlInstructionListContextStack_2D_element ;
 

@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  C_String : an implementation of fully dynamic character string                               
+//  C_String : an implementation of fully dynamic character string
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 1997, ..., 2020 Pierre Molinaro.
 //
@@ -18,7 +18,6 @@
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-#include "files/C_TextFileWrite.h"
 #include "utilities/MF_MemoryControl.h"
 #include "utilities/md5.h"
 #include "utilities/C_SharedObject.h"
@@ -102,8 +101,8 @@ cEmbeddedString::cEmbeddedString (const uint32_t inCapacity COMMA_LOCATION_ARGS)
 C_SharedObject (THERE),
 mCapacity (0),
 mLength (0),
-mEncodedCString (NULL),
-mString (NULL) {
+mEncodedCString (nullptr),
+mString (nullptr) {
   const uint32_t newCapacity = stringGoodSize (0, inCapacity) ;
   macroMyNewPODArray (mString, utf32, newCapacity) ;
   mCapacity = newCapacity ;
@@ -118,8 +117,8 @@ cEmbeddedString::cEmbeddedString (const cEmbeddedString * inEmbeddedString,
 C_SharedObject (THERE),
 mCapacity (0),
 mLength (0),
-mEncodedCString (NULL),
-mString (NULL) {
+mEncodedCString (nullptr),
+mString (nullptr) {
   macroValidPointer (inEmbeddedString) ;
   macroValidPointer (inEmbeddedString->mString) ;
   MF_Assert (inCapacity > inEmbeddedString->mLength, "inCapacity (%lld) < inEmbeddedString->mLength (%lld)", inCapacity, inEmbeddedString->mLength) ;
@@ -153,7 +152,7 @@ cEmbeddedString::~cEmbeddedString (void) {
       MF_AssertThere (UNICODE_VALUE (mString [mLength]) == '\0',
                       "mString [mLength] == %ld != '\\0'",
                       (int32_t) UNICODE_VALUE (mString [mLength]), '\0') ;
-      if (mEncodedCString != NULL) {
+      if (mEncodedCString != nullptr) {
         macroValidPointer (mEncodedCString) ;
         for (uint32_t i=0 ; i<=mLength ; i++) {
           MF_AssertThere (UNICODE_VALUE (mString [i]) == (uint32_t) mEncodedCString [i],
@@ -189,19 +188,19 @@ void cEmbeddedString::reallocEmbeddedString (const uint32_t inCapacity) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   C O N S T R U C T O R S                                                                     
+//   C O N S T R U C T O R S
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 C_String::C_String (void) :
-mEmbeddedString (NULL) {
+mEmbeddedString (nullptr) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 C_String::C_String (const char * inCstring) :
-mEmbeddedString (NULL) {
-  if (inCstring != NULL) {
+mEmbeddedString (nullptr) {
+  if (inCstring != nullptr) {
     genericCharArrayOutput (inCstring, (int32_t) (strlen (inCstring) & UINT32_MAX)) ;
   }
 }
@@ -209,8 +208,8 @@ mEmbeddedString (NULL) {
 //----------------------------------------------------------------------------------------------------------------------
 
 C_String::C_String (const utf32 * inUTF32String) :
-mEmbeddedString (NULL) {
-  if (inUTF32String != NULL) {
+mEmbeddedString (nullptr) {
+  if (inUTF32String != nullptr) {
     genericUnicodeArrayOutput (inUTF32String, utf32_strlen (inUTF32String)) ;
   }
 }
@@ -219,7 +218,7 @@ mEmbeddedString (NULL) {
 
 C_String::C_String (const C_String & inSource) : // Copy constructor
 AC_OutputStream (inSource),
-mEmbeddedString (NULL) {
+mEmbeddedString (nullptr) {
   macroAssignSharedObject (mEmbeddedString, inSource.mEmbeddedString) ;
 }
 
@@ -229,12 +228,12 @@ C_String C_String::newWithStdIn (void) {
   const size_t BUFFER_SIZE = 1000 ;
   char buffer [BUFFER_SIZE] ;
   const char * s = fgets (buffer, BUFFER_SIZE, stdin) ;
-  return (s == NULL) ? "" : s ;
+  return (s == nullptr) ? "" : s ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   D E S T R U C T O R                                                                         
+//   D E S T R U C T O R
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -255,12 +254,12 @@ C_String C_String::spaces (const int32_t inSpaceCount) {
 //----------------------------------------------------------------------------------------------------------------------
 
 uint32_t C_String::capacity (void) const {
-  return (mEmbeddedString == NULL) ? 0 : mEmbeddedString->mCapacity ;
+  return (mEmbeddedString == nullptr) ? 0 : mEmbeddedString->mCapacity ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   A S S I G N M E N T    O P E R A T O R S                                                    
+//   A S S I G N M E N T    O P E R A T O R S
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -280,14 +279,14 @@ void C_String::releaseString (void) {
     checkString (HERE) ;
   #endif
   macroDetachSharedObject (mEmbeddedString) ;
-  mEmbeddedString = NULL ;
+  mEmbeddedString = nullptr ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 uint32_t C_String::hash (void) const {
   uint32_t h = 0 ;
-  if (mEmbeddedString != NULL) {
+  if (mEmbeddedString != nullptr) {
     for (uint32_t i=0 ; i<mEmbeddedString->mLength ; i++) {
       h <<= 3 ;
       h ^= UNICODE_VALUE (mEmbeddedString->mString [i]) ;
@@ -300,7 +299,7 @@ uint32_t C_String::hash (void) const {
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void C_String::checkString (LOCATION_ARGS) const {
-    if (mEmbeddedString != NULL) {
+    if (mEmbeddedString != nullptr) {
       macroValidSharedObject (mEmbeddedString, cEmbeddedString) ;
       mEmbeddedString->checkEmbeddedString (THERE) ;
     }
@@ -309,7 +308,7 @@ uint32_t C_String::hash (void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   G E T    M E T H O D S                                                                      
+//   G E T    M E T H O D S
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -329,14 +328,14 @@ utf32 C_String::operator () (const int32_t inIndex COMMA_LOCATION_ARGS) const {
 
 utf32 C_String::readCharOrNul (const int32_t inIndex COMMA_LOCATION_ARGS) const {
   MF_AssertThere (inIndex >= 0, "inIndex (%ld) < 0", inIndex, 0) ;
-  return ((mEmbeddedString == NULL) || ((uint32_t) inIndex >= mEmbeddedString->mLength))
+  return ((mEmbeddedString == nullptr) || ((uint32_t) inIndex >= mEmbeddedString->mLength))
     ? TO_UNICODE ('\0')
     : mEmbeddedString->mString [inIndex] ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   lastCharacter                                                                               
+//   lastCharacter
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -353,7 +352,7 @@ bool C_String::containsCharacter (const utf32 inCharacter) const {
     checkString (HERE) ;
   #endif
   bool found = false ;
-  if (NULL != mEmbeddedString) {
+  if (nullptr != mEmbeddedString) {
     for (uint32_t i=0 ; (i<mEmbeddedString->mLength) && ! found ; i++) {
       found = UNICODE_VALUE (mEmbeddedString->mString [i]) == UNICODE_VALUE (inCharacter) ;
     }
@@ -369,7 +368,7 @@ bool C_String::containsCharacterInRange (const utf32 inFirstCharacter,
     checkString (HERE) ;
   #endif
   bool found = false ;
-  if (NULL != mEmbeddedString) {
+  if (nullptr != mEmbeddedString) {
     for (uint32_t i=0 ; (i<mEmbeddedString->mLength) && ! found ; i++) {
       found =
         (UNICODE_VALUE (mEmbeddedString->mString [i]) >= UNICODE_VALUE (inFirstCharacter))
@@ -387,16 +386,16 @@ int32_t C_String::length (void) const {
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkString (HERE) ;
   #endif
-  return (mEmbeddedString == NULL) ? 0 : (int32_t) mEmbeddedString->mLength ;
+  return (mEmbeddedString == nullptr) ? 0 : (int32_t) mEmbeddedString->mLength ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 const char * C_String::cString (UNUSED_LOCATION_ARGS) const {
   const char * result = "" ;
-  if (NULL != mEmbeddedString) {
+  if (nullptr != mEmbeddedString) {
     macroValidSharedObject (mEmbeddedString, cEmbeddedString) ;
-    if (NULL == mEmbeddedString->mEncodedCString) {
+    if (nullptr == mEmbeddedString->mEncodedCString) {
       uint32_t allocatedSize = mEmbeddedString->mLength + 1 ;
       macroMyReallocPODArray (mEmbeddedString->mEncodedCString, char, allocatedSize) ;
       uint32_t idx = 0 ;
@@ -428,7 +427,7 @@ const char * C_String::cString (UNUSED_LOCATION_ARGS) const {
 
 const utf32 * C_String::utf32String (UNUSED_LOCATION_ARGS) const {
   const utf32 * result = kEmptyUTF32String ;
-  if (NULL != mEmbeddedString) {
+  if (nullptr != mEmbeddedString) {
     result = mEmbeddedString->mString ;
   }
   return result ;
@@ -443,7 +442,7 @@ const utf32 * C_String::utf32String (UNUSED_LOCATION_ARGS) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_String::insulateEmbeddedString (const uint32_t inNewCapacity) const {
-  if (mEmbeddedString == NULL) {
+  if (mEmbeddedString == nullptr) {
     macroMyNew (mEmbeddedString, cEmbeddedString (inNewCapacity COMMA_HERE)) ;
   }else{
     macroValidSharedObject (mEmbeddedString, cEmbeddedString) ;
@@ -451,11 +450,11 @@ void C_String::insulateEmbeddedString (const uint32_t inNewCapacity) const {
       macroMyDeletePODArray (mEmbeddedString->mEncodedCString) ;
       mEmbeddedString->reallocEmbeddedString (inNewCapacity) ;
     }else{
-      cEmbeddedString * p = NULL ;
+      cEmbeddedString * p = nullptr ;
       macroMyNew (p, cEmbeddedString (mEmbeddedString, inNewCapacity COMMA_HERE)) ;
       macroAssignSharedObject (mEmbeddedString, p) ;
       macroDetachSharedObject (p) ;
-    }  
+    }
     #ifndef DO_NOT_GENERATE_CHECKINGS
       checkString (HERE) ;
     #endif
@@ -471,14 +470,14 @@ void C_String::setLengthToZero (void) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkString (HERE) ;
   #endif
-  if (mEmbeddedString != NULL) {
+  if (mEmbeddedString != nullptr) {
     if (mEmbeddedString->isUniquelyReferenced ()) {
       macroMyDeletePODArray (mEmbeddedString->mEncodedCString) ;
       mEmbeddedString->mLength = 0 ;
       mEmbeddedString->mString [0] = TO_UNICODE ('\0') ;
     }else{
       macroDetachSharedObject (mEmbeddedString) ;
-      mEmbeddedString = NULL ;
+      mEmbeddedString = nullptr ;
     }
   }
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -494,7 +493,7 @@ void C_String::insulate (void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   S E T   F R O M    S T R I N G                                                              
+//   S E T   F R O M    S T R I N G
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -506,7 +505,7 @@ void C_String::setFromString (const C_String & inString) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   S E T    C A P A C I T Y                                                                    
+//   S E T    C A P A C I T Y
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -514,14 +513,14 @@ void C_String::setCapacity (const uint32_t inNewCapacity) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkString (HERE) ;
   #endif
-  if (mEmbeddedString != NULL) {
+  if (mEmbeddedString != nullptr) {
     macroMyDeletePODArray (mEmbeddedString->mEncodedCString) ;
     if ((mEmbeddedString->mLength < inNewCapacity) && (mEmbeddedString->mCapacity < inNewCapacity)) {
       if (mEmbeddedString->isUniquelyReferenced ()) {
         macroMyDeletePODArray (mEmbeddedString->mEncodedCString) ;
         mEmbeddedString->reallocEmbeddedString (inNewCapacity) ;
       }else{
-        cEmbeddedString * p = NULL ;
+        cEmbeddedString * p = nullptr ;
         macroMyNew (p, cEmbeddedString (mEmbeddedString, inNewCapacity COMMA_HERE)) ;
         macroAssignSharedObject (mEmbeddedString, p)  ;
         macroDetachSharedObject (p) ;
@@ -537,7 +536,7 @@ void C_String::setCapacity (const uint32_t inNewCapacity) {
     #endif
   }
   MF_Assert (capacity () >= inNewCapacity, "capacity (%lld) < inNewCapacity (%lld)", capacity (), inNewCapacity) ;
-  if (mEmbeddedString != NULL) {
+  if (mEmbeddedString != nullptr) {
     macroValidSharedObject (mEmbeddedString, cEmbeddedString) ;
     macroUniqueSharedObject (mEmbeddedString) ;
   }
@@ -602,7 +601,7 @@ void C_String::performActualCharArrayOutput (const char * inCharArray,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   setCharacterAtIndex                                                                         
+//   setCharacterAtIndex
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -615,7 +614,7 @@ void C_String::setUnicodeCharacterAtIndex (const utf32 inCharacter,
   #endif
   macroValidPointerThere (mEmbeddedString) ;
   MF_AssertThere (inIndex >= 0, "inIndex (%ld) < 0", inIndex, 0) ;
-  if (NULL != mEmbeddedString) {
+  if (nullptr != mEmbeddedString) {
     MF_AssertThere ((uint32_t) inIndex < mEmbeddedString->mLength,
                     "inIndex (%ld) >= string length (%ld)",
                     inIndex, mEmbeddedString->mLength) ;
@@ -627,7 +626,7 @@ void C_String::setUnicodeCharacterAtIndex (const utf32 inCharacter,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   S U P P R E S S    C H A R A C T E R S                                                      
+//   S U P P R E S S    C H A R A C T E R S
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -666,7 +665,7 @@ void C_String::suppress (const int32_t inLocation,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   I N S E R T    C H A R A C T E R                                                            
+//   I N S E R T    C H A R A C T E R
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -703,7 +702,7 @@ void C_String::insertCharacterAtIndex (const utf32 inChar,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   G E T    L I N E S    A R R A Y                                                             
+//   G E T    L I N E S    A R R A Y
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -770,9 +769,9 @@ void C_String::linesArray (TC_UniqueArray <C_String> & outStringArray) const {
           outStringArray (index COMMA_HERE).appendUnicodeCharacter (c COMMA_HERE) ;
           state = kAppendToCurrentLine ;
         }
-        break ;     
+        break ;
       }
-    }  
+    }
   }
 }
 
@@ -824,18 +823,18 @@ int32_t C_String::indexFromLineAndColumn (const int32_t inLineNumber,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   C O N T A I N S   S T R I N G                                                               
+//   C O N T A I N S   S T R I N G
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 bool C_String::containsString (const C_String & inSearchedString) const {
   const utf32 * source = utf32String (HERE) ;
-  bool contains = source != NULL ;
+  bool contains = source != nullptr ;
   if (contains) {
     const utf32 * searchedString = inSearchedString.utf32String (HERE) ;
-    contains = searchedString == NULL ;
+    contains = searchedString == nullptr ;
     if (! contains) {
-      contains = ::utf32_strstr (source, searchedString) != NULL ;
+      contains = ::utf32_strstr (source, searchedString) != nullptr ;
     }
   }
   return contains ;
@@ -843,7 +842,7 @@ bool C_String::containsString (const C_String & inSearchedString) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   componentsSeparatedByString                                                                 
+//   componentsSeparatedByString
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -851,14 +850,14 @@ void C_String::componentsSeparatedByString (const C_String & inSeparatorString,
                                             TC_UniqueArray <C_String> & outResult) const {
   outResult.setCountToZero () ;
   const utf32 * sourcePtr = utf32String (HERE) ;
-  if (sourcePtr == NULL) {
+  if (sourcePtr == nullptr) {
     outResult.appendObject (C_String ()) ;
   }else{
     const int32_t splitStringLength = inSeparatorString.length () ;
     const utf32 * separator = inSeparatorString.utf32String (HERE) ;
     if (splitStringLength > 0) {
       const utf32 * p = ::utf32_strstr (sourcePtr, separator) ;
-      while (p != NULL) {
+      while (p != nullptr) {
         C_String s ;
         s.genericUnicodeArrayOutput (sourcePtr, (int32_t) ((p - sourcePtr) & INT32_MAX)) ;
         outResult.appendObject (s) ;
@@ -872,7 +871,7 @@ void C_String::componentsSeparatedByString (const C_String & inSeparatorString,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   componentsJoinedByString                                                                    
+//   componentsJoinedByString
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -891,7 +890,7 @@ C_String C_String::componentsJoinedByString (const TC_UniqueArray <C_String> & i
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   stringByDeletingTailFromString                                                              
+//   stringByDeletingTailFromString
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -902,7 +901,7 @@ C_String C_String::stringByDeletingTailFromString (const C_String & inSearchedSt
     const utf32 * sourcePtr = utf32String (HERE) ;
     const utf32 * p = ::utf32_strstr (sourcePtr,
                                       inSearchedString.utf32String (HERE)) ;
-    if (p != NULL) {
+    if (p != nullptr) {
       result.setLengthToZero () ;
       result.genericUnicodeArrayOutput (sourcePtr, (int32_t) ((p - sourcePtr) & INT32_MAX)) ;
     }
@@ -912,7 +911,7 @@ C_String C_String::stringByDeletingTailFromString (const C_String & inSearchedSt
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   endsWithString                                                                              
+//   endsWithString
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -927,7 +926,7 @@ bool C_String::endsWithString (const C_String & inString) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   S U B S T I T U T E    C H A R A C T E R    B Y    S T R I N G                              
+//   S U B S T I T U T E    C H A R A C T E R    B Y    S T R I N G
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -947,7 +946,7 @@ C_String C_String::stringByReplacingCharacterByString (const utf32 inCharacter,
         resultingString << (inString) ;
         resultingString.appendUnicodeCharacter (c COMMA_HERE) ;
       }
-      previousCharIsSubstituteChar = false ;    
+      previousCharIsSubstituteChar = false ;
     }else if (UNICODE_VALUE (c) == UNICODE_VALUE (inCharacter)) {
       previousCharIsSubstituteChar = true ;
     }else{
@@ -963,7 +962,7 @@ C_String C_String::stringByReplacingCharacterByString (const utf32 inCharacter,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   S U B S T I T U T E    S T R I N G    B Y    S T R I N G                                    
+//   S U B S T I T U T E    S T R I N G    B Y    S T R I N G
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -975,9 +974,6 @@ C_String C_String::stringByReplacingStringByString (const C_String inSearchedStr
   outReplacementCount = 0 ;
   outOk = inSearchedString.length () != 0 ;
   if (outOk) {
-    //printf ("SOURCE STRING: '%s' (length %d)\n", cString (HERE), length ()) ; 
-    //printf ("SEARCHED STRING: '%s' (length %d)\n", inSearchedString.cString (HERE), inSearchedString.length (HERE)) ; 
-    //printf ("REPLACEMENT STRING '%s'\n", inReplacementString.cString (HERE)) ; 
     const utf32 * sourceString = utf32String (HERE) ;
     const int32_t sourceLength = length () ;
     const utf32 * searchedString = inSearchedString.utf32String (HERE) ;
@@ -985,7 +981,6 @@ C_String C_String::stringByReplacingStringByString (const C_String inSearchedStr
     int32_t index = 0 ;
     while (index <= (sourceLength - searchedStringLength)) {
       const bool found = utf32_strncmp (& sourceString [index], searchedString, searchedStringLength) == 0 ;
-      //printf ("AT INDEX %d, found: %d\n", index, found) ;
       if (found) {
         result << (inReplacementString) ;
         index += searchedStringLength ;
@@ -996,7 +991,6 @@ C_String C_String::stringByReplacingStringByString (const C_String inSearchedStr
       }
     }
     result.appendUTF32String (& sourceString [index]) ;
-    //printf ("RESULT STRING: '%s'\n", result.cString (HERE)) ;
   }
   return result ;
 }
@@ -1012,7 +1006,7 @@ C_String C_String::stringByReplacingStringByString (const C_String inSearchedStr
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   G E T    L A S T   O C C U R R E N C E   O F   A   C H A R                                  
+//   G E T    L A S T   O C C U R R E N C E   O F   A   C H A R
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1132,7 +1126,7 @@ C_String C_String::reversedString (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_String::reverseStringInPlace (void) {
-  if (NULL != mEmbeddedString) {
+  if (nullptr != mEmbeddedString) {
     const int32_t receiver_length = length () ;
     macroUniqueSharedObject (mEmbeddedString) ;
     insulateEmbeddedString (mEmbeddedString->mCapacity) ;
@@ -1167,8 +1161,8 @@ uint32_t C_String::unsignedIntegerValue (void) const {
       result *= 10 ;
       result += c - '0' ;
     }
-  }  
-  return result ;  
+  }
+  return result ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1332,7 +1326,7 @@ void C_String::convertToSInt64 (int64_t & outResult,
 
 void C_String::convertToDouble (double & outDoubleValue,
                                 bool & outOk) const {
-  outDoubleValue = 0.0 ; // strtod (mString.cString (HERE)) ;
+  outDoubleValue = 0.0 ;
   int32_t idx = 0 ;
 //--- Sign
   bool positive = true ;
@@ -1624,19 +1618,19 @@ C_String C_String::HTMLRepresentation (void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   S T R I N G    C O M P A R E                                                                
+//   S T R I N G    C O M P A R E
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 int32_t C_String::compare (const char * const inCstring) const {
   int32_t result = 0 ;
   const utf32 * myStringPtr = utf32String (HERE) ;
-  if (inCstring == NULL) {
+  if (inCstring == nullptr) {
     result = 1 ;
-  }else if (myStringPtr == NULL) {
+  }else if (myStringPtr == nullptr) {
     result = -1 ;
   }else{
-    result = ::utf32_char_strcmp (myStringPtr, inCstring) ; // Never call strcmp with NULL pointer(s) !
+    result = ::utf32_char_strcmp (myStringPtr, inCstring) ; // Never call strcmp with nullptr pointer(s) !
   }
   return result ;
 }
@@ -1647,12 +1641,12 @@ int32_t C_String::compare (const C_String & inString) const {
   int32_t result = 0 ;
   const utf32 * myStringPtr = utf32String (HERE) ;
   const utf32 * otherStringPtr = inString.utf32String (HERE) ;
-  if (myStringPtr == NULL) {
+  if (myStringPtr == nullptr) {
     result = 1 ;
-  }else if (otherStringPtr == NULL) {
+  }else if (otherStringPtr == nullptr) {
     result = -1 ;
   }else{
-    result = ::utf32_strcmp (myStringPtr, otherStringPtr) ; // Never call strcmp with NULL pointer(s) !
+    result = ::utf32_strcmp (myStringPtr, otherStringPtr) ; // Never call strcmp with nullptr pointer(s) !
   }
   return result ;
 }
@@ -1665,14 +1659,14 @@ int32_t C_String::compareStringByLength (const C_String & inString) const {
   const utf32 * otherStringPtr = inString.utf32String (HERE) ;
   if (otherStringPtr == myStringPtr) {
     result = 0 ;
-  }else if (otherStringPtr == NULL) {
+  }else if (otherStringPtr == nullptr) {
     result = 1 ;
-  }else if (otherStringPtr == NULL) {
+  }else if (otherStringPtr == nullptr) {
     result = -1 ;
   }else{
     result = length () - inString.length () ;
     if (result == 0) {
-      result = ::utf32_strcmp (myStringPtr, otherStringPtr) ; // Never call strcmp with NULL pointer(s) !
+      result = ::utf32_strcmp (myStringPtr, otherStringPtr) ; // Never call strcmp with nullptr pointer(s) !
     }
   }
   return result ;
@@ -1692,7 +1686,7 @@ bool C_String::operator != (const C_String & inString) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   +    O P E R A T O R                                                                        
+//   +    O P E R A T O R
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1712,7 +1706,7 @@ C_String C_String::operator + (const char * inOperand) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   pathExtension                                                                               
+//   pathExtension
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1741,7 +1735,7 @@ C_String C_String::pathExtension (void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   stringByDeletingPathExtension                                                               
+//   stringByDeletingPathExtension
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1769,7 +1763,7 @@ stringByDeletingPathExtension (void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   stringByDeletingLastPathComponent                                                           
+//   stringByDeletingLastPathComponent
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1797,7 +1791,7 @@ stringByDeletingLastPathComponent (void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   stringByAppendingPathComponent                                                              
+//   stringByAppendingPathComponent
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1817,7 +1811,7 @@ stringByAppendingPathComponent (const C_String & inPathComponent) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   lastPathComponent                                                                           
+//   lastPathComponent
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1854,7 +1848,7 @@ C_String C_String::lastPathComponentWithoutExtension (void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   M D 5                                                                                       
+//   M D 5
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1865,8 +1859,6 @@ C_String C_String::md5 (void) const {
   MD5_Init (&context) ;
   MD5_Update(&context, (uint8_t *) cString (HERE), (uint32_t) length ()) ;
   MD5_Final (digest, &context);
-
-//  ::md5 ((uint8_t *) cString (HERE), (uint32_t) length (), digest);
   char s [40] ;
   for (uint32_t i=0 ; i<16 ; i++) {
     snprintf (s, 40, "%02X", digest [i]) ;
@@ -1877,7 +1869,7 @@ C_String C_String::md5 (void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   S U B    S T R I N G    F R O M    I N D E X                                                
+//   S U B    S T R I N G    F R O M    I N D E X
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1891,7 +1883,7 @@ C_String C_String::subStringFromIndex (const int32_t inStartIndex) const  {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   R I G H T    S U B    S T R I N G                                                           
+//   R I G H T    S U B    S T R I N G
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1907,7 +1899,7 @@ C_String C_String::rightSubString (const int32_t inLength) const  {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   L E F T    S U B    S T R I N G                                                             
+//   L E F T    S U B    S T R I N G
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1923,13 +1915,13 @@ C_String C_String::leftSubString (const int32_t inLength) const  {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   A S S I G N M E N T    O P E R A T O R S                                                    
+//   A S S I G N M E N T    O P E R A T O R S
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 C_String & C_String::operator = (const char * inSource) {
   setLengthToZero () ;
-  if (inSource != NULL) {
+  if (inSource != nullptr) {
     genericCharArrayOutput (inSource, (int32_t) (strlen (inSource) & UINT32_MAX)) ;
   }
   return * this ;
@@ -1937,7 +1929,7 @@ C_String & C_String::operator = (const char * inSource) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   S E T   F R O M    S T R I N G                                                              
+//   S E T   F R O M    S T R I N G
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1948,7 +1940,7 @@ void C_String::setFromCstring (const char * inCstring) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   X M L    E S C A P E D    S T R I N G                                                       
+//   X M L    E S C A P E D    S T R I N G
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1966,7 +1958,7 @@ C_String C_String::XMLEscapedString (void) const {
     case '\n' : result << "&#10;" ; break ;
     default   : result.appendUnicodeCharacter (c COMMA_HERE) ; break;
     }
-  } 
+  }
   return result ;
 }
 
@@ -2052,7 +2044,7 @@ C_String C_String::stringByStandardizingPath (void) const {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-  
+
 bool C_String::parseUTF8 (const C_Data & inDataString,
                           const int32_t inOffset,
                           C_String & outString) {
@@ -2108,7 +2100,7 @@ bool C_String::parseUTF8 (const C_Data & inDataString,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Exception generated by readTextFile method when a read error occurs                          
+//  Exception generated by readTextFile method when a read error occurs
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -2146,11 +2138,11 @@ uint32_t C_String::LevenshteinDistanceFromString (const C_String & inOperand) co
   for (int32_t i=0 ; i<=myLength ; i++) {
     distance.setObjectAtIndexes ((uint32_t) i, i, 0 COMMA_HERE) ;
   }
- 
+
   for (int32_t j=0 ; j<=operandLength ; j++) {
     distance.setObjectAtIndexes ((uint32_t) j, 0, j COMMA_HERE) ;
   }
- 
+
   for (int32_t j=1 ; j<=operandLength ; j++) {
     for (int32_t i=1 ; i<=myLength ; i++) {
       if (UNICODE_VALUE (this->operator () (i-1 COMMA_HERE)) == UNICODE_VALUE (inOperand (j-1 COMMA_HERE))) {
@@ -2183,7 +2175,7 @@ uint32_t C_String::LevenshteinDistanceFromString (const C_String & inOperand) co
   {
     for i from 1 to m
     {
-      if s[i] = t[j] then  
+      if s[i] = t[j] then
         d[i, j] := d[i-1, j-1]       // no operation required
       else
         d[i, j] := minimum

@@ -4024,8 +4024,6 @@ mpz_sizeinbase (const mpz_t u, int base)
       return (bits + 3) / 4;
     case 32:
       return (bits + 4) / 5;
-      /* FIXME: Do something more clever for the common case of base
-	 10. */
     }
 
   tp = gmp_xalloc_limbs (un);

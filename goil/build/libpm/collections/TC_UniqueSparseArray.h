@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  Declaration and implementation of the template class 'TC_UniqueSparseArray'                  
+//  Declaration and implementation of the template class 'TC_UniqueSparseArray'
 //
 //  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR AND ASSIGNMENT OPERATOR.                    *
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2008, ..., 2008 Pierre Molinaro.
 //
@@ -30,7 +30,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   Template class predeclaration                                                               
+//   Template class predeclaration
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -38,7 +38,7 @@ template <typename TYPE> class TC_UniqueSparseArray ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   swap function for TC_UniqueSparseArray <TYPE> classes                                       
+//   swap function for TC_UniqueSparseArray <TYPE> classes
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -47,14 +47,14 @@ template <typename TYPE> void swap (TC_UniqueSparseArray <TYPE> & ioOperand1,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   Template class declaration                                                                  
+//   Template class declaration
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> class TC_UniqueSparseArray {
 //--- Default Constructor
   public: TC_UniqueSparseArray (const TYPE & inDefaultValue) ;
-  
+
 //--- Virtual Destructor
   public: virtual ~TC_UniqueSparseArray (void) ;
 
@@ -71,7 +71,7 @@ template <typename TYPE> class TC_UniqueSparseArray {
 
 //--- Get entry
   public: TYPE objectAtIndex (const uint32_t inIndex) const ;
-  
+
 //--- Is default Value at index ?
   public: bool isDefaultObjectAtIndex (const uint32_t inIndex) const ;
 
@@ -104,20 +104,20 @@ template <typename TYPE> class TC_UniqueSparseArray {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   Default Constructor                                                                         
+//   Default Constructor
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> TC_UniqueSparseArray <TYPE>::TC_UniqueSparseArray (const TYPE & inDefaultValue) :
 mDefaultValue (inDefaultValue) {
   for (int32_t i=0 ; i<256 ; i++) {
-    mArray [i] = NULL ;
+    mArray [i] = nullptr ;
   }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   Destructor                                                                                  
+//   Destructor
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -127,12 +127,12 @@ template <typename TYPE> TC_UniqueSparseArray <TYPE>::~TC_UniqueSparseArray (voi
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   Remove all objects and deallocate                                                           
+//   Remove all objects and deallocate
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> void TC_UniqueSparseArray <TYPE>::freeArrayH (TC_arrayH * & ioArrayH) {
-  if (ioArrayH != NULL) {
+  if (ioArrayH != nullptr) {
     for (int32_t i=0 ; i<256 ; i++) {
       macroMyDelete (ioArrayH->mArrayL [i]) ;
     }
@@ -143,7 +143,7 @@ template <typename TYPE> void TC_UniqueSparseArray <TYPE>::freeArrayH (TC_arrayH
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> void TC_UniqueSparseArray <TYPE>::freeArrayU (TC_arrayU * & ioArrayU) {
-  if (ioArrayU != NULL) {
+  if (ioArrayU != nullptr) {
     for (int32_t i=0 ; i<256 ; i++) {
       freeArrayH (ioArrayU->mArrayH [i]) ;
     }
@@ -161,7 +161,7 @@ template <typename TYPE> void TC_UniqueSparseArray <TYPE>::free (void) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   Set entry                                                                                   
+//   Set entry
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -173,23 +173,23 @@ template <typename TYPE> void TC_UniqueSparseArray <TYPE>::setObjectAtIndex (con
   const uint32_t indexL = inIndex & 255 ;
 //--- Primary
   TC_arrayU * & upperArrayRef = mArray [primaryIndex] ;
-  if (upperArrayRef == NULL) {
+  if (upperArrayRef == nullptr) {
     macroMyNew (upperArrayRef, TC_arrayU) ;
     for (int32_t i=0 ; i<256 ; i++) {
-      upperArrayRef->mArrayH [i] = NULL ;
+      upperArrayRef->mArrayH [i] = nullptr ;
     }
   }
 //--- Upper
   TC_arrayH * & highArrayRef = upperArrayRef->mArrayH [indexU] ;
-  if (highArrayRef == NULL) {
+  if (highArrayRef == nullptr) {
     macroMyNew (highArrayRef, TC_arrayH) ;
     for (int32_t i=0 ; i<256 ; i++) {
-      highArrayRef->mArrayL [i] = NULL ;
+      highArrayRef->mArrayL [i] = nullptr ;
     }
   }
 //--- High
   TC_arrayL * & lowArrayRef = highArrayRef->mArrayL [indexH] ;
-  if (lowArrayRef == NULL) {
+  if (lowArrayRef == nullptr) {
     macroMyNew (lowArrayRef, TC_arrayL) ;
     for (int32_t i=0 ; i<256 ; i++) {
       lowArrayRef->mObjectArray [i] = mDefaultValue ;
@@ -205,7 +205,7 @@ template <typename TYPE> void TC_UniqueSparseArray <TYPE>::setObjectAtIndex (con
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   Object at index                                                                             
+//   Object at index
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -213,13 +213,13 @@ template <typename TYPE> TYPE TC_UniqueSparseArray <TYPE>::objectAtIndex (const 
   TYPE result = mDefaultValue ;
   const uint32_t primaryIndex = inIndex >> 24 ;
   TC_arrayU * upperArrayRef = mArray [primaryIndex] ;
-  if (upperArrayRef != NULL) {
+  if (upperArrayRef != nullptr) {
     const uint32_t indexU = (inIndex >> 16) & 255 ;
     TC_arrayH * highArrayRef = upperArrayRef->mArrayH [indexU] ;
-    if (highArrayRef != NULL) {
+    if (highArrayRef != nullptr) {
       const uint32_t indexH = (inIndex >> 8) & 255 ;
       TC_arrayL * lowArrayRef = highArrayRef->mArrayL [indexH] ;
-      if (lowArrayRef != NULL) {
+      if (lowArrayRef != nullptr) {
         const uint32_t indexL = inIndex & 255 ;
         result = lowArrayRef->mObjectArray [indexL] ;
       }
@@ -231,7 +231,7 @@ template <typename TYPE> TYPE TC_UniqueSparseArray <TYPE>::objectAtIndex (const 
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   Default object at index                                                                     
+//   Default object at index
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -243,7 +243,7 @@ template <typename TYPE> bool TC_UniqueSparseArray <TYPE>::findFirstEntryWithInd
   uint32_t indexH = (ioIndex >> 8) & 255 ;
   uint32_t indexL = ioIndex & 255 ;
 //--- Primary
-  found = mArray [primaryIndex] != NULL ;
+  found = mArray [primaryIndex] != nullptr ;
   if (! found) {
     indexU = 0 ;
     indexH = 0 ;
@@ -251,21 +251,21 @@ template <typename TYPE> bool TC_UniqueSparseArray <TYPE>::findFirstEntryWithInd
   }
   primaryIndex ++ ;
   while ((primaryIndex < 256) && ! found) {
-    found = mArray [primaryIndex] != NULL ;
+    found = mArray [primaryIndex] != nullptr ;
     primaryIndex ++ ;
   }
   primaryIndex -- ;
 //--- Upper
   if (found) {
     const TC_arrayU * upperArrayRef = mArray [primaryIndex] ;
-    found = upperArrayRef->mArrayH [indexU] != NULL ;
+    found = upperArrayRef->mArrayH [indexU] != nullptr ;
     if (! found) {
       indexH = 0 ;
       indexL = 0 ;
     }
     indexU ++ ;
     while ((indexU < 256) && ! found) {
-      found = upperArrayRef->mArrayH [indexU] != NULL ;
+      found = upperArrayRef->mArrayH [indexU] != nullptr ;
       indexU ++ ;
     }
     indexU -- ;
@@ -278,13 +278,13 @@ template <typename TYPE> bool TC_UniqueSparseArray <TYPE>::findFirstEntryWithInd
       found = findFirstEntryWithIndexAfterNotFound (ioIndex) ;
     }else{
       const TC_arrayH * highArrayRef = upperArrayRef->mArrayH [indexU] ;
-      found = highArrayRef->mArrayL [indexH] != NULL ;
+      found = highArrayRef->mArrayL [indexH] != nullptr ;
       if (! found) {
         indexL = 0 ;
       }
       indexH ++ ;
       while ((indexH < 256) && ! found) {
-        found = highArrayRef->mArrayL [indexH] != NULL ;
+        found = highArrayRef->mArrayL [indexH] != nullptr ;
         indexH ++ ;
       }
       indexH -- ;
@@ -336,7 +336,7 @@ template <typename TYPE> bool TC_UniqueSparseArray <TYPE>::findFirstEntryWithInd
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   Default object at index                                                                     
+//   Default object at index
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -344,13 +344,13 @@ template <typename TYPE> bool TC_UniqueSparseArray <TYPE>::isDefaultObjectAtInde
   bool result = true ;
   const uint32_t primaryIndex = inIndex >> 24 ;
   TC_arrayU * upperArrayRef = mArray [primaryIndex] ;
-  if (upperArrayRef != NULL) {
+  if (upperArrayRef != nullptr) {
     const uint32_t indexU = (inIndex >> 16) & 255 ;
     TC_arrayH * highArrayRef = upperArrayRef->mArrayH [indexU] ;
-    if (highArrayRef != NULL) {
+    if (highArrayRef != nullptr) {
       const uint32_t indexH = (inIndex >> 8) & 255 ;
       TC_arrayL * lowArrayRef = highArrayRef->mArrayL [indexH] ;
-      if (lowArrayRef != NULL) {
+      if (lowArrayRef != nullptr) {
         const uint32_t indexL = inIndex & 255 ;
         result = (lowArrayRef->mExplicitValueFlags [indexL >> 5] & (1 << (indexL & 31))) == 0 ;
       }
@@ -362,7 +362,7 @@ template <typename TYPE> bool TC_UniqueSparseArray <TYPE>::isDefaultObjectAtInde
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   swap function for TC_UniqueSparseArray <TYPE> classes                                       
+//   swap function for TC_UniqueSparseArray <TYPE> classes
 //
 //----------------------------------------------------------------------------------------------------------------------
 

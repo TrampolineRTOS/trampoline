@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  GALGAS prologue / epilogue handling class                                                    
+//  GALGAS prologue / epilogue handling class
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
 //  Copyright (C) 2009, ..., 2010 Pierre Molinaro.
 //
@@ -26,11 +26,11 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                 Prologue / Epilogue Action class                                              
+//                 Prologue / Epilogue Action class
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-static C_PrologueEpilogue * gPrologueEpilogueActionList = NULL ;
+static C_PrologueEpilogue * gPrologueEpilogueActionList = nullptr ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -46,8 +46,8 @@ mEpilogueAction (inEpilogueAction) {
 
 void C_PrologueEpilogue::runPrologueActions (void) {
   const C_PrologueEpilogue * p = gPrologueEpilogueActionList ;
-  while (p != NULL) {
-    if (p->mPrologueAction != NULL) {
+  while (p != nullptr) {
+    if (p->mPrologueAction != nullptr) {
       p->mPrologueAction () ;
     }
     p = p->mNextObjectLink ;
@@ -58,8 +58,8 @@ void C_PrologueEpilogue::runPrologueActions (void) {
 
 void C_PrologueEpilogue::runEpilogueActions (void) {
   const C_PrologueEpilogue * p = gPrologueEpilogueActionList ;
-  while (p != NULL) {
-    if (p->mEpilogueAction != NULL) {
+  while (p != nullptr) {
+    if (p->mEpilogueAction != nullptr) {
       p->mEpilogueAction () ;
     }
     p = p->mNextObjectLink ;
