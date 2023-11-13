@@ -21,6 +21,7 @@ end if%
 set(TRAMPOLINE_BASE_PATH % !basePath %)
 set(TRAMPOLINE_MACHINE_PATH ${TRAMPOLINE_BASE_PATH}/machines)
 set(TRAMPOLINE_GOIL_TEMPLATES ${TRAMPOLINE_BASE_PATH}/goil/templates)
+set(TRAMPOLINE_LIBRARIES_PATH ${TRAMPOLINE_BASE_PATH}/libraries)
 set(APP_GENERATED_PATH ${CMAKE_SOURCE_DIR}/% !PROJECT %)
 
 #goil
@@ -286,14 +287,20 @@ foreach library in exists USEDLIB default ( @() ) do
   if not exists library::CFILE then let library::CFILE := @() end if
   if not exists library::CPPFILE then let library::CPPFILE := @() end if
   if not exists library::ASFILE then let library::ASFILE := @() end if
+  let libpath := ""
+  if library::GLOBAL then
+    let libpath := "${TRAMPOLINE_LIBRARIES_PATH}/" + library::PATH + "/"
+  else
+    let libpath := "${TRAMPOLINE_MACHINE_PATH}/" + library::PATH + "/"
+  end if
   foreach file in library::CFILE do
-    %	${TRAMPOLINE_MACHINE_PATH}/% !library::PATH+"/"+file::VALUE %\n%
+    %	% !libpath + file::VALUE %\n%
   end foreach
   foreach file in library::CPPFILE do
-    %	${TRAMPOLINE_MACHINE_PATH}/% !library::PATH+"/"+file::VALUE %\n%
+    %	% !libpath + file::VALUE %\n%
   end foreach
   foreach file in library::ASFILE do
-    %	${TRAMPOLINE_MACHINE_PATH}/% !library::PATH+"/"+file::VALUE %\n%
+    %	% !libpath + file::VALUE %\n%
   end foreach
 end foreach
 %)
@@ -307,7 +314,11 @@ foreach platform in exists PLATFORM_FILES default ( @() ) do
   let includeDirSet += "${TRAMPOLINE_MACHINE_PATH}/"+platform::PATH
 end foreach
 foreach library in exists USEDLIB default ( @() ) do
-  let includeDirSet += "${TRAMPOLINE_MACHINE_PATH}/"+library::PATH
+  if library::GLOBAL == true then
+    let includeDirSet += "${TRAMPOLINE_LIBRARIES_PATH}/" + library::PATH
+  else
+    let includeDirSet += "${TRAMPOLINE_MACHINE_PATH}/" + library::PATH
+  end if
 end foreach
 let includeDirSet += "${TRAMPOLINE_BASE_PATH}/ioc"
 let includeDirSet += "${TRAMPOLINE_BASE_PATH}/os"
