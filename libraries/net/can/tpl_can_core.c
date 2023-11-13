@@ -200,5 +200,5 @@ void tpl_can_fill_pdu_info(Can_PduType *can_pdu, PduInfoType *pdu_info, Can_IdTy
 	can_pdu->length = (uint8) payload_length;
 
 	pdu_info->SduDataPtr = (uint8 *) can_pdu;
-	pdu_info->SduLength = sizeof(can_pdu) + payload_length;
+	pdu_info->SduLength = sizeof(Can_PduType) + payload_length;
 }
