@@ -39,9 +39,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
+        fetch-depth: 0
 
     - name: arm-none-eabi-gcc GNU Arm Embedded Toolchain
       uses: carlosperate/arm-none-eabi-gcc-action@v1.6.0
