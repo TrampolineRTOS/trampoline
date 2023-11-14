@@ -50,28 +50,37 @@ rule <start> {
 
   let @string config_file_name = [option goil_options.config value]
 
+  #
   # includes the config files
+  #
   let @stringlist configFiles = allTemplateFilePaths(!"config" !config_file_name+".oil")
-  # files are stored from the deepest to the shallowest and we should go from the
-  # shallowest to the deepest.
+
+  #
+  # files are stored from the deepest to the shallowest and we should go from
+  # the shallowest to the deepest.
+  #
   for > (@string file) in  configFiles do
     grammar goil_file_level_include in lstringWith(!file) !?imp !?application !?fileIncludeList !false
   end
 
+  #
   # then look for config files suffixed by the OIL version
-  let @stringlist configVersionFiles = allTemplateFilePaths(!"config" !config_file_name+version+".oil")
+  # But first check the version correspond to at leat one config
+  # file by checking the list is not empty. If the list is empty
+  # an error is generated
+  #
+  let @stringlist configVersionFiles = allTemplateFilePaths(
+    !"config" 
+    !config_file_name+version+".oil"
+  )
+  if [configVersionFiles length] == 0 then
+    error .here : "OIL version " + version + " does not exist"
+  end
+
   for > (@string file) in  configVersionFiles do
-#    message file . "\n";
     grammar goil_file_level_include in lstringWith(!file) !?imp !?application !?fileIncludeList !false
   end
   
-#  log imp;
-  # includes a config.oil file if it exists
-#  @string oilConfigFile := templateFilePath[!"config" !"config.oil"];
-#  if oilConfigFile != "" then
-#    grammar goil_file_level_include in lstringWith[!oilConfigFile] !?imp !?application;
-#  end if;
-
   <file> !?imp !?application !?fileIncludeList !true
 
   # semantics constraint checking

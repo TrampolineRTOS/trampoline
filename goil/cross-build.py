@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-# -*- coding: UTF-8 -*-
 
 #-----------------------------------------------------------------------------*
 # Build goil for mac os x, linux 32, linux 64 and windows
@@ -10,7 +9,7 @@ import sys, os
 
 #-----------------------------------------------------------------------------*
 print("*** building goil for Mac OS X")
-os.chdir("makefile-macosx")
+os.chdir("makefile-unix")
 os.system("./build.py")
 if os.access("goil-mac-os-x.zip", os.W_OK):
   os.remove("goil-mac-os-x.zip")

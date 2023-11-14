@@ -40,26 +40,26 @@ static const int32_t gProductions_goil_type_level_include [] = {
 , NONTERMINAL (6) // <OIL_version>
 , NONTERMINAL (2) // <file>
 , END_PRODUCTION
-// At index 10 : <file>, in file 'goil_syntax.ggs', line 110
+// At index 10 : <file>, in file 'goil_syntax.ggs', line 119
 , NONTERMINAL (37) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 12 : <file_without_include>, in file 'goil_syntax.ggs', line 126
+// At index 12 : <file_without_include>, in file 'goil_syntax.ggs', line 135
 , NONTERMINAL (38) // <select_goil_5F_syntax_1>
 , END_PRODUCTION
-// At index 14 : <sign>, in file 'goil_syntax.ggs', line 137
+// At index 14 : <sign>, in file 'goil_syntax.ggs', line 146
 , NONTERMINAL (39) // <select_goil_5F_syntax_2>
 , END_PRODUCTION
-// At index 16 : <description>, in file 'goil_syntax.ggs', line 150
+// At index 16 : <description>, in file 'goil_syntax.ggs', line 159
 , NONTERMINAL (40) // <select_goil_5F_syntax_3>
 , END_PRODUCTION
-// At index 18 : <OIL_version>, in file 'goil_syntax.ggs', line 174
+// At index 18 : <OIL_version>, in file 'goil_syntax.ggs', line 183
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_OIL_5F_VERSION) // $OIL_VERSION$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (5) // <description>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , END_PRODUCTION
-// At index 24 : <application_definition>, in file 'goil_syntax.ggs', line 181
+// At index 24 : <application_definition>, in file 'goil_syntax.ggs', line 190
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_CPU) // $CPU$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
@@ -68,29 +68,29 @@ static const int32_t gProductions_goil_type_level_include [] = {
 , NONTERMINAL (5) // <description>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , END_PRODUCTION
-// At index 32 : <object_definition_list>, in file 'goil_syntax.ggs', line 195
+// At index 32 : <object_definition_list>, in file 'goil_syntax.ggs', line 204
 , NONTERMINAL (42) // <select_goil_5F_syntax_5>
 , END_PRODUCTION
-// At index 34 : <boolean>, in file 'goil_syntax.ggs', line 245
+// At index 34 : <boolean>, in file 'goil_syntax.ggs', line 254
 , NONTERMINAL (43) // <select_goil_5F_syntax_6>
 , END_PRODUCTION
-// At index 36 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 255
+// At index 36 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 264
 , NONTERMINAL (44) // <select_goil_5F_syntax_7>
 , END_PRODUCTION
-// At index 38 : <oil_declaration>, in file 'goil_syntax.ggs', line 267
+// At index 38 : <oil_declaration>, in file 'goil_syntax.ggs', line 276
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , NONTERMINAL (45) // <select_goil_5F_syntax_8>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , END_PRODUCTION
-// At index 42 : <include_file_level>, in file 'goil_syntax.ggs', line 474
+// At index 42 : <include_file_level>, in file 'goil_syntax.ggs', line 483
 , NONTERMINAL (50) // <select_goil_5F_syntax_13>
 , NONTERMINAL (51) // <select_goil_5F_syntax_14>
 , END_PRODUCTION
-// At index 45 : <include_cpu_level>, in file 'goil_syntax.ggs', line 498
+// At index 45 : <include_cpu_level>, in file 'goil_syntax.ggs', line 507
 , NONTERMINAL (52) // <select_goil_5F_syntax_15>
 , NONTERMINAL (53) // <select_goil_5F_syntax_16>
 , END_PRODUCTION
-// At index 48 : <include_object_level>, in file 'goil_syntax.ggs', line 522
+// At index 48 : <include_object_level>, in file 'goil_syntax.ggs', line 531
 , NONTERMINAL (54) // <select_goil_5F_syntax_17>
 , NONTERMINAL (55) // <select_goil_5F_syntax_18>
 , END_PRODUCTION
@@ -196,54 +196,54 @@ static const int32_t gProductions_goil_type_level_include [] = {
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , END_PRODUCTION
 //---- Added productions from 'select' and 'repeat' instructions
-// At index 130 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 119
+// At index 130 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 128
 , END_PRODUCTION
-// At index 131 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 119
+// At index 131 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 128
 , NONTERMINAL (12) // <include_file_level>
 , NONTERMINAL (37) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 134 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 119
+// At index 134 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 128
 , NONTERMINAL (0) // <implementation_definition>
 , NONTERMINAL (37) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 137 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 119
+// At index 137 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 128
 , NONTERMINAL (7) // <application_definition>
 , NONTERMINAL (37) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 140 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 131
+// At index 140 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 140
 , END_PRODUCTION
-// At index 141 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 131
+// At index 141 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 140
 , NONTERMINAL (0) // <implementation_definition>
 , NONTERMINAL (38) // <select_goil_5F_syntax_1>
 , END_PRODUCTION
-// At index 144 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 131
+// At index 144 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 140
 , NONTERMINAL (7) // <application_definition>
 , NONTERMINAL (38) // <select_goil_5F_syntax_1>
 , END_PRODUCTION
-// At index 147 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 138
+// At index 147 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 147
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__2D_) // $-$
 , END_PRODUCTION
-// At index 149 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 138
+// At index 149 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 147
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__2B_) // $+$
 , END_PRODUCTION
-// At index 151 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 138
+// At index 151 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 147
 , END_PRODUCTION
-// At index 152 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 151
+// At index 152 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 160
 , END_PRODUCTION
-// At index 153 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 151
+// At index 153 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 160
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3A_) // $:$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (41) // <select_goil_5F_syntax_4>
 , END_PRODUCTION
-// At index 157 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 158
+// At index 157 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 167
 , END_PRODUCTION
-// At index 158 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 158
+// At index 158 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 167
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (41) // <select_goil_5F_syntax_4>
 , END_PRODUCTION
-// At index 161 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 201
+// At index 161 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 210
 , END_PRODUCTION
-// At index 162 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 201
+// At index 162 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 210
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
@@ -253,115 +253,115 @@ static const int32_t gProductions_goil_type_level_include [] = {
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , NONTERMINAL (42) // <select_goil_5F_syntax_5>
 , END_PRODUCTION
-// At index 171 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 201
+// At index 171 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 210
 , NONTERMINAL (13) // <include_cpu_level>
 , NONTERMINAL (42) // <select_goil_5F_syntax_5>
 , END_PRODUCTION
-// At index 174 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
+// At index 174 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 255
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_TRUE) // $TRUE$
 , END_PRODUCTION
-// At index 176 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
+// At index 176 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 255
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_FALSE) // $FALSE$
 , END_PRODUCTION
-// At index 178 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 259
+// At index 178 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 268
 , END_PRODUCTION
-// At index 179 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 259
+// At index 179 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 268
 , NONTERMINAL (11) // <oil_declaration>
 , NONTERMINAL (44) // <select_goil_5F_syntax_7>
 , END_PRODUCTION
-// At index 182 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 259
+// At index 182 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 268
 , NONTERMINAL (14) // <include_object_level>
 , NONTERMINAL (44) // <select_goil_5F_syntax_7>
 , END_PRODUCTION
-// At index 185 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 284
+// At index 185 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 293
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) // $=$
 , NONTERMINAL (46) // <select_goil_5F_syntax_9>
 , END_PRODUCTION
-// At index 188 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 284
+// At index 188 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 293
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (10) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , NONTERMINAL (5) // <description>
 , END_PRODUCTION
-// At index 194 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 286
+// At index 194 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 295
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , NONTERMINAL (47) // <select_goil_5F_syntax_10>
 , NONTERMINAL (5) // <description>
 , END_PRODUCTION
-// At index 198 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 286
+// At index 198 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 295
 , NONTERMINAL (4) // <sign>
 , NONTERMINAL (48) // <select_goil_5F_syntax_11>
 , END_PRODUCTION
-// At index 201 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 286
+// At index 201 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 295
 , NONTERMINAL (9) // <boolean>
 , NONTERMINAL (49) // <select_goil_5F_syntax_12>
 , NONTERMINAL (5) // <description>
 , END_PRODUCTION
-// At index 205 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 286
+// At index 205 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 295
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (5) // <description>
 , END_PRODUCTION
-// At index 208 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 286
+// At index 208 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 295
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_AUTO) // $AUTO$
 , NONTERMINAL (5) // <description>
 , END_PRODUCTION
-// At index 211 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 307
+// At index 211 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 316
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (10) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , END_PRODUCTION
-// At index 215 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 307
+// At index 215 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 316
 , END_PRODUCTION
-// At index 216 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 324
+// At index 216 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 333
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_uint_5F_number) // $uint_number$
 , NONTERMINAL (5) // <description>
 , END_PRODUCTION
-// At index 219 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 324
+// At index 219 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 333
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_float_5F_number) // $float_number$
 , NONTERMINAL (5) // <description>
 , END_PRODUCTION
-// At index 222 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 367
+// At index 222 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 376
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (10) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , END_PRODUCTION
-// At index 226 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 367
+// At index 226 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 376
 , END_PRODUCTION
-// At index 227 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 481
+// At index 227 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 490
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) // $include$
 , END_PRODUCTION
-// At index 229 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 481
+// At index 229 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 490
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_includeifexists) // $includeifexists$
 , END_PRODUCTION
-// At index 231 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 487
+// At index 231 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 496
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) // $g_string$
 , END_PRODUCTION
-// At index 233 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 487
+// At index 233 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 496
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , END_PRODUCTION
-// At index 235 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 505
+// At index 235 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 514
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) // $include$
 , END_PRODUCTION
-// At index 237 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 505
+// At index 237 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 514
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_includeifexists) // $includeifexists$
 , END_PRODUCTION
-// At index 239 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 511
+// At index 239 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 520
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) // $g_string$
 , END_PRODUCTION
-// At index 241 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 511
+// At index 241 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 520
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , END_PRODUCTION
-// At index 243 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 527
+// At index 243 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 536
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) // $include$
 , END_PRODUCTION
-// At index 245 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 527
+// At index 245 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 536
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_includeifexists) // $includeifexists$
 , END_PRODUCTION
-// At index 247 : <select_goil_5F_syntax_18>, in file 'goil_syntax.ggs', line 533
+// At index 247 : <select_goil_5F_syntax_18>, in file 'goil_syntax.ggs', line 542
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) // $g_string$
 , END_PRODUCTION
-// At index 249 : <select_goil_5F_syntax_18>, in file 'goil_syntax.ggs', line 533
+// At index 249 : <select_goil_5F_syntax_18>, in file 'goil_syntax.ggs', line 542
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , END_PRODUCTION
 // At index 251 : <select_implementation_5F_parser_0>, in file 'implementation_parser.ggs', line 47
@@ -834,19 +834,19 @@ static const cProductionNameDescriptor gProductionNames_goil_type_level_include 
 static const int32_t gProductionIndexes_goil_type_level_include [163] = {
 0, // index 0 : <implementation_definition>, in file 'implementation_parser.ggs', line 36
 7, // index 1 : <start>, in file 'goil_syntax.ggs', line 38
-10, // index 2 : <file>, in file 'goil_syntax.ggs', line 110
-12, // index 3 : <file_without_include>, in file 'goil_syntax.ggs', line 126
-14, // index 4 : <sign>, in file 'goil_syntax.ggs', line 137
-16, // index 5 : <description>, in file 'goil_syntax.ggs', line 150
-18, // index 6 : <OIL_version>, in file 'goil_syntax.ggs', line 174
-24, // index 7 : <application_definition>, in file 'goil_syntax.ggs', line 181
-32, // index 8 : <object_definition_list>, in file 'goil_syntax.ggs', line 195
-34, // index 9 : <boolean>, in file 'goil_syntax.ggs', line 245
-36, // index 10 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 255
-38, // index 11 : <oil_declaration>, in file 'goil_syntax.ggs', line 267
-42, // index 12 : <include_file_level>, in file 'goil_syntax.ggs', line 474
-45, // index 13 : <include_cpu_level>, in file 'goil_syntax.ggs', line 498
-48, // index 14 : <include_object_level>, in file 'goil_syntax.ggs', line 522
+10, // index 2 : <file>, in file 'goil_syntax.ggs', line 119
+12, // index 3 : <file_without_include>, in file 'goil_syntax.ggs', line 135
+14, // index 4 : <sign>, in file 'goil_syntax.ggs', line 146
+16, // index 5 : <description>, in file 'goil_syntax.ggs', line 159
+18, // index 6 : <OIL_version>, in file 'goil_syntax.ggs', line 183
+24, // index 7 : <application_definition>, in file 'goil_syntax.ggs', line 190
+32, // index 8 : <object_definition_list>, in file 'goil_syntax.ggs', line 204
+34, // index 9 : <boolean>, in file 'goil_syntax.ggs', line 254
+36, // index 10 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 264
+38, // index 11 : <oil_declaration>, in file 'goil_syntax.ggs', line 276
+42, // index 12 : <include_file_level>, in file 'goil_syntax.ggs', line 483
+45, // index 13 : <include_cpu_level>, in file 'goil_syntax.ggs', line 507
+48, // index 14 : <include_object_level>, in file 'goil_syntax.ggs', line 531
 51, // index 15 : <implementation_object_list>, in file 'implementation_parser.ggs', line 44
 53, // index 16 : <include_implementation_level>, in file 'implementation_parser.ggs', line 53
 56, // index 17 : <include_type_level>, in file 'implementation_parser.ggs', line 74
@@ -869,53 +869,53 @@ static const int32_t gProductionIndexes_goil_type_level_include [163] = {
 124, // index 34 : <multiple>, in file 'implementation_parser.ggs', line 582
 126, // index 35 : <identifier_or_attribute>, in file 'implementation_parser.ggs', line 592
 128, // index 36 : <identifier_or_enum_value>, in file 'implementation_parser.ggs', line 597
-130, // index 37 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 119
-131, // index 38 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 119
-134, // index 39 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 119
-137, // index 40 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 119
-140, // index 41 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 131
-141, // index 42 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 131
-144, // index 43 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 131
-147, // index 44 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 138
-149, // index 45 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 138
-151, // index 46 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 138
-152, // index 47 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 151
-153, // index 48 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 151
-157, // index 49 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 158
-158, // index 50 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 158
-161, // index 51 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 201
-162, // index 52 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 201
-171, // index 53 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 201
-174, // index 54 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
-176, // index 55 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
-178, // index 56 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 259
-179, // index 57 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 259
-182, // index 58 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 259
-185, // index 59 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 284
-188, // index 60 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 284
-194, // index 61 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 286
-198, // index 62 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 286
-201, // index 63 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 286
-205, // index 64 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 286
-208, // index 65 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 286
-211, // index 66 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 307
-215, // index 67 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 307
-216, // index 68 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 324
-219, // index 69 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 324
-222, // index 70 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 367
-226, // index 71 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 367
-227, // index 72 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 481
-229, // index 73 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 481
-231, // index 74 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 487
-233, // index 75 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 487
-235, // index 76 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 505
-237, // index 77 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 505
-239, // index 78 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 511
-241, // index 79 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 511
-243, // index 80 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 527
-245, // index 81 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 527
-247, // index 82 : <select_goil_5F_syntax_18>, in file 'goil_syntax.ggs', line 533
-249, // index 83 : <select_goil_5F_syntax_18>, in file 'goil_syntax.ggs', line 533
+130, // index 37 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 128
+131, // index 38 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 128
+134, // index 39 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 128
+137, // index 40 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 128
+140, // index 41 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 140
+141, // index 42 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 140
+144, // index 43 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 140
+147, // index 44 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 147
+149, // index 45 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 147
+151, // index 46 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 147
+152, // index 47 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 160
+153, // index 48 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 160
+157, // index 49 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 167
+158, // index 50 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 167
+161, // index 51 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 210
+162, // index 52 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 210
+171, // index 53 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 210
+174, // index 54 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 255
+176, // index 55 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 255
+178, // index 56 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 268
+179, // index 57 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 268
+182, // index 58 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 268
+185, // index 59 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 293
+188, // index 60 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 293
+194, // index 61 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 295
+198, // index 62 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 295
+201, // index 63 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 295
+205, // index 64 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 295
+208, // index 65 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 295
+211, // index 66 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 316
+215, // index 67 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 316
+216, // index 68 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 333
+219, // index 69 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 333
+222, // index 70 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 376
+226, // index 71 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 376
+227, // index 72 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 490
+229, // index 73 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 490
+231, // index 74 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 496
+233, // index 75 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 496
+235, // index 76 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 514
+237, // index 77 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 514
+239, // index 78 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 520
+241, // index 79 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 520
+243, // index 80 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 536
+245, // index 81 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 536
+247, // index 82 : <select_goil_5F_syntax_18>, in file 'goil_syntax.ggs', line 542
+249, // index 83 : <select_goil_5F_syntax_18>, in file 'goil_syntax.ggs', line 542
 251, // index 84 : <select_implementation_5F_parser_0>, in file 'implementation_parser.ggs', line 47
 252, // index 85 : <select_implementation_5F_parser_0>, in file 'implementation_parser.ggs', line 47
 256, // index 86 : <select_implementation_5F_parser_0>, in file 'implementation_parser.ggs', line 47
