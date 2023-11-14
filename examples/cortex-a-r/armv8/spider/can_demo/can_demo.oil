@@ -1,4 +1,4 @@
-OIL_VERSION = "4.2";
+OIL_VERSION = "4.0";
 
 IMPLEMENTATION trampoline {
 	/* This fix the default STACKSIZE of tasks */
