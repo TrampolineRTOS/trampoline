@@ -86,7 +86,7 @@ static int eth_serdes_wait_reset(void)
 {
     int ch, ret;
 
-    for (ch = 0; ch < ETH_SERDES_CH_NUM; ch++) {
+    for (ch = ETH_SERDES_XPCS_CH0; ch < ETH_SERDES_CH_NUM; ch++) {
         ETH_SERDES_SEL_BANK(ch, 0x0180U);
         ret = eth_serdes_wait_for_update(ch, 0x026C, BIT(0), BIT(0), ETH_TIMEOUT_COUNT);
         if (ret != 0) {
@@ -105,8 +105,10 @@ static int eth_serdes_initialize_SRAM(void)
         return ret;
     }
 
-    ETH_SERDES_SEL_BANK(ETH_SERDES_XPCS_CH0, 0x0180);
-    ETH_SERDES_REG_WRITE(ETH_SERDES_XPCS_CH0, 0x026C, 0x3);
+    for (ch = ETH_SERDES_XPCS_CH0; ch < ETH_SERDES_CH_NUM; ch++) {
+        ETH_SERDES_SEL_BANK(ch, 0x0180);
+        ETH_SERDES_REG_WRITE(ch, 0x026C, 0x3);
+    }
     
     for (ch = ETH_SERDES_XPCS_CH0; ch < ETH_SERDES_CH_NUM; ch++) {
         ETH_SERDES_SEL_BANK(ch, 0x0300U);
@@ -121,22 +123,27 @@ static int eth_serdes_initialize_SRAM(void)
 
 static void eth_serdes_set_SGMII_common_settings(void)
 {
+    int ch;
     /* Steps S.4.1 to S.4.5 */
-    ETH_SERDES_SEL_BANK(ETH_SERDES_XPCS_CH0, 0x0180);
-    ETH_SERDES_REG_WRITE(ETH_SERDES_XPCS_CH0, 0x0244, 0x97);
-    ETH_SERDES_REG_WRITE(ETH_SERDES_XPCS_CH0, 0x01D0, 0x60);
-    ETH_SERDES_REG_WRITE(ETH_SERDES_XPCS_CH0, 0x01D8, 0x2200);
-    ETH_SERDES_REG_WRITE(ETH_SERDES_XPCS_CH0, 0x01D4, 0x0);
-    ETH_SERDES_REG_WRITE(ETH_SERDES_XPCS_CH0, 0x01E0, 0x3D);
+    for (ch = ETH_SERDES_XPCS_CH0; ch < ETH_SERDES_CH_NUM; ch++) {
+        ETH_SERDES_SEL_BANK(ch, 0x0180);
+        ETH_SERDES_REG_WRITE(ch, 0x0244, 0x97);
+        ETH_SERDES_REG_WRITE(ch, 0x01D0, 0x60);
+        ETH_SERDES_REG_WRITE(ch, 0x01D8, 0x2200);
+        ETH_SERDES_REG_WRITE(ch, 0x01D4, 0x0);
+        ETH_SERDES_REG_WRITE(ch, 0x01E0, 0x3D);
+    }
 }
 
 static int eth_serdes_PHY_soft_reset(void)
 {
-    int ret;
+    int ch, ret;
 
     /* Step:5 */
-    ETH_SERDES_SEL_BANK(ETH_SERDES_XPCS_CH0, 0x0380);
-    ETH_SERDES_REG_WRITE(ETH_SERDES_XPCS_CH0, 0x0000, 0x8000);
+    for (ch = ETH_SERDES_XPCS_CH0; ch < ETH_SERDES_CH_NUM; ch++) {
+        ETH_SERDES_SEL_BANK(ch, 0x0380);
+        ETH_SERDES_REG_WRITE(ch, 0x0000, 0x8000);
+    }
 
     /* Step:6 */
     ret = eth_serdes_wait_reset();
@@ -145,14 +152,21 @@ static int eth_serdes_PHY_soft_reset(void)
     }
 
     /* Step:7 */
-    ETH_SERDES_SEL_BANK(ETH_SERDES_XPCS_CH0, 0x0180U);
-    ETH_SERDES_REG_WRITE(ETH_SERDES_XPCS_CH0, 0x026CU, 0x00000003UL);
+    for (ch = ETH_SERDES_XPCS_CH0; ch < ETH_SERDES_CH_NUM; ch++) {
+        ETH_SERDES_SEL_BANK(ch, 0x0180U);
+        ETH_SERDES_REG_WRITE(ch, 0x026CU, 0x00000003UL);
+    }
 
     /* Step:8 */
-    ETH_SERDES_SEL_BANK(ETH_SERDES_XPCS_CH0, 0x0380U);
-    ret = eth_serdes_wait_for_update(ETH_SERDES_XPCS_CH0, 0x0000U, BIT(15), 0UL, ETH_TIMEOUT_COUNT);
+    for (ch = ETH_SERDES_XPCS_CH0; ch < ETH_SERDES_CH_NUM; ch++) {
+        ETH_SERDES_SEL_BANK(ch, 0x0380U);
+        ret = eth_serdes_wait_for_update(ch, 0x0000U, BIT(15), 0UL, ETH_TIMEOUT_COUNT);
+        if (ret != 0) {
+            return ret;
+        }
+    }
 
-    return ret;
+    return 0;
 }
 
 static int eth_serdes_channel_SGMII_common_configuration(uint32 ch)
