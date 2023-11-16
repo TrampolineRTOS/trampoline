@@ -100,7 +100,7 @@ More examples are coming.
 
 ## Precompiled binaries of goil, the OIL and ARXML compiler
 
-Updated to version 3.1.12 on 2020, November 2.
+Updated to version 3.1.15 on 2023, November 16.
 
 
 * Linux 32 bits: [goil-linux-32.zip](http://osek.triskell.org/goil-linux-32.zip)
@@ -108,8 +108,6 @@ Updated to version 3.1.12 on 2020, November 2.
 * Windows: [goil-windows.zip](http://osek.triskell.org/goil-windows.zip)
 * Mac OS X (Intel)  : [goil-mac-os-x.zip](http://osek.triskell.org/goil-mac-os-x.zip)
 * Mac OS X (Silicon): [goil-mac-os-x-silicon.zip](http://osek.triskell.org/goil-mac-os-x-silicon.zip)
-* Mac OS X Cocoa Application with editor (Intel)  : [CocoaGoil.app.zip](http://osek.triskell.org/CocoaGoil.app.zip)
-* Mac OS X Cocoa Application with editor (Silicon): [CocoaGoil-silicon.app.zip](http://osek.triskell.org/CocoaGoil-silicon.app.zip)
 
 Note: goil binaries for Mac OS X are not signed. You can either recompile goil rom sources (script in `goil/makefile-macosx`) or self sign the binary (information [here](https://stackoverflow.com/questions/58356844/what-are-the-ways-or-technologies-to-sign-an-executable-application-file-in-mac))
 
