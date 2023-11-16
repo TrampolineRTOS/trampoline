@@ -18,6 +18,8 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.2 standards.
 * virt-v7
   * Cortex-A9 - Cortex-A7 virtualized instruction set. This port is used with the hypervisor XVisor
 * MSP430/CPUX which has been developed on MSP430FR5969 and MSP430FR5994 microcontrollers.
+* rh850
+  * Renesas G4MH instruction set.
 
 And we welcome external contributors to extend this list.
 
@@ -34,6 +36,7 @@ Trampoline runs on the following platforms :
 | NXP / Freescale MPC564xL     | Power Architecture | 2     | XPC56XX EVB + XPC56XL MINI-MODULE                      |
 | PULPino                      | RISC-V             | 1     | ZedBoard                                               |
 | Renesas Spider CR52          | Cortex-R52         | 1     | Renesas R-Car S4 Spider                                |
+| Renesas Spider G4MH          | RH850              | 1     | Renesas R-Car S4 Spider                                |
 | STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY with STM32F407VG                      |
 | STMicroelectronics STM32F30x | Cortex-M4          | 1     | Nucleo-32 STM32F303K8                                  |
 | STMicroelectronics STM32L432 | Cortex-M4          | 1     | Nucleo-32 STM32L432KC                                  |

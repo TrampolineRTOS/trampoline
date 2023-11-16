@@ -1,0 +1,9 @@
+% 
+let api_func::FUNC_NAME := exists api_func::ACTUAL default ( api_func::NAME )
+%
+
+#pragma inline_asm % !api_func::FUNC_NAME %
+void % !api_func::FUNC_NAME % (void)
+{
+  syscall % !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME%
+}

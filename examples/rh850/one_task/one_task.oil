@@ -1,0 +1,25 @@
+OIL_VERSION = "4.0";
+
+CPU only_one_task {
+  OS config {
+    STATUS = EXTENDED;
+    BUILD = TRUE {
+      APP_SRC = "one_task.c";
+      TRAMPOLINE_BASE_PATH = "../../../";
+      LDFLAGS="-debug -nocompress -NOOPtimize -memory=high -nologo -SHow=ALL";
+      CFLAGS="-Xcpu=g4mh -g -g_line -Xfxu=off -Xasm_path=.";
+      APP_NAME = "one_task_exe";
+      LINKER = "rlink";
+      SYSTEM = CMAKE;
+    };
+  };
+
+  APPMODE stdAppmode {};
+
+  TASK my_only_task {
+    PRIORITY = 1;
+    AUTOSTART = TRUE { APPMODE = stdAppmode; };
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+};

@@ -1,0 +1,7 @@
+%
+!PROJECT %/tpl_invoque.c
+%
+write to PROJECT+"/tpl_invoque.c":
+  let EXTENSION := "c"
+  template tpl_invoque in code
+end write

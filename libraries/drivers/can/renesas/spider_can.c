@@ -214,8 +214,21 @@ static void spider_can_configure_gpios(struct tpl_can_controller_t *ctrl)
 static int spider_can_init(struct tpl_can_controller_config_t *config)
 {
 	uint32 val;
+	volatile uint32 temp;
 	struct tpl_can_controller_t *ctrl = config->controller;
 	volatile struct __tag5579 *ctrl_base_address = (volatile struct __tag5579 *) ctrl->base_address;
+
+	// Make sure the clocks are stable (this is needed only on the G4MH core)
+	// Main oscillator
+	while ((SYSCTRL.MOSCS.BIT.MOSCEN == 0) || (SYSCTRL.MOSCS.BIT.MOSCSTAB == 0));
+	// The datasheet tells to wait 1.4us after the clock is stable, or to read the MOSCSTAB bit at least 4 times (take some margin here)
+	for (val = 0; val < 100; val++)
+		temp = SYSCTRL.MOSCS.UINT32;
+	// PLL
+	while ((SYSCTRL.PLLS.BIT.PLLCLKEN == 0) || (SYSCTRL.PLLS.BIT.PLLCLKSTAB == 0));
+	// The datasheet tells to wait 1.4us after the clock is stable, or to read the PLLCLKSTAB bit at least 4 times (take some margin here)
+	for (val = 0; val < 100; val++)
+		temp = SYSCTRL.PLLS.UINT32;
 
 	// Clock the CAN module with a 80MHz clock to be able to reach 8Mbit/s bus speed in CAN-FD mode (see datasheet table 13.6)
 	SYSCTRL.CLKKCPROT1.UINT32 = PROTECTION_DISABLE_KEY; // Allow access to the clock controller registers
@@ -223,6 +236,7 @@ static int spider_can_init(struct tpl_can_controller_config_t *config)
 	while (!SYSCTRL.CLKD_PLLS.BIT.PLLCLKDSYNC);
 	SYSCTRL.CKSC_CPUC.UINT32 = 0; // Select the PLL output as the source for the system clock
 	while (SYSCTRL.CKSC_CPUS.BIT.CPUCLKSACT);
+	SYSCTRL.CKSC_RCANC.UINT32 = 0x00000001; // Make sure the clock is not divided
 	SYSCTRL.CLKKCPROT1.UINT32 = PROTECTION_ENABLE_KEY; // Re-enable the clock controller registers protection
 
 	// Allow access to the standby controller registers
@@ -286,8 +300,18 @@ static int spider_can_init(struct tpl_can_controller_config_t *config)
 	ctrl_base_address->CFDCFCCE0.UINT32 = 0; // Enable transmission
 
 	// Switch the module to global operation mode
-	ctrl_base_address->CFDGCTR.UINT32 = 0;
-	while ((ctrl_base_address->CFDGSTS.UINT32 & 0x0000000F) != 0);
+	ctrl_base_address->CFDGCTR.UINT32 &= 0xFFFFFFFC;
+	// On the Cortex-R52 clearing CFDGCTR bits 1..0 works immediately, on the G4MH some register hammering seems needed (TODO find why)
+	val = 0;
+	while ((ctrl_base_address->CFDGSTS.UINT32 & 0x00000003) != 0)
+	{
+		val++;
+		if (val == 100000) // This random amount of cycles seems to be working
+		{
+			ctrl_base_address->CFDGCTR.UINT32 &= 0xFFFFFFFC;
+			val = 0;
+		}
+	}
 
 	// Switch the required CAN channels to operation mode, TODO handle multiple channels
 	ctrl_base_address->CFDC0CTR.UINT32 = 0;

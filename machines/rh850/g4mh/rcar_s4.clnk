@@ -1,0 +1,5 @@
+-library=lib\v850e3v5\rhf8n.lib
+-library=lib\v850e3v5\libmalloc.lib
+-start=RESET_PE0,EIINTTBL_PE0/400,.const,.INIT_DSEC.const,.INIT_BSEC.const,.text.cmn,syscall.text,.text,.data/00010000,.data.R,.bss,.stack.bss/FDE00000
+-fsymbol=.text.cmn
+-rom=.data=.data.R

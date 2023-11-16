@@ -1,0 +1,521 @@
+#to compile the project:
+# mkdir _build
+# cd _build
+# cmake -D CMAKE_TOOLCHAIN_FILE=../% !PROJECT %/compiler.cmake ..
+# make
+# make flash
+cmake_minimum_required(VERSION 3.5)
+
+# with this option, cmake will not try to compile a 
+# simple test program (that may fail for an embedded target)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+
+#project name
+project(% !OS::BUILD_S::APP_NAME %)
+enable_language(C CXX ASM)
+
+%let basePath := OS::BUILD_S::TRAMPOLINE_BASE_PATH
+if [basePath charAtIndex: 0] != '/' then
+	let basePath := "${CMAKE_SOURCE_DIR}/"+basePath
+end if%
+set(TRAMPOLINE_BASE_PATH % !basePath %)
+set(TRAMPOLINE_MACHINE_PATH ${TRAMPOLINE_BASE_PATH}/machines)
+set(TRAMPOLINE_GOIL_TEMPLATES ${TRAMPOLINE_BASE_PATH}/goil/templates)
+set(TRAMPOLINE_LIBRARIES_PATH ${TRAMPOLINE_BASE_PATH}/libraries)
+set(APP_GENERATED_PATH ${CMAKE_SOURCE_DIR}/% !PROJECT %)
+
+#goil
+set(OILFILE ${CMAKE_SOURCE_DIR}/% !OILFILENAME %)
+set(OILCOMPILER goil)
+set(OILFLAGS -t=% !TARGET % --templates=${TRAMPOLINE_GOIL_TEMPLATES})
+
+#cross compiler
+include("% !PROJECT %/compiler.cmake")
+
+set(CFLAGS #CFLAGS
+%foreach optionSet in exists BUILDOPTIONS default ( @() ) before
+%	#C flags from target options
+% 
+  do
+  foreach flags in exists optionSet::CFLAGS default ( @() ) do
+    %	%!flags::VALUE %\n%
+  end foreach
+end foreach
+
+foreach flags in exists OS::BUILD_S::CFLAGS default ( @() ) before
+%	#C flags from .oil file
+%
+    do
+%	%!flags::VALUE %\n%
+end foreach
+%)
+
+set(PRECFLAGS #PRE CFLAGS
+%foreach optionSet in exists BUILDOPTIONS default ( @() ) before
+%	#PRE C flags from target options
+% 
+  do
+  foreach flags in exists optionSet::PRECFLAGS default ( @() ) do
+    %	%!flags::VALUE %\n%
+  end foreach
+end foreach
+
+foreach flags in exists OS::BUILD_S::PRECFLAGS default ( @() ) before
+%	#PRE C flags from .oil file
+%
+    do
+%	%!flags::VALUE %\n%
+end foreach
+%)
+
+set(CXXFLAGS #C++ FLAGS
+%foreach optionSet in exists BUILDOPTIONS default ( @() ) before
+%	#C++ flags from target options
+% 
+  do
+  foreach flags in exists optionSet::CPPFLAGS default ( @() ) do
+    %	%!flags::VALUE %\n%
+  end foreach
+end foreach
+
+foreach flags in exists OS::BUILD_S::CPPFLAGS default ( @() ) before
+%	#C flags from .oil file
+%
+    do
+%	%!flags::VALUE %\n%
+end foreach
+%)
+
+set(PRECXXFLAGS #PRE C++ FLAGS
+%foreach optionSet in exists BUILDOPTIONS default ( @() ) before
+%	#PRE C++ flags from target options
+% 
+  do
+  foreach flags in exists optionSet::PRECPPFLAGS default ( @() ) do
+    %	%!flags::VALUE %\n%
+  end foreach
+end foreach
+
+foreach flags in exists OS::BUILD_S::PRECPPFLAGS default ( @() ) before
+%	#PRE C flags from .oil file
+%
+    do
+%	%!flags::VALUE %\n%
+end foreach
+%)
+
+set(COMMONFLAGS #COMMON FLAGS (C/C++/ASM)
+%foreach optionSet in exists BUILDOPTIONS default ( @() ) before
+%	#common flags from target options
+% 
+  do
+  foreach flags in exists optionSet::COMMONFLAGS default ( @() ) do
+    %	%!flags::VALUE %\n%
+  end foreach
+end foreach
+
+foreach flags in exists OS::BUILD_S::COMMONFLAGS default ( @() ) before
+%	#common flags from .oil file
+%
+    do
+%	%!flags::VALUE %\n%
+end foreach
+%)
+
+set(PRECOMMONFLAGS #PRE COMMON FLAGS (C/C++/ASM)
+%foreach optionSet in exists BUILDOPTIONS default ( @() ) before
+%	#PRE common flags from target options
+% 
+  do
+  foreach flags in exists optionSet::PRECOMMONFLAGS default ( @() ) do
+    %	%!flags::VALUE %\n%
+  end foreach
+end foreach
+
+foreach flags in exists OS::BUILD_S::PRECOMMONFLAGS default ( @() ) before
+%	#PRE common flags from .oil file
+%
+    do
+%	%!flags::VALUE %\n%
+end foreach
+%)
+
+add_compile_options(
+  ${PRECOMMONFLAGS}
+  ${COMMONFLAGS}
+  "$<$<COMPILE_LANGUAGE:C>:${PRECFLAGS}>"
+  "$<$<COMPILE_LANGUAGE:C>:${CFLAGS}>"
+  "$<$<COMPILE_LANGUAGE:CXX>:${PRECXXFLAGS}>"
+  "$<$<COMPILE_LANGUAGE:CXX>:${CXXFLAGS}>"
+  "$<$<COMPILE_LANGUAGE:ASM>:${PRECFLAGS}>"
+  "$<$<COMPILE_LANGUAGE:ASM>:${CFLAGS}>"
+)
+
+#Application sources
+set(APP_SRCS
+%
+foreach src in exists OS::BUILD_S::APP_SRC default ( @() )
+before
+%	#--- C files of the application
+%
+do
+%	%!src::VALUE%
+%
+end foreach
+foreach src in exists OS::BUILD_S::APP_CPPSRC default ( @() )
+before
+%	#--- C++ files of the application
+%
+do
+%	%!src::VALUE%
+%
+end foreach
+%)
+
+#Trampoline kernel sources 
+set(TRAMPOLINE_OS_SRCS
+%
+
+let KERNEL_MAP := mapof KERNEL by NAME
+let path := KERNEL_MAP["osek_kernel"]::PATH+"/"
+foreach file in KERNEL_MAP["osek_kernel"]::FILE do
+%	${TRAMPOLINE_BASE_PATH}/% !path+file::VALUE %\n%
+end foreach
+
+if USECOM then
+  let path := KERNEL_MAP["com_kernel"]::PATH+"/"
+  foreach file in KERNEL_MAP["com_kernel"]::FILE do
+  %	${TRAMPOLINE_BASE_PATH}/% !path+file::VALUE %\n%
+  end foreach
+end if
+
+if OS::SCALABILITYCLASS > 0 then
+  let path := KERNEL_MAP["autosar_kernel"]::PATH+"/"
+  foreach file in KERNEL_MAP["autosar_kernel"]::FILE do
+  %	${TRAMPOLINE_BASE_PATH}/% !path+file::VALUE %\n%
+  end foreach
+
+  if (exists USEMEMORYPROTECTION default (false))
+   | (exists OS::TIMINGPROTECTION default (false)) then
+    let path := KERNEL_MAP["protec_kernel"]::PATH+"/"
+    foreach file in KERNEL_MAP["protec_kernel"]::FILE do
+    %	${TRAMPOLINE_BASE_PATH}/% !path+file::VALUE %\n%
+    end foreach
+  end if
+end if
+
+foreach module in exists OS::KERNEL_MODULE default ( @() )
+do
+  if exists KERNEL_MAP[module::VALUE] then
+    if module::VALUE != "osek_kernel" &
+       module::VALUE != "com_kernel" &
+       module::VALUE != "autosar_kernel" &
+       module::VALUE != "protec_kernel" then
+      let path := KERNEL_MAP[module::VALUE]::PATH+"/"
+      foreach file in KERNEL_MAP[module::VALUE]::FILE do
+      %	${TRAMPOLINE_BASE_PATH}/% !path+file::VALUE %\n%
+      end foreach
+    else
+      error module:"Module does not exist"
+    end if
+  end if
+end foreach
+
+#--- Services files%
+foreach service_set in APIUSED do
+  foreach file in service_set::FILE do
+      %	${TRAMPOLINE_BASE_PATH}/% !service_set::DIRECTORY+"/"+file::VALUE %.c\n%
+  end foreach
+end foreach
+
+%) %# TRAMPOLINE_OS_SRCS 
+%
+
+#Trampoline generated files
+set(APP_GENERATED_SRCS
+	#os generated files
+	${APP_GENERATED_PATH}/tpl_app_config.c\n%
+if OS::SYSTEM_CALL then
+	%	${APP_GENERATED_PATH}/tpl_dispatch_table.c\n%
+	%	${APP_GENERATED_PATH}/tpl_invoque.c\n%
+else
+	%	${APP_GENERATED_PATH}/tpl_os.c\n%
+end if
+if [TRANSACTION length] > 0 then
+	%	${APP_GENERATED_PATH}/stm_structure.c\n%
+end if
+if [IOC length] > 0 then
+	%	${APP_GENERATED_PATH}/tpl_ioc_api_config.c\n%
+end if
+foreach platform in exists GENERATED_FILES default ( @() ) before
+%	#platform dependant generated files\n% do
+  if not exists platform::CFILE then let platform::CFILE := @() end if
+  if not exists platform::ASFILE then let platform::ASFILE := @() end if
+  foreach file in platform::CFILE do
+    %	${APP_GENERATED_PATH}/%!file::VALUE%\n%
+  end foreach
+  foreach file in platform::ASFILE do
+    %	${APP_GENERATED_PATH}/%!file::VALUE%\n%
+  end foreach
+end foreach
+
+%)
+
+#Trampoline target dependant files
+set(TRAMPOLINE_MACHINE_SRCS
+%foreach platform in exists PLATFORM_FILES default ( @() ) do
+  if not exists platform::CFILE then let platform::CFILE := @() end if
+  if not exists platform::CPPFILE then let platform::CPPFILE := @() end if
+  if not exists platform::ASFILE then let platform::ASFILE := @() end if
+  foreach file in platform::CFILE do
+    %	${TRAMPOLINE_MACHINE_PATH}/%!platform::PATH+"/"+file::VALUE%\n%
+  end foreach
+  foreach file in platform::CPPFILE do
+    %	${TRAMPOLINE_MACHINE_PATH}/%!platform::PATH+"/"+file::VALUE%\n%
+  end foreach
+  foreach file in platform::ASFILE do
+    %	${TRAMPOLINE_MACHINE_PATH}/%!platform::PATH+"/"+file::VALUE%\n%
+  end foreach
+end foreach
+
+%)
+
+# Trampoline target library sources (drivers)
+set(TARGET_LIBRARY_SRCS
+%
+foreach library in exists USEDLIB default ( @() ) do
+  if not exists library::CFILE then let library::CFILE := @() end if
+  if not exists library::CPPFILE then let library::CPPFILE := @() end if
+  if not exists library::ASFILE then let library::ASFILE := @() end if
+  let libpath := ""
+  if library::GLOBAL then
+    let libpath := "${TRAMPOLINE_LIBRARIES_PATH}/" + library::PATH + "/"
+  else
+    let libpath := "${TRAMPOLINE_MACHINE_PATH}/" + library::PATH + "/"
+  end if
+  foreach file in library::CFILE do
+    %	% !libpath + file::VALUE %\n%
+  end foreach
+  foreach file in library::CPPFILE do
+    %	% !libpath + file::VALUE %\n%
+  end foreach
+  foreach file in library::ASFILE do
+    %	% !libpath + file::VALUE %\n%
+  end foreach
+end foreach
+%)
+%
+
+# compute a set with 'include directories' (to prevent duplicates)
+let includeDirSet := @! !
+
+let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH+"/machines"
+foreach platform in exists PLATFORM_FILES default ( @() ) do
+  let includeDirSet += "${TRAMPOLINE_MACHINE_PATH}/"+platform::PATH
+end foreach
+foreach library in exists USEDLIB default ( @() ) do
+  if library::GLOBAL == true then
+    let includeDirSet += "${TRAMPOLINE_LIBRARIES_PATH}/" + library::PATH
+  else
+    let includeDirSet += "${TRAMPOLINE_MACHINE_PATH}/" + library::PATH
+  end if
+end foreach
+let includeDirSet += "${TRAMPOLINE_BASE_PATH}/ioc"
+let includeDirSet += "${TRAMPOLINE_BASE_PATH}/os"
+let includeDirSet += "${TRAMPOLINE_BASE_PATH}/debug"
+let includeDirSet += "${TRAMPOLINE_BASE_PATH}/com"
+let includeDirSet += "${TRAMPOLINE_BASE_PATH}/autosar"
+let includeDirSet += PROJECT
+
+%
+#Include directories
+include_directories(
+%foreach val in includeDirSet do
+    %	%!val%\n%
+end foreach
+%)
+
+#Executable (should be defined after compile options)
+add_executable(${PROJECT_NAME} 
+    ${APP_SRCS}
+    ${TRAMPOLINE_OS_SRCS}
+    ${APP_GENERATED_SRCS}
+	${TARGET_LIBRARY_SRCS}
+    ${TRAMPOLINE_MACHINE_SRCS}
+)
+
+#Linker
+set(LINKER_DIR ${APP_GENERATED_PATH})
+%if exists OS::MEMMAP_S::LINKER then
+	%set(LINKER_SCRIPT %!OS::MEMMAP_S::LINKER_S::SCRIPT%)%
+end if%
+set(LINKER_FLAGS 
+%
+  %	#linker flags from target options\n%
+foreach optionSet in exists BUILDOPTIONS default ( @() ) do
+  foreach flags in exists optionSet::LDFLAGS default ( @() ) do
+  %	%!flags::VALUE%\n%
+  end foreach
+end foreach
+  %	#linker flags from .oil file\n%
+foreach flags in OS::BUILD_S::LDFLAGS do
+  %	%!flags::VALUE%\n%
+end foreach
+if exists OS::MEMMAP_S::LINKER then
+  %	#link script\n%
+  %	-L${LINKER_DIR}\n%
+  % -T${LINKER_SCRIPT}\n%
+end if
+%)
+
+#
+function(add_gcc_library libCmd)
+  #use gcc to get the full path to libs (libgcc, libc)
+  execute_process(
+    COMMAND ${CMAKE_C_COMPILER} ${PRECOMMONFLAGS} ${PRECFLAGS} ${COMMONFLAGS} ${CFLAGS} ${libCmd}
+    RESULT_VARIABLE returnValue
+    OUTPUT_VARIABLE full_lib_path
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+  if (${returnValue} EQUAL 0)
+    #ok, now extract only the directory
+    get_filename_component(libgcc_path ${full_lib_path} DIRECTORY)
+    set(libpath ${libgcc_path} PARENT_SCOPE)
+  else()
+    message("library ${libCmd} not found!")
+  endif()
+endfunction()
+
+if(${CMAKE_C_COMPILER_ID} STREQUAL "GNU")
+	add_gcc_library("-print-libgcc-file-name") #try to find libgcc
+	list(APPEND LINKER_FLAGS -L${libpath} -lgcc)
+	add_gcc_library("-print-file-name=libc.a") #try to find libc
+	list(APPEND LINKER_FLAGS -L${libpath} -lc)
+endif()
+
+#should be defined after 'add_executable'
+target_link_libraries(${PROJECT_NAME}
+	${LINKER_FLAGS}
+)
+
+%if exists OS::MEMMAP_S::LINKER then
+%set_property(TARGET ${PROJECT_NAME} 
+    PROPERTY LINK_DEPENDS ${LINKER_DIR}/${LINKER_SCRIPT}
+)%
+end if%
+
+#post build commands (bin file, flash, …)
+%let postgoals := @[]
+if exists POSTBUILD then
+  let postgoals := mapof exists POSTBUILD default ( @() ) by NAME
+%# POSTBUILD rules%
+end if
+
+if exists postgoals["all"] then
+  let inFile := "${PROJECT_NAME}"
+  foreach command in postgoals["all"]::COMMAND do
+	#inFile def
+	# TODO: TARGET and INTERMEDIATE not taken into account…
+    if command::INPUT == "ORIGINAL_TARGET" then
+     let inFile := OS::BUILD_S::APP_NAME
+	end if
+	#if exists command::INPUT then
+	#  if command::INPUT != "TARGET" then
+    #   let inFile := command::INPUT
+    #  end if
+	#end if
+	#outFile def
+    let outFile := inFile + exists command::OUTPUT default("")
+
+    if    command::TYPE == "COPIER" then %
+add_custom_command(OUTPUT %!outFile%
+    DEPENDS ${PROJECT_NAME}
+    COMMAND ${CMAKE_OBJCOPY} %
+		foreach option in exists command::PREOPTION default ( @() ) do
+			!option::VALUE
+		end foreach
+		% %!inFile % %!outFile%
+	WORKING_DIRECTORY ${CMAKE_BUILD_DIR}
+)%
+    elsif command::TYPE == "COMPILER" then
+    elsif command::TYPE == "ASSEMBLER" then
+    elsif command::TYPE == "LINKER" then
+    elsif command::TYPE == "CUSTOM" then 
+    end if
+    let inFile := outFile
+  end foreach
+end if
+
+foreach pc in exists POSTCOMMAND default ( @() )
+  before%
+
+# POSTCOMMAND rules%
+  do%
+add_custom_target(% !pc::NAME %
+%  foreach cmd in pc::COMMAND do
+	#cmd line
+    let commandLine := cmd::COMMAND + " "
+    foreach opt in exists cmd::PREOPTION default ( @() ) do
+      let commandLine := commandLine + opt::VALUE + " "
+    end foreach
+	#TODO: environment variable not handled yet.
+	#
+    #foreach opt in exists cmd::PREOPT default ( @() ) do
+    #  if opt::VALUE == "ENVAR" then%
+    #if os.environ.get('% !opt::VALUE_S::NAME %') != None:
+    #  commandLine += "% !opt::VALUE_S::OPT %" + os.environ['% !opt::VALUE_S::NAME %'] + " "
+    #else:
+    #  print("Cannot % !pc::NAME %, environment variable % !opt::VALUE_S::NAME % is not defined")
+    #  exit(1)%
+    #  elsif opt::VALUE == "LITERAL" then%
+    #commandLine += "% !opt::VALUE_S::OPT + opt::VALUE_S::VALUE %"%
+    #  end if
+    #end foreach
+	#input
+	
+	let depend := ""
+    if exists cmd::INPUT then
+      if cmd::INPUT == "TARGET" then
+	    let depend := "${PROJECT_NAME}" + cmd::INPUT_S::EXT
+      else
+        let depend := cmd::INPUT_S::SOURCE
+      end if
+    end if
+%	DEPENDS % !depend %
+%
+	let commandLine := commandLine + depend
+    if exists cmd::OUTPUT then
+		let commandLine := commandLine + " " + cmd::OUTPUT
+    end if
+    foreach opt in exists cmd::POSTOPTION default ( @() ) do
+      let commandLine := commandLine + " " + opt::VALUE
+    end foreach
+	#dedicated keyword allowed inside the command line.
+	let commandLine := [commandLine replaceString : "$MACHINE_PATH","${TRAMPOLINE_MACHINE_PATH}"]
+	let commandLine := [commandLine replaceString : "$ARCH_PATH","${TRAMPOLINE_MACHINE_PATH}/"+ARCH]
+	let commandLine := [commandLine replaceString : "$BOARD_PATH","${TRAMPOLINE_MACHINE_PATH}/"+TARGET]
+	let commandLine := [commandLine replaceString : "$TARGET",TARGET]
+%	COMMAND % !commandLine %
+)
+%
+  end foreach
+end foreach
+%
+
+#TODO: add alias avec dependance.
+#add_custom_target(burn
+#    DEPENDS flash
+#)
+
+cmake_path(RELATIVE_PATH OILFILE OUTPUT_VARIABLE OILFILE_REL)
+cmake_path(RELATIVE_PATH TRAMPOLINE_GOIL_TEMPLATES OUTPUT_VARIABLE TRAMPOLINE_GOIL_TEMPLATES_REL)
+set(OILFLAGS_REL -t=% !TARGET % --templates=${TRAMPOLINE_GOIL_TEMPLATES_REL})
+
+#goil (will update generated files, and depends on .oil input file)
+add_custom_command(OUTPUT ${APP_GENERATED_SRCS} 
+    DEPENDS ${OILFILE}
+    COMMAND ${OILCOMPILER} ${OILFLAGS_REL} ${OILFILE_REL}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} #build dir
+    COMMENT "call Goil (.oil to code source)"
+)
+

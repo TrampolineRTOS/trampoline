@@ -1,0 +1,25 @@
+CPU renesas {
+  LIBRARY net_can_renesas_spider_driver {
+    GLOBAL = TRUE;
+    PATH = "drivers/can/renesas";
+  };
+
+  LIBRARY can {
+    GLOBAL = TRUE;
+    NEEDS = net_can_renesas_spider_driver;
+    PATH = "net/can";
+  };
+};
+
+IMPLEMENTATION renesas {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          can
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};

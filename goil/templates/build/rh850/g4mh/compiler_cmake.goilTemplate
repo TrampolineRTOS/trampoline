@@ -1,0 +1,37 @@
+set(CMAKE_SYSTEM_NAME Generic)
+
+set(CMAKE_C_COMPILER % !OS::BUILD_S::COMPILER %)
+set(CMAKE_CXX_COMPILER % !OS::BUILD_S::CPPCOMPILER %)
+set(CMAKE_ASM_COMPILER % !OS::BUILD_S::COMPILER %)
+set(LINKER % !OS::BUILD_S::LINKER %)
+
+set(CMAKE_C_COMPILER_ID xxx) #FSY
+#define OS_CODE                                       AUTOMATIC
+
+# adapted from CMakeCInformation.cmake
+set(CMAKE_C_COMPILE_OBJECT
+"<CMAKE_C_COMPILER> <DEFINES> <INCLUDES> <FLAGS> -o<OBJECT> -c <SOURCE>")
+set(CMAKE_ASM_COMPILE_OBJECT
+"<CMAKE_ASM_COMPILER> <DEFINES> <INCLUDES> <FLAGS> -o<OBJECT> -c <SOURCE>")
+
+# adapted from CMakeCXXInformation.cmake
+# original rule uses ${CMAKE_CXX_COMPILER} instead
+#set(CMAKE_CXX_LINK_EXECUTABLE
+#    "${LINKER} <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>"
+#)
+
+#set(LINKER_SCRIPT '${BOARD_PATH}/rh850/g4mh/rcar_s4.clnk')
+%let basePath := OS::BUILD_S::TRAMPOLINE_BASE_PATH
+if [basePath charAtIndex: 0] != '/' then
+	let basePath := "${CMAKE_SOURCE_DIR}/"+basePath
+end if%
+set(LINKER_SCRIPT % !basePath %machines/rh850/g4mh/rcar_s4.clnk)
+
+
+# adapted from CMakeCInformation.cmake
+# original rule uses ${CMAKE_C_COMPILER} instead
+set(CMAKE_C_LINK_EXECUTABLE
+    "${LINKER} <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -output=<TARGET> -list=<TARGET>.map -subcommand=${LINKER_SCRIPT} <LINK_LIBRARIES>
+	nm -n <TARGET>.abs > <TARGET>.syms
+	${LINKER} <TARGET>.abs -output=<TARGET>.run -form=stype"
+)

@@ -1,0 +1,66 @@
+IMPLEMENTATION renesas {
+  TASK {
+    UINT32 STACKSIZE = 2048;
+  };
+
+  INTERRUPT [] {
+    UINT32 ID;
+  };
+
+  ISR [] {
+    INTERRUPT_TYPE SOURCE;
+    UINT32 STACKSIZE = 2048;
+  };
+
+  COUNTER [] {
+    INTERRUPT_TYPE SOURCE;
+  };
+
+  INTERRUPT_COUNT {
+    UINT32 IT_TABLE_SIZE;
+  };
+
+  OS {
+    BOOLEAN [
+      TRUE {
+        STRING APP_SRC[];
+        STRING CFLAGS[];
+        STRING CPPFLAGS[];
+        STRING ASFLAGS[];
+        STRING LDFLAGS[];
+        STRING APP_NAME = "trampoline";
+        STRING TRAMPOLINE_BASE_PATH = "..";
+        STRING COMPILER = "ccrh";
+        STRING ASSEMBLER = "ccrh";
+        STRING LINKER = "nm";
+      },
+      FALSE
+    ] BUILD = FALSE;
+    
+    BOOLEAN SYSTEM_CALL = TRUE;
+  };
+};
+
+CPU renesas {
+  COUNTER SystemCounter {
+    SOURCE = SysTick;
+  };
+
+  PLATFORM_FILES renesas {
+    PATH = "rh850";
+    CFILE = "tpl_machine_renesas.c";
+    ASFILE = "cstart0.asm";
+    ASFILE = "tpl_startup.asm";
+    ASFILE = "tpl_sc_handler.asm";
+    ASFILE = "tpl_irq_handler.asm";
+    CFILE  = "renesas_irq.c";
+  };
+
+  INTERRUPT_COUNT nb_it {
+    IT_TABLE_SIZE = 767;
+  };
+
+  INTERRUPT iccomInt  { ID = 80; };
+  INTERRUPT SysTick   { ID = 364; };
+  INTERRUPT SysTick2  { ID = 365; };
+};
