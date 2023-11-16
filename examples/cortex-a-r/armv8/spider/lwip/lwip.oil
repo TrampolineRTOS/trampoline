@@ -1,0 +1,108 @@
+OIL_VERSION = "4.0";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 2000 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 2000 ;
+    } ;
+};
+
+CPU lwip {
+  OS config {
+    STATUS = EXTENDED;
+
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../..";
+      APP_SRC = "lwip.c";
+
+      APP_NAME = "lwip_exe.elf";
+      CFLAGS  = "-O0 -DHSCIF_1843200BPS -ggdb";
+      LDFLAGS = "-Map=lwip.map";
+      COMPILER = "arm-none-eabi-gcc";
+      CPPCOMPILER = "arm-none-eabi-g++";
+      ASSEMBLER = "arm-none-eabi-as";
+      LINKER = "arm-none-eabi-ld";
+      COPIER = "arm-none-eabi-objcopy";
+      SYSTEM = PYTHON;
+
+      LIBRARY = serial;
+      LIBRARY = lwip;
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+
+  APPMODE std {};
+
+  TASK lwip { 
+    PRIORITY = 1;
+    AUTOSTART = TRUE { APPMODE = std; };
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  /* LWIP needs */
+  EVENT lwip_sync {
+    MASK = AUTO;
+  };
+
+  TASK tcpip_task { 
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = lwip_sync;
+  };
+
+  /* eth driver needs */
+  TASK gwca1_rx_tx_task { 
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = lwip_sync;
+  };
+
+  ISR gwca1_rx_tx_int {
+    CATEGORY = 1;
+    PRIORITY = 3;
+    SOURCE = GWCA1_RX_TX_INT;
+  };
+
+  ISR gwca1_rx_ts_int {
+    CATEGORY = 1;
+    PRIORITY = 4;
+    SOURCE = GWCA1_RX_TS_INT;
+  };
+
+  ISR coma_err_int {
+    CATEGORY = 1;
+    PRIORITY = 5;
+    SOURCE = COMA_ERR_INT;
+  };
+
+  ISR gwca1_err_int {
+    CATEGORY = 1;
+    PRIORITY = 6;
+    SOURCE = GWCA1_ERR_INT;
+  };
+
+  ISR etha0_err_int {
+    CATEGORY = 1;
+    PRIORITY = 7;
+    SOURCE = ETHA0_ERR_INT;
+  };
+
+};
+

@@ -1,0 +1,55 @@
+CPU net_ethernet_lwip_files {
+  LIBRARY lwip {
+    PATH =  "net/ethernet/lwip/src/include";
+
+    // The minimum set of files needed for lwIP.
+    CFILE = "../core/init.c";
+    CFILE = "../core/def.c";
+    CFILE = "../core/dns.c";
+    CFILE = "../core/inet_chksum.c";
+    CFILE = "../core/ip.c";
+    CFILE = "../core/mem.c";
+    CFILE = "../core/memp.c";
+    CFILE = "../core/netif.c";
+    CFILE = "../core/pbuf.c";
+    CFILE = "../core/raw.c";
+    CFILE = "../core/stats.c";
+    CFILE = "../core/sys.c";
+    CFILE = "../core/altcp.c";
+    CFILE = "../core/altcp_alloc.c";
+    CFILE = "../core/altcp_tcp.c";
+    CFILE = "../core/tcp.c";
+    CFILE = "../core/tcp_in.c";
+    CFILE = "../core/tcp_out.c";
+    CFILE = "../core/timeouts.c";
+    CFILE = "../core/udp.c";
+
+    // lwipcore4
+    CFILE = "../core/ipv4/acd.c";
+    CFILE = "../core/ipv4/autoip.c";
+    CFILE = "../core/ipv4/dhcp.c";
+    CFILE = "../core/ipv4/etharp.c";
+    CFILE = "../core/ipv4/icmp.c";
+    CFILE = "../core/ipv4/igmp.c";
+    CFILE = "../core/ipv4/ip4_frag.c";
+    CFILE = "../core/ipv4/ip4.c";
+    CFILE = "../core/ipv4/ip4_addr.c";
+
+    // APIFILES: The files which implement the sequential and socket APIs.
+    CFILE = "../api/api_lib.c";
+    CFILE = "../api/api_msg.c";
+    CFILE = "../api/err.c";
+    //CFILE = "../api/if_api.c";
+    CFILE = "../api/netbuf.c";
+    CFILE = "../api/netdb.c";
+    CFILE = "../api/netifapi.c";
+    //CFILE = "../api/sockets.c";
+    CFILE = "../api/tcpip.c";
+
+    // Files implementing various generic network interface functions
+    CFILE = "../netif/ethernet.c";
+    CFILE = "../netif/bridgeif.c";
+    CFILE = "../netif/bridgeif_fdb.c";
+  };
+};
+

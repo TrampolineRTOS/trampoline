@@ -1,0 +1,7 @@
+CPU drivers_lwip_port_renesas_spider_files {
+  LIBRARY lwip_port_renesas_spider {
+    PATH = "drivers/lwip_port/renesas";
+    CFILE = "sys_arch.c";
+    CFILE = "ethif.c";
+  };
+};

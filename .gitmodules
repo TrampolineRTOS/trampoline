@@ -4,3 +4,6 @@
 [submodule "machines/riscv/pulpino/pulpino"]
 	path = machines/riscv/pulpino/pulpino
 	url = https://github.com/Instrumented-Pulpino/pulpino.git	
+[submodule "libraries/net/ethernet/lwip"]
+	path = libraries/net/ethernet/lwip
+	url = https://git.savannah.nongnu.org/git/lwip.git

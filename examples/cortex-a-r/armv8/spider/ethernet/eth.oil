@@ -1,0 +1,94 @@
+OIL_VERSION = "4.0";
+
+IMPLEMENTATION trampoline {
+  TASK {
+    UINT32 STACKSIZE = 2048 ;
+  } ;
+
+  ISR {
+    UINT32 STACKSIZE = 2048 ;
+  } ;
+};
+
+CPU eth {
+  OS config {
+    STATUS = EXTENDED;
+
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../..";
+      APP_SRC = "main.c";
+      APP_NAME = "eth_exe.elf";
+      CFLAGS  = "-O0 -g -DHSCIF_1843200BPS -DNO_SYS";
+      LDFLAGS = "-Map=eth_exe.map";
+      COMPILER = "arm-none-eabi-gcc";
+      CPPCOMPILER = "arm-none-eabi-g++";
+      ASSEMBLER = "arm-none-eabi-as";
+      LINKER = "arm-none-eabi-ld";
+      COPIER = "arm-none-eabi-objcopy";
+      SYSTEM = PYTHON;
+      LIBRARY = serial;
+      LIBRARY = lwip;
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+
+  APPMODE std {};
+
+  TASK sample_init {
+    PRIORITY = 1;
+    AUTOSTART = TRUE { APPMODE = std; };
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  TASK monitor {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  /* ethernet driver needs */
+  TASK gwca1_rx_tx_task {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  ISR gwca1_rx_tx_int {
+    CATEGORY = 2;
+    PRIORITY = 2;
+    SOURCE = GWCA1_RX_TX_INT;
+  };
+
+  ISR gwca1_rx_ts_int {
+    CATEGORY = 2;
+    PRIORITY = 3;
+    SOURCE = GWCA1_RX_TS_INT;
+  };
+
+  ISR coma_err_int {
+    CATEGORY = 2;
+    PRIORITY = 4;
+    SOURCE = COMA_ERR_INT;
+  };
+
+  ISR gwca1_err_int {
+    CATEGORY = 2;
+    PRIORITY = 5;
+    SOURCE = GWCA1_ERR_INT;
+  };
+
+  ISR etha0_err_int {
+    CATEGORY = 2;
+    PRIORITY = 6;
+    SOURCE = ETHA0_ERR_INT;
+  };
+};

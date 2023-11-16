@@ -1,0 +1,72 @@
+OIL_VERSION = "4.0";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 1000 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 1000 ;
+    } ;
+};
+
+CPU serial {
+  OS config {
+    STATUS = EXTENDED;
+
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../..";
+      APP_SRC = "serial.c";
+      APP_NAME = "serial_exe.elf";
+      CFLAGS  = "-O0 -DHSCIF_1843200BPS";
+      LDFLAGS = "-Map=serial.map";
+      COMPILER = "arm-none-eabi-gcc";
+      CPPCOMPILER = "arm-none-eabi-g++";
+      ASSEMBLER = "arm-none-eabi-as";
+      LINKER = "arm-none-eabi-ld";
+      COPIER = "arm-none-eabi-objcopy";
+      SYSTEM = PYTHON;
+
+      LIBRARY = serial;
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+
+  APPMODE std {};
+
+  TASK serial_rx { 
+    PRIORITY = 1;
+    AUTOSTART = TRUE { APPMODE = std; };
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  TASK serial_tx {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  ALARM serial_serial {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = serial_tx;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = std;
+      ALARMTIME = 100;
+      CYCLETIME = 100;
+    };
+  };
+};
+

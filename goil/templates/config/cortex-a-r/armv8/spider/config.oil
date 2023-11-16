@@ -5,6 +5,9 @@ IMPLEMENTATION spider {
     BOOLEAN [
       TRUE {
         ENUM [
+          serial,
+          ethernet,
+          lwip,
           can
         ] LIBRARY[];
       },
@@ -33,6 +36,16 @@ CPU spider {
   // TO BE UPDATED
   INTERRUPT_SOURCE ARM_TIMER             { SOURCE_NUM = 27; VECTOR = IRQ_Interrupt; ACK = TRUE; };
   INTERRUPT_SOURCE ICCOM_INT             { SOURCE_NUM = 353; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GWCA0_RX_TX_INT       { SOURCE_NUM = 312; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GWCA1_RX_TX_INT       { SOURCE_NUM = 320; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GWCA0_RX_TS_INT       { SOURCE_NUM = 328; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GWCA1_RX_TS_INT       { SOURCE_NUM = 330; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE COMA_ERR_INT          { SOURCE_NUM = 290; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GWCA0_ERR_INT         { SOURCE_NUM = 291; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GWCA1_ERR_INT         { SOURCE_NUM = 292; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE ETHA0_ERR_INT         { SOURCE_NUM = 293; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE ETHA1_ERR_INT         { SOURCE_NUM = 294; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE ETHA2_ERR_INT         { SOURCE_NUM = 295; VECTOR = IRQ_Interrupt; ACK = TRUE; };
 
   PLATFORM_FILES spider {
     PATH = "cortex-a-r/armv8/spider";
@@ -43,6 +56,29 @@ CPU spider {
     CFILE = "tpl_stubs.c";
     CFILE = "tpl_irq.c";
     CFILE = "tpl_vector_table_ns.s";
+  };
+
+  LIBRARY serial {
+    GLOBAL = TRUE;
+    PATH = "drivers/serial/renesas";
+  };
+
+  LIBRARY ethernet {
+    GLOBAL = TRUE;
+    PATH = "drivers/ethernet/renesas";
+    NEEDS = serial;
+  };
+
+  LIBRARY lwip_port_renesas_spider {
+    GLOBAL = TRUE;
+    NEEDS = ethernet;
+    PATH = "drivers/lwip_port/renesas";
+  };
+
+  LIBRARY lwip {
+    GLOBAL = TRUE;
+    NEEDS = lwip_port_renesas_spider;
+    PATH = "net/ethernet/lwip";
   };
 
   LIBRARY net_can_renesas_spider_driver {
