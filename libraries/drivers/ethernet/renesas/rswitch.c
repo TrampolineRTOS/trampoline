@@ -3,6 +3,7 @@
 #include "rswitch.h"
 #include "rswitch_regs.h"
 #include "err_codes.h"
+#include "spider_utils.h"
 #include <string.h>
 
 #define PORT_TSNA_N     3
@@ -929,6 +930,7 @@ TASK(gwca1_rx_tx_task) {
         if (chain->irq_triggered != 0) {
             /* Go through the descriptors chain to parse received data */
             while (1) {
+                invalidate_data_cache_by_address(rx_ring, sizeof(rx_ring));
                 ts_desc = &(chain->ts_ring[chain->next_index]);
                 /* Stop once we get to a descriptor that was not modified */
                 if (ts_desc->die_dt == (DT_FEMPTY | DIE)) {
