@@ -91,7 +91,7 @@ template <typename TYPE> class TC_Array {
 
 //--- Allocation Constructor (array initialized with inValue)
   public: TC_Array (const int inCount,
-                     const TYPE & inValue COMMA_LOCATION_ARGS) ;
+                    const TYPE & inValue COMMA_LOCATION_ARGS) ;
 
 //--- Handle Copy
   public: TC_Array (const TC_Array <TYPE> &) ;
@@ -133,8 +133,8 @@ template <typename TYPE> class TC_Array {
 
 //--- Insert object at index (0 <= index <= count)
   public: void insertObjectAtIndex (const TYPE & inValue,
-                                     const int32_t inIndex
-                                     COMMA_LOCATION_ARGS) ; // inValue is copied
+                                    const int32_t inIndex
+                                    COMMA_LOCATION_ARGS) ; // inValue is copied
 
 //------------------------------------ Sorted array operations
 //--- Remove an object, suppose the array is ordered
@@ -148,17 +148,15 @@ template <typename TYPE> class TC_Array {
 
 //--- Intersection
   public: void intersectionOfOrderedArraies (const TC_Array<TYPE> & inOperand,
-                                              TC_Array<TYPE> & outResult) const ;
+                                             TC_Array<TYPE> & outResult) const ;
 
 //--- Union
   public: void unionOfOrderedArraies (const TC_Array<TYPE> & inOperand,
-                                       TC_Array<TYPE> & outResult) const ;
+                                      TC_Array<TYPE> & outResult) const ;
 
-//--- substract
-  public: void substractOfOrderedArraies (const TC_Array<TYPE> & inSubstractedSet,
-                                           TC_Array<TYPE> & outResult) const ;
-
-//------------------------------------
+//--- subtract
+  public: void subtractOfOrderedArraies (const TC_Array<TYPE> & inSubtractedSet,
+                                         TC_Array<TYPE> & outResult) const ;
 
 //--- Remove last object(s)
   public: void removeLastObject (LOCATION_ARGS) ;
@@ -173,18 +171,19 @@ template <typename TYPE> class TC_Array {
 
 //--- Allocation with provided data
   public: void setDataFromPointer (TYPE * & ioDataPtr,
-                                    const int32_t inDataLength) ;
+                                   const int32_t inDataLength) ;
 
 //--- Append data
   public: void appendDataFromPointer (const TYPE * inDataPtr,
-                                       const int32_t inDataLength) ;
+                                      const int32_t inDataLength) ;
 
 //--- Remove objects at index (0 <= index < count)
   public: void removeObjectAtIndex (const int32_t inIndex
-                                     COMMA_LOCATION_ARGS) ;
+                                    COMMA_LOCATION_ARGS) ;
+
   public: void removeObjectsAtIndex (const int32_t inCount,
-                                      const int32_t inStartingIndex
-                                      COMMA_LOCATION_ARGS) ;
+                                     const int32_t inStartingIndex
+                                     COMMA_LOCATION_ARGS) ;
 
 //--- Shared Array
   private: cSharedArray <TYPE> * mSharedArray ;
@@ -621,8 +620,8 @@ template <typename TYPE> void TC_Array <TYPE>::unionOfOrderedArraies (const TC_A
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-template <typename TYPE> void TC_Array <TYPE>::substractOfOrderedArraies (const TC_Array<TYPE> & inSubstractedSet,
-                                                                          TC_Array<TYPE> & outResult) const {
+template <typename TYPE> void TC_Array <TYPE>::subtractOfOrderedArraies (const TC_Array<TYPE> & inSubstractedSet,
+                                                                         TC_Array<TYPE> & outResult) const {
   outResult.setCountToZero () ;
   if (count () > 0) {
     if (inSubstractedSet.count () == 0) {

@@ -43,6 +43,8 @@
     #endif
     noteObjectAllocation (self) ;
     mDocument = inDocument ;
+  // See https://developer.apple.com/forums/thread/739492
+  //    self.clipsToBounds = YES ;
   }
   return self;
 }
@@ -63,11 +65,11 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 - (void) drawHashMarksAndLabelsInRect: (NSRect) inRect {
+  const NSRect viewBounds = [self bounds] ;
 //--- Draw background
   [[NSColor windowBackgroundColor] setFill] ;
-  [NSBezierPath fillRect:inRect] ;
+  [NSBezierPath fillRect: viewBounds] ;
 //--- Draw right border
-  const NSRect viewBounds = [self bounds] ;
   const NSPoint p1 = {viewBounds.size.width, 0.0} ;
   const NSPoint p2 = {viewBounds.size.width, viewBounds.size.height} ;
   [NSBezierPath strokeLineFromPoint:p1 toPoint:p2] ;

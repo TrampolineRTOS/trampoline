@@ -64,7 +64,7 @@
    <Add directory="../build/output" />
   </Compiler>
   <Linker>
-   <Add library="Ws2_32" />
+   <Add option="-static" />
    <Add library="Comdlg32" />
   </Linker>
   <Unit filename="../build/libpm/galgas2/C_galgas_quiet_option.cpp" />
@@ -89,6 +89,7 @@
    <Unit filename="../build/libpm/command_line_interface/C_builtin_CLI_Options.cpp" />
    <Unit filename="../build/libpm/command_line_interface/F_Analyze_CLI_Options.cpp" />
    <Unit filename="../build/libpm/command_line_interface/F_mainForLIBPM.cpp" />
+   <Unit filename="../build/libpm/big-integers/uint128-multiply-divide.cpp" /> 
    <Unit filename="../build/libpm/big-integers/BigUnsigned.cpp" />
    <Unit filename="../build/libpm/big-integers/C_BigInt.cpp" />
    <Unit filename="../build/libpm/bdd/C_BDD.cpp" />

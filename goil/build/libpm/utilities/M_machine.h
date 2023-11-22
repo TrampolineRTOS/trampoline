@@ -39,7 +39,7 @@
 // * __APPLE__and __NEXT_RUNTIME__ are both defined when compiling for                           
 //   OS X Cocoa (GUI applications)                                                               
 // * __MINGW32__ is defined when compiling by MinGW (for Windows)
-// * __CYGWIN__ is defined when compiling by Cygwin (for Windows)
+// * __CYGWIN__ is defined when compiling by Cygwin (for Unix on Windows, https://gist.github.com/basman/587688)
 // * __linux is defined when compiling by GCC (for Linux)
 //
 //----------------------------------------------------------------------------------------------------------------------

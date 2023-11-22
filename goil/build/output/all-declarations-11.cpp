@@ -2562,11 +2562,11 @@ void routine_fillLegacy (GALGAS_arxmlMetaClassMap & ioArgument_classMap,
 #include "project_header.h"
 #include "command_line_interface/F_mainForLIBPM.h"
 #include "command_line_interface/F_Analyze_CLI_Options.h"
-#include "utilities/F_DisplayException.h"
+#include "command_line_interface/C_builtin_CLI_Options.h"
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "galgas2/F_verbose_output.h"
 #include "galgas2/cLexiqueIntrospection.h"
-#include "command_line_interface/C_builtin_CLI_Options.h"
+#include "utilities/F_DisplayException.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 //

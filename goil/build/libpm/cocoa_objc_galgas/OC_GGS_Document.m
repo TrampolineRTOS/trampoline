@@ -270,10 +270,8 @@
 //---
   [mOutputScrollView setVerticalScroller:[OC_GGS_Scroller new]] ;
 //------------------------------------------------------------------- Get selected tab
-//  NSString * openedFilePath = self.fileURL.path ;
   key = [NSString stringWithFormat:@"SELECTED-TAB:%@", mBaseFilePreferenceKey] ;
   const NSUInteger selectedTab = (NSUInteger) [[NSUserDefaults standardUserDefaults] integerForKey:key] ;
-//  NSLog (@"READ selectedTab %lu", selectedTab) ;
 //------------------------------------------------------------------- Install selected tab observer
   [mSourceDisplayArrayControllerHigh
     addObserver:self 
@@ -835,7 +833,7 @@
     initWithString:[NSString stringWithFormat:@"Compiling %@…\n", inFilePath.lastPathComponent]
     attributes:defaultDictionary
   ] ;
-  [mOutputTextView.textStorage setAttributedString:attributedString] ;
+  [mOutputTextView.textStorage setAttributedString: attributedString] ;
   [mOutputTextView setAutomaticLinkDetectionEnabled:YES] ;
 }
 

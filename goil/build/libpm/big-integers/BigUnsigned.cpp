@@ -6,10 +6,17 @@
 #include "BigUnsigned.h"
 #include "utilities/M_machine.h"
 #include "utilities/galgas-random.h"
+#include "uint128-multiply-divide.h"
 
 //--------------------------------------------------------------------------------------------------
 // https://gcc.gnu.org/onlinedocs/gcc/Integer-Overflow-Builtins.html
 // https://fr.wikipedia.org/wiki/Algorithme_de_multiplication_d%27entiers
+//----------------------------------------------------------------------------------------------------------------------
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Constructors
+#endif
+
 //--------------------------------------------------------------------------------------------------
 
 BigUnsigned BigUnsigned::randomNumber (void) {
@@ -26,6 +33,21 @@ BigUnsigned BigUnsigned::randomNumber (void) {
 BigUnsigned::BigUnsigned (void) noexcept :
 mArray () {
 }
+
+//--------------------------------------------------------------------------------------------------
+
+BigUnsigned::BigUnsigned (const uint64_t inValue) noexcept :
+mArray () {
+  if (inValue != 0) {
+    mArray.push_back (inValue) ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Shifts
+#endif
 
 //--------------------------------------------------------------------------------------------------
 
@@ -49,6 +71,12 @@ BigUnsigned BigUnsigned::leftShiftedBy (const uint32_t inShiftCount) const {
   }
   return result ;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Add, subtract
+#endif
 
 //--------------------------------------------------------------------------------------------------
 
@@ -125,102 +153,18 @@ BigUnsigned BigUnsigned::subtractingBigUnsigned (const BigUnsigned & inOperand) 
       std::cout << "Error " << __FILE__ << ":" << __LINE__ << "\n" ;
       exit (1) ;
     }
-    while ((result.mArray.size () > 0) && (result.mArray [result.mArray.size () - 1] == 0)) {
+    while ((result.mArray.size () > 0) && (result.mArray.back () == 0)) {
       result.mArray.pop_back () ;
     }
   }
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-BigUnsigned BigUnsigned::addingU64 (const uint64_t inOperand) const {
-  BigUnsigned result ;
-  if (mArray.size () == 0) { // Receiver is zero
-    result.mArray.push_back (inOperand) ;
-  }else{
-    uint64_t carry = inOperand ;
-    for (size_t i=0 ; i<mArray.size () ; i++) {
-      const uint64_t sum = mArray [i] + carry ;
-      result.mArray.push_back (sum) ;
-      carry = sum < mArray [i] ;
-    }
-    if (carry != 0) {
-      result.mArray.push_back (carry) ;
-    }
-  }
-  return result ;
-}
-
-//--------------------------------------------------------------------------------------------------
-
-int BigUnsigned::compare (const BigUnsigned & inOperand) const {
-  int result = 0 ;
-  if (mArray.size () < inOperand.mArray.size ()) {
-    result = -1 ;
-  }else if (mArray.size () > inOperand.mArray.size ()) {
-    result = 1 ;
-  }else if (mArray.size () > 0) {
-    for (int i = int (mArray.size ()) - 1 ; (result == 0) && (i >= 0) ; i--) {
-      if (mArray [size_t (i)] < inOperand.mArray [size_t (i)]) {
-        result = -1 ;
-      }else if (mArray [size_t (i)] > inOperand.mArray [size_t (i)]) {
-        result = 1 ;
-      }
-    }
-  }
-  return result ;
-}
-
-//--------------------------------------------------------------------------------------------------
-
-static void mult64to128 (uint64_t op1,
-                         uint64_t op2,
-                         uint64_t & outHigh,
-                         uint64_t & outLow) {
-  const uint64_t u1 = (op1 & 0xffffffff) ;
-  const uint64_t v1 = (op2 & 0xffffffff) ;
-  uint64_t t = (u1 * v1);
-  const uint64_t w3 = (t & 0xffffffff);
-  uint64_t k = (t >> 32);
-
-  op1 >>= 32;
-  t = (op1 * v1) + k;
-  k = (t & 0xffffffff);
-  uint64_t w1 = (t >> 32);
-
-  op2 >>= 32;
-  t = (u1 * op2) + k;
-  k = (t >> 32);
-
-  outHigh = (op1 * op2) + w1 + k;
-  outLow = (t << 32) + w3;
-}
-
-//--------------------------------------------------------------------------------------------------
-
-BigUnsigned BigUnsigned::multiplyingByU64 (const uint64_t inOperand) const {
-  BigUnsigned result ;
-  if ((mArray.size () != 0) && (inOperand != 0)) { // Operands are not zero
-    uint64_t carry = 0 ;
-    for (size_t i=0 ; i<mArray.size () ; i++) {
-    //--- multiplication 64 x 64 -> 126
-      uint64_t high ;
-      uint64_t low ;
-      mult64to128 (mArray [i], inOperand, high, low) ;
-    //--- Add carry
-      low += carry ;
-      high += (low < carry) ;
-    //--- Store result
-      result.mArray.push_back (low) ;
-      carry = high ;
-    }
-    if (carry != 0) {
-      result.mArray.push_back (uint64_t (carry)) ;
-    }
-  }
-  return result ;
-}
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Multiply
+#endif
 
 //--------------------------------------------------------------------------------------------------
 
@@ -236,19 +180,11 @@ BigUnsigned BigUnsigned::multiplyingByBigUnsigned (const BigUnsigned & inOperand
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void BigUnsigned::printHex (const char * inName) const {
-  if (mArray.size () == 0) {
-    printf ("%s: 0\n", inName) ;
-  }else{
-    printf ("%s: 0x", inName) ;
-    for (int i = int (mArray.size ()) - 1 ; i>= 0 ; i--) {
-      printf ("'%0" PRIx64 "X", mArray [size_t (i)]) ;
-    }
-    printf ("\n") ;
-  }
-}
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Logic operations
+#endif
 
 //--------------------------------------------------------------------------------------------------
 
@@ -296,7 +232,7 @@ BigUnsigned BigUnsigned::xoringWithBigUnsigned (const BigUnsigned & inOperand) c
     for (size_t i=inOperand.mArray.size () ; i<maxSize ; i++) {
       result.mArray.push_back (mArray [i]) ;
     }
-    while ((result.mArray.size () > 0) && (result.mArray [result.mArray.size () - 1] == 0)) {
+    while ((result.mArray.size () > 0) && (result.mArray.back () == 0)) {
       result.mArray.pop_back () ;
     }
   }
@@ -313,7 +249,7 @@ BigUnsigned BigUnsigned::andingWithBigUnsigned (const BigUnsigned & inOperand) c
     for (size_t i=0 ; i<minSize ; i++) {
       result.mArray.push_back (mArray [i] & inOperand.mArray [i]) ;
     }
-    while ((result.mArray.size () > 0) && (result.mArray [result.mArray.size () - 1] == 0)) {
+    while ((result.mArray.size () > 0) && (result.mArray.back () == 0)) {
       result.mArray.pop_back () ;
     }
   }
@@ -329,6 +265,139 @@ BigUnsigned BigUnsigned::complemented (void) const {
     result.mArray.push_back (~ mArray [i]) ;
   }
   return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Compare
+#endif
+
+//--------------------------------------------------------------------------------------------------
+
+int BigUnsigned::compare (const BigUnsigned & inOperand) const {
+  int result = 0 ;
+  if (mArray.size () < inOperand.mArray.size ()) {
+    result = -1 ;
+  }else if (mArray.size () > inOperand.mArray.size ()) {
+    result = 1 ;
+  }else if (mArray.size () > 0) {
+    for (int i = int (mArray.size ()) - 1 ; (result == 0) && (i >= 0) ; i--) {
+      if (mArray [size_t (i)] < inOperand.mArray [size_t (i)]) {
+        result = -1 ;
+      }else if (mArray [size_t (i)] > inOperand.mArray [size_t (i)]) {
+        result = 1 ;
+      }
+    }
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Print
+#endif
+
+//--------------------------------------------------------------------------------------------------
+
+void BigUnsigned::printHex (const char * inName) const {
+  if (mArray.size () == 0) {
+    printf ("%s: 0\n", inName) ;
+  }else{
+    printf ("%s: 0x", inName) ;
+    for (int i = int (mArray.size ()) - 1 ; i>= 0 ; i--) {
+      printf ("'%0" PRIx64 "X", mArray [size_t (i)]) ;
+    }
+    printf ("\n") ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Operations with U64
+#endif
+
+//--------------------------------------------------------------------------------------------------
+
+BigUnsigned BigUnsigned::addingU64 (const uint64_t inOperand) const {
+  BigUnsigned result ;
+  if (mArray.size () == 0) { // Receiver is zero
+    if (inOperand != 0) {
+      result.mArray.push_back (inOperand) ;
+    }
+  }else{
+    uint64_t carry = inOperand ;
+    result.mArray.reserve (mArray.size () + 1) ;
+    for (size_t i=0 ; i<mArray.size () ; i++) {
+      const uint64_t sum = mArray [i] + carry ;
+      result.mArray.push_back (sum) ;
+      carry = sum < mArray [i] ;
+    }
+    if (carry != 0) {
+      result.mArray.push_back (carry) ;
+    }
+  }
+  return result ;
+}
+
+//--------------------------------------------------------------------------------------------------
+
+BigUnsigned BigUnsigned::multiplyingByU64 (const uint64_t inOperand) const {
+  BigUnsigned result ;
+  if ((mArray.size () != 0) && (inOperand != 0)) { // Operands are not zero
+    result.mArray.reserve (mArray.size () + 1) ;
+    uint64_t carry = 0 ;
+    for (size_t i=0 ; i<mArray.size () ; i++) {
+    //--- multiplication 64 x 64 -> 128
+      uint64_t high ;
+      uint64_t low ;
+      mul64x64to128 (mArray [i], inOperand, high, low) ;
+    //--- Add carry
+      low += carry ;
+      high += (low < carry) ;
+    //--- Store result
+      result.mArray.push_back (low) ;
+      carry = high ;
+    }
+    if (carry != 0) {
+      result.mArray.push_back (carry) ;
+    }
+  }
+  return result ;
+}
+
+//--------------------------------------------------------------------------------------------------
+
+void BigUnsigned::divideByU64 (const uint64_t inDivisor,
+                               BigUnsigned & outQuotient,
+                               uint64_t & outRemainder) const {
+  if (inDivisor == 0) {
+    std::cout << "Error " << __FILE__ << ":" << __LINE__ << "\n" ;
+    exit (1) ;
+  }else if (inDivisor == 1) {
+    outQuotient = *this ;
+    outRemainder = 0 ;
+  }else if (mArray.size () == 1) {
+    outQuotient = BigUnsigned () ;
+    outQuotient.mArray.push_back (mArray [0] / inDivisor) ;
+    outRemainder = mArray [0] % inDivisor ;
+  }else{
+    outQuotient = BigUnsigned () ;
+    outQuotient.mArray.resize (mArray.size (), 0) ;
+    outRemainder = 0 ;
+    for (int i = int (mArray.size ()) - 1 ; i >= 0 ; i--) {
+      uint64_t quotient ;
+      uint64_t r ;
+      divmod128by64 (outRemainder, mArray [size_t (i)], inDivisor, quotient, r) ;
+      outQuotient.mArray [size_t (i)] = quotient ;
+      outRemainder = r ;
+    }
+    while ((outQuotient.mArray.size () > 0) && (outQuotient.mArray.back () == 0)) {
+      outQuotient.mArray.pop_back () ;
+    }
+  }
 }
 
 //--------------------------------------------------------------------------------------------------

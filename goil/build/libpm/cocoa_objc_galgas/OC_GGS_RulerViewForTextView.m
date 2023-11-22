@@ -37,6 +37,10 @@
   self = [super init] ;
   if (self) {
     noteObjectAllocation (self) ;
+  //--- Very very strange!!!! In Sonoma, setting clipsToBounds to YES is required!
+  // Otherwise, the NSTextView displays no text!
+  // See https://developer.apple.com/forums/thread/739492
+    self.clipsToBounds = YES ;
   }
   return self ;
 }
@@ -77,7 +81,7 @@ static NSUInteger imin (NSUInteger a, NSUInteger b) { return (a < b) ? a : b ; }
   const NSRect viewBounds = self.bounds ;
 //-------- Draw background
   [[NSColor windowBackgroundColor] setFill] ;
-  [NSBezierPath fillRect: self.bounds] ;
+  [NSBezierPath fillRect: viewBounds] ;
 //-------- Set draw text attributes and find point size
   NSFont * font = [NSFont fontWithName:@"Courier" size:11.0] ;
   NSDictionary * attributes = [NSDictionary dictionaryWithObjectsAndKeys:

@@ -24,6 +24,7 @@
        "C_builtin_CLI_Options.cpp",
        "F_Analyze_CLI_Options.cpp",
        "F_mainForLIBPM.cpp",
+       "uint128-multiply-divide.cpp",
        "BigUnsigned.cpp",
        "C_BDD.cpp",
        "C_BDD-find-or-add.cpp",
