@@ -56,6 +56,7 @@ CPU spider {
     CFILE = "tpl_stubs.c";
     CFILE = "tpl_irq.c";
     CFILE = "tpl_vector_table_ns.s";
+    CFILE = "spider_utils.c";
   };
 
   LIBRARY serial {
