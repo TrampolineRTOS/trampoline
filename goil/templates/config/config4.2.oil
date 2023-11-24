@@ -1,0 +1,9 @@
+/*
+ * AUTOSAR 4.2
+ *
+ * This version of AUTOSAR is the common plus the multicore one. 
+ * Compared to 4.0, RESOURCE attribute is no longer included in
+ * APPLICATION object
+ */
+#include "autosar_common.oil"
+#include "autosar_multicore.oil"

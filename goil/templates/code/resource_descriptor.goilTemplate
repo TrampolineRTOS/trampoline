@@ -31,7 +31,7 @@ VAR(tpl_resource, OS_VAR) % !resource::NAME %_rez_desc = {
   /* ceiling priority of the resource */  % !resource::PRIORITY %,
   /* owner previous priority          */  0,
   /* owner of the resource            */  INVALID_PROC_ID,
-#if WITH_OSAPPLICATION == YES
+#if RESOURCE_BELONGS_TO_OS_APP == YES
   /* OS Application id                */  %
 if AUTOSAR then
   if OS::SCALABILITYCLASS >= 3 then

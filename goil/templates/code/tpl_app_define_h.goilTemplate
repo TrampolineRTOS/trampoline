@@ -33,12 +33,22 @@
 
 #include "tpl_config_def.h"
 
+%
+let rezBelongToApp := OS::SCALABILITYCLASS > 2 &
+    OILDECIMAL >= 31 &
+    OILDECIMAL <= 40
+%
+
 /*=============================================================================
  * Configuration flags
  */
 #define TARGET_ARCH                      "% !ARCH %"
 #define TARGET_CHIP                      "% !CHIP %"
 #define TARGET_BOARD                     "% !BOARD %"
+#define MAJOR_OIL_VERSION                % !OILMAJOR %
+#define MINOR_OIL_VERSION                % !OILMINOR %
+#define DECIMAL_OIL_VERSION              % !OILDECIMAL %
+#define RESOURCE_BELONGS_TO_OS_APP       % !yesNo(rezBelongToApp) %
 #define NUMBER_OF_CORES                  % !exists OS::NUMBER_OF_CORES default (1) %
 #define WITH_OS_EXTENDED                 % !yesNo(OS::STATUS == "EXTENDED") %
 #define WITH_ORTI                        % !yesNo(OS::WITHORTI) %

@@ -1,0 +1,69 @@
+/*
+ * AUTOSAR multicore objects. Objects defined here are:
+ * - IOC
+ * - SPINLOCK
+ *
+ * Objects reciving additional attributes are:
+ * - OS: NUMBER_OF_CORES.
+ * - ALARM: ACTION as an INCREMENTCOUNTER value for software counters and
+ *   ACCESSING_APPLICATION.
+ * - TASK: TIMINGPROTECTION and ACCESSING_APPLICATION.
+ * - ISR: TIMINGPROTECTION and ACCESSING_APPLICATION.
+ * - COUNTER: TYPE and ACCESSING_APPLICATION.
+ * - RESOURCE: ACCESSING_APPLICATION.
+ */
+IMPLEMENTATION autosar_multicore {
+  OS {
+    UINT32 [1..65535] NUMBER_OF_CORES = 1;
+  };
+
+  IOC [] {
+    STRUCT {
+      ENUM [
+        DATA,
+        REFERENCE
+      ] DATATYPEPROPERTY;
+    } DATATYPENAME [];
+    
+    ENUM [
+      QUEUED {
+        UINT32 BUFFER_LENGTH;
+      },
+      LAST_IS_BEST {
+        STRING WITH_AUTO INIT_VALUE_SYMBOL = AUTO;
+      }
+    ] SEMANTICS = QUEUED;
+    
+    STRUCT {
+      APPLICATION_TYPE RCV_OSAPPLICATION;
+      STRING WITH_AUTO RECEIVER_PULL_CB = AUTO;
+      ENUM [
+        NONE,
+        ACTIVATETASK { TASK_TYPE TASK; },
+        SETEVENT {TASK_TYPE TASK; EVENT_TYPE EVENT; }
+      ] ACTION = NONE;
+    } RECEIVER [];
+    
+    STRUCT {
+      UINT32 WITH_AUTO SENDER_ID = AUTO;
+      APPLICATION_TYPE SND_OSAPPLICATION;
+    } SENDER [] ;
+    
+  };
+
+  SPINLOCK [] {
+    APPLICATION_TYPE ACCESSING_APPLICATION [];
+    SPINLOCK_TYPE SUCCESSOR[];
+    ENUM [
+        LOCK_ALL_INTERRUPTS,
+        LOCK_CAT2_INTERRUPTS,
+        LOCK_WITH_RES_SCHEDULER,
+        LOCK_NOTHING
+    ] LOCKMETHOD = LOCK_NOTHING;
+  };
+
+  APPLICATION [] {
+    IOC_TYPE IOC [];
+    UINT32 CORE = 0;
+  };
+};

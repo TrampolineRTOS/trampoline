@@ -1,60 +1,9 @@
+/*
+ * AUTOSAR 4.0
+ *
+ * This version of AUTOSAR is basically the 3.1 plus the multicore one.
+ */
 #include "config3.1.oil"
-
-IMPLEMENTATION autosar4 {
-  OS {
-    UINT32 [1..65535] NUMBER_OF_CORES = 1;
-  };
-
-  IOC [] {
-    STRUCT {
-      ENUM [
-        DATA,
-        REFERENCE
-      ] DATATYPEPROPERTY;
-    } DATATYPENAME [];
-    
-    ENUM [
-      QUEUED {
-        UINT32 BUFFER_LENGTH;
-      },
-      LAST_IS_BEST {
-        STRING WITH_AUTO INIT_VALUE_SYMBOL = AUTO;
-      }
-    ] SEMANTICS = QUEUED;
-    
-    STRUCT {
-      APPLICATION_TYPE RCV_OSAPPLICATION;
-      STRING WITH_AUTO RECEIVER_PULL_CB = AUTO;
-      ENUM [
-        NONE,
-        ACTIVATETASK { TASK_TYPE TASK; },
-        SETEVENT {TASK_TYPE TASK; EVENT_TYPE EVENT; }
-      ] ACTION = NONE;
-    } RECEIVER [];
-    
-    STRUCT {
-      UINT32 WITH_AUTO SENDER_ID = AUTO;
-      APPLICATION_TYPE SND_OSAPPLICATION;
-    } SENDER [] ;
-    
-  };
-
-  SPINLOCK [] {
-    APPLICATION_TYPE ACCESSING_APPLICATION [];
-    SPINLOCK_TYPE SUCCESSOR[];
-    ENUM [
-        LOCK_ALL_INTERRUPTS,
-        LOCK_CAT2_INTERRUPTS,
-        LOCK_WITH_RES_SCHEDULER,
-        LOCK_NOTHING
-    ] LOCKMETHOD = LOCK_NOTHING;
-  };
-
-  APPLICATION [] {
-    IOC_TYPE IOC [];
-    UINT32 CORE = 0;
-  };
-
-};
+#include "autosar_multicore.oil"
 
 /*#include "api_ioc.oil"*/

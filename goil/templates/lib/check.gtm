@@ -1,0 +1,10 @@
+%
+#
+# Various checking getter and functions
+#
+getter @string isUnsigned() result
+  let result := true
+  loop i from 0 to [self length] - 1 do
+    let result := result & [[self charAtIndex : i] isDigit]
+  end loop 
+end getter

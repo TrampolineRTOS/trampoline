@@ -22,6 +22,7 @@
 # $URL$
 # 
 
+import "check"
 import "vectors"
 
 #------------------------------------------------------------------------------*
@@ -42,6 +43,24 @@ if not exists OS then
 end if
 
 #------------------------------------------------------------------------------*
+# OIL version is a string. Check it contains a X.Y string where X and Y are
+# unsigned integers.
+
+let oilVersionItems := [OILVERSION componentsSeparatedByString: "."] 
+if [oilVersionItems length] != 2 then
+  error OILVERSION : "Badly formatted OILVERSION attribute. It should take the form X.Y, where X is the major version and Y the minor version."
+end if
+if not [oilVersionItems[0] isUnsigned] then
+  error OILVERSION : "Major version is not an unsigned number"
+end if
+if not [oilVersionItems[1] isUnsigned] then
+  error OILVERSION : "Minor version is not an unsigned number"
+end if
+let OILMAJOR := [oilVersionItems[0] unsigned]
+let OILMINOR := [oilVersionItems[1] unsigned]
+let OILDECIMAL := OILMAJOR * 10 + OILMINOR
+
+#------------------------------------------------------------------------------*
 # Check the OIL version conforms to declarations
 if OILVERSION == "2.5" then
   # OSEK 2.2.3 description. AUTOSAR objects are not allowed
@@ -55,7 +74,7 @@ end if
 #
 # AUTOSAR is true if OIL_VERSION is 3.1
 # 
-let AUTOSAR := (OILVERSION == "3.1"  | OILVERSION == "4.0")
+let AUTOSAR := (OILVERSION == "3.1" | OILVERSION == "4.0" | OILVERSION == "4.2")
 
 #------------------------------------------------------------------------------*
 # Compute a default OS::NUMBER_OF_CORES if it is not defined
@@ -448,18 +467,22 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   end foreach
   let ALARM := alarm_with_app
   
-  # Normally a resource should not be in any application. Fix that.
-  let rez_with_app := @()
-  foreach resource in RESOURCE do
-    if not exists resource_map[resource::NAME] then
-      error resource::NAME : "Resource "+resource::NAME+" does not belong to any Application"
-    else
-      let app := [resource_map[resource::NAME] first]
-      let resource::APPLICATION := app
-      let rez_with_app += resource
-    end if
-  end foreach
-  let RESOURCE := rez_with_app
+  # In AUTOSAR 3.1 and 4.0, a RESOURCE should belong to an OS APPLICATION but
+  # in AUTOSAR 4.2, It should not. So the following checking is only
+  # done in AUTOSAR 3.1 and 4.0
+  if OILVERSION == "4.0" | OILVERSION == "3.1" then
+    let rez_with_app := @()
+    foreach resource in RESOURCE do
+      if not exists resource_map[resource::NAME] then
+        error resource::NAME : "Resource "+resource::NAME+" does not belong to any Application"
+      else
+        let app := [resource_map[resource::NAME] first]
+        let resource::APPLICATION := app
+        let rez_with_app += resource
+      end if
+    end foreach
+    let RESOURCE := rez_with_app
+  end if
   
   let mess_with_app := @()
   foreach message in MESSAGE do
