@@ -9,7 +9,6 @@ CPU buildOptions {
      */
 //    COMMONFLAGS = "-g";                           // Produce debugging information
     COMMONFLAGS = "-Wall";                        // All warnings on
-    COMMONFLAGS = "-pedantic";
     COMMONFLAGS = "-Wformat";
     COMMONFLAGS = "-std=c99";
     COMMONFLAGS = "-mcpu=cortex-r52";              // Compile for arm r52

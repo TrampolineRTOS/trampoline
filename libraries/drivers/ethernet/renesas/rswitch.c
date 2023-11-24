@@ -3,6 +3,7 @@
 #include "rswitch.h"
 #include "rswitch_regs.h"
 #include "err_codes.h"
+#include "spider_utils.h"
 #include <string.h>
 
 #define PORT_TSNA_N     3
@@ -778,31 +779,31 @@ static int rswitch_phy_init(struct rswitch_etha *etha)
     int ret;
 
     /* Reset */
-    CHECK_RET(rswitch_mii_read(etha, 1, etha->port_num + 1, 0xC04A, &reg_data));
+    CHECK_RET(rswitch_mii_read(etha, etha->port_num + 1, 1, 0xC04A, &reg_data));
     reg_data |= BIT(15);
-    CHECK_RET(rswitch_mii_write(etha, 1, etha->port_num + 1, 0xC04A, &reg_data));
-    CHECK_RET(rswitch_mii_write(etha, 1, etha->port_num + 1, 0xC04A, &reg_data)); /* MCAL does it twice... */
+    CHECK_RET(rswitch_mii_write(etha, etha->port_num + 1, 1, 0xC04A, &reg_data));
+    CHECK_RET(rswitch_mii_write(etha, etha->port_num + 1, 1, 0xC04A, &reg_data)); /* MCAL does it twice... */
 
     /* Check mode */
-    CHECK_RET(rswitch_mii_read(etha, 1, etha->port_num + 1, 0xC04A, &reg_data));
+    CHECK_RET(rswitch_mii_read(etha, etha->port_num + 1, 1, 0xC04A, &reg_data));
     if ((reg_data & 0x7) != 0x4 ) { /* 4 stands for SGMII */
         reg_data &= ~0x7;
         reg_data |= BIT(15) | 0x4;
-        CHECK_RET(rswitch_mii_write(etha, 1, etha->port_num + 1, 0xC04A, &reg_data));
+        CHECK_RET(rswitch_mii_write(etha, etha->port_num + 1, 1, 0xC04A, &reg_data));
 
         /* Run SERDES Init */
-        CHECK_RET(rswitch_mii_read(etha, 1, etha->port_num + 1, 0x800F, &reg_data));
+        CHECK_RET(rswitch_mii_read(etha, etha->port_num + 1, 1, 0x800F, &reg_data));
         reg_data |= BIT(15) | BIT(13);
-        CHECK_RET(rswitch_mii_write(etha, 1, etha->port_num + 1, 0x800F, &reg_data));
+        CHECK_RET(rswitch_mii_write(etha, etha->port_num + 1, 1, 0x800F, &reg_data));
         
         reg_data = 0x0U;
         do {
-            CHECK_RET(rswitch_mii_read(etha, 1, etha->port_num + 1, 0x800F, &reg_data));
+            CHECK_RET(rswitch_mii_read(etha, etha->port_num + 1, 1, 0x800F, &reg_data));
         } while (reg_data & BIT(15));
 
         /* Auto SERDES Init Disable */
         reg_data &= ~BIT(13);
-        CHECK_RET(rswitch_mii_write(etha, 1, etha->port_num + 1, 0x800F, &reg_data));
+        CHECK_RET(rswitch_mii_write(etha, etha->port_num + 1, 1, 0x800F, &reg_data));
     }
 
     return 0;
@@ -929,6 +930,7 @@ TASK(gwca1_rx_tx_task) {
         if (chain->irq_triggered != 0) {
             /* Go through the descriptors chain to parse received data */
             while (1) {
+                invalidate_data_cache_by_address(rx_ring, sizeof(rx_ring));
                 ts_desc = &(chain->ts_ring[chain->next_index]);
                 /* Stop once we get to a descriptor that was not modified */
                 if (ts_desc->die_dt == (DT_FEMPTY | DIE)) {
