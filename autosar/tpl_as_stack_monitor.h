@@ -27,8 +27,8 @@
 #ifndef TPL_AS_STACK_MONITOR_H
 #define TPL_AS_STACK_MONITOR_H_
 
-#include "tpl_machine_interface.h"
 #include "tpl_as_protec_hook.h"
+#include "tpl_machine_interface.h"
 
 /**
  * @def SCALABILITY_CLASS
@@ -48,7 +48,7 @@
  * Do the stack monitoring checkings for the specified executable object and
  * call the #ProtectionHook if required.
  *
- * @param this_exec_obj the executable object to monitor
+ * @param tpl_proc_id the id of the executable object to monitor
  *
  * @see #ProtectionHook
  */
