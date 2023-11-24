@@ -1,3 +1,17 @@
+/*
+ * AUTOSAR common objects. Objects defined here are:
+ * - SCHEDULETABLE
+ * - APPLICATION
+ *
+ * Objects reciving additional attributes are:
+ * - OS: PROTECTIONHOOK, SCALABILITYCLASS end STACKMONITORING.
+ * - ALARM: ACTION as an INCREMENTCOUNTER value for software counters and
+ *   ACCESSING_APPLICATION.
+ * - TASK: TIMINGPROTECTION and ACCESSING_APPLICATION.
+ * - ISR: TIMINGPROTECTION and ACCESSING_APPLICATION.
+ * - COUNTER: TYPE and ACCESSING_APPLICATION.
+ * - RESOURCE: ACCESSING_APPLICATION.
+ */
 IMPLEMENTATION trampoline_autosar_common {
 
   OS {
