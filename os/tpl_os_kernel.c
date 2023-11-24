@@ -1174,6 +1174,7 @@ FUNC(void, OS_CODE) tpl_init_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 {
   GET_CURRENT_CORE_ID(core_id)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 #if TASK_COUNT > 0 || ALARM_COUNT > 0 || SCHEDTABLE_COUNT > 0
   VAR(uint16, AUTOMATIC) i;
   CONST(tpl_appmode_mask, AUTOMATIC) app_mode_mask = 1 << app_mode;
@@ -1187,14 +1188,52 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
 #endif
 
-  /*  Start the idle task */
+  /*
+   * Init tpl_ready list and tpl_kern
+   */
+
+#if NUMBER_OF_CORES == 1
+  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_CONST)
+  idle_stat = tpl_stat_proc_table[IDLE_TASK_ID];
+  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_VAR)
+  idle = tpl_dyn_proc_table[IDLE_TASK_ID];
+#else
+  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_CONST)
+  idle_stat = tpl_stat_proc_table[IDLE_TASK_0_ID + tpl_get_core_id()];
+  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_VAR)
+  idle = tpl_dyn_proc_table[IDLE_TASK_0_ID + tpl_get_core_id()];
+#endif
+
+  READY_LIST(ready_list)[0].key = 0;
+  /* No running task static descriptor                                  */
+  TPL_KERN_REF(kern).s_running = NULL;
+  /* elected task to run is idle task                                   */
+  TPL_KERN_REF(kern).s_elected = idle_stat;
+  /* no running task dynamic descriptor                                 */
+  TPL_KERN_REF(kern).running = NULL;
+  /* elected task to run is idle task                                   */
+  TPL_KERN_REF(kern).elected = idle;
+  /* no running task so no ID                                           */
+  TPL_KERN_REF(kern).running_id = INVALID_PROC_ID;
+  /* idle task has no ID                                                */
+  TPL_KERN_REF(kern).elected_id = INVALID_PROC_ID;
+  /* no context switch needed at start                                  */
+  TPL_KERN_REF(kern).need_switch = NO_NEED_SWITCH;
+  /* no schedule needed at start                                        */
+  TPL_KERN_REF(kern).need_schedule = FALSE;
+#if WITH_MEMORY_PROTECTION == YES
+  /* at early system startup, we run in kernel mode, so in trusted mode */
+  TPL_KERN_REF(kern).running_trusted = 1;
+#endif /* WITH_MEMORY_PROTECTION */
+
+  /* Start the idle task */
 #if NUMBER_OF_CORES == 1
   result = tpl_activate_task(IDLE_TASK_ID);
 #else
   result = tpl_activate_task(IDLE_TASK_0_ID + tpl_get_core_id());
 #endif
 
-  /*  Init the Ioc's unqueued buffer */
+  /* Init the Ioc's unqueued buffer */
 #if ((WITH_IOC == YES) && (IOC_UNQUEUED_COUNT > 0))
 #if NUMBER_OF_CORES > 1
   /* Only one core must do this initialization */
