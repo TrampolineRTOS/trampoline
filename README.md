@@ -103,11 +103,11 @@ More examples are coming.
 Updated to version 3.1.15 on 2023, November 16.
 
 
-* Linux 32 bits: [goil-linux-32.zip](http://osek.triskell.org/goil-linux-32.zip)
-* Linux 64 bits: [goil-linux-64.zip](http://osek.triskell.org/goil-linux-64.zip)
-* Windows: [goil-windows.zip](http://osek.triskell.org/goil-windows.zip)
-* Mac OS X (Intel)  : [goil-mac-os-x.zip](http://osek.triskell.org/goil-mac-os-x.zip)
-* Mac OS X (Silicon): [goil-mac-os-x-silicon.zip](http://osek.triskell.org/goil-mac-os-x-silicon.zip)
+* Linux 32 bits: [goil-linux-32.zip](https://osek.triskell.org/goil-linux-32.zip)
+* Linux 64 bits: [goil-linux-64.zip](https://osek.triskell.org/goil-linux-64.zip)
+* Windows: [goil-windows.zip](https://osek.triskell.org/goil-windows.zip)
+* Mac OS X (Intel)  : [goil-mac-os-x.zip](https://osek.triskell.org/goil-mac-os-x.zip)
+* Mac OS X (Silicon): [goil-mac-os-x-silicon.zip](https://osek.triskell.org/goil-mac-os-x-silicon.zip)
 
 Note: goil binaries for Mac OS X are not signed. You can either recompile goil rom sources (script in `goil/makefile-macosx`) or self sign the binary (information [here](https://stackoverflow.com/questions/58356844/what-are-the-ways-or-technologies-to-sign-an-executable-application-file-in-mac))
 
