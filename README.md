@@ -103,11 +103,11 @@ More examples are coming.
 Updated to version 3.1.15 on 2023, November 16.
 
 
-* Linux 32 bits: [goil-linux-32.zip](https://uncloud.univ-nantes.fr/index.php/s/5ECXDz2ijinzR4y/goil-linux-32.zip)
-* Linux 64 bits: [goil-linux-64.zip](https://uncloud.univ-nantes.fr/index.php/s/5ECXDz2ijinzR4y/goil-linux-64.zip)
-* Windows: [goil-windows.zip](https://uncloud.univ-nantes.fr/index.php/s/5ECXDz2ijinzR4y/goil-windows.zip)
-* Mac OS X (Intel)  : [goil-mac-os-x.zip](https://uncloud.univ-nantes.fr/index.php/s/5ECXDz2ijinzR4y/goil-mac-os-x.zip)
-* Mac OS X (Silicon): [goil-mac-os-x-silicon.zip](https://osek.triskell.org/goil-mac-os-x-silicon.zip)
+* Linux 32 bits: [goil-linux-32.zip](https://uncloud.univ-nantes.fr/index.php/s/9kzNTz3KK6aogbX)
+* Linux 64 bits: [goil-linux-64.zip](https://uncloud.univ-nantes.fr/index.php/s/n2bHana8SLo2CrG)
+* Windows: [goil-windows.zip](https://uncloud.univ-nantes.fr/index.php/s/ZAyZ4ngSqCaa4wD)
+* Mac OS X (Intel)  : [goil-mac-os-x.zip](https://uncloud.univ-nantes.fr/index.php/s/xsrTrwk8bm5x4Kz)
+* Mac OS X (Silicon): [goil-mac-os-x-silicon.zip](https://uncloud.univ-nantes.fr/index.php/s/DHxMzm47XRyatm2)
 
 Note: goil binaries for Mac OS X are not signed. You can either recompile goil from sources (script in `goil/makefile-macosx`) or self sign the binary (information [here](https://stackoverflow.com/questions/58356844/what-are-the-ways-or-technologies-to-sign-an-executable-application-file-in-mac))
 
