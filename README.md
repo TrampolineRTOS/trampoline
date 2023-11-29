@@ -103,13 +103,13 @@ More examples are coming.
 Updated to version 3.1.15 on 2023, November 16.
 
 
-* Linux 32 bits: [goil-linux-32.zip](https://osek.triskell.org/goil-linux-32.zip)
-* Linux 64 bits: [goil-linux-64.zip](https://osek.triskell.org/goil-linux-64.zip)
-* Windows: [goil-windows.zip](https://osek.triskell.org/goil-windows.zip) (you may be warned of the presence of a virus, as the zip file contains an .exe binary)
-* Mac OS X (Intel)  : [goil-mac-os-x.zip](https://osek.triskell.org/goil-mac-os-x.zip)
+* Linux 32 bits: [goil-linux-32.zip](https://uncloud.univ-nantes.fr/index.php/s/5ECXDz2ijinzR4y/goil-linux-32.zip)
+* Linux 64 bits: [goil-linux-64.zip](https://uncloud.univ-nantes.fr/index.php/s/5ECXDz2ijinzR4y/goil-linux-64.zip)
+* Windows: [goil-windows.zip](https://uncloud.univ-nantes.fr/index.php/s/5ECXDz2ijinzR4y/goil-windows.zip)
+* Mac OS X (Intel)  : [goil-mac-os-x.zip](https://uncloud.univ-nantes.fr/index.php/s/5ECXDz2ijinzR4y/goil-mac-os-x.zip)
 * Mac OS X (Silicon): [goil-mac-os-x-silicon.zip](https://osek.triskell.org/goil-mac-os-x-silicon.zip)
 
-Note: goil binaries for Mac OS X are not signed. You can either recompile goil rom sources (script in `goil/makefile-macosx`) or self sign the binary (information [here](https://stackoverflow.com/questions/58356844/what-are-the-ways-or-technologies-to-sign-an-executable-application-file-in-mac))
+Note: goil binaries for Mac OS X are not signed. You can either recompile goil from sources (script in `goil/makefile-macosx`) or self sign the binary (information [here](https://stackoverflow.com/questions/58356844/what-are-the-ways-or-technologies-to-sign-an-executable-application-file-in-mac))
 
 ## Useful links
 
