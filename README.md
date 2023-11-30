@@ -103,13 +103,13 @@ More examples are coming.
 Updated to version 3.1.15 on 2023, November 16.
 
 
-* Linux 32 bits: [goil-linux-32.zip](https://uncloud.univ-nantes.fr/index.php/s/9kzNTz3KK6aogbX)
-* Linux 64 bits: [goil-linux-64.zip](https://uncloud.univ-nantes.fr/index.php/s/n2bHana8SLo2CrG)
-* Windows: [goil-windows.zip](https://uncloud.univ-nantes.fr/index.php/s/ZAyZ4ngSqCaa4wD)
-* Mac OS X (Intel)  : [goil-mac-os-x.zip](https://uncloud.univ-nantes.fr/index.php/s/xsrTrwk8bm5x4Kz)
-* Mac OS X (Silicon): [goil-mac-os-x-silicon.zip](https://uncloud.univ-nantes.fr/index.php/s/DHxMzm47XRyatm2)
+* Linux 32 bits: [goil-linux-32.zip](https://uncloud.univ-nantes.fr/index.php/s/9kzNTz3KK6aogbX) MD5: 1ff72527b35d06c6fbc0e3e4e93e58c0
+* Linux 64 bits: [goil-linux-64.zip](https://uncloud.univ-nantes.fr/index.php/s/n2bHana8SLo2CrG) MD5: 82039bf8e42f694b95b6004de930b8b8
+* Windows: [goil-windows.zip](https://uncloud.univ-nantes.fr/index.php/s/ZAyZ4ngSqCaa4wD) MD5: 09f928f7d28278345968de1fe226e84b
+* Mac OS X (Intel)  : [goil-mac-os-x.zip](https://uncloud.univ-nantes.fr/index.php/s/xsrTrwk8bm5x4Kz) MD5: f4d1d0d0af0b3898cac7cac70a4451d7
+* Mac OS X (Apple Silicon): [goil-mac-os-x-silicon.zip](https://uncloud.univ-nantes.fr/index.php/s/DHxMzm47XRyatm2) MD5: cac2e3bff92bb823393c46998b6f19cf
 
-Note: goil binaries for Mac OS X are not signed. You can either recompile goil from sources (script in `goil/makefile-macosx`) or self sign the binary (information [here](https://stackoverflow.com/questions/58356844/what-are-the-ways-or-technologies-to-sign-an-executable-application-file-in-mac))
+Note: goil binaries for Mac OS X are not signed. You can either recompile goil from sources (script in `goil/makefile-unix`) or self sign the binary (information [here](https://stackoverflow.com/questions/58356844/what-are-the-ways-or-technologies-to-sign-an-executable-application-file-in-mac))
 
 ## Useful links
 
@@ -117,11 +117,11 @@ Note: goil binaries for Mac OS X are not signed. You can either recompile goil f
 
 The OSEK-VDX portal is down since at least june 2017 because the working group has been disbanded in favor of AUTOSAR. Here are copies of a part of the documents that were available for download:
 
-* [OIL specification](http://osek.triskell.org/oil25.pdf)
-* [OS specification](http://osek.triskell.org/os223.pdf)
-* [COM specification](http://osek.triskell.org/OSEKCOM303.pdf)
-* [ORTI A](http://osek.triskell.org/orti-a-22.pdf) and [ORTI B](http://osek.triskell.org/orti-b-22.pdf) specifications
-* [OS Test Plan](http://osek.triskell.org/ostestplan20.pdf)
-* [OS Test Procedure](http://osek.triskell.org/ostestproc20.pdf)
-* [COM Test Plan](http://osek.triskell.org/comtestplan20.pdf)
-* [COM Test Procedure](http://osek.triskell.org/comtestproc20.pdf)
+* [OIL specification](https://uncloud.univ-nantes.fr/index.php/s/zXE6YHjrXcysrE4)
+* [OS specification](https://uncloud.univ-nantes.fr/index.php/s/KG6LYzra2paHNbS)
+* [COM specification](https://uncloud.univ-nantes.fr/index.php/s/CppiWPmfyF3eKGS)
+* [ORTI A](https://uncloud.univ-nantes.fr/index.php/s/x3w56pyGHoExnBp) and [ORTI B](https://uncloud.univ-nantes.fr/index.php/s/7QMCDeQLKgJQ8Xx) specifications
+* [OS Test Plan](https://uncloud.univ-nantes.fr/index.php/s/cax2N6XSCex7fXx)
+* [OS Test Procedure](https://uncloud.univ-nantes.fr/index.php/s/nWm9EqAdq3gkSr6)
+* [COM Test Plan](https://uncloud.univ-nantes.fr/index.php/s/PTXAnj5L58aiWS9)
+* [COM Test Procedure](https://uncloud.univ-nantes.fr/index.php/s/jqZEq7NByTczX5o)
