@@ -248,8 +248,7 @@ jobs:
     needs: goil-linux
     strategy:
       matrix:
-        # List only the examples that currently compile
-        example_name: [blink]
+        example_name: [blink, blinkAndFPGA]
     steps:
       - name: Install ARM toolchain
         run: |
