@@ -5,7 +5,7 @@
 	* TaskB4 to TaskB7, depending on the button pressed.
 
 `
-goil --target=cortex-m/armv7em/stm32f303/coroLabBoard --templates=../../../../../../goil/templates/ base.oil
+goil --target=cortex-m/armv7em/stm32f303/coroLabBoard --templates=../../../../../../goil/templates/ baseCMake.oil
 `
 
 This example uses CMake to build binary and add VSCode integration. VSCode requires extensions:
