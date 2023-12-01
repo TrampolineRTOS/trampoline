@@ -354,8 +354,7 @@ jobs:
     needs: goil-linux
     strategy:
       matrix:
-        # List only the examples that currently compile
-        example_name: [blink, readbutton, testDisableEnable]
+        example_name: [alarms, blink, readbutton, readbutton_isr, readbutton_isr1, testDisableEnable, timer]
     steps:
       - name: Install ARM toolchain
         run: |
