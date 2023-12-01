@@ -32,6 +32,6 @@ set(LINKER_SCRIPT % !basePath %machines/rh850/g4mh/rcar_s4.clnk)
 # original rule uses ${CMAKE_C_COMPILER} instead
 set(CMAKE_C_LINK_EXECUTABLE
     "${LINKER} <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -output=<TARGET> -list=<TARGET>.map -subcommand=${LINKER_SCRIPT} <LINK_LIBRARIES>
-	nm -n <TARGET>.abs > <TARGET>.syms
+	bash -c 'nm -n <TARGET>.abs > <TARGET>.syms'
 	${LINKER} <TARGET>.abs -output=<TARGET>.run -form=stype"
 )
