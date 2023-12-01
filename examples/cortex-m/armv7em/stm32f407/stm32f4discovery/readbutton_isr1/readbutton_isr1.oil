@@ -19,7 +19,7 @@ CPU readbutton_isr {
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "readbutton_isr.c";
-      APP_NAME = "readbutton_isr_exe";
+      APP_NAME = "readbutton_isr1_exe";
       CFLAGS  = "-O0"; 
       LDFLAGS = "-Map=readbutton_isr.map";
       COMPILER = "arm-none-eabi-gcc";
