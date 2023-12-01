@@ -3,11 +3,17 @@
 
 #include "tpl_os.h"
 
+#if __arm__
 /* SCIF3 */
 #define SCIF_BASE_ADDR                      0xE6C50000
-
 /* HSCIF0 */
 #define HSCIF_BASE_ADDR                     0xE6540000
+#else
+/* SCIF3 */
+#define SCIF_BASE_ADDR                      0xD6C50000
+/* HSCIF0 */
+#define HSCIF_BASE_ADDR                     0xD6540000
+#endif
 
 /* BRR computing:
  *   HSBRR: Register value = Internal clock / ( Sr * 2^(2*n + 1) * B) * 10^6 -1

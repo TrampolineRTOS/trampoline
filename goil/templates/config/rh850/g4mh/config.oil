@@ -9,6 +9,11 @@ CPU renesas {
     NEEDS = net_can_renesas_spider_driver;
     PATH = "net/can";
   };
+
+  LIBRARY serial {
+    GLOBAL = TRUE;
+    PATH = "drivers/serial/renesas";
+  };
 };
 
 IMPLEMENTATION renesas {
@@ -16,7 +21,8 @@ IMPLEMENTATION renesas {
     BOOLEAN [
       TRUE {
         ENUM [
-          can
+          can,
+          serial
         ] LIBRARY[];
       },
       FALSE

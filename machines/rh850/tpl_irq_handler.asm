@@ -65,11 +65,11 @@ __irq_handler:
 	pushsp r21, r31
 
 	; Save the current context.
-	mov TPL_KERN_OFFSET_S_RUNNING, r10
-	movhi HIGHW1(#_tpl_kern), r10, r11 ; get pointer to the descriptor of the running task
-	ld.w LOWW(#_tpl_kern)[r11], r10
-
-	st.w r3, [r10] ; save running task sp
+	mov #_tpl_kern, r10
+	addi TPL_KERN_OFFSET_S_RUNNING, r10, r11 ; get pointer to the descriptor of the running task
+	ld.w [r11], r10 ; get pointer to the running task context
+	ld.w [r10], r11
+	st.w r3, [r11] ; save running task sp
 
 	; Switch back to kernel stack
 	mov r4, r3
@@ -79,12 +79,11 @@ __irq_handler:
 	jarl _tpl_run_elected, r31
 
 	; Update the current context according to SP given by the OS
-	mov TPL_KERN_OFFSET_S_RUNNING, r10
-	movhi HIGHW1(#_tpl_kern), r10, r11 ; Get pointer to the descriptor of the new running task
-	ld.w LOWW(#_tpl_kern)[r11], r10
-
-	ld.w [r10], r11 ; Get SP of elected task
-	ld.w [r11], r3
+	mov #_tpl_kern, r10
+	addi TPL_KERN_OFFSET_S_RUNNING, r10, r11 ; get pointer to the descriptor of the running task
+	ld.w [r11], r10 ; Get SP of elected task
+	ld.w [r10], r11
+	ld.w [r11], r3 ; load running task sp
 
 	; epilogue
 	popsp r21, r31

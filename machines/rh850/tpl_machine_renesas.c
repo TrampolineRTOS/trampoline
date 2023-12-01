@@ -2,13 +2,13 @@
 #include "tpl_machine.h"
 #include "tpl_machine_interface.h"
 #include "tpl_dispatch_table.h"
-#include "iodefine.h" //FSY: usefull?
+#include "iodefine.h"
 
 VAR (tpl_context, OS_VAR) idle_task_context;
 
 VAR(tpl_stack_word, OS_VAR) idle_stack[IDLE_STACK_SIZE/sizeof(tpl_stack_word)];
 
-#define SYSTICK_HZ		((u32) 80000000) /* 80MHz : is it the correct frequency? */
+#define SYSTICK_HZ		((u32) 80000000) /* 80MHz */
 #define TICKS_FOR_10MS	SYSTICK_HZ / 100
 
 static void stop_systick()
@@ -170,9 +170,17 @@ extern u32 _tpl_syscall_table;
 
 FUNC(void, OS_CODE) tpl_init_machine(void)
 {
+	volatile uint32 val = 0;
+
 	/* Initialize Syscall registers */
 	__ldsr_rh(11, 1, SYSCALL_COUNT); /* SCCFG */
 	__ldsr_rh(12, 1, (u32) &_tpl_syscall_table); /* SCBP */
 
 	init_systick();
+
+	/* Enable access to the bus */
+	MCCR_SELB1.STBY_CTRL.UINT32 = 0x00000001;
+	do {
+		val = MCCR_SELB1.STBY_CTRL.UINT32;
+	} while (val != 0x00000001);
 }
