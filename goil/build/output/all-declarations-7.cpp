@@ -2999,7 +2999,7 @@ static void defineExtensionSetter_gtlContext_addModulePath (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_addModulePath (void) {
-  gExtensionModifierTable_gtlContext_addModulePath.free () ;
+  gExtensionModifierTable_gtlContext_addModulePath.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3072,7 +3072,7 @@ static void defineExtensionSetter_gtlContext_addInputVariable (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_addInputVariable (void) {
-  gExtensionModifierTable_gtlContext_addInputVariable.free () ;
+  gExtensionModifierTable_gtlContext_addInputVariable.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3161,7 +3161,7 @@ static void defineExtensionSetter_gtlContext_popFirstInputArg (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_popFirstInputArg (void) {
-  gExtensionModifierTable_gtlContext_popFirstInputArg.free () ;
+  gExtensionModifierTable_gtlContext_popFirstInputArg.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6512,7 +6512,7 @@ static void defineExtensionSetter_gtlContext_setDebugger (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_setDebugger (void) {
-  gExtensionModifierTable_gtlContext_setDebugger.free () ;
+  gExtensionModifierTable_gtlContext_setDebugger.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6587,7 +6587,7 @@ static void defineExtensionSetter_gtlContext_setBreakOnNext (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_setBreakOnNext (void) {
-  gExtensionModifierTable_gtlContext_setBreakOnNext.free () ;
+  gExtensionModifierTable_gtlContext_setBreakOnNext.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6840,7 +6840,7 @@ static void defineExtensionSetter_gtlContext_appendInstructionToStepDo (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_appendInstructionToStepDo (void) {
-  gExtensionModifierTable_gtlContext_appendInstructionToStepDo.free () ;
+  gExtensionModifierTable_gtlContext_appendInstructionToStepDo.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6917,7 +6917,7 @@ static void defineExtensionSetter_gtlContext_deleteStepDoInstruction (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_deleteStepDoInstruction (void) {
-  gExtensionModifierTable_gtlContext_deleteStepDoInstruction.free () ;
+  gExtensionModifierTable_gtlContext_deleteStepDoInstruction.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6992,7 +6992,7 @@ static void defineExtensionSetter_gtlContext_deleteAllStepDoInstructions (void) 
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_deleteAllStepDoInstructions (void) {
-  gExtensionModifierTable_gtlContext_deleteAllStepDoInstructions.free () ;
+  gExtensionModifierTable_gtlContext_deleteAllStepDoInstructions.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7098,7 +7098,7 @@ static void defineExtensionSetter_gtlContext_executeStepDoList (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_executeStepDoList (void) {
-  gExtensionModifierTable_gtlContext_executeStepDoList.free () ;
+  gExtensionModifierTable_gtlContext_executeStepDoList.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7177,7 +7177,7 @@ static void defineExtensionSetter_gtlContext_setBreakpoint (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_setBreakpoint (void) {
-  gExtensionModifierTable_gtlContext_setBreakpoint.free () ;
+  gExtensionModifierTable_gtlContext_setBreakpoint.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7275,7 +7275,7 @@ static void defineExtensionSetter_gtlContext_deleteBreakpoint (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_deleteBreakpoint (void) {
-  gExtensionModifierTable_gtlContext_deleteBreakpoint.free () ;
+  gExtensionModifierTable_gtlContext_deleteBreakpoint.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7350,7 +7350,7 @@ static void defineExtensionSetter_gtlContext_deleteAllBreakpoints (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_deleteAllBreakpoints (void) {
-  gExtensionModifierTable_gtlContext_deleteAllBreakpoints.free () ;
+  gExtensionModifierTable_gtlContext_deleteAllBreakpoints.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7427,7 +7427,7 @@ static void defineExtensionSetter_gtlContext_setWatchpoint (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_setWatchpoint (void) {
-  gExtensionModifierTable_gtlContext_setWatchpoint.free () ;
+  gExtensionModifierTable_gtlContext_setWatchpoint.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7525,7 +7525,7 @@ static void defineExtensionSetter_gtlContext_deleteWatchpoint (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_deleteWatchpoint (void) {
-  gExtensionModifierTable_gtlContext_deleteWatchpoint.free () ;
+  gExtensionModifierTable_gtlContext_deleteWatchpoint.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7600,7 +7600,7 @@ static void defineExtensionSetter_gtlContext_deleteAllWatchpoints (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_deleteAllWatchpoints (void) {
-  gExtensionModifierTable_gtlContext_deleteAllWatchpoints.free () ;
+  gExtensionModifierTable_gtlContext_deleteAllWatchpoints.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7675,7 +7675,7 @@ static void defineExtensionSetter_gtlContext_setLoopOnCommand (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_setLoopOnCommand (void) {
-  gExtensionModifierTable_gtlContext_setLoopOnCommand.free () ;
+  gExtensionModifierTable_gtlContext_setLoopOnCommand.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7803,7 +7803,7 @@ static void defineExtensionSetter_gtlContext_pushInstructionList (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_pushInstructionList (void) {
-  gExtensionModifierTable_gtlContext_pushInstructionList.free () ;
+  gExtensionModifierTable_gtlContext_pushInstructionList.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7878,7 +7878,7 @@ static void defineExtensionSetter_gtlContext_popInstructionList (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_popInstructionList (void) {
-  gExtensionModifierTable_gtlContext_popInstructionList.free () ;
+  gExtensionModifierTable_gtlContext_popInstructionList.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7953,7 +7953,7 @@ static void defineExtensionSetter_gtlContext_setNextInstructionIndex (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_setNextInstructionIndex (void) {
-  gExtensionModifierTable_gtlContext_setNextInstructionIndex.free () ;
+  gExtensionModifierTable_gtlContext_setNextInstructionIndex.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8028,7 +8028,7 @@ static void defineExtensionSetter_gtlContext_setExecuteDebuggerCommand (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_setExecuteDebuggerCommand (void) {
-  gExtensionModifierTable_gtlContext_setExecuteDebuggerCommand.free () ;
+  gExtensionModifierTable_gtlContext_setExecuteDebuggerCommand.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8106,7 +8106,7 @@ static void defineExtensionSetter_gtlContext_getCommand (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlContext_getCommand (void) {
-  gExtensionModifierTable_gtlContext_getCommand.free () ;
+  gExtensionModifierTable_gtlContext_getCommand.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

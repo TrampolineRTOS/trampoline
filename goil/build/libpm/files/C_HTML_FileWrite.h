@@ -5,7 +5,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2003, ..., 2010 Pierre Molinaro.
+//  Copyright (C) 2003, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -31,7 +31,7 @@ class C_String ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_HTML_FileWrite : public C_TextFileWrite {
+class C_HTML_FileWrite final : public C_TextFileWrite {
 //--- Constructor : if inFileName is the empty string, no file is opened.
 //    Otherwise, it tries to open the file for writing;
 //    The destructor will close the file (is successfully opened)

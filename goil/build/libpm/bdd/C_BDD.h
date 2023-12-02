@@ -23,9 +23,9 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 #include "utilities/M_machine.h"
-#include "utilities/PMUInt128.h"
-#include "collections/TC_UniqueArray.h"
-#include "collections/TC_Array.h"
+#include "big-integers/PMUInt128.h"
+#include "generic-arraies/TC_UniqueArray.h"
+#include "generic-arraies/TC_Array.h"
 #include "big-integers/C_BigInt.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -40,16 +40,16 @@ class AC_OutputStream ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_BDD {
+class C_BDD final {
 //--- enum for comparison operators
   public: enum compareEnum {kEqual, kNotEqual, kLowerOrEqual,
-                             kStrictLower, kGreaterOrEqual, kStrictGreater} ;
+                            kStrictLower, kGreaterOrEqual, kStrictGreater} ;
 
 //--- Constructors and destructor
   public: C_BDD (void) ; // Get a false BDD
   private: C_BDD (const uint32_t inInternalValue) ; // Internal, do not use
   public: C_BDD (const uint32_t inVariable, const bool inSign) ;
-  public: virtual ~C_BDD (void) ;
+  public: ~C_BDD (void) ;
 
 //--- Control copy
   public: C_BDD (const C_BDD & inSource) ;

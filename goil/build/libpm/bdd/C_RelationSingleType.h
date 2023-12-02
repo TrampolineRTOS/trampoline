@@ -13,7 +13,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_RelationSingleType {
+class C_RelationSingleType final {
 //--- Internal class
   public: class cType ;
 
@@ -38,7 +38,7 @@ class C_RelationSingleType {
                                   COMMA_LOCATION_ARGS) const ;
 
 //--- Destructor
-  public: virtual ~ C_RelationSingleType (void) ;
+  public: ~ C_RelationSingleType (void) ;
 
 //--- Handling copy
   public: C_RelationSingleType (const C_RelationSingleType & inSource) ;

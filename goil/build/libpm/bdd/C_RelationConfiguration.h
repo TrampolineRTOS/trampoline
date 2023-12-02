@@ -14,12 +14,12 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_RelationConfiguration {
+class C_RelationConfiguration final {
 //--- Default constructor (no variable, empty)
   public: C_RelationConfiguration (void) ;
 
 //--- Destructor
-  public: virtual ~ C_RelationConfiguration (void) ;
+  public: ~ C_RelationConfiguration (void) ;
 
 //--- Handling copy
   public: C_RelationConfiguration (const C_RelationConfiguration & inSource) ;

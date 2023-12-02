@@ -27,7 +27,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 #include "strings/C_String.h"
-#include "collections/TC_UniqueArray.h"
+#include "generic-arraies/TC_UniqueArray.h"
 #include "galgas2/C_LocationInSource.h"
 #include "galgas2/C_SourceTextInString.h"
 #include "galgas2/C_IssueWithFixIt.h"
@@ -72,15 +72,15 @@ class C_lexicalErrorException {
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_unicode_lexique_table_entry {
+class C_unicode_lexique_table_entry final {
   public: const utf32 * mEntryString ;
   public: const int16_t mEntryStringLength ;
   public: const int16_t mTokenCode ;
 
 //--- Constructor
   public: C_unicode_lexique_table_entry (const utf32 * inEntryString,
-                                          const int16_t inEntryStringLength,
-                                          const int16_t inTokenCode) ;
+                                         const int16_t inEntryStringLength,
+                                         const int16_t inTokenCode) ;
 //--- No copy
   public: C_unicode_lexique_table_entry (const C_unicode_lexique_table_entry & inOperand) ;
   private: C_unicode_lexique_table_entry & operator = (const C_unicode_lexique_table_entry &) ;

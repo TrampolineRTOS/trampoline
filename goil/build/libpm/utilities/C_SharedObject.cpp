@@ -31,11 +31,10 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-static uint32_t gCreationIndex ;
-static uint32_t gObjectCurrentCount ;
-
 //--- List of existing objects
 #ifndef DO_NOT_GENERATE_CHECKINGS
+  static uint32_t gCreationIndex ;
+  static uint32_t gObjectCurrentCount ;
   static C_SharedObject * gFirstObject ;
   static C_SharedObject * gLastObject ;
 #endif
@@ -44,17 +43,17 @@ static uint32_t gObjectCurrentCount ;
 
 C_SharedObject::C_SharedObject (LOCATION_ARGS) :
 #ifndef DO_NOT_GENERATE_CHECKINGS
+  mObjectIndex (gCreationIndex),
   mCreationFile (IN_SOURCE_FILE),
   mCreationLine (IN_SOURCE_LINE),
   mPtrToPreviousObject (nullptr),
   mPtrToNextObject (nullptr),
 #endif
-mObjectIndex (gCreationIndex),
 mRetainCount (1) {
-  gCreationIndex ++ ;
-  gObjectCurrentCount ++ ;
 //--- Enter current object in instance list
   #ifndef DO_NOT_GENERATE_CHECKINGS
+    gCreationIndex ++ ;
+    gObjectCurrentCount ++ ;
     mPtrToNextObject = nullptr ;
     if (gLastObject == nullptr) {
       gFirstObject = this ;
@@ -84,9 +83,9 @@ C_SharedObject::~ C_SharedObject (void) {
     }else{
       nextObject->mPtrToPreviousObject = previousObject ;
     }
+  //--- Decrement object count
+    gObjectCurrentCount -- ;
   #endif
-//--- Decrement object count
-  gObjectCurrentCount -- ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

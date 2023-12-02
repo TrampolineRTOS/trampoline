@@ -23,7 +23,7 @@
 #include "utilities/C_SharedObject.h"
 #include "strings/unicode_string_routines.h"
 #include "strings/unicode_character_cpp.h"
-#include "collections/TC_UniqueArray2.h"
+#include "generic-arraies/TC_UniqueArray2.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -848,7 +848,7 @@ bool C_String::containsString (const C_String & inSearchedString) const {
 
 void C_String::componentsSeparatedByString (const C_String & inSeparatorString,
                                             TC_UniqueArray <C_String> & outResult) const {
-  outResult.setCountToZero () ;
+  outResult.removeAllKeepingCapacity () ;
   const utf32 * sourcePtr = utf32String (HERE) ;
   if (sourcePtr == nullptr) {
     outResult.appendObject (C_String ()) ;
@@ -2051,10 +2051,10 @@ bool C_String::parseUTF8 (const C_Data & inDataString,
   bool ok = true ;
   int32_t idx = inOffset ;
   bool foundCR = false ;
-  while ((idx < inDataString.length ()) && ok) {
+  while ((idx < inDataString.count ()) && ok) {
     const uint8_t c = inDataString (idx COMMA_HERE) ;
     if (c == 0x00) { // NUL
-      idx = inDataString.length () ; // For exiting loop
+      idx = inDataString.count () ; // For exiting loop
     }else if (c == 0x0A) { // LF
       if (! foundCR) {
         outString.appendUnicodeCharacter (TO_UNICODE ('\n') COMMA_HERE) ;
@@ -2070,7 +2070,7 @@ bool C_String::parseUTF8 (const C_Data & inDataString,
       foundCR = false ;
       idx ++ ;
     }else{
-      const utf32 uc = utf32CharacterForPointer (inDataString.unsafeDataPointer (), idx, inDataString.length (), ok) ;
+      const utf32 uc = utf32CharacterForPointer (inDataString.unsafeDataPointer (), idx, inDataString.count (), ok) ;
       switch (UNICODE_VALUE (uc)) {
       case 0x000B : // VT: Vertical Tab
       case 0x000C : // FF: Form Feed

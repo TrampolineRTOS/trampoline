@@ -40,7 +40,7 @@ mGetKeywordsForIdentifier (getKeywordsForIdentifier) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void cLexiqueIntrospection::getKeywordListNames (TC_UniqueArray <C_String> & outList) {
-  outList.setCountToZero () ;
+  outList.removeAllKeepingCapacity () ;
   cLexiqueIntrospection * p = gLexiqueIntrospectionRoot ;
   while (nullptr != p) {
     p->mAppendKeywordListNames (outList) ;
@@ -54,7 +54,7 @@ void cLexiqueIntrospection::getKeywordListForIdentifier (const C_String & inIden
                                                          bool & outFound,
                                                          TC_UniqueArray <C_String> & outList) {
   outFound = false ;
-  outList.setCountToZero () ;
+  outList.removeAllKeepingCapacity () ;
   cLexiqueIntrospection * p = gLexiqueIntrospectionRoot ;
   while ((nullptr != p) && !outFound) {
     p->mGetKeywordsForIdentifier (inIdentifier, outFound, outList) ;

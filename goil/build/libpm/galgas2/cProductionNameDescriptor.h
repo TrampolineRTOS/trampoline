@@ -5,7 +5,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 1996, ..., 2010 Pierre Molinaro.
+//  Copyright (C) 1996, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -31,7 +31,7 @@
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-class cProductionNameDescriptor {
+class cProductionNameDescriptor final {
   public: const char * mName ;
   public: const char * mFileName ;
   public: const uint32_t mLineNumber ;

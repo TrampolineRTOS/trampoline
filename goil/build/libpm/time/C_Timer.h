@@ -33,7 +33,7 @@ class C_String ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_Timer {
+class C_Timer final {
   private: clock_t mStart ;
   private: clock_t mEnd ;
   

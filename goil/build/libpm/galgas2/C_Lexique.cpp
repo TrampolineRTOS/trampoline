@@ -22,7 +22,6 @@
 #include "galgas2/C_Lexique.h"
 #include "all-predefined-types.h"
 #include "utilities/MF_MemoryControl.h"
-#include "collections/TC_LinkedList.h"
 #include "strings/unicode_character_cpp.h"
 #include "strings/unicode_string_routines.h"
 #include "galgas2/C_galgas_CLI_Options.h"
@@ -821,7 +820,7 @@ bool C_Lexique::performTopDownParsing (const int32_t inProductions [],
     if (executionModeIsSyntaxAnalysisOnly ()) {
       co << "*** PERFORM TOP-DOWN PARSING ONLY (--mode=syntax-only option) ***\n" ;
     }
-    TC_LinkedList <int32_t> listForSecondPassParsing ;
+    TC_UniqueArray <int32_t> listForSecondPassParsing ;
     TC_Array <int32_t> stack (10000 COMMA_HERE) ;
     TC_Array <int32_t> errorStack ;
     int32_t errorStackCount = 0 ;
@@ -940,7 +939,7 @@ bool C_Lexique::performTopDownParsing (const int32_t inProductions [],
                  << "\n" ;
               indentationForParseOnly ++ ;
             }
-            listForSecondPassParsing.insertAtBottom (int32_t (choice + 1)) ;
+            listForSecondPassParsing.appendObject (choice + 1) ;
           }else{ // Syntax error
             TC_UniqueArray <int32_t> expectedTerminalsArray (100 COMMA_HERE) ;
             buildExpectedTerminalsArrayOnSyntaxError (errorProgramCounter,
@@ -958,7 +957,7 @@ bool C_Lexique::performTopDownParsing (const int32_t inProductions [],
             }
             parsingError (expectedTerminalsArray, previousTokenPtr, tokenPtr, currentToken LINE_AND_SOURCE_FILE_FOR_LEXIQUE) ;
             result = loop = false ;
-            listForSecondPassParsing.makeListEmpty () ;
+            listForSecondPassParsing.removeAllKeepingCapacity () ;
           }
         }
     //--- It is a terminal symbol
@@ -982,7 +981,7 @@ bool C_Lexique::performTopDownParsing (const int32_t inProductions [],
             uniqueTerminalIndex ++ ;
           }
           errorStackCount = stack.count () ;
-          errorStack.setCountToZero () ;
+          errorStack.removeAllKeepingCapacity () ;
           errorProgramCounter = programCounter ;
         }else{ // Error !
           if (TRACE_LL1_PARSING ()) {
@@ -1001,7 +1000,7 @@ bool C_Lexique::performTopDownParsing (const int32_t inProductions [],
                                                     expectedTerminalsArray) ;
           parsingError (expectedTerminalsArray, previousTokenPtr, tokenPtr, currentToken LINE_AND_SOURCE_FILE_FOR_LEXIQUE) ;
           result = loop = false ;
-          listForSecondPassParsing.makeListEmpty () ;
+          listForSecondPassParsing.removeAllKeepingCapacity () ;
         }
     //--- It is the end of a production    
       }else if (stack.count () > 0) {
@@ -1038,7 +1037,7 @@ bool C_Lexique::performTopDownParsing (const int32_t inProductions [],
                                                   expectedTerminalsArray) ;     
         parsingError (expectedTerminalsArray, previousTokenPtr, tokenPtr, currentToken LINE_AND_SOURCE_FILE_FOR_LEXIQUE) ;
         result = loop = false ;
-        listForSecondPassParsing.makeListEmpty () ;
+        listForSecondPassParsing.removeAllKeepingCapacity () ;
       }
     }
   //--- Output graphviz file
@@ -1049,7 +1048,7 @@ bool C_Lexique::performTopDownParsing (const int32_t inProductions [],
       GALGAS_string (syntaxTreeDescriptionString).method_writeToFileWhenDifferentContents (GALGAS_string (dotFilePath), fileWritten, this COMMA_HERE) ;
     }
   //--- Set current read location to 0
-    listForSecondPassParsing.copyIntoArray (mArrayForSecondPassParsing) ;
+    listForSecondPassParsing.copyTo (mArrayForSecondPassParsing) ;
     resetForSecondPass () ;
     if (executionModeIsSyntaxAnalysisOnly ()) {
       co << "*** END OF PARSING (success: "
@@ -1162,7 +1161,7 @@ bool C_Lexique::performBottomUpParsing (const int32_t inActionTable [],
                                      "  size =\"4,4\";\n" ;
     }
   //--- Perform first pass
-    TC_UniqueArray <TC_LinkedList <int32_t> > executionList (100 COMMA_HERE) ;
+    TC_UniqueArray <TC_UniqueArray <int32_t> > executionList (100 COMMA_HERE) ;
     executionList.appendDefaultObjectUsingSwap () ;
 
     TC_Array <int32_t> stack (10000 COMMA_HERE) ;
@@ -1215,7 +1214,7 @@ bool C_Lexique::performBottomUpParsing (const int32_t inActionTable [],
         actionCode = int32_t (actionCode - 2) ;
         stack.appendObject (-1) ; // Enter any value
         stack.appendObject (actionCode) ; // Enter next current state
-        poppedErrors.setCountToZero () ;
+        poppedErrors.removeAllKeepingCapacity () ;
         errorSignalingUselessEntryOnTopOfStack = 0 ;
         executionList.appendDefaultObjectUsingSwap () ;
       //---
@@ -1242,9 +1241,10 @@ bool C_Lexique::performBottomUpParsing (const int32_t inActionTable [],
         const int32_t reduceSize = inProductionsTable [2 * actionCode + 1] ;
         const int32_t executionListLength = executionList.count () ;
         for (int32_t i=executionListLength - reduceSize ; i<executionListLength ; i++) {
-          executionList (executionListLength -  reduceSize - 1 COMMA_HERE).mergeListAtBottom (executionList (i COMMA_HERE)) ;
+          executionList (executionListLength -  reduceSize - 1 COMMA_HERE).appendObjectsFromArray (executionList (i COMMA_HERE)) ;
+          executionList (i COMMA_HERE).removeAllKeepingCapacity () ;
         }
-        executionList (executionListLength - reduceSize - 1 COMMA_HERE).insertAtTop (actionCode) ;
+        executionList (executionListLength - reduceSize - 1 COMMA_HERE).prependObject (actionCode) ;
         executionList.removeLastObjects (reduceSize COMMA_HERE) ; 
         executionList.appendDefaultObjectUsingSwap () ;
         const int32_t stackReduceSize = 2 * reduceSize ;
@@ -1299,7 +1299,8 @@ bool C_Lexique::performBottomUpParsing (const int32_t inActionTable [],
       }else if (actionCode == 1) {
       //--- Accept action -----------------------------------
         loop = false ;
-        executionList (0 COMMA_HERE).mergeListAtBottom (executionList (1 COMMA_HERE)) ;
+        executionList (0 COMMA_HERE).appendObjectsFromArray (executionList (1 COMMA_HERE)) ;
+        executionList (1 COMMA_HERE).removeAllKeepingCapacity () ;
         if (executionModeIsSyntaxAnalysisOnly ()) {
           co << "  [S" << cStringWithSigned (currentState) << ", " << getCurrentTokenString (tokenPtr) << "] : Accept\n" ;
         }
@@ -1341,7 +1342,7 @@ bool C_Lexique::performBottomUpParsing (const int32_t inActionTable [],
       }
     }
     if (result) {
-      executionList (0 COMMA_HERE).copyIntoArray (mArrayForSecondPassParsing) ;
+      executionList (0 COMMA_HERE).copyTo (mArrayForSecondPassParsing) ;
     }
   //--- Output graphviz file
     if (produceSyntaxTree) {

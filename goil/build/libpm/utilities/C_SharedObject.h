@@ -30,6 +30,8 @@
 class C_SharedObject {
 //--- Attributes for debug
   #ifndef DO_NOT_GENERATE_CHECKINGS
+  //--- Object index
+    public: const uint32_t mObjectIndex ;
   //--- Creation location
     public: const char * const mCreationFile ;
     public: const int mCreationLine ;
@@ -38,13 +40,11 @@ class C_SharedObject {
     private: C_SharedObject * mPtrToNextObject ;
   #endif
 
-//--- Object index
-  public: const uint32_t mObjectIndex ;
 
 //--- Retain count
   private: mutable int32_t mRetainCount ;
 
-  public: inline bool isUniquelyReferenced (void) { return mRetainCount == 1 ; }
+  public: inline bool isUniquelyReferenced (void) const { return mRetainCount == 1 ; }
   
   public: static void retain (const C_SharedObject * inObject COMMA_LOCATION_ARGS) ;
 

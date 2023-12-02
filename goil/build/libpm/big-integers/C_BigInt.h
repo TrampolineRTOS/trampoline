@@ -37,7 +37,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_BigInt {
+class C_BigInt final {
 //--- Constructors
   public: C_BigInt (void) ;
   public: explicit C_BigInt (const uint64_t inValue, const bool inNegate) ;
@@ -47,7 +47,7 @@ class C_BigInt {
   public: static C_BigInt randomNumber (void) ;
 
 //--- Destructor
-  public: virtual ~ C_BigInt (void) ;
+  public: ~ C_BigInt (void) ;
 
 //--- Handle copy
   public: C_BigInt (const C_BigInt & inOperand) ;

@@ -22,7 +22,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#include "collections/TC_UniqueArray.h"
+#include "generic-arraies/TC_UniqueArray.h"
 #include "strings/C_String.h"
 #include "utilities/C_SharedObject.h"
 #include "galgas2/C_LocationInSource.h"

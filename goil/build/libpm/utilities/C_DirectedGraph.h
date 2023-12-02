@@ -22,7 +22,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#include "collections/TC_Array.h"
+#include "generic-arraies/TC_Array.h"
 #include "C_UIntSet.h"
 #include "strings/C_String.h"
 
@@ -35,7 +35,7 @@ typedef struct {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_DirectedGraph {
+class C_DirectedGraph final {
 //--- Default constructor
   public: C_DirectedGraph (void) ;
 

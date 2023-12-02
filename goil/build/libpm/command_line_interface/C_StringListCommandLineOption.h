@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2014, ..., 2021 Pierre Molinaro.
+//  Copyright (C) 2014, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -27,7 +27,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_StringListCommandLineOption : public C_CommandLineOption {
+class C_StringListCommandLineOption final : public C_CommandLineOption {
 //--- Constructor
   public: C_StringListCommandLineOption (const char * inDomainName,
                                           const char * inIdentifier,

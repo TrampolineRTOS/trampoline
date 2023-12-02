@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2010, ..., 2010 Pierre Molinaro.
+//  Copyright (C) 2010, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -22,7 +22,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#include "collections/TC_UniqueArray.h"
+#include "generic-arraies/TC_UniqueArray.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -30,7 +30,7 @@
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_galgas_type_descriptor {
+class C_galgas_type_descriptor final {
 //--- Attributes
   private: C_galgas_type_descriptor * mNextType ;
   private: C_galgas_type_descriptor * mPreviousType ;

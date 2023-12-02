@@ -31,12 +31,12 @@
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-class cSourceTextInString : public C_SharedObject {
+class cSourceTextInString final : public C_SharedObject {
 //--- Constructor
   public: cSourceTextInString (const C_String & inSourceString,
-                                const C_String & inFilePath,
-                                const bool inShowSourceOnDetailledErrorMessage
-                                COMMA_LOCATION_ARGS) :
+                               const C_String & inFilePath,
+                               const bool inShowSourceOnDetailledErrorMessage
+                               COMMA_LOCATION_ARGS) :
   C_SharedObject (THERE),
   mFilePath (inFilePath),
   mSourceString (inSourceString),

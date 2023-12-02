@@ -855,7 +855,7 @@ int64_t C_BigInt::int64 (void) const {
 void C_BigInt::extractBytesForUnsignedRepresentation (TC_UniqueArray <uint8_t> & outValue) const {
   size_t count = 0 ;
   const uint8_t * ptr = (const uint8_t *) mpz_export (nullptr, & count, -1, sizeof (uint8_t), 0, 0, mGMPint) ;
-  outValue.setCountToZero () ;
+  outValue.removeAllKeepingCapacity () ;
   for (size_t i=0 ; i<count ; i++) {
     outValue.appendObject (ptr [i]) ;
   }
@@ -869,7 +869,7 @@ void C_BigInt::extractBytesForUnsignedRepresentation (TC_UniqueArray <uint8_t> &
 
 void C_BigInt::extractBytesForSignedRepresentation (TC_UniqueArray <uint8_t> & outValue) const {
   if (mpz_sgn (mGMPint) == 0) { // zero
-    outValue.setCountToZero () ;
+    outValue.removeAllKeepingCapacity () ;
     outValue.appendObject (0) ;
   }else if (mpz_sgn (mGMPint) > 0) { // > 0
     extractBytesForUnsignedRepresentation (outValue) ;

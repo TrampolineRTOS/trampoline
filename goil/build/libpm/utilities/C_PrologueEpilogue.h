@@ -26,10 +26,10 @@
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_PrologueEpilogue {
+class C_PrologueEpilogue final {
 //--- Constructor
   public: C_PrologueEpilogue (void (* inPrologueAction) (void),
-                               void (* inEpilogueAction) (void)) ;
+                              void (* inEpilogueAction) (void)) ;
 //--- No copy
   private: C_PrologueEpilogue (C_PrologueEpilogue &) ;
   private: C_PrologueEpilogue & operator = (C_PrologueEpilogue &) ;

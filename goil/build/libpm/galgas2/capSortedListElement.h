@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2010, ..., 2010 Pierre Molinaro.
+//  Copyright (C) 2010, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -32,7 +32,7 @@ class cSortedListElement ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class capSortedListElement {
+class capSortedListElement final {
 //--- Private pointer
   private: cSortedListElement * mPtr ;
 
@@ -40,7 +40,7 @@ class capSortedListElement {
   public: capSortedListElement (void) ;
 
 //--- Destructor
-  public: virtual ~ capSortedListElement (void) ;
+  public: ~ capSortedListElement (void) ;
 
 //--- Handle copy
   public: capSortedListElement (const capSortedListElement & inSource) ;

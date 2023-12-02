@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2013, ..., 2013 Pierre Molinaro.
+//  Copyright (C) 2013, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -22,11 +22,11 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#include "collections/TC_Array.h"
+#include "generic-arraies/TC_Array.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_UIntSet {
+class C_UIntSet final {
 //--- Default constructor
   public: C_UIntSet (void) ;
 

@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2010, ..., 2010 Pierre Molinaro.
+//  Copyright (C) 2010, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -35,13 +35,13 @@ class cIndexEntryNode ;
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-class cIndexingDictionary {
+class cIndexingDictionary final {
 
 //--- Constructor
   public: cIndexingDictionary (void) ;
 
 //--- Destructor
-  public: virtual ~ cIndexingDictionary (void) ;
+  public: ~ cIndexingDictionary (void) ;
 
 //--- No copy
   private: cIndexingDictionary (const cIndexingDictionary &) ;

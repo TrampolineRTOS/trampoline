@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2010, ..., 2010 Pierre Molinaro.
+//  Copyright (C) 2010, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -32,11 +32,11 @@ class C_Compiler ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class cObjectArray {
+class cObjectArray final {
 //--- Default constructor
   public: cObjectArray (const GALGAS_objectlist & inObjectList,
-                         C_Compiler * inCompiler
-                         COMMA_LOCATION_ARGS) ;
+                        C_Compiler * inCompiler
+                        COMMA_LOCATION_ARGS) ;
 
 //--- Virtual destructor
   public: virtual ~ cObjectArray (void) ;

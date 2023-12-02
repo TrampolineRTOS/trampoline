@@ -221,8 +221,8 @@ bool C_FileManager::binaryDataWithContentOfFile (const C_String & inFilePath,
 static bool parseUTF32LE (const C_Data & inDataString,
                           const int32_t inOffset,
                           C_String & outString) {
-  bool ok = (inDataString.length () % 4) == 0 ;
-  for (int32_t i=inOffset ; (i<inDataString.length ()) && ok ; i+=4) {
+  bool ok = (inDataString.count () % 4) == 0 ;
+  for (int32_t i=inOffset ; (i<inDataString.count ()) && ok ; i+=4) {
     uint32_t n = inDataString (i+3 COMMA_HERE) ;
     n <<= 8 ;
     n |= inDataString (i+2 COMMA_HERE) ;
@@ -244,8 +244,8 @@ static bool parseUTF32LE (const C_Data & inDataString,
 static bool parseUTF32BE (const C_Data & inDataString,
                           const int32_t inOffset,
                           C_String & outString) {
-  bool ok = (inDataString.length () % 4) == 0 ;
-  for (int32_t i=inOffset ; (i<inDataString.length ()) && ok ; i+=4) {
+  bool ok = (inDataString.count () % 4) == 0 ;
+  for (int32_t i=inOffset ; (i<inDataString.count ()) && ok ; i+=4) {
     uint32_t n = inDataString (i COMMA_HERE) ;
     n <<= 8 ;
     n |= inDataString (i+1 COMMA_HERE) ;
@@ -268,9 +268,9 @@ static bool parseUTF32BE (const C_Data & inDataString,
 static bool parseUTF16LE (const C_Data & inDataString,
                           const int32_t inOffset,
                           C_String & outString) {
-  bool ok = (inDataString.length () % 2) == 0 ;
+  bool ok = (inDataString.count () % 2) == 0 ;
   bool foundUTF16prefix = false ;
-  for (int32_t i=inOffset ; (i<inDataString.length ()) && ok ; i+=2) {
+  for (int32_t i=inOffset ; (i<inDataString.count ()) && ok ; i+=2) {
     uint32_t n = inDataString (i+1 COMMA_HERE) ;
     n <<= 8 ;
     n |= inDataString (i COMMA_HERE) ;
@@ -297,9 +297,9 @@ static bool parseUTF16LE (const C_Data & inDataString,
 static bool parseUTF16BE (const C_Data & inDataString,
                           const int32_t inOffset,
                           C_String & outString) {
-  bool ok = (inDataString.length () % 2) == 0 ;
+  bool ok = (inDataString.count () % 2) == 0 ;
   bool foundUTF16prefix = false ;
-  for (int32_t i=inOffset ; (i<inDataString.length ()) && ok ; i+=2) {
+  for (int32_t i=inOffset ; (i<inDataString.count ()) && ok ; i+=2) {
     uint32_t n = inDataString (i COMMA_HERE) ;
     i ++ ;
     n <<= 8 ;
@@ -466,7 +466,7 @@ static bool parseWithEncoding (const C_Data & inDataString,
   bool foundCR = false ;
   bool ok = true ;
   int32_t idx = 0 ;
-  while ((idx < inDataString.length ()) && (inDataString (idx COMMA_HERE) != 0) && ok) {
+  while ((idx < inDataString.count ()) && (inDataString (idx COMMA_HERE) != 0) && ok) {
     const uint8_t c = inDataString (idx COMMA_HERE) ;
     if (c == 0x0A) { // LF
       if (! foundCR) {
@@ -542,7 +542,7 @@ static void parseASCIIWithReplacementCharacter (const C_Data & inDataString,
                                                 C_String & outString) {
   bool foundCR = false ;
   int32_t index = 0 ;
-  while (index < inDataString.length ()) {
+  while (index < inDataString.count ()) {
     const uint8_t c = inDataString (index COMMA_HERE) ;
     index ++ ;
     if (c == 0x0A) { // LF
@@ -574,7 +574,7 @@ C_String C_FileManager::stringWithContentOfFile (const C_String & inFilePath,
 //--- Read file
   C_Data stringData ;
   outOk = binaryDataWithContentOfFile (inFilePath, stringData) ;
-  const int32_t length = stringData.length () ;
+  const int32_t length = stringData.count () ;
 //--- Assign C string to C_String
   C_String result_string ;
   if (outOk) {

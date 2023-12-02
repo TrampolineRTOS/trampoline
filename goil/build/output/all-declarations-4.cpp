@@ -7420,7 +7420,7 @@ static void defineExtensionSetter_debuggerContext_appendInstructionToStepDo (voi
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_debuggerContext_appendInstructionToStepDo (void) {
-  gExtensionModifierTable_debuggerContext_appendInstructionToStepDo.free () ;
+  gExtensionModifierTable_debuggerContext_appendInstructionToStepDo.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7522,7 +7522,7 @@ static void defineExtensionSetter_debuggerContext_deleteStepDoInstruction (void)
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_debuggerContext_deleteStepDoInstruction (void) {
-  gExtensionModifierTable_debuggerContext_deleteStepDoInstruction.free () ;
+  gExtensionModifierTable_debuggerContext_deleteStepDoInstruction.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7593,7 +7593,7 @@ static void defineExtensionSetter_debuggerContext_deleteAllStepDoInstructions (v
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_debuggerContext_deleteAllStepDoInstructions (void) {
-  gExtensionModifierTable_debuggerContext_deleteAllStepDoInstructions.free () ;
+  gExtensionModifierTable_debuggerContext_deleteAllStepDoInstructions.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7728,7 +7728,7 @@ static void defineExtensionSetter_debuggerContext_setBreakpoint (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_debuggerContext_setBreakpoint (void) {
-  gExtensionModifierTable_debuggerContext_setBreakpoint.free () ;
+  gExtensionModifierTable_debuggerContext_setBreakpoint.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7871,7 +7871,7 @@ static void defineExtensionSetter_debuggerContext_deleteBreakpoint (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_debuggerContext_deleteBreakpoint (void) {
-  gExtensionModifierTable_debuggerContext_deleteBreakpoint.free () ;
+  gExtensionModifierTable_debuggerContext_deleteBreakpoint.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7942,7 +7942,7 @@ static void defineExtensionSetter_debuggerContext_deleteAllBreakpoints (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_debuggerContext_deleteAllBreakpoints (void) {
-  gExtensionModifierTable_debuggerContext_deleteAllBreakpoints.free () ;
+  gExtensionModifierTable_debuggerContext_deleteAllBreakpoints.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8015,7 +8015,7 @@ static void defineExtensionSetter_debuggerContext_setWatchpoint (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_debuggerContext_setWatchpoint (void) {
-  gExtensionModifierTable_debuggerContext_setWatchpoint.free () ;
+  gExtensionModifierTable_debuggerContext_setWatchpoint.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8158,7 +8158,7 @@ static void defineExtensionSetter_debuggerContext_deleteWatchpoint (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_debuggerContext_deleteWatchpoint (void) {
-  gExtensionModifierTable_debuggerContext_deleteWatchpoint.free () ;
+  gExtensionModifierTable_debuggerContext_deleteWatchpoint.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8229,7 +8229,7 @@ static void defineExtensionSetter_debuggerContext_deleteAllWatchpoints (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_debuggerContext_deleteAllWatchpoints (void) {
-  gExtensionModifierTable_debuggerContext_deleteAllWatchpoints.free () ;
+  gExtensionModifierTable_debuggerContext_deleteAllWatchpoints.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8487,7 +8487,7 @@ static void defineExtensionSetter_debuggerContext_pushInstructionList (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_debuggerContext_pushInstructionList (void) {
-  gExtensionModifierTable_debuggerContext_pushInstructionList.free () ;
+  gExtensionModifierTable_debuggerContext_pushInstructionList.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8560,7 +8560,7 @@ static void defineExtensionSetter_debuggerContext_popInstructionList (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_debuggerContext_popInstructionList (void) {
-  gExtensionModifierTable_debuggerContext_popInstructionList.free () ;
+  gExtensionModifierTable_debuggerContext_popInstructionList.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8638,7 +8638,7 @@ static void defineExtensionSetter_debuggerContext_getCommand (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_debuggerContext_getCommand (void) {
-  gExtensionModifierTable_debuggerContext_getCommand.free () ;
+  gExtensionModifierTable_debuggerContext_getCommand.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -12009,7 +12009,7 @@ static void defineExtensionSetter_impType_setDefValue (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_impType_setDefValue (void) {
-  gExtensionModifierTable_impType_setDefValue.free () ;
+  gExtensionModifierTable_impType_setDefValue.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -13969,7 +13969,7 @@ static void defineExtensionSetter_object_5F_t_mergeSubAttributes (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_object_5F_t_mergeSubAttributes (void) {
-  gExtensionModifierTable_object_5F_t_mergeSubAttributes.free () ;
+  gExtensionModifierTable_object_5F_t_mergeSubAttributes.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

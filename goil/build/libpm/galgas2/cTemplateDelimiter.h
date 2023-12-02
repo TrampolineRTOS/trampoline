@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 1996, ..., 2010 Pierre Molinaro.
+//  Copyright (C) 1996, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -34,7 +34,7 @@ class C_Lexique ;
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-class cTemplateDelimiter {
+class cTemplateDelimiter final {
   public: const utf32 * mStartString ;
   public: const int32_t mStartStringLength ;
   public: const utf32 * mEndString ;

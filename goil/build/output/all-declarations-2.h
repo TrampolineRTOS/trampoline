@@ -10,125 +10,6 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-// Phase 1: @uint_33__32_AttributeMinMax  value class
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_uint_33__32_AttributeMinMax : public GALGAS_attributeRange {
-//--------------------------------- Default constructor
-  public: GALGAS_uint_33__32_AttributeMinMax (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public: static GALGAS_uint_33__32_AttributeMinMax constructor_default (LOCATION_ARGS) ;
-
-//--------------------------------- Embedded object pointer
-  public: inline const class cPtr_uint_33__32_AttributeMinMax * ptr (void) const {
-    return (const cPtr_uint_33__32_AttributeMinMax *) mObjectPtr ;
-  }
-
-//--------------------------------- Constructor from pointer
-  public: GALGAS_uint_33__32_AttributeMinMax (const cPtr_uint_33__32_AttributeMinMax * inSourcePtr) ;
-
-//--------------------------------- Property read access
-  public: class GALGAS_uint readProperty_min (void) const ;
-
-  public: class GALGAS_uint readProperty_max (void) const ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
-
-//--------------------------------- Object extraction
-  public: static GALGAS_uint_33__32_AttributeMinMax extractObject (const GALGAS_object & inObject,
-                                                                   C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public: static class GALGAS_uint_33__32_AttributeMinMax constructor_new (const class GALGAS_location & inOperand0,
-                                                                           const class GALGAS_uint & inOperand1,
-                                                                           const class GALGAS_uint & inOperand2
-                                                                           COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public: typeComparisonResult objectCompare (const GALGAS_uint_33__32_AttributeMinMax & inOperand) const ;
-
-//--------------------------------- Setters
-  public: VIRTUAL_IN_DEBUG void setter_setMax (class GALGAS_uint inArgument0
-                                               COMMA_LOCATION_ARGS) ;
-
-  public: VIRTUAL_IN_DEBUG void setter_setMin (class GALGAS_uint inArgument0
-                                               COMMA_LOCATION_ARGS) ;
-
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Optional Methods
-
-//--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
- 
-} ; // End of GALGAS_uint_33__32_AttributeMinMax class
-
-
-//----------------------------------------------------------------------------------------------------------------------
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_33__32_AttributeMinMax ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-// Phase 2: pointer class for @uint32AttributeMinMax class
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class cPtr_uint_33__32_AttributeMinMax : public cPtr_attributeRange {
-
-//--- Extension getter contains
-  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
-           C_Compiler * COMMA_LOCATION_ARGS) const override ;
-
-//--- Extension getter string
-  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
-
-//--- Extension method enclose
-  public: virtual void method_enclose (class GALGAS_bool & isWithin,
-           const class GALGAS_attributeRange value,
-           C_Compiler * COMMA_LOCATION_ARGS) override ;
-
-
-//--- Properties
-  public: GALGAS_uint mProperty_min ;
-  public: GALGAS_uint mProperty_max ;
-
-//--- Constructor
-  public: cPtr_uint_33__32_AttributeMinMax (const GALGAS_location & in_location,
-                                            const GALGAS_uint & in_min,
-                                            const GALGAS_uint & in_max
-                                            COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
-
-//--- Attribute accessors
-  public: VIRTUAL_IN_DEBUG GALGAS_uint getter_min (LOCATION_ARGS) const ;
-  public: VIRTUAL_IN_DEBUG void setter_setMin (GALGAS_uint inValue COMMA_LOCATION_ARGS) ;
-  public: VIRTUAL_IN_DEBUG GALGAS_uint getter_max (LOCATION_ARGS) const ;
-  public: VIRTUAL_IN_DEBUG void setter_setMax (GALGAS_uint inValue COMMA_LOCATION_ARGS) ;
-//--- Description
-  public: virtual void description (C_String & ioString,
-                                    const int32_t inIndentation) const override ;
-
-  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
-
-  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
-
-} ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
 // Phase 1: @uint_36__34_AttributeMinMax  value class
 //
 //----------------------------------------------------------------------------------------------------------------------
@@ -652,7 +533,7 @@ class GALGAS_locationList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
-  public: VIRTUAL_IN_DEBUG void setter_append (class GALGAS_locationList_2D_element inArgument0,
+  public: VIRTUAL_IN_DEBUG void setter_append (class GALGAS_location constinArgument0,
                                                C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
@@ -2561,7 +2442,7 @@ class GALGAS_identifierList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
-  public: VIRTUAL_IN_DEBUG void setter_append (class GALGAS_identifierList_2D_element inArgument0,
+  public: VIRTUAL_IN_DEBUG void setter_append (class GALGAS_object_5F_t constinArgument0,
                                                C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
@@ -3707,7 +3588,7 @@ class GALGAS_ident_5F_list : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
-  public: VIRTUAL_IN_DEBUG void setter_append (class GALGAS_ident_5F_list_2D_element inArgument0,
+  public: VIRTUAL_IN_DEBUG void setter_append (class GALGAS_lstring constinArgument0,
                                                C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
@@ -9314,7 +9195,7 @@ class GALGAS_arxmlNodeList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
-  public: VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlNodeList_2D_element inArgument0,
+  public: VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlNode constinArgument0,
                                                C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
@@ -9648,7 +9529,7 @@ class GALGAS_arxmlElementList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
-  public: VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlElementList_2D_element inArgument0,
+  public: VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlElementNode constinArgument0,
                                                C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
@@ -10315,7 +10196,7 @@ class GALGAS_arxmlElementValueList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
-  public: VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlElementValueList_2D_element inArgument0,
+  public: VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlElementValue constinArgument0,
                                                C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 

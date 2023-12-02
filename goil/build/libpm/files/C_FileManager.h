@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2012, ..., 2012 Pierre Molinaro.
+//  Copyright (C) 2012, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -27,7 +27,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_FileManager {
+class C_FileManager final {
 //--- File path conversions
   public: static C_String unixPathWithNativePath (const C_String & inFilePath) ;
   public: static C_String nativePathWithUnixPath (const C_String & inFilePath) ;

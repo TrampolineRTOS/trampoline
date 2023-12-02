@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 1999, ..., 2009 Pierre Molinaro.
+//  Copyright (C) 1999, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -30,13 +30,13 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_DateTime {
+class C_DateTime final {
   private: std::chrono::time_point<std::chrono::system_clock> mDate ;
 
 //--- Constructors et destructor
   public: C_DateTime (void) ; // Current date
   public: C_DateTime (const time_t inTimeInSeconds) ;
-  public: virtual ~C_DateTime (void) ;
+  public: ~C_DateTime (void) ;
 
 //--- Get date components
   public: int32_t getYearCount (void) const ; // (1900, ...)

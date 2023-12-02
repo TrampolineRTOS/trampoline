@@ -96,7 +96,7 @@ void GALGAS_data::description (C_String & ioString,
                                const int32_t /* inIndentation */) const {
   ioString << "<@data:" ;
   if (isValid ()) {
-    ioString << "length=" << cStringWithSigned (mData.length ()) ;
+    ioString << "length=" << cStringWithSigned (mData.count ()) ;
   }else{
     ioString << "not built" ;
   }
@@ -108,7 +108,7 @@ void GALGAS_data::description (C_String & ioString,
 GALGAS_uint GALGAS_data::getter_count (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
-    result = GALGAS_uint ((uint32_t) mData.length ()) ;
+    result = GALGAS_uint (uint32_t (mData.count ())) ;
   }
   return result ;
 }
@@ -119,7 +119,7 @@ GALGAS_string GALGAS_data::getter_cStringRepresentation (UNUSED_LOCATION_ARGS) c
   GALGAS_string result ;
   if (isValid ()) {
     C_String s (cStringWithUnsigned (mData (0 COMMA_HERE))) ;
-    for (int32_t i=1 ; i<mData.length () ; i++) {
+    for (int32_t i=1 ; i<mData.count () ; i++) {
       s << ", " << cStringWithUnsigned (mData (i COMMA_HERE)) ;
       if ((i % 16) == 0) {
         s << "\n" ;
@@ -430,8 +430,8 @@ void cCollectionElement_data::description (C_String & ioString, const int32_t in
 //----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_data::populateEnumerationArray (capCollectionElementArray & inEnumerationArray) const {
-  const int32_t count = mData.length () ;
-  inEnumerationArray.setCapacity ((uint32_t) count) ;
+  const int32_t count = mData.count () ;
+  inEnumerationArray.setCapacity (uint32_t (count)) ;
   for (int32_t i=0 ; i<count ; i++) {
     cCollectionElement_data * p = nullptr ;
     macroMyNew (p, cCollectionElement_data (GALGAS_uint (mData (i COMMA_HERE)) COMMA_HERE)) ;

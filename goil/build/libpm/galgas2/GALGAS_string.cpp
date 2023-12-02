@@ -607,7 +607,7 @@ GALGAS_uint GALGAS_string::getter_utf_38_Length (UNUSED_LOCATION_ARGS) const {
   if (isValid ()) {
     C_Data data ;
     data.appendString (mString) ;
-    result = GALGAS_uint ((uint32_t) data.length ()) ;
+    result = GALGAS_uint (uint32_t (data.count ())) ;
   }
   return result ;
 }
@@ -2220,7 +2220,7 @@ static bool updateFile (const C_String & inFullPathName,
   C_Data currentData ; currentData.appendString (inContents) ;
 //--- Compare file length
   const uint64_t fileSize = C_FileManager::fileSize (inFullPathName) ;
-  bool needsToWriteFile = fileSize != (uint64_t) currentData.length () ;
+  bool needsToWriteFile = fileSize != (uint64_t) currentData.count () ;
   bool ok = true ;
 //--- Read file
   if (! needsToWriteFile) {

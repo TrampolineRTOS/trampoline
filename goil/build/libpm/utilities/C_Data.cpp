@@ -105,8 +105,8 @@ void C_Data::appendUTF32Character (const utf32 inUnicodeChar) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void C_Data::setLengthToZero (void) {
-  mBinaryData.setCountToZero () ;
+void C_Data::removeAllKeepingCapacity (void) {
+  mBinaryData.removeAllKeepingCapacity () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -125,8 +125,8 @@ uint8_t C_Data::operator () (const int32_t inIndex
 //----------------------------------------------------------------------------------------------------------------------
 
 int32_t C_Data::compareWithData (const C_Data & inData) const {
-  int32_t result = length () - inData.length () ;
-  for (int32_t i=0 ; (i<length ()) && (result == 0) ; i++) {
+  int32_t result = count () - inData.count () ;
+  for (int32_t i=0 ; (i<count ()) && (result == 0) ; i++) {
     result = ((int32_t) this->operator () (i COMMA_HERE)) - ((int32_t) inData (i COMMA_HERE)) ;  
   }  
   return result ;
@@ -147,9 +147,9 @@ void C_Data::removeLastByte (LOCATION_ARGS) {
 //----------------------------------------------------------------------------------------------------------------------
 
 bool C_Data::operator == (const C_Data & inData) const {
-  bool equal = length () == inData.length () ;
+  bool equal = count () == inData.count () ;
   if (equal) {
-    equal = ::memcmp (mBinaryData.unsafeArrayPointer(), inData.mBinaryData.unsafeArrayPointer(), (size_t) length ()) == 0 ;
+    equal = ::memcmp (mBinaryData.unsafeArrayPointer(), inData.mBinaryData.unsafeArrayPointer(), (size_t) count ()) == 0 ;
   }
   return equal ;
 }

@@ -32,7 +32,7 @@ class cCollectionElement ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class capCollectionElement {
+class capCollectionElement final {
 //--- Private pointer
   private: cCollectionElement * mPtr ;
 
@@ -40,7 +40,7 @@ class capCollectionElement {
   public: capCollectionElement (void) ;
 
 //--- Destructor
-  public: virtual ~ capCollectionElement (void) ;
+  public: ~ capCollectionElement (void) ;
 
 //--- Handle copy
   public: capCollectionElement (const capCollectionElement & inSource) ;

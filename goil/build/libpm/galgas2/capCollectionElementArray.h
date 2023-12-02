@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2010, ..., 2016 Pierre Molinaro.
+//  Copyright (C) 2010, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -30,7 +30,7 @@ class C_Compiler ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class capCollectionElementArray {
+class capCollectionElementArray final {
 //--- Default constructor
   public: capCollectionElementArray (void) ;
 
@@ -38,7 +38,7 @@ class capCollectionElementArray {
   public: capCollectionElementArray (const uint32_t inCapacity) ;
 
 //--- Virtual destructor
-  public: virtual ~ capCollectionElementArray (void) ;
+  public: ~ capCollectionElementArray (void) ;
 
 //--- Handle copy
   public: capCollectionElementArray (const capCollectionElementArray & inSource) ;

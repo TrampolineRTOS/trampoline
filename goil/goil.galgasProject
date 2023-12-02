@@ -68,6 +68,7 @@
 
 project (3:1:15) -> "goil" {
 
+  %makefile-macosx
   %makefile-unix
   %makefile-x86linux32-on-macosx
   %makefile-x86linux64-on-macosx

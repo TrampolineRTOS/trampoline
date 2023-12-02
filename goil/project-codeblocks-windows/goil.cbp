@@ -89,9 +89,8 @@
    <Unit filename="../build/libpm/command_line_interface/C_builtin_CLI_Options.cpp" />
    <Unit filename="../build/libpm/command_line_interface/F_Analyze_CLI_Options.cpp" />
    <Unit filename="../build/libpm/command_line_interface/F_mainForLIBPM.cpp" />
-   <Unit filename="../build/libpm/big-integers/uint128-multiply-divide.cpp" /> 
-   <Unit filename="../build/libpm/big-integers/BigUnsigned.cpp" />
    <Unit filename="../build/libpm/big-integers/C_BigInt.cpp" />
+   <Unit filename="../build/libpm/big-integers/PMUInt128.cpp" />
    <Unit filename="../build/libpm/bdd/C_BDD.cpp" />
    <Unit filename="../build/libpm/bdd/C_BDD-find-or-add.cpp" />
    <Unit filename="../build/libpm/bdd/C_BDD-single-operand-ops.cpp" />
@@ -117,7 +116,6 @@
    <Unit filename="../build/libpm/time/C_DateTime.cpp" />
    <Unit filename="../build/libpm/utilities/C_PrologueEpilogue.cpp" />
    <Unit filename="../build/libpm/utilities/C_SharedObject.cpp" />
-   <Unit filename="../build/libpm/utilities/C_CRC32.cpp" />
    <Unit filename="../build/libpm/utilities/C_Data.cpp" />
    <Unit filename="../build/libpm/utilities/F_DisplayException.cpp" />
    <Unit filename="../build/libpm/utilities/MF_Assert.cpp" />
@@ -125,7 +123,6 @@
    <Unit filename="../build/libpm/utilities/MF_MemoryControl.cpp" />
    <Unit filename="../build/libpm/utilities/cpp-allocation.cpp" />
    <Unit filename="../build/libpm/utilities/basic-allocation.cpp" />
-   <Unit filename="../build/libpm/utilities/PMUInt128.cpp" />
    <Unit filename="../build/libpm/utilities/C_UIntSet.cpp" />
    <Unit filename="../build/libpm/utilities/C_DirectedGraph.cpp" />
    <Unit filename="../build/libpm/utilities/md5.cpp" />

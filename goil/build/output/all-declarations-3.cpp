@@ -713,35 +713,27 @@ void GALGAS_arxmlMetaClasslist::makeAttributesFromObjects (capCollectionElement 
 void GALGAS_arxmlMetaClasslist::addAssign_operation (const GALGAS_arxmlMetaClass & inOperand0
                                                      COMMA_LOCATION_ARGS) {
   if (isValid ()) {
-    if (inOperand0.isValid ()) {
-      cCollectionElement * p = nullptr ;
-      macroMyNew (p, cCollectionElement_arxmlMetaClasslist (inOperand0 COMMA_THERE)) ;
-      capCollectionElement attributes ;
-      attributes.setPointer (p) ;
-      macroDetachSharedObject (p) ;
-      appendObject (attributes) ;
-    }else{ // Destroy receiver
-      drop () ;
-    }
+    cCollectionElement * p = nullptr ;
+    macroMyNew (p, cCollectionElement_arxmlMetaClasslist (inOperand0 COMMA_THERE)) ;
+    capCollectionElement attributes ;
+    attributes.setPointer (p) ;
+    macroDetachSharedObject (p) ;
+    appendObject (attributes) ;
   }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void GALGAS_arxmlMetaClasslist::setter_append (GALGAS_arxmlMetaClasslist_2D_element inElement,
+void GALGAS_arxmlMetaClasslist::setter_append (const GALGAS_arxmlMetaClass inOperand0,
                                                C_Compiler * /* inCompiler */
                                                COMMA_LOCATION_ARGS) {
   if (isValid ()) {
-    if (inElement.isValid ()) {
-      cCollectionElement * p = nullptr ;
-      macroMyNew (p, cCollectionElement_arxmlMetaClasslist (inElement COMMA_THERE)) ;
-      capCollectionElement attributes ;
-      attributes.setPointer (p) ;
-      macroDetachSharedObject (p) ;
-      appendObject (attributes) ;
-    }else{
-      drop () ;
-    }
+    cCollectionElement * p = nullptr ;
+    macroMyNew (p, cCollectionElement_arxmlMetaClasslist (inOperand0 COMMA_THERE)) ;
+    capCollectionElement attributes ;
+    attributes.setPointer (p) ;
+    macroDetachSharedObject (p) ;
+    appendObject (attributes) ;
   }
 }
 
@@ -1130,35 +1122,27 @@ void GALGAS_arxmlMetaElementList::makeAttributesFromObjects (capCollectionElemen
 void GALGAS_arxmlMetaElementList::addAssign_operation (const GALGAS_arxmlMetaElement & inOperand0
                                                        COMMA_LOCATION_ARGS) {
   if (isValid ()) {
-    if (inOperand0.isValid ()) {
-      cCollectionElement * p = nullptr ;
-      macroMyNew (p, cCollectionElement_arxmlMetaElementList (inOperand0 COMMA_THERE)) ;
-      capCollectionElement attributes ;
-      attributes.setPointer (p) ;
-      macroDetachSharedObject (p) ;
-      appendObject (attributes) ;
-    }else{ // Destroy receiver
-      drop () ;
-    }
+    cCollectionElement * p = nullptr ;
+    macroMyNew (p, cCollectionElement_arxmlMetaElementList (inOperand0 COMMA_THERE)) ;
+    capCollectionElement attributes ;
+    attributes.setPointer (p) ;
+    macroDetachSharedObject (p) ;
+    appendObject (attributes) ;
   }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void GALGAS_arxmlMetaElementList::setter_append (GALGAS_arxmlMetaElementList_2D_element inElement,
+void GALGAS_arxmlMetaElementList::setter_append (const GALGAS_arxmlMetaElement inOperand0,
                                                  C_Compiler * /* inCompiler */
                                                  COMMA_LOCATION_ARGS) {
   if (isValid ()) {
-    if (inElement.isValid ()) {
-      cCollectionElement * p = nullptr ;
-      macroMyNew (p, cCollectionElement_arxmlMetaElementList (inElement COMMA_THERE)) ;
-      capCollectionElement attributes ;
-      attributes.setPointer (p) ;
-      macroDetachSharedObject (p) ;
-      appendObject (attributes) ;
-    }else{
-      drop () ;
-    }
+    cCollectionElement * p = nullptr ;
+    macroMyNew (p, cCollectionElement_arxmlMetaElementList (inOperand0 COMMA_THERE)) ;
+    capCollectionElement attributes ;
+    attributes.setPointer (p) ;
+    macroDetachSharedObject (p) ;
+    appendObject (attributes) ;
   }
 }
 
@@ -1547,35 +1531,27 @@ void GALGAS_arxmlMetaAttributeList::makeAttributesFromObjects (capCollectionElem
 void GALGAS_arxmlMetaAttributeList::addAssign_operation (const GALGAS_arxmlMetaAttribute & inOperand0
                                                          COMMA_LOCATION_ARGS) {
   if (isValid ()) {
-    if (inOperand0.isValid ()) {
-      cCollectionElement * p = nullptr ;
-      macroMyNew (p, cCollectionElement_arxmlMetaAttributeList (inOperand0 COMMA_THERE)) ;
-      capCollectionElement attributes ;
-      attributes.setPointer (p) ;
-      macroDetachSharedObject (p) ;
-      appendObject (attributes) ;
-    }else{ // Destroy receiver
-      drop () ;
-    }
+    cCollectionElement * p = nullptr ;
+    macroMyNew (p, cCollectionElement_arxmlMetaAttributeList (inOperand0 COMMA_THERE)) ;
+    capCollectionElement attributes ;
+    attributes.setPointer (p) ;
+    macroDetachSharedObject (p) ;
+    appendObject (attributes) ;
   }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void GALGAS_arxmlMetaAttributeList::setter_append (GALGAS_arxmlMetaAttributeList_2D_element inElement,
+void GALGAS_arxmlMetaAttributeList::setter_append (const GALGAS_arxmlMetaAttribute inOperand0,
                                                    C_Compiler * /* inCompiler */
                                                    COMMA_LOCATION_ARGS) {
   if (isValid ()) {
-    if (inElement.isValid ()) {
-      cCollectionElement * p = nullptr ;
-      macroMyNew (p, cCollectionElement_arxmlMetaAttributeList (inElement COMMA_THERE)) ;
-      capCollectionElement attributes ;
-      attributes.setPointer (p) ;
-      macroDetachSharedObject (p) ;
-      appendObject (attributes) ;
-    }else{
-      drop () ;
-    }
+    cCollectionElement * p = nullptr ;
+    macroMyNew (p, cCollectionElement_arxmlMetaAttributeList (inOperand0 COMMA_THERE)) ;
+    capCollectionElement attributes ;
+    attributes.setPointer (p) ;
+    macroDetachSharedObject (p) ;
+    appendObject (attributes) ;
   }
 }
 
@@ -5647,7 +5623,7 @@ static void defineExtensionSetter_library_putFunction (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_library_putFunction (void) {
-  gExtensionModifierTable_library_putFunction.free () ;
+  gExtensionModifierTable_library_putFunction.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5788,7 +5764,7 @@ static void defineExtensionSetter_library_putGetter (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_library_putGetter (void) {
-  gExtensionModifierTable_library_putGetter.free () ;
+  gExtensionModifierTable_library_putGetter.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5929,7 +5905,7 @@ static void defineExtensionSetter_library_putSetter (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_library_putSetter (void) {
-  gExtensionModifierTable_library_putSetter.free () ;
+  gExtensionModifierTable_library_putSetter.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6032,7 +6008,7 @@ static void defineExtensionSetter_library_doImport (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_library_doImport (void) {
-  gExtensionModifierTable_library_doImport.free () ;
+  gExtensionModifierTable_library_doImport.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6119,7 +6095,7 @@ static void defineExtensionSetter_library_getTemplate (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_library_getTemplate (void) {
-  gExtensionModifierTable_library_getTemplate.free () ;
+  gExtensionModifierTable_library_getTemplate.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -13493,7 +13469,7 @@ void enterExtensionSetter_performSetter (const int32_t inClassIndex,
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlData_performSetter (void) {
-  gExtensionModifierTable_gtlData_performSetter.free () ;
+  gExtensionModifierTable_gtlData_performSetter.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -13669,7 +13645,7 @@ static void defineExtensionSetter_gtlData_setStructField (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlData_setStructField (void) {
-  gExtensionModifierTable_gtlData_setStructField.free () ;
+  gExtensionModifierTable_gtlData_setStructField.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -13748,7 +13724,7 @@ static void defineExtensionSetter_gtlData_setStructFieldAtLevel (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlData_setStructFieldAtLevel (void) {
-  gExtensionModifierTable_gtlData_setStructFieldAtLevel.free () ;
+  gExtensionModifierTable_gtlData_setStructFieldAtLevel.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -13823,7 +13799,7 @@ static void defineExtensionSetter_gtlData_deleteStructField (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlData_deleteStructField (void) {
-  gExtensionModifierTable_gtlData_deleteStructField.free () ;
+  gExtensionModifierTable_gtlData_deleteStructField.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -14051,7 +14027,7 @@ static void defineExtensionSetter_gtlData_setMapItem (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlData_setMapItem (void) {
-  gExtensionModifierTable_gtlData_setMapItem.free () ;
+  gExtensionModifierTable_gtlData_setMapItem.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -14126,7 +14102,7 @@ static void defineExtensionSetter_gtlData_deleteMapItem (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlData_deleteMapItem (void) {
-  gExtensionModifierTable_gtlData_deleteMapItem.free () ;
+  gExtensionModifierTable_gtlData_deleteMapItem.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -14262,7 +14238,7 @@ static void defineExtensionSetter_gtlData_setItemAtIndex (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlData_setItemAtIndex (void) {
-  gExtensionModifierTable_gtlData_setItemAtIndex.free () ;
+  gExtensionModifierTable_gtlData_setItemAtIndex.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -14337,7 +14313,7 @@ static void defineExtensionSetter_gtlData_deleteItemAtIndex (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlData_deleteItemAtIndex (void) {
-  gExtensionModifierTable_gtlData_deleteItemAtIndex.free () ;
+  gExtensionModifierTable_gtlData_deleteItemAtIndex.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -14412,7 +14388,7 @@ static void defineExtensionSetter_gtlData_appendItem (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_gtlData_appendItem (void) {
-  gExtensionModifierTable_gtlData_appendItem.free () ;
+  gExtensionModifierTable_gtlData_appendItem.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

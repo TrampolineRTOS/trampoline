@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library
 //
-//  Copyright (C) 2021, ..., 2021 Pierre Molinaro.
+//  Copyright (C) 2021, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -30,7 +30,7 @@ class acStrongPtr_class ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class cPtr_weakReference_proxy : public acPtr_class {
+class cPtr_weakReference_proxy final : public acPtr_class {
 //--- Public default constructor
   public: cPtr_weakReference_proxy (LOCATION_ARGS) ;
 

@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2017, ..., 2017 Pierre Molinaro.
+//  Copyright (C) 2017, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -30,7 +30,7 @@
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-class cIssueDescriptor {
+class cIssueDescriptor final {
 //--- Default constructor
   public: cIssueDescriptor (void) ;
 

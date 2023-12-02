@@ -15,32 +15,32 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_Relation {
+class C_Relation final {
 //--- Default constructor (no variable, empty)
   public: C_Relation (void) ;
 
 //--- Constructor (One variable, type, empty or full)
   public: C_Relation (const C_String & inVariableName,
-                       const C_RelationSingleType & inVariableType,
-                       const bool isFull) ;
+                      const C_RelationSingleType & inVariableType,
+                      const bool isFull) ;
 
 //--- Constructor (variables, empty or full)
   public: C_Relation (const C_RelationConfiguration & inConfiguration,
-                       const bool isFull) ;
+                      const bool isFull) ;
 
 //--- Private constructor (variables, eBDD)
   private: C_Relation (const C_RelationConfiguration & inConfiguration,
-                        const C_BDD inBDD) ;
+                       const C_BDD inBDD) ;
 
 //--- Constructor (Variable compared with constant)
   public: C_Relation (const C_RelationConfiguration & inConfiguration,
-                       const int32_t inVariableIndex,
-                       const C_BDD::compareEnum inComparaison,
-                       const uint64_t inConstant
-                       COMMA_LOCATION_ARGS) ;
+                      const int32_t inVariableIndex,
+                      const C_BDD::compareEnum inComparaison,
+                      const uint64_t inConstant
+                      COMMA_LOCATION_ARGS) ;
 
 //--- Destructor
-  public: virtual ~ C_Relation (void) ;
+  public: ~ C_Relation (void) ;
 
 //--- Handling copy
   public: C_Relation (const C_Relation & inSource) ;

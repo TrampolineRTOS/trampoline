@@ -4903,7 +4903,7 @@ static void defineExtensionSetter_arxmlElementValue_insertElement (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_arxmlElementValue_insertElement (void) {
-  gExtensionModifierTable_arxmlElementValue_insertElement.free () ;
+  gExtensionModifierTable_arxmlElementValue_insertElement.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5723,7 +5723,7 @@ static void defineExtensionSetter_arxmlMetaClass_legacyAddParameters (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_arxmlMetaClass_legacyAddParameters (void) {
-  gExtensionModifierTable_arxmlMetaClass_legacyAddParameters.free () ;
+  gExtensionModifierTable_arxmlMetaClass_legacyAddParameters.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5799,7 +5799,7 @@ static void defineExtensionSetter_arxmlMetaClass_legacyUpdate (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_arxmlMetaClass_legacyUpdate (void) {
-  gExtensionModifierTable_arxmlMetaClass_legacyUpdate.free () ;
+  gExtensionModifierTable_arxmlMetaClass_legacyUpdate.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5989,7 +5989,7 @@ static void defineExtensionSetter_arxmlMetaClass_addElement (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_arxmlMetaClass_addElement (void) {
-  gExtensionModifierTable_arxmlMetaClass_addElement.free () ;
+  gExtensionModifierTable_arxmlMetaClass_addElement.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6084,7 +6084,7 @@ static void defineExtensionSetter_arxmlMetaClass_addAttribute (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_arxmlMetaClass_addAttribute (void) {
-  gExtensionModifierTable_arxmlMetaClass_addAttribute.free () ;
+  gExtensionModifierTable_arxmlMetaClass_addAttribute.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6157,7 +6157,7 @@ static void defineExtensionSetter_arxmlMetaClass_setDescription (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_arxmlMetaClass_setDescription (void) {
-  gExtensionModifierTable_arxmlMetaClass_setDescription.free () ;
+  gExtensionModifierTable_arxmlMetaClass_setDescription.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7366,7 +7366,7 @@ static void defineExtensionSetter_arxmlMetaSimpletype_addValue (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_arxmlMetaSimpletype_addValue (void) {
-  gExtensionModifierTable_arxmlMetaSimpletype_addValue.free () ;
+  gExtensionModifierTable_arxmlMetaSimpletype_addValue.removeAll () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

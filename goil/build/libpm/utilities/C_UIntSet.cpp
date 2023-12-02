@@ -64,7 +64,7 @@ void C_UIntSet::remove (const uint32_t inNodeIndex) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntSet::getBoolValueArray (TC_UniqueArray <bool> & outBoolValueArray) const {
-  outBoolValueArray.setCountToZero () ;
+  outBoolValueArray.removeAllKeepingCapacity () ;
   for (int32_t i=0 ; i<mDefinition.count () ; i++) {
     for (uint32_t j=0 ; j<64 ; j++) {
       outBoolValueArray.appendObject ((mDefinition (i COMMA_HERE) & (((uint64_t) 1) << j)) != 0) ;
@@ -79,7 +79,7 @@ void C_UIntSet::getBoolValueArray (TC_UniqueArray <bool> & outBoolValueArray) co
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntSet::getValueArray (TC_UniqueArray <uint32_t> & outValueArray) const {
-  outValueArray.setCountToZero () ;
+  outValueArray.removeAllKeepingCapacity () ;
   uint32_t idx = 0 ;
   for (int32_t i=0 ; i<mDefinition.count () ; i++) {
     for (uint32_t j=0 ; j<64 ; j++) {

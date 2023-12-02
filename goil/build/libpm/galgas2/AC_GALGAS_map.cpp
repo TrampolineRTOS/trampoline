@@ -1117,7 +1117,7 @@ static void findNearestKeyForNode (const C_String & inKey,
     const uint32_t distance = inCurrentNode->mKey.LevenshteinDistanceFromString (inKey) ;
     if (ioBestDistance > distance) {
       ioBestDistance = distance ;
-      ioNearestKeyArray.setCountToZero () ;
+      ioNearestKeyArray.removeAllKeepingCapacity () ;
       ioNearestKeyArray.appendObject (inCurrentNode->mKey) ;
     }else if (ioBestDistance == distance) {
       ioNearestKeyArray.appendObject (inCurrentNode->mKey) ;
@@ -1131,7 +1131,7 @@ static void findNearestKeyForNode (const C_String & inKey,
 
 void cSharedMapRoot::findNearestKey (const C_String & inKey,
                                      TC_UniqueArray <C_String> & ioNearestKeyArray) const {
-  ioNearestKeyArray.setCountToZero () ;
+  ioNearestKeyArray.removeAllKeepingCapacity () ;
   uint32_t bestDistance = UINT32_MAX ;
   const cSharedMapRoot * currentMap = this ;
   while (nullptr != currentMap) {

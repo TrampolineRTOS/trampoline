@@ -624,7 +624,7 @@ void C_build_values64_array::action (const bool tableauDesValeurs [],
 void C_BDD::buildValue64Array (TC_UniqueArray <uint64_t> & outValuesArray,
                                const uint32_t inVariableCount) const {
   MF_Assert(inVariableCount < 64, "inVariableCount == %ld >= 64", (int64_t) inVariableCount, 0) ;
-  outValuesArray.setCountToZero () ;
+  outValuesArray.removeAllKeepingCapacity () ;
   C_build_values64_array builder (& outValuesArray) ;
   bool * tableauDesValeurs = nullptr ;
   macroMyNewArray (tableauDesValeurs, bool, inVariableCount) ;
@@ -671,7 +671,7 @@ void C_build_values_array::action (const bool tableauDesValeurs [],
 
 void C_BDD::buildValueArray (TC_UniqueArray <TC_Array <bool> > & outValuesArray,
                              const uint32_t inVariableCount) const {
-  outValuesArray.setCountToZero () ;
+  outValuesArray.removeAllKeepingCapacity () ;
   C_build_values_array builder (& outValuesArray) ;
   bool * tableauDesValeurs = nullptr ;
   macroMyNewArray (tableauDesValeurs, bool, inVariableCount) ;
@@ -720,7 +720,7 @@ action (const bool tableauDesValeurs [],
 void C_BDD::
 buildLittleEndianStringValueArray (TC_UniqueArray <C_String> & outValuesArray,
                                    const uint32_t inVariableCount) const {
-  outValuesArray.setCountToZero () ;
+  outValuesArray.removeAllKeepingCapacity () ;
   cLittleEndianStringValueBuilder builder (& outValuesArray) ;
   bool * tableauDesValeurs = nullptr ;
   macroMyNewArray (tableauDesValeurs, bool, inVariableCount) ;
@@ -763,7 +763,7 @@ action (const bool tableauDesValeurs [],
 void C_BDD::
 buildBigEndianStringValueArray (TC_UniqueArray <C_String> & outValuesArray,
                                 const uint32_t inVariableCount) const {
-  outValuesArray.setCountToZero () ;
+  outValuesArray.removeAllKeepingCapacity () ;
   cBuildBigEndianStringValueArray builder (& outValuesArray) ;
   bool * tableauDesValeurs = nullptr ;
   macroMyNewArray (tableauDesValeurs, bool, inVariableCount) ;
@@ -1395,7 +1395,7 @@ void cBuildArrayForSet::action (const bool inValuesArray [],
 void C_BDD::getBoolArray (TC_UniqueArray <bool> & outArray,
                           const uint32_t inMaxValues,
                           const uint32_t inBitSize) const {
-  outArray.setCountToZero () ;
+  outArray.removeAllKeepingCapacity () ;
   outArray.setCapacity ((int32_t) inMaxValues) ;
   outArray.appendObjects ((int32_t) inMaxValues, false) ;
   cBuildArrayForSet s (outArray) ;
@@ -1620,7 +1620,7 @@ void C_BDD::getArray2 (TC_UniqueArray <TC_UniqueArray <uint64_t> > & outArray,
                        const uint32_t inMaxValueCount,
                        const uint32_t inBitSize1,
                        const uint32_t inBitSize2) const {
-  outArray.setCountToZero () ;
+  outArray.removeAllKeepingCapacity () ;
   outArray.setCapacityUsingSwap ((int32_t) inMaxValueCount) ;
   for (uint32_t i=0 ; i<inMaxValueCount ; i++) {
     outArray.appendDefaultObjectUsingSwap () ;
