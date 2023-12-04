@@ -3979,6 +3979,7 @@ class C_Lexique_gtl_5F_scanner : public C_Lexique {
    kToken_or,
    kToken_print,
    kToken_println,
+   kToken_seed,
    kToken_repeat,
    kToken_sort,
    kToken_step,
@@ -4088,7 +4089,7 @@ class C_Lexique_gtl_5F_scanner : public C_Lexique {
   protected: virtual C_String getMessageForTerminal (const int32_t inTerminalSymbol) const override ;
 
 //--- Get terminal count
-  public: virtual int32_t terminalVocabularyCount (void) const override { return 114 ; }
+  public: virtual int32_t terminalVocabularyCount (void) const override { return 115 ; }
 
 //--- Get Token String
   public: virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const override ;

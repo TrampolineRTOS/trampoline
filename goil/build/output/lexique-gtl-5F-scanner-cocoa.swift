@@ -139,77 +139,78 @@ let gtl_scanner_1_not : UInt16 = 42
 let gtl_scanner_1_or : UInt16 = 43
 let gtl_scanner_1_print : UInt16 = 44
 let gtl_scanner_1_println : UInt16 = 45
-let gtl_scanner_1_repeat : UInt16 = 46
-let gtl_scanner_1_sort : UInt16 = 47
-let gtl_scanner_1_step : UInt16 = 48
-let gtl_scanner_1_tab : UInt16 = 49
-let gtl_scanner_1_template : UInt16 = 50
-let gtl_scanner_1_then : UInt16 = 51
-let gtl_scanner_1_to : UInt16 = 52
-let gtl_scanner_1_true : UInt16 = 53
-let gtl_scanner_1_typeof : UInt16 = 54
-let gtl_scanner_1_up : UInt16 = 55
-let gtl_scanner_1_yes : UInt16 = 56
-let gtl_scanner_1_warning : UInt16 = 57
-let gtl_scanner_1_while : UInt16 = 58
-let gtl_scanner_1_write : UInt16 = 59
-let gtl_scanner_1_executable : UInt16 = 60
-let gtl_scanner_1_variables : UInt16 = 61
-let gtl_scanner_1_getter : UInt16 = 62
-let gtl_scanner_1_unlet : UInt16 = 63
-let gtl_scanner_1_setter : UInt16 = 64
-let gtl_scanner_1_libraries : UInt16 = 65
-let gtl_scanner_1_input : UInt16 = 66
-let gtl_scanner_1_break : UInt16 = 67
-let gtl_scanner_1__5F__5F_VARS_5F__5F_ : UInt16 = 68
-let gtl_scanner_1__2A_ : UInt16 = 69
-let gtl_scanner_1__7C_ : UInt16 = 70
-let gtl_scanner_1__2C_ : UInt16 = 71
-let gtl_scanner_1__2B_ : UInt16 = 72
-let gtl_scanner_1__3A__3A_ : UInt16 = 73
-let gtl_scanner_1__3E_ : UInt16 = 74
-let gtl_scanner_1__3A_ : UInt16 = 75
-let gtl_scanner_1__28_ : UInt16 = 76
-let gtl_scanner_1__29_ : UInt16 = 77
-let gtl_scanner_1__2D__3E_ : UInt16 = 78
-let gtl_scanner_1__3F_ : UInt16 = 79
-let gtl_scanner_1__3D__3D_ : UInt16 = 80
-let gtl_scanner_1__21_ : UInt16 = 81
-let gtl_scanner_1__3A__3D_ : UInt16 = 82
-let gtl_scanner_1__5B_ : UInt16 = 83
-let gtl_scanner_1__5D_ : UInt16 = 84
-let gtl_scanner_1__2B__3D_ : UInt16 = 85
-let gtl_scanner_1__2D__3D_ : UInt16 = 86
-let gtl_scanner_1__2F_ : UInt16 = 87
-let gtl_scanner_1__21__3D_ : UInt16 = 88
-let gtl_scanner_1__3E__3D_ : UInt16 = 89
-let gtl_scanner_1__26_ : UInt16 = 90
-let gtl_scanner_1__3C__3D_ : UInt16 = 91
-let gtl_scanner_1__7B_ : UInt16 = 92
-let gtl_scanner_1__7D_ : UInt16 = 93
-let gtl_scanner_1__3C_ : UInt16 = 94
-let gtl_scanner_1__5E_ : UInt16 = 95
-let gtl_scanner_1__3E__3E_ : UInt16 = 96
-let gtl_scanner_1__7E_ : UInt16 = 97
-let gtl_scanner_1__3C__2D_ : UInt16 = 98
-let gtl_scanner_1__3C__3C_ : UInt16 = 99
-let gtl_scanner_1__40_ : UInt16 = 100
-let gtl_scanner_1__2A__3D_ : UInt16 = 101
-let gtl_scanner_1__2F__3D_ : UInt16 = 102
-let gtl_scanner_1__26__3D_ : UInt16 = 103
-let gtl_scanner_1__7C__3D_ : UInt16 = 104
-let gtl_scanner_1__3C__3C__3D_ : UInt16 = 105
-let gtl_scanner_1__3E__3E__3D_ : UInt16 = 106
-let gtl_scanner_1_mod_3D_ : UInt16 = 107
-let gtl_scanner_1__5E__3D_ : UInt16 = 108
-let gtl_scanner_1__40__5B_ : UInt16 = 109
-let gtl_scanner_1__40__28_ : UInt16 = 110
-let gtl_scanner_1__40__7B_ : UInt16 = 111
-let gtl_scanner_1__5B__21_ : UInt16 = 112
-let gtl_scanner_1__40__21_ : UInt16 = 113
-let gtl_scanner_1__40__3F_ : UInt16 = 114
-let gtl_scanner_2_ERROR : UInt16 = 115
-let gtl_scanner_2_TEMPLATE : UInt16 = 116
+let gtl_scanner_1_seed : UInt16 = 46
+let gtl_scanner_1_repeat : UInt16 = 47
+let gtl_scanner_1_sort : UInt16 = 48
+let gtl_scanner_1_step : UInt16 = 49
+let gtl_scanner_1_tab : UInt16 = 50
+let gtl_scanner_1_template : UInt16 = 51
+let gtl_scanner_1_then : UInt16 = 52
+let gtl_scanner_1_to : UInt16 = 53
+let gtl_scanner_1_true : UInt16 = 54
+let gtl_scanner_1_typeof : UInt16 = 55
+let gtl_scanner_1_up : UInt16 = 56
+let gtl_scanner_1_yes : UInt16 = 57
+let gtl_scanner_1_warning : UInt16 = 58
+let gtl_scanner_1_while : UInt16 = 59
+let gtl_scanner_1_write : UInt16 = 60
+let gtl_scanner_1_executable : UInt16 = 61
+let gtl_scanner_1_variables : UInt16 = 62
+let gtl_scanner_1_getter : UInt16 = 63
+let gtl_scanner_1_unlet : UInt16 = 64
+let gtl_scanner_1_setter : UInt16 = 65
+let gtl_scanner_1_libraries : UInt16 = 66
+let gtl_scanner_1_input : UInt16 = 67
+let gtl_scanner_1_break : UInt16 = 68
+let gtl_scanner_1__5F__5F_VARS_5F__5F_ : UInt16 = 69
+let gtl_scanner_1__2A_ : UInt16 = 70
+let gtl_scanner_1__7C_ : UInt16 = 71
+let gtl_scanner_1__2C_ : UInt16 = 72
+let gtl_scanner_1__2B_ : UInt16 = 73
+let gtl_scanner_1__3A__3A_ : UInt16 = 74
+let gtl_scanner_1__3E_ : UInt16 = 75
+let gtl_scanner_1__3A_ : UInt16 = 76
+let gtl_scanner_1__28_ : UInt16 = 77
+let gtl_scanner_1__29_ : UInt16 = 78
+let gtl_scanner_1__2D__3E_ : UInt16 = 79
+let gtl_scanner_1__3F_ : UInt16 = 80
+let gtl_scanner_1__3D__3D_ : UInt16 = 81
+let gtl_scanner_1__21_ : UInt16 = 82
+let gtl_scanner_1__3A__3D_ : UInt16 = 83
+let gtl_scanner_1__5B_ : UInt16 = 84
+let gtl_scanner_1__5D_ : UInt16 = 85
+let gtl_scanner_1__2B__3D_ : UInt16 = 86
+let gtl_scanner_1__2D__3D_ : UInt16 = 87
+let gtl_scanner_1__2F_ : UInt16 = 88
+let gtl_scanner_1__21__3D_ : UInt16 = 89
+let gtl_scanner_1__3E__3D_ : UInt16 = 90
+let gtl_scanner_1__26_ : UInt16 = 91
+let gtl_scanner_1__3C__3D_ : UInt16 = 92
+let gtl_scanner_1__7B_ : UInt16 = 93
+let gtl_scanner_1__7D_ : UInt16 = 94
+let gtl_scanner_1__3C_ : UInt16 = 95
+let gtl_scanner_1__5E_ : UInt16 = 96
+let gtl_scanner_1__3E__3E_ : UInt16 = 97
+let gtl_scanner_1__7E_ : UInt16 = 98
+let gtl_scanner_1__3C__2D_ : UInt16 = 99
+let gtl_scanner_1__3C__3C_ : UInt16 = 100
+let gtl_scanner_1__40_ : UInt16 = 101
+let gtl_scanner_1__2A__3D_ : UInt16 = 102
+let gtl_scanner_1__2F__3D_ : UInt16 = 103
+let gtl_scanner_1__26__3D_ : UInt16 = 104
+let gtl_scanner_1__7C__3D_ : UInt16 = 105
+let gtl_scanner_1__3C__3C__3D_ : UInt16 = 106
+let gtl_scanner_1__3E__3E__3D_ : UInt16 = 107
+let gtl_scanner_1_mod_3D_ : UInt16 = 108
+let gtl_scanner_1__5E__3D_ : UInt16 = 109
+let gtl_scanner_1__40__5B_ : UInt16 = 110
+let gtl_scanner_1__40__28_ : UInt16 = 111
+let gtl_scanner_1__40__7B_ : UInt16 = 112
+let gtl_scanner_1__5B__21_ : UInt16 = 113
+let gtl_scanner_1__40__21_ : UInt16 = 114
+let gtl_scanner_1__40__3F_ : UInt16 = 115
+let gtl_scanner_2_ERROR : UInt16 = 116
+let gtl_scanner_2_TEMPLATE : UInt16 = 117
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -287,7 +288,7 @@ class SWIFT_Lexique_gtl_scanner : SWIFT_Lexique {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   func terminalVocabularyCount () -> Int {
-    return 114
+    return 115
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -366,77 +367,78 @@ class SWIFT_Lexique_gtl_scanner : SWIFT_Lexique {
       1, // 43 : gtl_scanner_1_or
       1, // 44 : gtl_scanner_1_print
       1, // 45 : gtl_scanner_1_println
-      1, // 46 : gtl_scanner_1_repeat
-      1, // 47 : gtl_scanner_1_sort
-      1, // 48 : gtl_scanner_1_step
-      1, // 49 : gtl_scanner_1_tab
-      1, // 50 : gtl_scanner_1_template
-      1, // 51 : gtl_scanner_1_then
-      1, // 52 : gtl_scanner_1_to
-      1, // 53 : gtl_scanner_1_true
-      1, // 54 : gtl_scanner_1_typeof
-      1, // 55 : gtl_scanner_1_up
-      1, // 56 : gtl_scanner_1_yes
-      1, // 57 : gtl_scanner_1_warning
-      1, // 58 : gtl_scanner_1_while
-      1, // 59 : gtl_scanner_1_write
-      1, // 60 : gtl_scanner_1_executable
-      1, // 61 : gtl_scanner_1_variables
-      1, // 62 : gtl_scanner_1_getter
-      1, // 63 : gtl_scanner_1_unlet
-      1, // 64 : gtl_scanner_1_setter
-      1, // 65 : gtl_scanner_1_libraries
-      1, // 66 : gtl_scanner_1_input
-      1, // 67 : gtl_scanner_1_break
-      1, // 68 : gtl_scanner_1__5F__5F_VARS_5F__5F_
-      2, // 69 : gtl_scanner_1__2A_
-      2, // 70 : gtl_scanner_1__7C_
-      2, // 71 : gtl_scanner_1__2C_
-      2, // 72 : gtl_scanner_1__2B_
-      2, // 73 : gtl_scanner_1__3A__3A_
-      2, // 74 : gtl_scanner_1__3E_
-      2, // 75 : gtl_scanner_1__3A_
-      2, // 76 : gtl_scanner_1__28_
-      2, // 77 : gtl_scanner_1__29_
-      2, // 78 : gtl_scanner_1__2D__3E_
-      2, // 79 : gtl_scanner_1__3F_
-      2, // 80 : gtl_scanner_1__3D__3D_
-      2, // 81 : gtl_scanner_1__21_
-      2, // 82 : gtl_scanner_1__3A__3D_
-      2, // 83 : gtl_scanner_1__5B_
-      2, // 84 : gtl_scanner_1__5D_
-      2, // 85 : gtl_scanner_1__2B__3D_
-      2, // 86 : gtl_scanner_1__2D__3D_
-      2, // 87 : gtl_scanner_1__2F_
-      2, // 88 : gtl_scanner_1__21__3D_
-      2, // 89 : gtl_scanner_1__3E__3D_
-      2, // 90 : gtl_scanner_1__26_
-      2, // 91 : gtl_scanner_1__3C__3D_
-      2, // 92 : gtl_scanner_1__7B_
-      2, // 93 : gtl_scanner_1__7D_
-      2, // 94 : gtl_scanner_1__3C_
-      2, // 95 : gtl_scanner_1__5E_
-      2, // 96 : gtl_scanner_1__3E__3E_
-      2, // 97 : gtl_scanner_1__7E_
-      2, // 98 : gtl_scanner_1__3C__2D_
-      2, // 99 : gtl_scanner_1__3C__3C_
-      2, // 100 : gtl_scanner_1__40_
-      2, // 101 : gtl_scanner_1__2A__3D_
-      2, // 102 : gtl_scanner_1__2F__3D_
-      2, // 103 : gtl_scanner_1__26__3D_
-      2, // 104 : gtl_scanner_1__7C__3D_
-      2, // 105 : gtl_scanner_1__3C__3C__3D_
-      2, // 106 : gtl_scanner_1__3E__3E__3D_
-      2, // 107 : gtl_scanner_1_mod_3D_
-      2, // 108 : gtl_scanner_1__5E__3D_
-      2, // 109 : gtl_scanner_1__40__5B_
-      2, // 110 : gtl_scanner_1__40__28_
-      2, // 111 : gtl_scanner_1__40__7B_
-      2, // 112 : gtl_scanner_1__5B__21_
-      2, // 113 : gtl_scanner_1__40__21_
-      2, // 114 : gtl_scanner_1__40__3F_
-      9, // 115 : gtl_scanner_2_ERROR
-      10  // 116 : gtl_scanner_2_TEMPLATE
+      1, // 46 : gtl_scanner_1_seed
+      1, // 47 : gtl_scanner_1_repeat
+      1, // 48 : gtl_scanner_1_sort
+      1, // 49 : gtl_scanner_1_step
+      1, // 50 : gtl_scanner_1_tab
+      1, // 51 : gtl_scanner_1_template
+      1, // 52 : gtl_scanner_1_then
+      1, // 53 : gtl_scanner_1_to
+      1, // 54 : gtl_scanner_1_true
+      1, // 55 : gtl_scanner_1_typeof
+      1, // 56 : gtl_scanner_1_up
+      1, // 57 : gtl_scanner_1_yes
+      1, // 58 : gtl_scanner_1_warning
+      1, // 59 : gtl_scanner_1_while
+      1, // 60 : gtl_scanner_1_write
+      1, // 61 : gtl_scanner_1_executable
+      1, // 62 : gtl_scanner_1_variables
+      1, // 63 : gtl_scanner_1_getter
+      1, // 64 : gtl_scanner_1_unlet
+      1, // 65 : gtl_scanner_1_setter
+      1, // 66 : gtl_scanner_1_libraries
+      1, // 67 : gtl_scanner_1_input
+      1, // 68 : gtl_scanner_1_break
+      1, // 69 : gtl_scanner_1__5F__5F_VARS_5F__5F_
+      2, // 70 : gtl_scanner_1__2A_
+      2, // 71 : gtl_scanner_1__7C_
+      2, // 72 : gtl_scanner_1__2C_
+      2, // 73 : gtl_scanner_1__2B_
+      2, // 74 : gtl_scanner_1__3A__3A_
+      2, // 75 : gtl_scanner_1__3E_
+      2, // 76 : gtl_scanner_1__3A_
+      2, // 77 : gtl_scanner_1__28_
+      2, // 78 : gtl_scanner_1__29_
+      2, // 79 : gtl_scanner_1__2D__3E_
+      2, // 80 : gtl_scanner_1__3F_
+      2, // 81 : gtl_scanner_1__3D__3D_
+      2, // 82 : gtl_scanner_1__21_
+      2, // 83 : gtl_scanner_1__3A__3D_
+      2, // 84 : gtl_scanner_1__5B_
+      2, // 85 : gtl_scanner_1__5D_
+      2, // 86 : gtl_scanner_1__2B__3D_
+      2, // 87 : gtl_scanner_1__2D__3D_
+      2, // 88 : gtl_scanner_1__2F_
+      2, // 89 : gtl_scanner_1__21__3D_
+      2, // 90 : gtl_scanner_1__3E__3D_
+      2, // 91 : gtl_scanner_1__26_
+      2, // 92 : gtl_scanner_1__3C__3D_
+      2, // 93 : gtl_scanner_1__7B_
+      2, // 94 : gtl_scanner_1__7D_
+      2, // 95 : gtl_scanner_1__3C_
+      2, // 96 : gtl_scanner_1__5E_
+      2, // 97 : gtl_scanner_1__3E__3E_
+      2, // 98 : gtl_scanner_1__7E_
+      2, // 99 : gtl_scanner_1__3C__2D_
+      2, // 100 : gtl_scanner_1__3C__3C_
+      2, // 101 : gtl_scanner_1__40_
+      2, // 102 : gtl_scanner_1__2A__3D_
+      2, // 103 : gtl_scanner_1__2F__3D_
+      2, // 104 : gtl_scanner_1__26__3D_
+      2, // 105 : gtl_scanner_1__7C__3D_
+      2, // 106 : gtl_scanner_1__3C__3C__3D_
+      2, // 107 : gtl_scanner_1__3E__3E__3D_
+      2, // 108 : gtl_scanner_1_mod_3D_
+      2, // 109 : gtl_scanner_1__5E__3D_
+      2, // 110 : gtl_scanner_1__40__5B_
+      2, // 111 : gtl_scanner_1__40__28_
+      2, // 112 : gtl_scanner_1__40__7B_
+      2, // 113 : gtl_scanner_1__5B__21_
+      2, // 114 : gtl_scanner_1__40__21_
+      2, // 115 : gtl_scanner_1__40__3F_
+      9, // 116 : gtl_scanner_2_ERROR
+      10  // 117 : gtl_scanner_2_TEMPLATE
     ]
     return kTerminalSymbolStyles [Int (inTokenIndex)]
   }
@@ -491,77 +493,78 @@ class SWIFT_Lexique_gtl_scanner : SWIFT_Lexique {
       true, // 43 : gtl_scanner_1_or
       true, // 44 : gtl_scanner_1_print
       true, // 45 : gtl_scanner_1_println
-      true, // 46 : gtl_scanner_1_repeat
-      true, // 47 : gtl_scanner_1_sort
-      true, // 48 : gtl_scanner_1_step
-      true, // 49 : gtl_scanner_1_tab
-      true, // 50 : gtl_scanner_1_template
-      true, // 51 : gtl_scanner_1_then
-      true, // 52 : gtl_scanner_1_to
-      true, // 53 : gtl_scanner_1_true
-      true, // 54 : gtl_scanner_1_typeof
-      true, // 55 : gtl_scanner_1_up
-      true, // 56 : gtl_scanner_1_yes
-      true, // 57 : gtl_scanner_1_warning
-      true, // 58 : gtl_scanner_1_while
-      true, // 59 : gtl_scanner_1_write
-      true, // 60 : gtl_scanner_1_executable
-      true, // 61 : gtl_scanner_1_variables
-      true, // 62 : gtl_scanner_1_getter
-      true, // 63 : gtl_scanner_1_unlet
-      true, // 64 : gtl_scanner_1_setter
-      true, // 65 : gtl_scanner_1_libraries
-      true, // 66 : gtl_scanner_1_input
-      true, // 67 : gtl_scanner_1_break
-      true, // 68 : gtl_scanner_1__5F__5F_VARS_5F__5F_
-      true, // 69 : gtl_scanner_1__2A_
-      true, // 70 : gtl_scanner_1__7C_
-      true, // 71 : gtl_scanner_1__2C_
-      true, // 72 : gtl_scanner_1__2B_
-      true, // 73 : gtl_scanner_1__3A__3A_
-      true, // 74 : gtl_scanner_1__3E_
-      true, // 75 : gtl_scanner_1__3A_
-      true, // 76 : gtl_scanner_1__28_
-      true, // 77 : gtl_scanner_1__29_
-      true, // 78 : gtl_scanner_1__2D__3E_
-      true, // 79 : gtl_scanner_1__3F_
-      true, // 80 : gtl_scanner_1__3D__3D_
-      true, // 81 : gtl_scanner_1__21_
-      true, // 82 : gtl_scanner_1__3A__3D_
-      true, // 83 : gtl_scanner_1__5B_
-      true, // 84 : gtl_scanner_1__5D_
-      true, // 85 : gtl_scanner_1__2B__3D_
-      true, // 86 : gtl_scanner_1__2D__3D_
-      true, // 87 : gtl_scanner_1__2F_
-      true, // 88 : gtl_scanner_1__21__3D_
-      true, // 89 : gtl_scanner_1__3E__3D_
-      true, // 90 : gtl_scanner_1__26_
-      true, // 91 : gtl_scanner_1__3C__3D_
-      true, // 92 : gtl_scanner_1__7B_
-      true, // 93 : gtl_scanner_1__7D_
-      true, // 94 : gtl_scanner_1__3C_
-      true, // 95 : gtl_scanner_1__5E_
-      true, // 96 : gtl_scanner_1__3E__3E_
-      true, // 97 : gtl_scanner_1__7E_
-      true, // 98 : gtl_scanner_1__3C__2D_
-      true, // 99 : gtl_scanner_1__3C__3C_
-      true, // 100 : gtl_scanner_1__40_
-      true, // 101 : gtl_scanner_1__2A__3D_
-      true, // 102 : gtl_scanner_1__2F__3D_
-      true, // 103 : gtl_scanner_1__26__3D_
-      true, // 104 : gtl_scanner_1__7C__3D_
-      true, // 105 : gtl_scanner_1__3C__3C__3D_
-      true, // 106 : gtl_scanner_1__3E__3E__3D_
-      true, // 107 : gtl_scanner_1_mod_3D_
-      true, // 108 : gtl_scanner_1__5E__3D_
-      true, // 109 : gtl_scanner_1__40__5B_
-      true, // 110 : gtl_scanner_1__40__28_
-      true, // 111 : gtl_scanner_1__40__7B_
-      true, // 112 : gtl_scanner_1__5B__21_
-      true, // 113 : gtl_scanner_1__40__21_
-      true, // 114 : gtl_scanner_1__40__3F_
-      false, // 115 : gtl_scanner_2_ERROR
-      false  // 116 : gtl_scanner_2_TEMPLATE
+      true, // 46 : gtl_scanner_1_seed
+      true, // 47 : gtl_scanner_1_repeat
+      true, // 48 : gtl_scanner_1_sort
+      true, // 49 : gtl_scanner_1_step
+      true, // 50 : gtl_scanner_1_tab
+      true, // 51 : gtl_scanner_1_template
+      true, // 52 : gtl_scanner_1_then
+      true, // 53 : gtl_scanner_1_to
+      true, // 54 : gtl_scanner_1_true
+      true, // 55 : gtl_scanner_1_typeof
+      true, // 56 : gtl_scanner_1_up
+      true, // 57 : gtl_scanner_1_yes
+      true, // 58 : gtl_scanner_1_warning
+      true, // 59 : gtl_scanner_1_while
+      true, // 60 : gtl_scanner_1_write
+      true, // 61 : gtl_scanner_1_executable
+      true, // 62 : gtl_scanner_1_variables
+      true, // 63 : gtl_scanner_1_getter
+      true, // 64 : gtl_scanner_1_unlet
+      true, // 65 : gtl_scanner_1_setter
+      true, // 66 : gtl_scanner_1_libraries
+      true, // 67 : gtl_scanner_1_input
+      true, // 68 : gtl_scanner_1_break
+      true, // 69 : gtl_scanner_1__5F__5F_VARS_5F__5F_
+      true, // 70 : gtl_scanner_1__2A_
+      true, // 71 : gtl_scanner_1__7C_
+      true, // 72 : gtl_scanner_1__2C_
+      true, // 73 : gtl_scanner_1__2B_
+      true, // 74 : gtl_scanner_1__3A__3A_
+      true, // 75 : gtl_scanner_1__3E_
+      true, // 76 : gtl_scanner_1__3A_
+      true, // 77 : gtl_scanner_1__28_
+      true, // 78 : gtl_scanner_1__29_
+      true, // 79 : gtl_scanner_1__2D__3E_
+      true, // 80 : gtl_scanner_1__3F_
+      true, // 81 : gtl_scanner_1__3D__3D_
+      true, // 82 : gtl_scanner_1__21_
+      true, // 83 : gtl_scanner_1__3A__3D_
+      true, // 84 : gtl_scanner_1__5B_
+      true, // 85 : gtl_scanner_1__5D_
+      true, // 86 : gtl_scanner_1__2B__3D_
+      true, // 87 : gtl_scanner_1__2D__3D_
+      true, // 88 : gtl_scanner_1__2F_
+      true, // 89 : gtl_scanner_1__21__3D_
+      true, // 90 : gtl_scanner_1__3E__3D_
+      true, // 91 : gtl_scanner_1__26_
+      true, // 92 : gtl_scanner_1__3C__3D_
+      true, // 93 : gtl_scanner_1__7B_
+      true, // 94 : gtl_scanner_1__7D_
+      true, // 95 : gtl_scanner_1__3C_
+      true, // 96 : gtl_scanner_1__5E_
+      true, // 97 : gtl_scanner_1__3E__3E_
+      true, // 98 : gtl_scanner_1__7E_
+      true, // 99 : gtl_scanner_1__3C__2D_
+      true, // 100 : gtl_scanner_1__3C__3C_
+      true, // 101 : gtl_scanner_1__40_
+      true, // 102 : gtl_scanner_1__2A__3D_
+      true, // 103 : gtl_scanner_1__2F__3D_
+      true, // 104 : gtl_scanner_1__26__3D_
+      true, // 105 : gtl_scanner_1__7C__3D_
+      true, // 106 : gtl_scanner_1__3C__3C__3D_
+      true, // 107 : gtl_scanner_1__3E__3E__3D_
+      true, // 108 : gtl_scanner_1_mod_3D_
+      true, // 109 : gtl_scanner_1__5E__3D_
+      true, // 110 : gtl_scanner_1__40__5B_
+      true, // 111 : gtl_scanner_1__40__28_
+      true, // 112 : gtl_scanner_1__40__7B_
+      true, // 113 : gtl_scanner_1__5B__21_
+      true, // 114 : gtl_scanner_1__40__21_
+      true, // 115 : gtl_scanner_1__40__3F_
+      false, // 116 : gtl_scanner_2_ERROR
+      false  // 117 : gtl_scanner_2_TEMPLATE
     ]
     return kTerminalAtomicSelection [Int (inTokenIndex)]
   }
@@ -1107,7 +1110,7 @@ class SWIFT_Lexique_gtl_scanner : SWIFT_Lexique {
 //----------------------------------------------------------------------------------------------------------------------
 
 /*
-static const BOOL kEndOfScriptInTemplateArray_gtl_5F_scanner [114] = {
+static const BOOL kEndOfScriptInTemplateArray_gtl_5F_scanner [115] = {
   NO /* identifier */,
   NO /* literal_enum */,
   NO /* literal_double */,
@@ -1153,6 +1156,7 @@ static const BOOL kEndOfScriptInTemplateArray_gtl_5F_scanner [114] = {
   NO /* or */,
   NO /* print */,
   NO /* println */,
+  NO /* seed */,
   NO /* repeat */,
   NO /* sort */,
   NO /* step */,
@@ -1256,6 +1260,7 @@ fileprivate func search_into_gtl_5F_scanner_goilTemplateKeyWordList (_ inSearche
     "func" : gtl_scanner_1_func,
     "here" : gtl_scanner_1_here,
     "loop" : gtl_scanner_1_loop,
+    "seed" : gtl_scanner_1_seed,
     "sort" : gtl_scanner_1_sort,
     "step" : gtl_scanner_1_step,
     "then" : gtl_scanner_1_then,

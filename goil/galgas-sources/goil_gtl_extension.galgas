@@ -1,0 +1,35 @@
+func customGtlStringGetter
+  ?let @lstring     methodName
+  ?let @gtlDataList arguments
+  ?let @gtlContext  unused context
+  ?let @library     unused lib
+  ?let @string      value
+  ?let @location    where
+  ->@gtlData        result
+{
+  if "parseOIL" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    let @string rootTemplatesDir = templates_directory(!"")
+    @implementation imp = @implementation.new { !@implementationMap.emptyMap }
+    @applicationDefinition app = emptyApplicationDefinition()
+    let @lstring includeToParse = @lstring.new{
+      !rootTemplatesDir + "libraries/config.oil"
+      !where
+    }
+    let @lstring fileToParse = @lstring.new{
+      !rootTemplatesDir + "libraries/" + value
+      !where
+    }
+    grammar goil_file_level_include_without_include in includeToParse
+      !?imp
+      !?app
+    grammar goil_file_level_include_without_include in fileToParse
+      !?imp
+      !?app
+    let @gtlData templateData = [app templateData !imp]
+    result = templateData
+  else
+    error methodName : "unknown getter '" + methodName +"' for string target"
+      : result
+  end
+}  

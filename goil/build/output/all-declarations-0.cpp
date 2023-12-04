@@ -5273,8 +5273,8 @@ static const char * gLexicalMessage_gtl_5F_scanner_unterminatedLitteralString = 
 
 C_String C_Lexique_gtl_5F_scanner::getMessageForTerminal (const int32_t inTerminalIndex) const {
   C_String result = "<unknown>" ;
-  if ((inTerminalIndex >= 0) && (inTerminalIndex < 115)) {
-    static const char * syntaxErrorMessageArray [115] = {kEndOfSourceLexicalErrorMessage,
+  if ((inTerminalIndex >= 0) && (inTerminalIndex < 116)) {
+    static const char * syntaxErrorMessageArray [116] = {kEndOfSourceLexicalErrorMessage,
         "an identifier",
         "a literal enum value",
         "a float number",
@@ -5320,6 +5320,7 @@ C_String C_Lexique_gtl_5F_scanner::getMessageForTerminal (const int32_t inTermin
         "the 'or' keyword",
         "the 'print' keyword",
         "the 'println' keyword",
+        "the 'seed' keyword",
         "the 'repeat' keyword",
         "the 'sort' keyword",
         "the 'step' keyword",
@@ -6157,6 +6158,15 @@ static const utf32 kUnicodeString_gtl_5F_scanner_repeat [] = {
   TO_UNICODE (0)
 } ;
 
+//--- Unicode string for '$seed$'
+static const utf32 kUnicodeString_gtl_5F_scanner_seed [] = {
+  TO_UNICODE ('s'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('d'),
+  TO_UNICODE (0)
+} ;
+
 //--- Unicode string for '$setter$'
 static const utf32 kUnicodeString_gtl_5F_scanner_setter [] = {
   TO_UNICODE ('s'),
@@ -6408,7 +6418,7 @@ int32_t C_Lexique_gtl_5F_scanner::search_into_galgasDelimitorsList (const C_Stri
 //             Key words table 'goilTemplateKeyWordList'      
 //----------------------------------------------------------------------------------------------------------------------
 
-static const int32_t ktable_size_gtl_5F_scanner_goilTemplateKeyWordList = 57 ;
+static const int32_t ktable_size_gtl_5F_scanner_goilTemplateKeyWordList = 58 ;
 
 static const C_unicode_lexique_table_entry ktable_for_gtl_5F_scanner_goilTemplateKeyWordList [ktable_size_gtl_5F_scanner_goilTemplateKeyWordList] = {
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_by, 2, C_Lexique_gtl_5F_scanner::kToken_by),
@@ -6432,6 +6442,7 @@ static const C_unicode_lexique_table_entry ktable_for_gtl_5F_scanner_goilTemplat
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_func, 4, C_Lexique_gtl_5F_scanner::kToken_func),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_here, 4, C_Lexique_gtl_5F_scanner::kToken_here),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_loop, 4, C_Lexique_gtl_5F_scanner::kToken_loop),
+  C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_seed, 4, C_Lexique_gtl_5F_scanner::kToken_seed),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_sort, 4, C_Lexique_gtl_5F_scanner::kToken_sort),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_step, 4, C_Lexique_gtl_5F_scanner::kToken_step),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_then, 4, C_Lexique_gtl_5F_scanner::kToken_then),
@@ -6724,6 +6735,11 @@ C_String C_Lexique_gtl_5F_scanner::getCurrentTokenString (const cToken * inToken
     case kToken_println:
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       s.appendCString ("println") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_seed:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("seed") ;
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       break ;
     case kToken_repeat:
@@ -7100,7 +7116,7 @@ static const cTemplateDelimiter gtl_5F_scanner_kTemplateReplacementArray [3] = {
 //            Terminal Symbols as end of script in template mark                                 
 //----------------------------------------------------------------------------------------------------------------------
 
-static const bool gtl_5F_scanner_kEndOfScriptInTemplateArray [114] = {
+static const bool gtl_5F_scanner_kEndOfScriptInTemplateArray [115] = {
   false /* identifier */,
   false /* literal_enum */,
   false /* literal_double */,
@@ -7146,6 +7162,7 @@ static const bool gtl_5F_scanner_kEndOfScriptInTemplateArray [114] = {
   false /* or */,
   false /* print */,
   false /* println */,
+  false /* seed */,
   false /* repeat */,
   false /* sort */,
   false /* step */,
@@ -8030,6 +8047,7 @@ GALGAS_stringlist C_Lexique_gtl_5F_scanner::symbols (LOCATION_ARGS) {
   result.addAssign_operation (GALGAS_string ("or") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("print") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("println") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("seed") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("repeat") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("sort") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("step") COMMA_THERE) ;
@@ -8187,6 +8205,7 @@ static void getKeywordsForIdentifier_gtl_5F_scanner (const C_String & inIdentifi
     ioList.appendObject ("func") ;
     ioList.appendObject ("here") ;
     ioList.appendObject ("loop") ;
+    ioList.appendObject ("seed") ;
     ioList.appendObject ("sort") ;
     ioList.appendObject ("step") ;
     ioList.appendObject ("then") ;
@@ -8238,7 +8257,7 @@ __attribute__ ((unused)) (getKeywordLists_gtl_5F_scanner, getKeywordsForIdentifi
 //----------------------------------------------------------------------------------------------------------------------
 
 uint32_t C_Lexique_gtl_5F_scanner::styleIndexForTerminal (const int32_t inTerminalIndex) const {
-  static const uint32_t kTerminalSymbolStyles [115] = {0,
+  static const uint32_t kTerminalSymbolStyles [116] = {0,
     0 /* gtl_scanner_1_identifier */,
     0 /* gtl_scanner_1_literal_5F_enum */,
     5 /* gtl_scanner_1_literal_5F_double */,
@@ -8284,6 +8303,7 @@ uint32_t C_Lexique_gtl_5F_scanner::styleIndexForTerminal (const int32_t inTermin
     1 /* gtl_scanner_1_or */,
     1 /* gtl_scanner_1_print */,
     1 /* gtl_scanner_1_println */,
+    1 /* gtl_scanner_1_seed */,
     1 /* gtl_scanner_1_repeat */,
     1 /* gtl_scanner_1_sort */,
     1 /* gtl_scanner_1_step */,

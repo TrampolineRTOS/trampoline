@@ -19,7 +19,7 @@
  <key>LSMinimumSystemVersion</key>
  <string>10.13</string>
  <key>CFBundleShortVersionString</key>
- <string>3.1.15</string>
+ <string>3.1.16</string>
  <key>NSMainNibFile</key>
  <string>MainMenu</string>
  <key>NSPrincipalClass</key>

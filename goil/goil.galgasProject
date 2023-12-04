@@ -23,6 +23,7 @@
 #  $URL$
 #
 #---------------------------------------------------------------------------*
+# 3.1.16   added trimWhiteSpaces string getter
 # 3.1.15   generate an error if the OIL_VERSION=X.Y does not correspond to
 #          any configX.Y file.
 # 3.1.14   updated to galgas 3.6.1
@@ -66,7 +67,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:1:15) -> "goil" {
+project (3:1:16) -> "goil" {
 
   %makefile-macosx
   %makefile-unix
@@ -82,27 +83,27 @@ project (3:1:15) -> "goil" {
 #---------------------------------------------------------------------------*
 # GTL
 #---------------------------------------------------------------------------*
-  "galgas-sources/gtl_interface.galgas"
-  "galgas-sources/gtl_types.galgas"
-  "galgas-sources/gtl_expressions.galgas"
-  "galgas-sources/gtl_data_types.galgas"
-  "galgas-sources/gtl_scanner.galgas"
-  "galgas-sources/gtl_parser.galgas"
-  "galgas-sources/gtl_instruction_parser.galgas"
-  "galgas-sources/gtl_module.galgas"
-  "galgas-sources/gtl_module_parser.galgas"
-  "galgas-sources/gtl_module_grammar.galgas"
-  "galgas-sources/gtl_expression_parser.galgas"
-  "galgas-sources/gtl_instructions.galgas"
-  "galgas-sources/gtl_grammar.galgas"
-  "galgas-sources/gtl_functions.galgas"
-  "galgas-sources/gtl_options.galgas"
-  "galgas-sources/gtl_debugger.galgas"
-  "galgas-sources/gtl_debugger_input.galgas"
-  "galgas-sources/gtl_debugger_scanner.galgas"
-  "galgas-sources/gtl_debugger_grammar.galgas"
-  "galgas-sources/gtl_debugger_parser.galgas"
-  "galgas-sources/gtl_debugger_expression_parser.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_interface.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_types.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_expressions.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_data_types.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_scanner.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_parser.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_instruction_parser.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_module.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_module_parser.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_module_grammar.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_expression_parser.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_instructions.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_grammar.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_functions.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_options.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_debugger.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_debugger_input.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_debugger_scanner.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_debugger_grammar.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_debugger_parser.galgas"
+  "galgas-sources/GTL/galgas-sources/gtl_debugger_expression_parser.galgas"
 
 
 #---------------------------------------------------------------------------*
@@ -128,6 +129,7 @@ project (3:1:15) -> "goil" {
 # Datatypes
 #
   "galgas-sources/goil_types_root.galgas"
+  "galgas-sources/goil_gtl_extension.galgas"
 #
 # Code generation
 #

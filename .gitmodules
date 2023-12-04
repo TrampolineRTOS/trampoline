@@ -7,3 +7,6 @@
 [submodule "libraries/net/ethernet/lwip"]
 	path = libraries/net/ethernet/lwip
 	url = https://git.savannah.nongnu.org/git/lwip.git
+[submodule "goil/galgas-sources/GTL"]
+	path = goil/galgas-sources/GTL
+	url = https://github.com/TrampolineRTOS/GTL.git

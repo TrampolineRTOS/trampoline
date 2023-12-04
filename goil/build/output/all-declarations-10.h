@@ -1033,12 +1033,3 @@ void routine_generate_5F_mask_5F_type (class GALGAS_uint_36__34_ inArgument0,
                                        class C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) ;
 
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Function 'emptyGoilContext'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_goilContext function_emptyGoilContext (class C_Compiler * inCompiler
-                                                    COMMA_LOCATION_ARGS) ;
-

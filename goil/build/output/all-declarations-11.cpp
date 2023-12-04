@@ -9,6 +9,104 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
+//Function 'emptyGoilContext'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_goilContext function_emptyGoilContext (C_Compiler * inCompiler
+                                              COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_goilContext result_context ; // Returned variable
+  result_context = GALGAS_goilContext::constructor_new (function_emptylstring (inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 710)), GALGAS_string::makeEmptyString (), GALGAS_string::makeEmptyString (), GALGAS_string::makeEmptyString (), GALGAS_string (".gtl"), GALGAS_stringlist::constructor_emptyList (SOURCE_FILE ("goil_code_generation.galgas", 715)), GALGAS_gtlDataList::constructor_emptyList (SOURCE_FILE ("goil_code_generation.galgas", 716)), GALGAS_bool (true), function_defaultDebugSettings (inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 718))  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 709)) ;
+//---
+  return result_context ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
+
+static const C_galgas_type_descriptor * functionArgs_emptyGoilContext [1] = {
+  nullptr
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_object functionWithGenericHeader_emptyGoilContext (C_Compiler * inCompiler,
+                                                                 const cObjectArray & /* inEffectiveParameterArray */,
+                                                                 const GALGAS_location & /* inErrorLocation */
+                                                                 COMMA_LOCATION_ARGS) {
+  return function_emptyGoilContext (inCompiler COMMA_THERE).getter_object (THERE) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_galgas_function_descriptor functionDescriptor_emptyGoilContext ("emptyGoilContext",
+                                                                  functionWithGenericHeader_emptyGoilContext,
+                                                                  & kTypeDescriptor_GALGAS_goilContext,
+                                                                  0,
+                                                                  functionArgs_emptyGoilContext) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Routine 'generate_all'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+void routine_generate_5F_all (GALGAS_gtlData inArgument_cfg,
+                              C_Compiler * inCompiler
+                              COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_string var_temp_5F_dir_23447 = function_templates_5F_directory (GALGAS_string ("code"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 735)) ;
+  enumGalgasBool test_0 = kBoolTrue ;
+  if (kBoolTrue == test_0) {
+    test_0 = GALGAS_bool (kIsNotEqual, var_temp_5F_dir_23447.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      GALGAS_string var_target_23531 = GALGAS_string (gOption_goil_5F_options_target_5F_platform.readProperty_value ()) ;
+      enumGalgasBool test_1 = kBoolTrue ;
+      if (kBoolTrue == test_1) {
+        test_1 = GALGAS_bool (kIsNotEqual, var_target_23531.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+        if (kBoolTrue == test_1) {
+          GALGAS_gtlContext var_context_23634 = function_emptyGoilContext (inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 741)) ;
+          {
+          var_context_23634.setter_setTemplateDirectory (function_templates_5F_directory (GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 743)) COMMA_SOURCE_FILE ("goil_code_generation.galgas", 742)) ;
+          }
+          {
+          var_context_23634.setter_setUserTemplateDirectory (GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 746)).getter_stringByDeletingLastPathComponent (SOURCE_FILE ("goil_code_generation.galgas", 746)).add_operation (GALGAS_string ("/templates"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 746)) COMMA_SOURCE_FILE ("goil_code_generation.galgas", 745)) ;
+          }
+          {
+          var_context_23634.setter_setTemplateExtension (GALGAS_string ("goilTemplate") COMMA_SOURCE_FILE ("goil_code_generation.galgas", 749)) ;
+          }
+          {
+          var_context_23634.insulate (HERE) ;
+          cPtr_gtlContext * ptr_24018 = (cPtr_gtlContext *) var_context_23634.ptr () ;
+          callExtensionSetter_addModulePath ((cPtr_gtlContext *) ptr_24018, function_templates_5F_directory (GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 753)), GALGAS_string ("lib"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 752)) ;
+          }
+          {
+          var_context_23634.setter_setPath (GALGAS_string (gOption_goil_5F_options_target_5F_platform.readProperty_value ()) COMMA_SOURCE_FILE ("goil_code_generation.galgas", 756)) ;
+          }
+          GALGAS_string var_goilLog_24251 = function_invokeGTL (GALGAS_gtlString::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 762)), function_lstring (GALGAS_string ("root template filename"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 763)), GALGAS_string (gOption_goil_5F_options_root.readProperty_value ())  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 761)), var_context_23634, inArgument_cfg, inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 760)) ;
+          enumGalgasBool test_2 = kBoolTrue ;
+          if (kBoolTrue == test_2) {
+            test_2 = GALGAS_bool (gOption_goil_5F_options_generate_5F_log.readProperty_value ()).boolEnum () ;
+            if (kBoolTrue == test_2) {
+              var_goilLog_24251.method_writeToFile (GALGAS_string ("goil.log"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 771)) ;
+            }
+          }
+        }
+      }
+      if (kBoolFalse == test_1) {
+        inCompiler->printMessage (GALGAS_string ("No target platform given, compiling aborted\n")  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 775)) ;
+      }
+    }
+  }
+  if (kBoolFalse == test_0) {
+    inCompiler->printMessage (GALGAS_string ("No template directory defined, compiling aborted\n")  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 778)) ;
+  }
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//
 //Routine 'getAutosarVersion'
 //
 //----------------------------------------------------------------------------------------------------------------------
@@ -2601,7 +2699,7 @@ static const char * kSourceFileHelpMessages [] = {
 //----------------------------------------------------------------------------------------------------------------------
 
 const char * projectVersionString (void) {
-  return "3.1.15" ;
+  return "3.1.16" ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
