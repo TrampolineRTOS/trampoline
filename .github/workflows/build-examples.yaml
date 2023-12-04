@@ -248,8 +248,7 @@ jobs:
     needs: goil-linux
     strategy:
       matrix:
-        # List only the examples that currently compile
-        example_name: [blink]
+        example_name: [blink, blinkAndFPGA]
     steps:
       - name: Install ARM toolchain
         run: |
@@ -267,14 +266,44 @@ jobs:
         run: ./make.py
         working-directory: examples/cortex-m/armv7m/SmartFusion2/starterKit/${{ matrix.example_name }}
 
+  cortex-m-corolab-f303-examples:
+    name: Build Cortex-M coroLab-F303 examples
+    runs-on: ubuntu-22.04
+    needs: goil-linux
+    strategy:
+      matrix:
+        example_name: [base, baseCMake, trace]
+    steps:
+      - name: Install ARM toolchain
+        run: |
+          sudo apt update
+          sudo apt install -y gcc-arm-none-eabi
+      - name: Retrieve sources and Goil binary
+        uses: actions/cache/restore@v3
+        with:
+          path: ${{ github.workspace }}
+          key: ${{ env.CACHE_KEY }}
+      - name: Generate the code
+        run: ${{ env.GOIL }} --target=cortex-m/armv7em/stm32f303/coroLabBoard --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex-m/armv7em/stm32f303/coroLab/${{ matrix.example_name }}
+      - name: Build the code
+        run: |
+          if [ -e CMakeLists.txt ]
+          then
+            cmake .
+            make -j $(nproc)
+          else
+            ./make.py
+          fi
+        working-directory: examples/cortex-m/armv7em/stm32f303/coroLab/${{ matrix.example_name }}
+
   cortex-m-smart-nucleo-f303-examples:
     name: Build Cortex-M Nucleo-F303 examples
     runs-on: ubuntu-22.04
     needs: goil-linux
     strategy:
       matrix:
-        # List only the examples that currently compile
-        example_name: [blink, serial]
+        example_name: [blink, readbutton_isr, serial, trace]
     steps:
       - name: Install ARM toolchain
         run: |
@@ -298,8 +327,7 @@ jobs:
     needs: goil-linux
     strategy:
       matrix:
-        # List only the examples that currently compile
-        example_name: [blink, readbutton, serial]
+        example_name: [blink, readbutton, readbutton_isr, serial, trace]
     steps:
       - name: Install ARM toolchain
         run: |
@@ -323,8 +351,7 @@ jobs:
     needs: goil-linux
     strategy:
       matrix:
-        # List only the examples that currently compile
-        example_name: [blink, readbutton, testDisableEnable]
+        example_name: [alarms, blink, readbutton, readbutton_isr, readbutton_isr1, testDisableEnable, timer]
     steps:
       - name: Install ARM toolchain
         run: |

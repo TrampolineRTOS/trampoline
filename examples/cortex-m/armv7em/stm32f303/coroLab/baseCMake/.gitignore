@@ -1,8 +1,10 @@
-base
-build
-*.elf
+baseCMake/
+build/
 *.bin
+*.elf
 *.map
 *.py
 .vscode
-CMakeLists.txt
+CMake*
+cmake*
+Makefile

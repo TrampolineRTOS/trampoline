@@ -1,8 +1,10 @@
-trace
-build
-*.elf
+build/
+trace/
 *.bin
+*.elf
 *.map
 *.py
 .vscode
-CMakeLists.txt
+CMake*
+cmake*
+Makefile
