@@ -100,16 +100,23 @@ More examples are coming.
 
 ## Precompiled binaries of goil, the OIL and ARXML compiler
 
-Updated to version 3.1.15 on 2023, November 16.
+Updated to version 3.1.16 on 2023, December 4.
 
+* Mac OS X (Universal): [goil-mac-os-x-universal.zip](https://uncloud.univ-nantes.fr/index.php/s/gXN6za6qBGSSqby)
+* Mac OS X (Apple Silicon): [goil-mac-os-x-silicon.zip](https://uncloud.univ-nantes.fr/index.php/s/DHxMzm47XRyatm2)
+* Mac OS X (Intel)  : [goil-mac-os-x.zip](https://uncloud.univ-nantes.fr/index.php/s/xsrTrwk8bm5x4Kz)
+* Linux 32 bits: [goil-linux-32.zip](https://uncloud.univ-nantes.fr/index.php/s/9kzNTz3KK6aogbX)
+* Linux 64 bits: [goil-linux-64.zip](https://uncloud.univ-nantes.fr/index.php/s/n2bHana8SLo2CrG)
+* Windows: [goil-windows.zip](https://uncloud.univ-nantes.fr/index.php/s/ZAyZ4ngSqCaa4wD)  (you may be warned of the presence of a virus)
 
-* Linux 32 bits: [goil-linux-32.zip](https://uncloud.univ-nantes.fr/index.php/s/9kzNTz3KK6aogbX) MD5: 1ff72527b35d06c6fbc0e3e4e93e58c0
-* Linux 64 bits: [goil-linux-64.zip](https://uncloud.univ-nantes.fr/index.php/s/n2bHana8SLo2CrG) MD5: 82039bf8e42f694b95b6004de930b8b8
-* Windows: [goil-windows.zip](https://uncloud.univ-nantes.fr/index.php/s/ZAyZ4ngSqCaa4wD) MD5: 09f928f7d28278345968de1fe226e84b (you may be warned of the presence of a virus, as the zip file contains an .exe binary)
-* Mac OS X (Intel)  : [goil-mac-os-x.zip](https://uncloud.univ-nantes.fr/index.php/s/xsrTrwk8bm5x4Kz) MD5: f4d1d0d0af0b3898cac7cac70a4451d7
-* Mac OS X (Apple Silicon): [goil-mac-os-x-silicon.zip](https://uncloud.univ-nantes.fr/index.php/s/DHxMzm47XRyatm2) MD5: cac2e3bff92bb823393c46998b6f19cf
+Note: goil binaries for Mac OS X are not signed. You can either recompile goil from sources (script in `goil/makefile-macosx`) or self sign the binary (information [here](https://stackoverflow.com/questions/58356844/what-are-the-ways-or-technologies-to-sign-an-executable-application-file-in-mac))
 
-Note: goil binaries for Mac OS X are not signed. You can either recompile goil from sources (script in `goil/makefile-unix`) or self sign the binary (information [here](https://stackoverflow.com/questions/58356844/what-are-the-ways-or-technologies-to-sign-an-executable-application-file-in-mac))
+MD5 (goil-mac-os-x-universal.zip) = 68b8cad78cecd39b273728c1d4a99ea2
+MD5 (goil-mac-os-x-silicon.zip) = 9d7422f3cead9b40e37c062bc646e53c
+MD5 (goil-mac-os-x.zip) = 411a1c5999288c955e275619c8443261
+MD5 (goil-linux-32.zip) = 581a56202e35ae5551a3f9dce600179d
+MD5 (goil-linux-64.zip) = fe06a628abd5ea954048c26a3a2cbda7
+MD5 (goil-windows.zip) = 3bc9be1b6c053aa58437c957d5d174f9
 
 ## Useful links
 
