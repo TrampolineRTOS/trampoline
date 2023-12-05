@@ -111,12 +111,12 @@ Updated to version 3.1.16 on 2023, December 4.
 
 Note: goil binaries for Mac OS X are not signed. You can either recompile goil from sources (script in `goil/makefile-macosx`) or self sign the binary (information [here](https://stackoverflow.com/questions/58356844/what-are-the-ways-or-technologies-to-sign-an-executable-application-file-in-mac))
 
-MD5 (goil-mac-os-x-universal.zip) = 68b8cad78cecd39b273728c1d4a99ea2
-MD5 (goil-mac-os-x-silicon.zip) = 9d7422f3cead9b40e37c062bc646e53c
-MD5 (goil-mac-os-x.zip) = 411a1c5999288c955e275619c8443261
-MD5 (goil-linux-32.zip) = 581a56202e35ae5551a3f9dce600179d
-MD5 (goil-linux-64.zip) = fe06a628abd5ea954048c26a3a2cbda7
-MD5 (goil-windows.zip) = 3bc9be1b6c053aa58437c957d5d174f9
+* MD5 (goil-mac-os-x-universal.zip) = 68b8cad78cecd39b273728c1d4a99ea2
+* MD5 (goil-mac-os-x-silicon.zip) = 9d7422f3cead9b40e37c062bc646e53c
+* MD5 (goil-mac-os-x.zip) = 411a1c5999288c955e275619c8443261
+* MD5 (goil-linux-32.zip) = 581a56202e35ae5551a3f9dce600179d
+* MD5 (goil-linux-64.zip) = fe06a628abd5ea954048c26a3a2cbda7
+* MD5 (goil-windows.zip) = 3bc9be1b6c053aa58437c957d5d174f9
 
 ## Useful links
 
