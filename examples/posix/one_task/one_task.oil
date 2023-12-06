@@ -6,7 +6,6 @@ CPU only_one_task {
     BUILD = TRUE { 
       APP_SRC = "one_task.c";
       TRAMPOLINE_BASE_PATH = "../../..";
-      LDFLAGS="-lrt -lpthread";
       APP_NAME = "one_task_exe";
       LINKER = "gcc";
       SYSTEM = PYTHON;
