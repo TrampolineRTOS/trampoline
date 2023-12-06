@@ -180,23 +180,6 @@ if countCPPHeader > 0 then
 end if
 %
 
-%
-if [TRANSACTION length] > 0 then
-  foreach obj in OBJECT
-    before %
-    /*
-    * Declaration of STM-HRT shared data
-    */
-    %
-    do
-    %
-    /* Data % !obj::DATA_NAME % */
-    extern % !obj::DATA_TYPE % % !obj::DATA_NAME %;
-    %
-  end foreach
-end if
-
-%
 /* TPL_OS_H */
 #endif
 

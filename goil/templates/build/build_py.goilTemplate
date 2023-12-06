@@ -432,10 +432,7 @@ else
 %
 cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_os.c"))%
 end if
-if [TRANSACTION length] > 0 then
-%
-cSourceList.append(projfile.ProjectFile("% !PROJECT %/stm_structure.c"))%
-end if
+
 if [IOC length] > 0 then
 %
 cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_ioc_api_config.c"))%
