@@ -1,0 +1,14 @@
+%
+input (kind, list, keywords, err_level)
+
+foreach obj in list do
+  foreach cat_name, category in keywords do
+    if [category contains: obj::NAME] then
+      if err_level[cat_name] == 1 then
+        error obj::NAME : kind + " " + obj::NAME + " name conflicts with " + cat_name
+      else
+        warning obj::NAME : kind + " " + obj::NAME + " name conflicts with " + cat_name
+      end if
+    end if
+  end foreach
+end foreach

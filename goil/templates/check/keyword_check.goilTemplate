@@ -1,0 +1,170 @@
+%
+#
+#
+#
+
+let keywords := @[
+  "a C keyword" : @!
+    "asm", "double", "switch", "auto", "else", "break", "enum", "case",
+    "extern", "float", "char", "for", "register", "typedef", "return", "union",
+    "const", "goto", "short", "unsigned", "continue", "if", "signed", "default",
+    "inline", "sizeof", "void", "int", "static", "volatile", "do", "long", 
+    "struct", "while", "main"
+  !,
+  "a C++ keyword" : @!
+    "new", "operator", "template", "private", "this", "protected", "throw", 
+    "catch", "public", "try", "class", "friend", "virtual", "delete"   
+  !,
+  "a libc symbol" : @!
+    "abort", "abs", "assert", "atexit", "atof", "atoff", "atoi", "atol",
+    "atoll", "bsearch", "calloc", "div", "ecvt", "ecvtf", "fcvt", "fcvtf", 
+    "gcvt", "gcvtf", "ecvtbuf", "fcvtbuf", "__env_lock_", "__env_unlock", 
+    "exit", "getenv", "itoa", "labs", "ldiv", "llabs", "lldiv", "malloc", 
+    "realloc", "free", "mallinfo", "malloc_stats", "mallopt", "__malloc_lock",
+    "__malloc_unlock", "mblen", "mbsrtowcs", "mbsnrtowcs", "mbstowcs", 
+    "mbstowc", "on_exit", "qsort", "rand", "srand", "random", "srandom", 
+    "rand48", "drand48", "erand48", "lrand48", "nrand48", "mrand48", "jrand48", 
+    "srand48", "seed48", "lcong48", "rpmatch", "strtod", "strtof", "strtold", 
+    "strtod_l", "strtof_l", "strtold_l", "strtol", "strtol_l", "strtoll", 
+    "strtoll_l", "strtoul", "strtoul_l", "strtoull", "strtoull_l", "wcsrtombs", 
+    "wcsnrtombs", "wcstod", "wcstof", "wcstold", "wcstod_l", "wcstof_l", 
+    "wcstold_l", "wcstol", "wcstol_l", "wcstoll", "wcstoll_l", "wcstoul", 
+    "wcstoul_l", "wcstoull", "wcstoull_l", "system", "utoa", "wcstombs", 
+    "wctomb", "isalnum", "isalnum_l", "isalpha", "isalpha_l", "isascii", 
+    "isascii_l", "isblank", "isblank_l", "iscntrl", "iscntrl_l", "isdigit", 
+    "isdigit_l", "islower", "islower_l", "isprint", "isgraph", "isprint_l", 
+    "isgraph_l", "ispunct", "ispunct_l", "isspace", "isspace_l", "isupper", 
+    "isupper_l", "isxdigit", "isxdigit_l", "toascii", "toascii_l", "tolower", 
+    "tolower_l", "toupper", "toupper_l", "iswalnum", "iswalnum_l", "iswalpha", 
+    "iswalpha_l", "iswcntrl", "iswcntrl_l", "iswblank", "iswblank_l", 
+    "iswdigit", "iswdigit_l", "iswgraph", "iswgraph_l", "iswlower", 
+    "iswlower_l", "iswprint", "iswprint_l", "iswpunct", "iswpunct_l", 
+    "iswspace", "iswspace_l", "iswupper", "iswupper_l", "iswxdigit",
+    "iswxdigit_l", "iswctype", "iswctype_l", "wctype", "wctype_l", "towlower", 
+    "towlower_l", "towupper", "towupper_l", "towctrans", "towctrans_l", 
+    "wctrans", "wctrans_l", "clearerr", "clearerr_unlocked", "diprintf", 
+    "vdiprintf", "dprintf", "vdprintf", "fclose", "fcloseall", "fdopen",
+    "feof", "feof_unlocked", "ferror", "ferror_unlocked", "fflush", 
+    "fflush_unlocked", "fgetc", "fgetc_unlocked", "fgetpos", "fgets", 
+    "fgets_unlocked", "fgetwc", "getwc", "fgetwc_unlocked", "getwc_unlocked", 
+    "fgetws", "fgetws_unlocked", "fileno", "fileno_unlocked", "fmemopen", 
+    "fopen", "fopencookie", "fpurge", "fputc", "fputc_unlocked", "fputs", 
+    "fputs_unlocked", "fputwc", "putwc", "fputwc_unlocked", "putwc_unlocked", 
+    "fputws", "fputws_unlocked", "fread", "fread_unlocked", "freopen", "fseek", 
+    "fseeko", "__fsetlocking", "fsetpos", "ftell", "ftello", "funopen", 
+    "fropen", "fwopen", "fwide", "fwrite", "fwrite_unlocked", "getc", 
+    "getc_unlocked", "getchar", "getchar_unlocked", "getdelim", "getline", 
+    "gets", "getw", "getwchar", "getwchar_unlocked", "mktemp", "mkstemp", 
+    "mkostemp", "mkstemps", "open_memstream", "open_wmemstream", "perror", 
+    "putc", "putc_unlocked", "putchar", "putchar_unlocked", "puts", "putw", 
+    "putwchar", "putwchar_unlocked", "remove", "rename", "rewind", "setbuf", 
+    "setbuffer", "setlinebuf", "setvbuf", "siprintf", "fiprintf", "iprintf", 
+    "sniprintf", "asiprintf", "asniprintf", "siscanf", "fiscanf", "iscanf", 
+    "sprintf", "fprintf", "printf", "snprintf", "asprintf", "asnprintf", 
+    "sscanf", "fscanf", "scanf", "stdio_ext", "__fbufsize", "__fpending", 
+    "__flbf", "__freadable", "__fwritable","__freading","__fwriting", 
+    "swprintf", "fwprintf", "wprintf", "swscanf", "fwscanf", "wscanf", 
+    "tmpfile", "tmpnam", "tempnam", "ungetc", "ungetwc", "vfprintf", "vprintf", 
+    "vsprintf", "vsnprintf", "vasprintf", "vasnprintf", "vfscanf", "vscanf", 
+    "vsscanf", "vfwprintf", "vwprintf", "vswprintf", "vfwscanf", "vwscanf",
+    "vswscanf", "viprintf", "vfiprintf", "vsiprintf", "vsniprintf",
+    "vasiprintf", "vasniprintf", "viscanf", "vfiscanf", "vsiscanf", "fdopen64", 
+    "fopen64", "freopen64", "ftello64", "fseeko64", "fgetpos64", "fsetpos64", 
+    "tmpfile64", "bcmp", "bcopy", "bzero", "index", "memccpy", "memchr",
+    "memcmp", "memcpy", "memmem", "memmove", "mempcpy", "memrchr", "memset", 
+    "rawmemchr", "rindex", "stpcpy", "stpncpy", "strcasecmp", "strcasestr", 
+    "strcat", "strchr", "strchrnul", "strcmp", "strcoll", "strcpy", "strcspn",
+    "strerror", "strerror_l", "strerror_r", "strlen", "strlwr", "strncasecmp", 
+    "strncat", "strncmp", "strncpy", "strnstr", "strnlen", "strpbrk", 
+    "strrchr", "strsignal", "strspn", "strstr", "strtok", "strtok_r", "strsep", 
+    "strupr", "strverscmp", "strxfrm", "swab", "wcscasecmp", "wcsdup",
+    "wcsncasecmp", "wmemchr", "wmemcmp", "wmemcpy", "wmemmove", "wmempcpy", 
+    "wmemset", "wcscat", "wcschr", "wcscmp", "wcscoll", "wcscpy", "wcpcpy", 
+    "wcscspn", "wcsftime", "wcslcat", "wcslcpy", "wcslen", "wcsncat", 
+    "wcsncmp", "wcsncpy", "wcpncpy", "wcsnlen", "wcspbrk", "wcsrchr", 
+    "wcsspn", "wcsstr", "wcstok", "wcswidth", "wcsxfrm", "wcwidth", "psignal", 
+    "raise", "sig2str", "str2sig", "signal", "asctime", "clock", "ctime", 
+    "difftime", "gmtime", "localtime", "mktime", "strftime", "strftime_l", 
+    "time", "__tz_lock", "__tz_unlock", "setlocale", "localeconv", "ffs", 
+    "__retarget_lock_init", "__retarget_lock_init_recursive", 
+    "__retarget_lock_close", "__retarget_lock_close_recursive", 
+    "__retarget_lock_acquire", "__retarget_lock_acquire_recursive", 
+    "__retarget_lock_try_acquire", "__retarget_lock_try_acquire_recursive", 
+    "__retarget_lock_release", "__retarget_lock_release_recursive", "popen", 
+    "pclose", "posix_spawn", "posix_spawnp", "iconv", "iconv_open", 
+    "iconv_close"
+  !,
+  "a libm symbol" : @!
+    "cbrt", "hypot", "sqrt", "asin", "acos", "atan", "atan2", "asinh", "acosh", 
+    "atanh", "exp", "expm1", "pow", "log", "log1p", "log10", "sin", "cos", 
+    "tan", "sinh", "cosh", "tanh", "j0", "j1", "jn", "y0", "y1", "yn", "erf", 
+    "erfc", "gamma", "lgamma", "gamma_ramma_r", "eil", "floor", "rint", 
+    "copysign", "fmod", "ilogb", "nextafter", "remainder", "scalbn", "fabs", 
+    "isnan", "logb", "scalb", "significand", "matherr"
+  !,
+  "a C99 keyword" : @!  
+    "int8_t", "uint8_t", "int16_t", "uint16_t",
+    "int32_t", "uint32_t", "int64_t", "uint64_t", 
+    "int_least8_t", "uint_least8_t", "int_least16_t", "uint_least16_t", 
+    "int_least32_t", "uint_least32_t", "int_least64_t", "uint_least64_t", 
+    "int_fast8_t", "uint_fast8_t", "int_fast16_t", "uint_fast16_t",
+    "int_fast32_t", "uint_fast32_t", "int_fast64_t", "uint_fast64_t", 
+    "intptr_t", "uintptr_t", "intmax_t", "uintmax_t",
+    "wchar_t", "wint_t", "ptrdiff_t", "sig_atomic_t",
+    "INT8_MIN", "INT8_MAX", "UINT8_MAX",
+    "INT16_MIN", "INT16_MAX", "UINT16_MAX",
+    "INT32_MIN", "INT32_MAX", "UINT32_MAX",
+    "INT64_MIN", "INT64_MAX", "UINT64_MAX",
+    "INT_LEAST8_MIN", "INT_LEAST8_MAX", "UINT_LEAST8_MAX",
+    "INT_LEAST16_MIN", "INT_LEAST16_MAX", "UINT_LEAST16_MAX",
+    "INT_LEAST32_MIN", "INT_LEAST32_MAX", "UINT_LEAST32_MAX",
+    "INT_LEAST64_MIN", "INT_LEAST64_MAX", "UINT_LEAST64_MAX",
+    "INT_FAST8_MIN", "INT_FAST8_MAX", "UINT_FAST8_MAX",
+    "INT_FAST16_MIN", "INT_FAST16_MAX", "UINT_FAST16_MAX",
+    "INT_FAST32_MIN", "INT_FAST32_MAX", "UINT_FAST32_MAX",
+    "INT_FAST64_MIN", "INT_FAST64_MAX", "UINT_FAST64_MAX",
+    "INTPTR_MIN", "INTPTR_MAX", "UINTPTR_MAX",
+    "INTMAX_MIN", "INTMAX_MAX", "UINTMAX_MAX",
+    "PTRDIFF_MIN", "PTRDIFF_MAX",
+    "SIG_ATOMIC_MIN", "SIG_ATOMIC_MAX",
+    "SIZE_MAX",
+    "WCHAR_MIN", "WCHAR_MAX",
+    "WINT_MIN", "WINT_MAX",
+    "INT8_C", "INT16_C", "INT32_C", "INT64_C", 
+    "UINT8_C", "UINT16_C", "UINT32_C", "UINT64_C"
+  !,
+  "an OSEK/AUTOSAR type" : @!
+    "uint8", "sint8", "uint16", "sint16",
+    "uint32", "sint32", "uint64", "sint64",
+    "AlarmBaseType", "AlarmType", "EventMaskType", "EventMaskRefType", 
+    "CoreIdType", "CoreStatusType", "StatusType", "AppModeType", 
+    "ResourceType", "TaskType", "Std_ReturnType", "TaskStateType", 
+    "TaskStateRefType", "TaskRefType", "TickType", "TickRefType"
+  !
+]
+
+let err_level := @[
+  "a C keyword" : 1,
+  "a C++ keyword" : 1,
+  "a libc symbol" : 0,
+  "a libm symbol" : 0,
+  "a C99 keyword" : 0,
+  "an OSEK/AUTOSAR type" : 1
+]
+
+#
+# Checks that none of the OIL objects has a name that conflicts
+# with one of the keywords
+#
+template ("APPMODE", APPMODE, keywords, err_level) keyword_check_for_obj
+template ("TASK", TASK, keywords, err_level) keyword_check_for_obj
+template ("ISR", ISR, keywords, err_level) keyword_check_for_obj
+template ("EVENT", EVENT, keywords, err_level) keyword_check_for_obj
+template ("COUNTER", COUNTER, keywords, err_level) keyword_check_for_obj
+template ("ALARM", ALARM, keywords, err_level) keyword_check_for_obj
+template ("RESOURCE", RESOURCE, keywords, err_level) keyword_check_for_obj
+template ("MESSAGE", MESSAGE, keywords, err_level) keyword_check_for_obj
+template ("APPLICATION", APPLICATION, keywords, err_level) keyword_check_for_obj
+template ("SCHEDULETABLE", SCHEDULETABLE, keywords, err_level) keyword_check_for_obj
+template ("IOC", IOC, keywords, err_level) keyword_check_for_obj
+template ("SPINLOCK", SPINLOCK, keywords, err_level) keyword_check_for_obj
