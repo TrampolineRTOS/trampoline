@@ -96,10 +96,9 @@ let MESSAGE := exists MESSAGE default (@())
 let APPLICATION := exists APPLICATION default (@())
 let SCHEDULETABLE := exists SCHEDULETABLE default (@())
 let IOC := exists IOC default (@())
-let TRANSACTION := exists TRANSACTION default (@())
-let OBJECT := exists OBJECT default (@())
 let SPINLOCK := exists SPINLOCK default (@())
 
+template if exists keyword_check in check
 template if exists configCheck
 
 let ioc_queued_list := @()
