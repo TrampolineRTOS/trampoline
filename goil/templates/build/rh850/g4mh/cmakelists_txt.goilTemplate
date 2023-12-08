@@ -241,9 +241,6 @@ if OS::SYSTEM_CALL then
 else
 	%	${APP_GENERATED_PATH}/tpl_os.c\n%
 end if
-if [TRANSACTION length] > 0 then
-	%	${APP_GENERATED_PATH}/stm_structure.c\n%
-end if
 if [IOC length] > 0 then
 	%	${APP_GENERATED_PATH}/tpl_ioc_api_config.c\n%
 end if
