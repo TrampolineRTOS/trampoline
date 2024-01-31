@@ -41,7 +41,7 @@ foreach pb in exists POSTBUILD default( @() ) do
   end foreach
 end foreach
 
-%#! /usr/bin/env python
+%#! /usr/bin/env python3
 # -*- coding: UTF-8 -*-
 #----------------------------------------------------------------------
 #--- Python Make file for application % !CPUNAME %
@@ -179,11 +179,11 @@ os.chdir (scriptDir)
 
 #--- Launch build.py
 # is there the 'python' executable?
-import distutils.spawn
-if distutils.spawn.find_executable("python"):
-	childProcess = subprocess.Popen (["python", "build.py", askedGoal, str(maxParallelJobs)])
-else: #no python executable, maybe python3
-	childProcess = subprocess.Popen (["python3", "build.py", askedGoal, str(maxParallelJobs)])
+import shutil
+cmd = shutil.which('python')
+if not cmd:
+  cmd = shutil.which('python3')
+childProcess = subprocess.Popen ([cmd, "build.py", askedGoal, str(maxParallelJobs)])
 
 #--- Wait for subprocess termination
 if childProcess.poll () == None :
