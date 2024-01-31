@@ -66,6 +66,13 @@ let TRANSITION := exists TRANSITION default (@())
  */
 #define TRANSITION_COUNT    % ![TRANSITION length]%
 #define STATE_COUNT    % ![STATE length]%
+
+/*-----------------------------------------------------------------------------
+ *  Activate or not the System counter
+ */
+#define WITH_SYSTICK   % !yesNo(exists OS::SYSTICK default(false)) %
+
+
 %
 if OS::SEQUENCING then%
 #define ENERGY_LEVEL_COUNT    % !OS::SEQUENCING_S::ENERGY_LEVEL%

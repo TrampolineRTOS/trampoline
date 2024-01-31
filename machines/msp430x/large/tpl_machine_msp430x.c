@@ -109,7 +109,9 @@ FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 
 FUNC(void, OS_CODE) tpl_init_machine_specific (void)
 {
+	#if WITH_SYSTICK == YES
 	tpl_set_systick_timer(); //TODO a remettre.
+	#endif
 	//tpl_init_external_interrupts();
 	//tpl_init_it_priority();
 }
