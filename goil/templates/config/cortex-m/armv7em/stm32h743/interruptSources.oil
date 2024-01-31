@@ -1,0 +1,263 @@
+/*
+ * Interrupt sources for the STM23L432 micro-controller
+ */
+ENUM [
+  SysTick,
+  WWDG_IRQ,
+  PVD_PVM_IRQ,
+  TAMP_STAMP_IRQ,
+  RTC_WKUP_IRQ,
+  FLASH_IRQ,
+  RCC_IRQ,
+  EXTI0_IRQ {
+    ENUM [
+      PA0 { #include <sensibility.oil> },
+      PB0 { #include <sensibility.oil> },
+      PC0 { #include <sensibility.oil> },
+      PD0 { #include <sensibility.oil> },
+      PE0 { #include <sensibility.oil> },
+      PF0 { #include <sensibility.oil> },
+      PG0 { #include <sensibility.oil> },
+      PH0 { #include <sensibility.oil> },
+      PI0 { #include <sensibility.oil> }
+    ] PIN;
+  },
+  EXTI1_IRQ {
+    ENUM [
+      PA1 { #include <sensibility.oil> },
+      PB1 { #include <sensibility.oil> },
+      PC1 { #include <sensibility.oil> },
+      PD1 { #include <sensibility.oil> },
+      PE1 { #include <sensibility.oil> },
+      PF1 { #include <sensibility.oil> },
+      PG1 { #include <sensibility.oil> },
+      PH1 { #include <sensibility.oil> },
+      PI1 { #include <sensibility.oil> }
+    ] PIN;
+  },
+  EXTI2_IRQ {
+    ENUM [
+      PA2 { #include <sensibility.oil> },
+      PB2 { #include <sensibility.oil> },
+      PC2 { #include <sensibility.oil> },
+      PD2 { #include <sensibility.oil> },
+      PE2 { #include <sensibility.oil> },
+      PF2 { #include <sensibility.oil> },
+      PG2 { #include <sensibility.oil> },
+      PH2 { #include <sensibility.oil> },
+      PI2 { #include <sensibility.oil> }
+    ] PIN;
+  },
+  EXTI3_IRQ {
+    ENUM [
+      PA3 { #include <sensibility.oil> },
+      PB3 { #include <sensibility.oil> },
+      PC3 { #include <sensibility.oil> },
+      PD3 { #include <sensibility.oil> },
+      PE3 { #include <sensibility.oil> },
+      PF3 { #include <sensibility.oil> },
+      PG3 { #include <sensibility.oil> },
+      PH3 { #include <sensibility.oil> },
+      PI3 { #include <sensibility.oil> }
+    ] PIN;
+  },
+  EXTI4_IRQ {
+    ENUM [
+      PA4 { #include <sensibility.oil> },
+      PB4 { #include <sensibility.oil> },
+      PC4 { #include <sensibility.oil> },
+      PD4 { #include <sensibility.oil> },
+      PE4 { #include <sensibility.oil> },
+      PF4 { #include <sensibility.oil> },
+      PG4 { #include <sensibility.oil> },
+      PH4 { #include <sensibility.oil> },
+      PI4 { #include <sensibility.oil> }
+    ] PIN;
+  },
+  DMA1_Channel1_IRQ,
+  DMA1_Channel2_IRQ,
+  DMA1_Channel3_IRQ,
+  DMA1_Channel4_IRQ,
+  DMA1_Channel5_IRQ,
+  DMA1_Channel6_IRQ,
+  DMA1_Channel7_IRQ,
+  ADC1_IRQ,
+  CAN1_TX_IRQ,
+  CAN1_RX0_IRQ,
+  CAN1_RX1_IRQ,
+  CAN1_SCE_IRQ,
+  EXTI9_5_IRQ {
+    ENUM [
+      PA5 { #include <sensibility.oil> },
+      PB5 { #include <sensibility.oil> },
+      PC5 { #include <sensibility.oil> },
+      PD5 { #include <sensibility.oil> },
+      PE5 { #include <sensibility.oil> },
+      PF5 { #include <sensibility.oil> },
+      PG5 { #include <sensibility.oil> },
+      PH5 { #include <sensibility.oil> },
+      PI5 { #include <sensibility.oil> },
+      NONE
+    ] PINON5 = NONE;
+    ENUM [
+      PA6 { #include <sensibility.oil> },
+      PB6 { #include <sensibility.oil> },
+      PC6 { #include <sensibility.oil> },
+      PD6 { #include <sensibility.oil> },
+      PE6 { #include <sensibility.oil> },
+      PF6 { #include <sensibility.oil> },
+      PG6 { #include <sensibility.oil> },
+      PH6 { #include <sensibility.oil> },
+      PI6 { #include <sensibility.oil> },
+      NONE
+    ] PINON6 = NONE;
+    ENUM [
+      PA7 { #include <sensibility.oil> },
+      PB7 { #include <sensibility.oil> },
+      PC7 { #include <sensibility.oil> },
+      PD7 { #include <sensibility.oil> },
+      PE7 { #include <sensibility.oil> },
+      PF7 { #include <sensibility.oil> },
+      PG7 { #include <sensibility.oil> },
+      PH7 { #include <sensibility.oil> },
+      PI7 { #include <sensibility.oil> },
+      NONE
+    ] PINON7 = NONE;
+    ENUM [
+      PA8 { #include <sensibility.oil> },
+      PB8 { #include <sensibility.oil> },
+      PC8 { #include <sensibility.oil> },
+      PD8 { #include <sensibility.oil> },
+      PE8 { #include <sensibility.oil> },
+      PF8 { #include <sensibility.oil> },
+      PG8 { #include <sensibility.oil> },
+      PH8 { #include <sensibility.oil> },
+      PI8 { #include <sensibility.oil> },
+      NONE
+    ] PINON8 = NONE;
+    ENUM [
+      PA9 { #include <sensibility.oil> },
+      PB9 { #include <sensibility.oil> },
+      PC9 { #include <sensibility.oil> },
+      PD9 { #include <sensibility.oil> },
+      PE9 { #include <sensibility.oil> },
+      PF9 { #include <sensibility.oil> },
+      PG9 { #include <sensibility.oil> },
+      PH9 { #include <sensibility.oil> },
+      PI9 { #include <sensibility.oil> },
+      NONE
+    ] PINON9 = NONE;
+  },
+  TIM1_BRK_TIM15_IRQ,
+  TIM1_UP_TIM16_IRQ,
+  TIM1_TRG_COM_IRQ,
+  TIM1_CC_IRQ,
+  TIM2_IRQ,
+  I2C1_EV_IRQ,
+  I2C1_ER_IRQ,
+  SPI1_IRQ,
+  USART1_IRQ {
+    ENUM [ TXE, CTS, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
+  },
+  USART2_IRQ {
+    ENUM [ TXE, CTS, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
+  },
+  EXTI15_10_IRQ {
+    ENUM [
+      PA10 { #include <sensibility.oil> },      
+      PB10 { #include <sensibility.oil> },      
+      PC10 { #include <sensibility.oil> },      
+      PD10 { #include <sensibility.oil> },      
+      PE10 { #include <sensibility.oil> },      
+      PF10 { #include <sensibility.oil> },      
+      PG10 { #include <sensibility.oil> },      
+      PH10 { #include <sensibility.oil> },      
+      PI10 { #include <sensibility.oil> },      
+      NONE
+    ] PINON10 = NONE;
+    ENUM [
+      PA11 { #include <sensibility.oil> },      
+      PB11 { #include <sensibility.oil> },      
+      PC11 { #include <sensibility.oil> },      
+      PD11 { #include <sensibility.oil> },      
+      PE11 { #include <sensibility.oil> },      
+      PF11 { #include <sensibility.oil> },      
+      PG11 { #include <sensibility.oil> },      
+      PH11 { #include <sensibility.oil> },      
+      PI11 { #include <sensibility.oil> },      
+      NONE
+    ] PINON11 = NONE;
+    ENUM [
+      PA12 { #include <sensibility.oil> },      
+      PB12 { #include <sensibility.oil> },      
+      PC12 { #include <sensibility.oil> },      
+      PD12 { #include <sensibility.oil> },      
+      PE12 { #include <sensibility.oil> },      
+      PF12 { #include <sensibility.oil> },      
+      PG12 { #include <sensibility.oil> },      
+      PH12 { #include <sensibility.oil> },      
+      NONE
+    ] PINON12 = NONE;
+    ENUM [
+      PA13 { #include <sensibility.oil> },      
+      PB13 { #include <sensibility.oil> },      
+      PC13 { #include <sensibility.oil> },      
+      PD13 { #include <sensibility.oil> },      
+      PE13 { #include <sensibility.oil> },      
+      PF13 { #include <sensibility.oil> },      
+      PG13 { #include <sensibility.oil> },      
+      PH13 { #include <sensibility.oil> },      
+      NONE
+    ] PINON13 = NONE;
+    ENUM [
+      PA14 { #include <sensibility.oil> },      
+      PB14 { #include <sensibility.oil> },      
+      PC14 { #include <sensibility.oil> },      
+      PD14 { #include <sensibility.oil> },      
+      PE14 { #include <sensibility.oil> },      
+      PF14 { #include <sensibility.oil> },      
+      PG14 { #include <sensibility.oil> },      
+      PH14 { #include <sensibility.oil> },      
+      NONE
+    ] PINON14 = NONE;
+    ENUM [
+      PA15 { #include <sensibility.oil> },      
+      PB15 { #include <sensibility.oil> },      
+      PC15 { #include <sensibility.oil> },      
+      PD15 { #include <sensibility.oil> },      
+      PE15 { #include <sensibility.oil> },      
+      PF15 { #include <sensibility.oil> },      
+      PG15 { #include <sensibility.oil> },      
+      PH15 { #include <sensibility.oil> },      
+      NONE
+    ] PINON15 = NONE;
+  },
+  RTC_Alarm_IRQ,
+  SPI3_IRQ,
+  TIM6_DAC_IRQ,
+  TIM7_IRQ,
+  DMA2_Channel1_IRQ,
+  DMA2_Channel2_IRQ,
+  DMA2_Channel3_IRQ,
+  DMA2_Channel4_IRQ,
+  DMA2_Channel5_IRQ,
+  COMP_IRQ,
+  LPTIM1_IRQ,
+  LPTIM2_IRQ,
+  USB_IRQ,
+  DMA2_Channel6_IRQ,
+  DMA2_Channel7_IRQ,
+  LPUART1_IRQ {
+    ENUM [ TXE, CTS, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
+  },
+  QUADSPI_IRQ,
+  I2C3_EV_IRQ,
+  I2C3_ER_IRQ,
+  SAI1_IRQ,
+  SWPMI1_IRQ,
+  TSC_IRQ,
+  RNG_IRQ,
+  FPU_IRQ,
+  CRS_IRQ
+] SOURCE;
+
