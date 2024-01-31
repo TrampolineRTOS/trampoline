@@ -61,7 +61,7 @@ end if
 #---     build.py is generated each time goil is called by make.py
 #----------------------------------------------------------------------
 
-import sys, os, subprocess, string, distutils.spawn
+import sys, os, subprocess, string
 from string import Template
 
 #--- Add some function for Python3 support
