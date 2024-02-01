@@ -1230,11 +1230,10 @@ CPU stm32h743 {
 
   PLATFORM_FILES stm32h743 {
     PATH = "cortex-m/armv7em/stm32h743";
-    CFILE = "handlers_stm32l432.c";
-    CFILE = "startup_stm32l432.c";
-    CFILE = "system_stm32l4xx.c";
+    CFILE = "handlers_stm32h743.c";
+    CFILE = "startup_stm32h743zitx.c";
+    CFILE = "system_stm32h743.c";
     CFILE = "tpl_machine_stm32h743.c";
-    CFILE = "tpl_memory_protection.c";
   };
 
   PLATFORM_FILES stm32h743_trace {

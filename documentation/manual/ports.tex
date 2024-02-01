@@ -979,7 +979,7 @@ but, depending on the CPU kind, it may be located elsewhere. Since the available
 
 \subsubsection{Preparing the environment}
 
-When the Supervisor Call begins execution, the kernel stack has the mapping depicted in figure \ref{fig:CM4StackAfterInvoque}.
+When the Supervisor Call begins execution, the process stack has the mapping depicted in figure \ref{fig:CM4StackAfterInvoque}.
 
 \begin{figure}[htbp] %  figure placement: here, top, bottom, or page
 \begin{minipage}{0.5\textwidth}
@@ -1210,7 +1210,41 @@ tpl_sc_handler_exit:
   bx lr
 \end{lstlisting}
 
-=====================================================================
+\subsection{Cortex-M FPU support}
+
+Processors with a floating-point unit add the following registers to the context:
+\begin{itemize}
+\item 32 32-bit registers named \reg{s0} to \reg{s31} which can be seen as 16 64-bit registers named \reg{d0} to \reg{d15} for instructions operating on double-precision floating-point numbers.
+\item \reg{fpscr} is the floating-point status and control register.
+\item \reg{fpexc} is the floating-point exception register.
+\end{itemize}
+
+\reg{fpsid} is the floating-point system ID register but as this register seems to be read-only, it is not part of the context.
+
+When floating point is activated, the static task descriptor has an additional member, a pointer to the floating point context structure, which is located just after the pointer to the integer context structure. Function that save and load the contexte, \cfunction{tpl_save_context}, \cfunction{tpl_load_context}, \cfunction{tpl_save_context_under_it} and \cfunction{tpl_load_context_under_it} all have a pointer to the static task descriptor in \reg{r0} register. The floating context is accessed by reading its pointer:
+
+\begin{lstlisting}[language=C]
+  ldr r1,[r0,#FLOAT_CONTEXT]
+\end{lstlisting}
+
+Saving the floating-point context is a two-part process. First, the registers \reg{s0} to \reg{s31} are saved.
+
+\warning{C'est pas clair. Les registres doivent être consécutifs mais je ne sais pas combien de registres on peut écrire d'un coup. Mais ça pourrait ressembler à ça.}
+
+\begin{lstlisting}[language=C]
+  vstm r1!,{s0-s31}
+\end{lstlisting}
+
+Then:
+
+\begin{lstlisting}[language=C]
+  mrs r2,fpscr
+  str r2,[r1]
+  mrs r2,fpexc
+  str r2,[r1,#4]
+\end{lstlisting}
+
+
 
 \subsection{Interrupt handler}
 

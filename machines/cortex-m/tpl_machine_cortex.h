@@ -26,24 +26,24 @@
 #ifndef TPL_MACHINE_CORTEX_H
 #define TPL_MACHINE_CORTEX_H
 
-#include "tpl_os_std_types.h"
-#include "tpl_os_internal_types.h"
-#include "tpl_os_custom_types.h"
 #include "tpl_machine.h"
+#include "tpl_os_custom_types.h"
+#include "tpl_os_internal_types.h"
 #include "tpl_os_kernel_stack.h"
+#include "tpl_os_std_types.h"
 
 /**
  * Definition of kernel access defines.
  * Specific to the target.
  */
 
-#define TPL_KERN_OFFSET_S_RUNNING     (0)
-#define TPL_KERN_OFFSET_S_ELECTED     (4)
-#define TPL_KERN_OFFSET_RUNNING       (8)
-#define TPL_KERN_OFFSET_ELECTED       (12)
-#define TPL_KERN_OFFSET_RUNNING_ID    (16)
-#define TPL_KERN_OFFSET_ELECTED_ID    (20)
-#define TPL_KERN_OFFSET_NEED_SWITCH   (24)
+#define TPL_KERN_OFFSET_S_RUNNING (0)
+#define TPL_KERN_OFFSET_S_ELECTED (4)
+#define TPL_KERN_OFFSET_RUNNING (8)
+#define TPL_KERN_OFFSET_ELECTED (12)
+#define TPL_KERN_OFFSET_RUNNING_ID (16)
+#define TPL_KERN_OFFSET_ELECTED_ID (20)
+#define TPL_KERN_OFFSET_NEED_SWITCH (24)
 #define TPL_KERN_OFFSET_NEED_SCHEDULE (25)
 
 /**
@@ -72,12 +72,17 @@
 #define ARM_CORE_EXCEPTION_FRAME_SIZE ((uint32)32)
 /* ARM_INITIAL_EXC_RETURN
  * Default value of exception return value
- * 0xFFFFFFF1 - Return to Handler mode, exception return uses non-floating-point state from the MSP and execution uses MSP after return.
- * 0xFFFFFFF9 - Return to Thread mode, exception return uses non-floating-point state from MSP and execution uses MSP after return.
- * 0xFFFFFFFD - Return to Thread mode, exception return uses non-floating-point state from the PSP and execution uses PSP after return.
- * 0xFFFFFFE1 - Return to Handler mode, exception return uses floating-point-state from MSP and execution uses MSP after return.
- * 0xFFFFFFE9 - Return to Thread mode, exception return uses floating-point state from MSP and execution uses MSP after return.
- * 0xFFFFFFED - Return to Thread mode, exception return uses floating-point state from PSP and execution uses PSP after return.
+ * 0xFFFFFFF1 - Return to Handler mode, exception return uses non-floating-point
+ * state from the MSP and execution uses MSP after return. 0xFFFFFFF9 - Return
+ * to Thread mode, exception return uses non-floating-point state from MSP and
+ * execution uses MSP after return. 0xFFFFFFFD - Return to Thread mode,
+ * exception return uses non-floating-point state from the PSP and execution
+ * uses PSP after return. 0xFFFFFFE1 - Return to Handler mode, exception return
+ * uses floating-point-state from MSP and execution uses MSP after return.
+ * 0xFFFFFFE9 - Return to Thread mode, exception return uses floating-point
+ * state from MSP and execution uses MSP after return. 0xFFFFFFED - Return to
+ * Thread mode, exception return uses floating-point state from PSP and
+ * execution uses PSP after return.
  */
 #define ARM_INITIAL_EXC_RETURN ((uint32)0xFFFFFFF9)
 
@@ -109,29 +114,30 @@
 
 typedef struct ARM_CORE_CONTEXT
 {
-  uint32 gpr4;          /* General purpose register r4 */
-  uint32 gpr5;          /* General purpose register r5 */
-  uint32 gpr6;          /* General purpose register r6 */
-  uint32 gpr7;          /* General purpose register r7 */
-  uint32 gpr8;          /* General purpose register r8 */
-  uint32 gpr9;          /* General purpose register r9 */
-  uint32 gpr10;         /* General purpose register r10 */
-  uint32 gpr11;         /* General purpose register r11 */
-	uint32 stackPointer;  /* Stack Pointer - r13          */
+  uint32 gpr4;         /* General purpose register r4 */
+  uint32 gpr5;         /* General purpose register r5 */
+  uint32 gpr6;         /* General purpose register r6 */
+  uint32 gpr7;         /* General purpose register r7 */
+  uint32 gpr8;         /* General purpose register r8 */
+  uint32 gpr9;         /* General purpose register r9 */
+  uint32 gpr10;        /* General purpose register r10 */
+  uint32 gpr11;        /* General purpose register r11 */
+  uint32 stackPointer; /* Stack Pointer - r13          */
 } arm_core_context;
 
-#ifdef WITH_FLOAT
+#if WITH_FLOAT == YES
 /*
  * Floating Point Context
  */
-struct ARM_FLOAT_CONTEXT {
-	/* is Single Precision Register s0-s31 */
-    double  spr[32];
-	/* Floating Point Status and Control Register */
-    double  fpscr;
-};
-
-typedef struct ARM_FLOAT_CONTEXT arm_float_context;
+typedef struct ARM_FLOAT_CONTEXT
+{
+  /* is Single Precision Register s0-s31 */
+  float spr[32];
+  /* Floating Point Status and Control Register */
+  uint32 fpscr;
+  /* Floating-point exception register */
+  uint32 fpexc;
+} arm_float_context;
 #endif
 
 /**
@@ -147,9 +153,10 @@ typedef uint32 tpl_stack_size;
 /**
  * Stack definition
  */
-struct TPL_STACK {
-    tpl_stack_word  *stack_zone;
-    tpl_stack_size  stack_size;
+struct TPL_STACK
+{
+  tpl_stack_word *stack_zone;
+  tpl_stack_size stack_size;
 };
 
 /**
@@ -164,15 +171,15 @@ typedef struct TPL_STACK tpl_stack;
  */
 #define IDLE_ENTRY tpl_sleep
 
-#define DISABLE_FIQ() __asm__ __volatile__ ("cpsid f;")
+#define DISABLE_FIQ() __asm__ __volatile__("cpsid f;")
 
-#define ENABLE_FIQ()  __asm__ __volatile__ ("cpsie f;")
+#define ENABLE_FIQ() __asm__ __volatile__("cpsie f;")
 
-#define DISABLE_IRQ() __asm__ __volatile__ ("cpsid i;")
+#define DISABLE_IRQ() __asm__ __volatile__("cpsid i;")
 
-#define ENABLE_IRQ()  __asm__ __volatile__ ("cpsie i;")
+#define ENABLE_IRQ() __asm__ __volatile__("cpsie i;")
 
-FUNC (void, OS_CODE) tpl_init_machine_specific (void);
+FUNC(void, OS_CODE) tpl_init_machine_specific(void);
 
 #endif /* TPL_MACHINE_CORTEX_H */
 
