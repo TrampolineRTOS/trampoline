@@ -1221,10 +1221,12 @@ Processors with a floating-point unit add the following registers to the context
 
 \reg{fpsid} is the floating-point system ID register but as this register seems to be read-only, it is not part of the context.
 
-When floating point is activated, the static task descriptor has an additional member, a pointer to the floating point context structure, which is located just after the pointer to the integer context structure. Function that save and load the contexte, \cfunction{tpl_save_context}, \cfunction{tpl_load_context}, \cfunction{tpl_save_context_under_it} and \cfunction{tpl_load_context_under_it} all have a pointer to the static task descriptor in \reg{r0} register. The floating context is accessed by reading its pointer:
+When floating point is activated, the static task descriptor has an additional member, a pointer to the floating point context structure, which is located just after the pointer to the integer context structure. Function that save and load the contexte, \cfunction{tpl_save_context}, \cfunction{tpl_load_context}, \cfunction{tpl_save_context_under_it} and \cfunction{tpl_load_context_under_it} all have a pointer to the static task descriptor in \reg{r0} register. The floating context is accessed by reading its pointer. If the pointer is \constant{NULL}, the is not saved:
 
 \begin{lstlisting}[language=C]
   ldr r1,[r0,#FLOAT_CONTEXT]
+  cmp r1,#0
+  beq no_save:
 \end{lstlisting}
 
 Saving the floating-point context is a two-part process. First, the registers \reg{s0} to \reg{s31} are saved.
@@ -1242,7 +1244,20 @@ Then:
   str r2,[r1]
   mrs r2,fpexc
   str r2,[r1,#4]
+no_save:
 \end{lstlisting}
+
+Loading the floating-point context is the same reversed. Assuming \reg{r1} is loaded with a pointer to the floating-point context. Remember that if the pointer is \constant{NULL}, these instructions are skiped:
+
+\begin{lstlisting}[language=C]
+  vldm r1!,{s0-s31}
+  ldr  r2,[r1]
+  msr  fpsrc
+  ldr  r2,[r1,#4]
+  msr. fpexc
+no_load:
+\end{lstlisting}
+
 
 
 
