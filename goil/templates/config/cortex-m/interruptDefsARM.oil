@@ -1,0 +1,10 @@
+// ARM Core related interrupts
+INTERRUPT NMI          {SETPRIO = TRUE { NUMBER = -14; };};
+INTERRUPT HardFault    {SETPRIO = TRUE { NUMBER = -13; };};
+INTERRUPT MemManage    {SETPRIO = TRUE { NUMBER = -12; };}; 
+INTERRUPT BusFault     {SETPRIO = TRUE { NUMBER = -11; };};
+INTERRUPT UsageFault   {SETPRIO = TRUE { NUMBER = -10; };};
+INTERRUPT SVCall       {SETPRIO = TRUE { NUMBER = -5 ; };};
+INTERRUPT DebugMonitor {SETPRIO = TRUE { NUMBER = -4 ; };};
+INTERRUPT PendSV       {SETPRIO = TRUE { NUMBER = -2 ; };};
+INTERRUPT SysTick      {SETPRIO = TRUE { NUMBER = -1 ; };};
