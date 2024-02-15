@@ -13,10 +13,6 @@ CPU buildOptions {
     //COMMONFLAGS = "-Wall";                        
     COMMONFLAGS = "-Wno-unused-but-set-variable"; // Except unused variables
     COMMONFLAGS = "-Wmissing-field-initializers"; // Struct initialized with incorrect number of fiels
-    COMMONFLAGS = "-mcpu=cortex-m4";              // Compile for cortex-m4
-    COMMONFLAGS = "-mthumb";                      // Thumb instruction set
-    COMMONFLAGS = "-mfloat-abi=soft";             // Floating point numbers are computed in software
-    COMMONFLAGS = "-mfpu=fpv4-sp-d16";            // Truly obscure option to set. Check http://stackoverflow.com/questions/19464556/how-to-link-gcc-options-to-the-arm-mcu-fpu-datasheet
     COMMONFLAGS = "-nostartfiles";                // Default startfiles (crt0.c) are not used
     COMMONFLAGS = "-fno-builtin";                 // Do not used built in gcc functions
     CFLAGS = "--specs=nosys.specs";          // 
@@ -41,14 +37,8 @@ CPU buildOptions {
      */
     ASFLAGS = "-g";                               // Produce debugging information
     ASFLAGS = "-Wall";                            // All warnings on
-    ASFLAGS = "-mcpu=cortex-m4";                  // Assemble for cortex-m4
-    ASFLAGS = "-mthumb";                          // Thumb instruction set
     ASFLAGS = "--fatal-warnings";                 // A warning is an error
-    ASFLAGS = "-mfloat-abi=soft";                 // Floating point numbers are computed in software
-    ASFLAGS = "-mfpu=fpv4-sp-d16";                // Truly obscure option to set.
-    // Check http://stackoverflow.com/questions/19464556/how-to-link-gcc-options-to-the-arm-mcu-fpu-datasheet
-
-    
+  
   //  LDFLAGS = "--no-warn-rwx-segment";            // fix gnu-ld 2.39 snafu 
     LDFLAGS = "--fatal-warnings";                 // A warning is an error
     LDFLAGS = "--warn-common";                    // Warn when a common symbol is combined with another common symbol
@@ -56,3 +46,7 @@ CPU buildOptions {
     LDFLAGS = "--gc-sections";                    // Remove unused sections. Works with -ffunction-sections and -fdata-sections, see above
   };
 };
+
+//one should include target specific flags for CortexM4 or CortexM7
+#includeifexists <buildOptionsTarget.oil>
+

@@ -42,7 +42,7 @@ if exists POSTBUILD then
   let postgoals := mapof exists POSTBUILD default ( @() ) by NAME
 end if
 
-%#! /usr/bin/env python
+%#! /usr/bin/env python3
 # -*- coding: UTF-8 -*-
 #----------------------------------------------------------------------
 #--- Python Build file for application % !CPUNAME %
@@ -61,7 +61,7 @@ end if
 #---     build.py is generated each time goil is called by make.py
 #----------------------------------------------------------------------
 
-import sys, os, subprocess, string, distutils.spawn
+import sys, os, subprocess, string
 from string import Template
 
 #--- Add some function for Python3 support

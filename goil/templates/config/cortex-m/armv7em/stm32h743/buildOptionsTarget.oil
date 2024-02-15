@@ -1,0 +1,17 @@
+rm /*
+ * ARMv7 build options for gcc - CortexM7
+ * TODO: we use only soft FPU for now!
+ */
+CPU buildOptions {
+  BUILDOPTIONS buildForCortexM4 {
+    COMMONFLAGS = "-mcpu=cortex-m7";              // Compile for cortex-m7
+    COMMONFLAGS = "-mthumb";                      // Thumb instruction set
+    COMMONFLAGS = "-mfloat-abi=soft";             // Floating point numbers are computed in software
+    COMMONFLAGS = "-mfpu=fpv5-d16";               // FPU version for CortexM7
+
+    ASFLAGS = "-mcpu=cortex-m7";                  // Assemble for cortex-m7
+    ASFLAGS = "-mthumb";                          // Thumb instruction set
+    ASFLAGS = "-mfloat-abi=soft";                 // Floating point numbers are computed in software
+    ASFLAGS = "-mfpu=fpv5-d16";                   // FPU version for CortexM7
+  };
+};
