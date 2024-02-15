@@ -8,9 +8,12 @@ import sys
 #should be updated, depending on the target.
 #this main header file should be located in the 'machine/cortex-m/..' part of trampoline
 filename = '../../../../../machines/cortex-m/armv7em/stm32h743/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h'
+# filename = '../../../../../machines/cortex-m/armv7em/stm32l432/CMSIS-ST/Device/ST/STM32L4xx/Include/stm32l432xx.h'
 target = 'stm32h743'
+# target = 'stm32l432'
 #GPIO ports GPIOA, GPIOB, … Required for EXTI interrupt defs
 gpios = "ABCDEFGHIJK"
+# gpios = "ABCDEFGH"
 
 #regexp to find the beginning of the interrupt defs (enum)
 startExtractRegExp=re.compile('.*STM32 specific Interrupt Numbers.*$')
@@ -29,6 +32,7 @@ with open(filename,'r') as stFile:
     for line in stFile:
         if stopExtractRegExp.match(line):
             lineToProcess = False
+            break #end parsing
         if lineToProcess:
             m = processLineRegExp.match(line)
             if m:
@@ -37,18 +41,6 @@ with open(filename,'r') as stFile:
                 IRQn    = int(m.groups()[1])
                 IRQdesc = m.groups()[2].strip()
                 interruptList.append((IRQName,IRQn,IRQdesc))
-                # print(IRQName + ' => ' + str(IRQn)+ ' : '+ IRQdesc)
-                # print('INTERRUPT '+IRQName+' {')
-                # print('  VECT = '+str(IRQn+16)+';')
-                # print('  SETPRIO = TRUE { NUMBER = '+str(IRQn)+'; };')
-                # if not IRQName.find('EXTI'):
-                #     print('  ACK = TRUE { ACKTYPE = EXTERNAL; };')
-                # print('  VECTOR_TYPE = HANDLER {')
-                # print('    NAME = "'+IRQName+'_Handler";')
-                # print('  };')
-                # print('} : "'+IRQdesc+'";')
-                # print()
-
             else:
                 print('** error **')
                 print(line)
