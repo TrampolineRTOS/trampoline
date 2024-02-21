@@ -63,7 +63,7 @@ CPU stm32f303 {
   };
 
   INTERRUPT_COUNT nb_it {
-    IT_TABLE_SIZE = 97;
+    IT_TABLE_SIZE = 90; //74 STM32 interrupt + 16 ARM related interrupts
   };
   
   INTERRUPT NMI          {SETPRIO = TRUE { NUMBER = -14; };};

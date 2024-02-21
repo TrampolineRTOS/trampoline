@@ -63,7 +63,7 @@ CPU stm32l432 {
   };
 
   INTERRUPT_COUNT nb_it {
-    IT_TABLE_SIZE = 98;
+    IT_TABLE_SIZE = 77; //61 STM32 interrupts + 16 ARM related interrupts.
   };
   
   #include "interruptDefs.oil"
