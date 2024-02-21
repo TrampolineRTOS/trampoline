@@ -54,16 +54,16 @@ CPU stm32h743 {
   };
 
   CORTEX stm32h743 {
-    /* TODO */ PRIO_BITS = 4;    // used in tpl_cortex_definitions for NVIC config
+    PRIO_BITS = 4;    // used in tpl_cortex_definitions for NVIC config. 16 levels.
     /* TODO */ CLOCK = 40000000; // init freq with no external oscillator...
   };
 
   BUILDOPTIONS buildOptions {
-     COMMONFLAGS = "-DSTM32H7xx"; //processor def
+     COMMONFLAGS = "-DSTM32H743xx"; //processor def
   };
 
   INTERRUPT_COUNT nb_it {
-    IT_TABLE_SIZE = 90;
+    IT_TABLE_SIZE = 165;
   };
 
   #include "interruptDefs.oil"
@@ -73,18 +73,23 @@ CPU stm32h743 {
   PLATFORM_FILES stm32h743 {
     PATH = "cortex-m/armv7em/stm32h743";
     CFILE = "handlers_stm32h743.c";
-    CFILE = "startup_stm32h743zitx.c";
-    CFILE = "system_stm32h743.c";
+    CFILE = "startup_stm32h743.c";
+    CFILE = "system_stm32h7xx.c";
     CFILE = "tpl_machine_stm32h743.c";
   };
 
   PLATFORM_FILES stm32h743_trace {
-    PATH = "cortex-m/armv7em/stm32f303";
+    PATH = "cortex-m/armv7em/stm32h743";
 	  CFILE = "tpl_trace.c";
   };
 
   PLATFORM_FILES stm32h743_cmsis {
     PATH = "cortex-m/armv7em/stm32h743/CMSIS/Device/ST/STM32H7xx/Include";
+  };
+
+  PLATFORM_FILES stm32IO {
+    PATH    = "cortex-m/armv7em/stm32h743/lib";
+    CFILE   = "pinAccess.c";
   };
 
   LIBRARY serial {
@@ -102,7 +107,7 @@ CPU stm32h743 {
     };
   };
 
-  POSTCOMMAND burn {
+  POSTCOMMAND burn { /* TODO not the same memory mapping */
     COMMAND flash {
       MESSAGE = "Flashing";
       COMMAND = "st-flash";

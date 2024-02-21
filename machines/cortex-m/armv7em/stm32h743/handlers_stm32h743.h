@@ -1,7 +1,7 @@
 /**
  * @section descr File description
  *
- * STM32F3 platform specific routines and variables
+ * STM32 platform specific routines and variables
  *
  * @section copyright Copyright
  *

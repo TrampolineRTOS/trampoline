@@ -1,7 +1,7 @@
 /**
  * @section descr File description
  *
- * STM32l432 platform specific routines and variables (based on file from STM32F4xx...)
+ * STM32h743 platform specific routines and variables (based on file from STM32F4xx...)
  *
  * @section copyright Copyright
  *
@@ -16,7 +16,7 @@
 
 #include "tpl_os.h"
 #include "tpl_os_interrupt_kernel.h"
-#include "stm32l4xx.h"
+#include "stm32h7xx.h"
 #include "tpl_compiler.h"
 
 extern void tpl_primary_syscall_handler(void);
@@ -34,37 +34,6 @@ FUNC(void, OS_CODE)NMI_Handler(void)
 
 FUNC(void, OS_CODE)HardFault_Handler(void)
 {
-	uint32 lregSCB_HFSR;
-	uint32 lregSCB_CFSR;
-	uint32 lregSCB_BFAR;
-	uint32 lregSCB_DFSR;
-	uint32 lregSCB_AFSR;
-	uint32 lregSCB_MMFR;
-
-	lregSCB_HFSR = (uint32)0;
-	lregSCB_CFSR = (uint32)0;
-	lregSCB_BFAR = (uint32)0;
-	lregSCB_DFSR = (uint32)0;
-	lregSCB_AFSR = (uint32)0;
-	lregSCB_MMFR = (uint32)0;
-
-	lregSCB_HFSR = (uint32)(SCB->HFSR);
-	if ((SCB->HFSR & (1 << 30)) != 0)
-	{
-		//printErrorMsg("Forced Hard Fault\n");
-		//sprintf(msg, "SCB->CFSR = 0x%08x\n", SCB->CFSR );
-		//printErrorMsg(msg);
-		if((SCB->CFSR & 0xFFFF0000) != 0)
-		{
-			lregSCB_CFSR = (uint32)SCB->CFSR;
-			//printUsageErrorMsg(SCB->CFSR);
-		}
-		lregSCB_BFAR = (uint32)SCB->BFAR;
-		lregSCB_DFSR = (uint32)SCB->DFSR;
-		lregSCB_AFSR = (uint32)SCB->AFSR;
-		lregSCB_MMFR = (uint32)SCB->MMFR;
-	}
-
   	while (1)
     {
     }

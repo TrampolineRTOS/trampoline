@@ -1,4 +1,4 @@
-rm /*
+/*
  * ARMv7 build options for gcc - CortexM7
  * TODO: we use only soft FPU for now!
  */

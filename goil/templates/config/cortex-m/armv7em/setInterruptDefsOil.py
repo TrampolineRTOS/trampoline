@@ -53,7 +53,7 @@ with open("interruptDefs.oil",'w') as outFile:
     outFile.write('/*\n')
     outFile.write(' * Interrupt definitions for the '+str(target).upper()+' micro-controller\n')
     outFile.write(' */\n')
-    outFile.write('#include "interruptDefsARM.oil"\n\n')
+    outFile.write('#include "../interruptDefsARM.oil"\n\n')
     for IRQName,IRQn,IRQdesc in interruptList:
         outFile.write('INTERRUPT '+IRQName+' {\n')
         outFile.write('  VECT = '+str(IRQn+16)+';\n')

@@ -1,7 +1,7 @@
 /*
  * Interrupt definitions for the STM32L432 micro-controller
  */
-#include "interruptDefsARM.oil"
+#include "../interruptDefsARM.oil"
 
 INTERRUPT WWDG_IRQ {
   VECT = 16;
