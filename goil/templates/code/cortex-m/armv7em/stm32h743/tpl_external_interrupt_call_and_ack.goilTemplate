@@ -14,21 +14,21 @@ end foreach
 let num := [pin subString: 2, 2]
 
 if exists isISR2 then #called for ISR2
-%  if(EXTI->PR1 & EXTI_PR1_PIF%!num%) {
+%  if(EXTI->PR1 & EXTI_PR1_PR%!num%) {
      tpl_fast_central_interrupt_handler(%!obj::NAME%_id);
-     EXTI->PR1 = EXTI_PR1_PIF%!num%; /* ack */
+     EXTI->PR1 = EXTI_PR1_PR%!num%; /* ack */
   }
 %
 elsif exists isISR1 then #called for ISR1
-%  if(EXTI->PR1 & EXTI_PR1_PIF%!num%) {
+%  if(EXTI->PR1 & EXTI_PR1_PR%!num%) {
      %!obj::NAME %_function();
-     EXTI->PR1 = EXTI_PR1_PIF%!num%; /* ack */
+     EXTI->PR1 = EXTI_PR1_PR%!num%; /* ack */
   }
 %
 elsif exists isCounter then #called for Counter
-%  if(EXTI->PR1 & EXTI_PR1_PIF%!num%) {
+%  if(EXTI->PR1 & EXTI_PR1_PR%!num%) {
      tpl_tick_% !objCounter_KEY %();
-     EXTI->PR1 = EXTI_PR1_PIF%!num%; /* ack */
+     EXTI->PR1 = EXTI_PR1_PR%!num%; /* ack */
   }
 %
 else #error here: "should not happen: either ISR1 or ISR2"

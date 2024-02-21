@@ -174,15 +174,15 @@ end foreach
 %
 foreach pin in usedPortPin do
   if pin::TRIGGER == "RISING" | pin::TRIGGER == "BOTH" then
-    %    EXTI->RTSR1 |=  EXTI_RTSR1_RT%!pin::NUMBER%;%
+    %    EXTI->RTSR1 |=  EXTI_RTSR1_TR%!pin::NUMBER%;%
   else
-    %    EXTI->RTSR1 &= ~EXTI_RTSR1_RT%!pin::NUMBER%;%
+    %    EXTI->RTSR1 &= ~EXTI_RTSR1_TR%!pin::NUMBER%;%
   end if
   % /* P%!pin::GPIO !pin::NUMBER% : %!pin::TRIGGER% */\n%
   if pin::TRIGGER == "FALLING" | pin::TRIGGER == "BOTH" then
-    %    EXTI->FTSR1 |=  EXTI_FTSR1_FT%!pin::NUMBER%;\n%
+    %    EXTI->FTSR1 |=  EXTI_FTSR1_TR%!pin::NUMBER%;\n%
   else
-    %    EXTI->FTSR1 &= ~EXTI_FTSR1_FT%!pin::NUMBER%;\n%
+    %    EXTI->FTSR1 &= ~EXTI_FTSR1_TR%!pin::NUMBER%;\n%
   end if
   between %\n%
 end foreach
