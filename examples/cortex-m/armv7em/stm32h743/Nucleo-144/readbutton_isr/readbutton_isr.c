@@ -62,7 +62,7 @@ ISR(isr_button)
 #include "tpl_memmap.h"
 ISR(isr_button2)
 {
-    pinMode(LED_YELLOW_PORT,LED_YELLOW_PIN,OUTPUT);
+    digitalToggle(LED_YELLOW_PORT,LED_YELLOW_PIN);
 }
 #define APP_ISR_isr_button2_STOP_SEC_CODE
 #include "tpl_memmap.h"

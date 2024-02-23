@@ -76,7 +76,7 @@ CPU readbutton_isr {
     //CATEGORY = 1;
     //PRIORITY = 10;
     SOURCE = EXTI15_10_IRQ {
-      PINON12 = PA12 {
+      PINON10 = PF10 { //A5 on Nucleo Zio connector
         TRIGGER = FALLING;
         PULL = UP;
       };
@@ -88,10 +88,10 @@ CPU readbutton_isr {
     PRIORITY = 4;
     //CATEGORY = 1;
     //PRIORITY = 10;
-    SOURCE = EXTI15_10_IRQ {
-      PINON14 = PC14 {
-        TRIGGER = BOTH;
-        PULL = NONE;
+    SOURCE = EXTI2_IRQ {
+      PIN = PC2 { // A4 on Nucleo Zio connector
+        TRIGGER = FALLING;
+        PULL = UP;
       };
     };
   };
@@ -101,10 +101,10 @@ CPU readbutton_isr {
     PRIORITY = 2;
     //CATEGORY = 1;
     //PRIORITY = 10;
-    SOURCE = EXTI15_10_IRQ {
-      PINON10 = PA10 {
-        TRIGGER = RISING;
-        PULL = UP;
+    SOURCE = EXTI1_IRQ {
+      PIN = PB1 { // A3 on Nucleo Zio connector
+        TRIGGER = FALLING;
+        PULL = UP;  
       };
     };
   };
