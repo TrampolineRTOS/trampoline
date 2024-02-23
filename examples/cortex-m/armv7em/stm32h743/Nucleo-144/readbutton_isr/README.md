@@ -19,5 +19,5 @@ The system is based scheduled with a 1ms SysTick `SystemCounter`.
 Configure the application with:
 
 ```
-goil --target=cortex-m/armv7em/stm32H743 --templates=../../../../../../goil/templates/ readbutton_isr.oil
+goil --target=cortex-m/armv7em/stm32h743 --templates=../../../../../../goil/templates/ readbutton_isr.oil
 ```
