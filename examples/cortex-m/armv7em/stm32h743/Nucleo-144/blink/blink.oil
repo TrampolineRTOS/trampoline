@@ -26,11 +26,12 @@ CPU blink {
       CFLAGS  = "-O0";
       LDFLAGS = "-Map=blink.map";
       COMPILER = "arm-none-eabi-gcc";
+			CPPCOMPILER = "arm-none-eabi-g++";
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
       COPIER = "arm-none-eabi-objcopy";
       //SYSTEM = PYTHON;
-      SYSTEM = CMAKE {VSCODE=TRUE;};
+      SYSTEM = CMAKE { VSCODE = TRUE; };
     };
     SYSTEM_CALL = TRUE;
     MEMMAP = TRUE {
