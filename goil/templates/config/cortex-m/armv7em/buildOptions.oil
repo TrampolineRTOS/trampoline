@@ -39,8 +39,8 @@ CPU buildOptions {
     ASFLAGS = "-Wall";                            // All warnings on
     ASFLAGS = "--fatal-warnings";                 // A warning is an error
   
-    LDFLAGS = "--no-warn-rwx-segment";            // fix gnu-ld 2.39 snafu 
-    LDFLAGS = "--fatal-warnings";                 // A warning is an error
+    // LDFLAGS = "--no-warn-rwx-segment";            // fix gnu-ld 2.39 snafu 
+    // LDFLAGS = "--fatal-warnings";                 // A warning is an error
     LDFLAGS = "--warn-common";                    // Warn when a common symbol is combined with another common symbol
     LDFLAGS = "--no-undefined";                   // Report unresolved symbol references
     LDFLAGS = "--gc-sections";                    // Remove unused sections. Works with -ffunction-sections and -fdata-sections, see above
