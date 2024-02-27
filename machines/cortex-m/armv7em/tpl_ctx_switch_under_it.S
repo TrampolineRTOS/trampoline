@@ -139,7 +139,13 @@ tpl_save_context_under_it:
     ldr r1,[r0,#FLOAT_CONTEXT]
     cmp r1, #0 /* r1 is NULL if there is no float context for this process */
     beq no_save_fp
-    vstm r1!, {s16-s31} /* save all spr[0..31] */
+    /* save all s16 to 31
+     * In Lazy Context Switch (LSPEN bit in FPU->FPCCR, enabled by default),
+     * s0-s15 may have not been pushed on the stack (PSP) yet. This 
+     * FPU related instruction force the push (on PSP).
+     * So, this instruction leads to write 17 words on PSP and 16 words on r1! 
+     */
+    vstm r1!, {s16-s31} 
 no_save_fp:
 #endif
 

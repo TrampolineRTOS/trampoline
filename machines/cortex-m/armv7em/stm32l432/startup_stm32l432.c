@@ -126,8 +126,6 @@ void __attribute__ ((section(".after_vectors"))) tpl_continue_reset_handler(void
     SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */
   #endif
 
-  FPU->FPCCR &= ~FPU_FPCCR_LSPEN_Msk; //remove Lazy Stack switch mode (for now).
-
   // Call the standard library initialisation (mandatory, SystemInit()
   // and C++ static constructors are called from here).
   __libc_init_array();
