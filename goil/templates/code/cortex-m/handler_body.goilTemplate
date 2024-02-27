@@ -28,10 +28,16 @@ tpl_primary_irq_handler_% !handlerSource %:
     bl   % !handlerIRQ %
 
     /*-------------------------------------------------------------------------
+     * 3b - retrieve the link register from the kernel stack 
+     *      if there is no context switch (otherwise it will be overwritten).
+     */
+    pop   {r0}
+
+    /*-------------------------------------------------------------------------
      * 4 - Check the context switch condition in tpl_kern
      */
-    ldr  r0,=tpl_kern
-    ldrb r1,[r0,#TPL_KERN_OFFSET_NEED_SWITCH]
+    ldr  r2,=tpl_kern
+    ldrb r1,[r2,#TPL_KERN_OFFSET_NEED_SWITCH]
     cmp  r1,#NO_NEED_SWITCH
     beq  tpl_% !handlerSource %_no_context_switch
 
@@ -64,8 +70,11 @@ tpl_primary_irq_handler_% !handlerSource %:
 tpl_% !handlerSource %_no_context_switch:
 
     /*-------------------------------------------------------------------------
-     * 8 - pop LR that was saved at stage 1 into PC and return from the handler
+     * 8 - get lr from r0:
+     *     * from step 3b if there is no context switch
+     *     * from tpl_load_context_under_it in other case.
      */
-    pop  {pc}
+    mov lr, r0
+    bx lr
 
 /*---------------------------------------------------------------------------*/

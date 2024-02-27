@@ -93,8 +93,8 @@ CPU stm32l432 {
 
   LIBRARY serial {
     PATH = "cortex-m/armv7em/stm32l432/lib";
-	CHEADER = "serial.h";
-	CFILE   = "serial.c";
+	  CHEADER = "serial.h";
+	  CFILE   = "serial.c";
   };
 
   POSTBUILD all {

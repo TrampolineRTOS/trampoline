@@ -18,10 +18,6 @@
  *
  * @section infos File informations
  *
- * $Date$
- * $Rev$
- * $Author$
- * $URL$
  */
 
 .syntax unified
@@ -56,7 +52,18 @@
  * | Return Address (saved PC/R15) | <- PSP+24                                *
  * +-------------------------------+                                          *
  * | xPSR (bit 9 = 1)              | <- PSP+28                                *
- * +-------------------------------+                                          *
+ * +------------------------+---------------------\                           *
+ * | s0 (FPU)               | <- PSP+32 - 0x20    |                           *
+ * +------------------------+                     |                           *
+ * | ..                     | <- PSP+.. -         |                           *
+ * +------------------------+                     |                           *
+ * | s15 (FPU)              | <- PSP+92 - 0x5C    |- only if FPU is available *
+ * +------------------------+                     |  and process is using FPU *
+ * | FPSCR (FPU)            | <- PSP+96 - 0x60    |  (USEFLOAT = TRUE in .oil)*
+ * +------------------------+                     |                           *
+ * | reserved (align)       | <- PSP+100- 0x64    |                           *
+ * +------------------------+---------------------/                           *
+ *                                                                            *
  * The second part is stored in a structure defined in tpl_machine_cortex.h   *
  * with a pointer from the static task descriptor                             *
  * +------------------+                                                       *
@@ -133,6 +140,15 @@ tpl_save_context:
     str r2,[r1,#CTX_PSP]
 
 #if WITH_FLOAT == YES
+    /*-------------------------------------------------------------------------
+     * Get a the pointer to the floating point context from the pointer to the
+     * static descriptor of the running task
+     */
+    ldr r1,[r0,#FLOAT_CONTEXT]
+    cmp r1, #0 /* r1 is NULL if there is no float context for this process */
+    beq no_save_fp
+    vstm r1!, {s16-s31} /* save all spr[0..31] */
+no_save_fp:
 #endif
 
     bx  lr
@@ -143,6 +159,9 @@ tpl_save_context:
  *
  * r0 contains a pointer to the static descriptor of the running task.
  * r1-r3 are working registers
+ *
+ * ** it SHOULD return LR in r0 **
+ *
  * values to be loaded into r4 and r5 are put in the MSP.
  */
 
@@ -187,8 +206,22 @@ tpl_load_context:
     msr psp,r2
 
 #if WITH_FLOAT == YES
-#endif
-
+    /*-------------------------------------------------------------------------
+     * Get a the pointer to the floating point context from the pointer to the
+     * static descriptor of the running task
+     */
+    ldr r1,[r0,#FLOAT_CONTEXT]
+    cmp r1, #0 /* r1 is NULL if there is no float context for this process */
+    beq no_load_fp
+    vldm r1!, {s16-s31} /* load spr[16..31] */
+    /* now update LR to use the FPU */
+    mov r0, #0xFFED  /* low 16 bits of LR, FPU */
+    b end_fp 
+no_load_fp:
+#endif // WITH_FLOAT
+    mov r0, #0xFFFD  /* low 16 bits of LR, NO FPU */
+end_fp:
+    movt r0, #0xFFFF /* high 16 bits of LR */
     bx   lr
 
 #define OS_STOP_SEC_CODE

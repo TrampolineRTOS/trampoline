@@ -18,10 +18,6 @@
  *
  * @section infos File informations
  *
- * $Date$
- * $Rev$
- * $Author$
- * $URL$
  */
 
 #ifndef TPL_OS_KERNEL_STACK_H

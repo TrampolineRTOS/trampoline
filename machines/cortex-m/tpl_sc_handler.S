@@ -18,10 +18,6 @@
  *
  * @section infos File informations
  *
- * $Date$
- * $Rev$
- * $Author$
- * $URL$
  */
 
 .syntax unified
@@ -97,7 +93,17 @@
  * | Return Address   | <- PSP+24
  * +------------------+
  * | xPSR (bit 9 = 1) | <- PSP+28
- * +------------------+
+ * +------------------+---------------------\
+ * | s0 (FPU)         | <- PSP+32 - 0x20    |
+ * +------------------+                     |
+ * | ..               | <- PSP+.. -         |
+ * +----------------- +                     |
+ * | s15 (FPU)        | <- PSP+92 - 0x5C    |- only if FPU is available
+ * +------------------+                     |  and process is using FPU
+ * | FPSCR (FPU)      | <- PSP+96 - 0x60    |  (USEFLOAT = TRUE in .oil)
+ * +------------------+                     |
+ * | reserved (align) | <- PSP+100- 0x64    |
+ * +------------------+---------------------/
  *
  * 2 - The system call wrapper uses r3 to pass the identifier of the service.
  *     This identifier is used as an index in a function pointer table, each of
@@ -184,6 +190,7 @@ not_callable_by_isr1:
 
     /*-------------------------------------------------------------------------
      * 8 - Service call
+     * Note: LR is not saved, but is a constant value. 
      */
     blx   r3
 
@@ -198,6 +205,12 @@ not_callable_by_isr1:
      */
     mrs   r4,psp
     str   r0,[r4]
+
+    /*-------------------------------------------------------------------------
+     * 9b - retrieve the link register from the kernel stack 
+     *      if there is no context switch (otherwise it will be overwritten).
+     */
+    ldr   r0,[sp,#KS_LR]
 
     /*-------------------------------------------------------------------------
      * 10 - Check the context switch condition in tpl_kern
@@ -245,6 +258,8 @@ tpl_sc_handler_no_save_running_context:
      * 16 - Load context
      *      Load in r0 the pointer to the context of the running task.
      *      It has been changed by tpl_run_elected
+     * 
+     *      It SHOULD return the value of lr (in r0)
      */
     ldr   r0,=tpl_kern
     ldr   r0,[r0,#TPL_KERN_OFFSET_S_RUNNING]
@@ -253,11 +268,11 @@ tpl_sc_handler_no_save_running_context:
 tpl_sc_handler_no_context_switch:
 
     /*-------------------------------------------------------------------------
-     * 18 - Restore the link register from the kernel stack.
-     *      Symetric of stages 4
+     * 18 - Restore the link register 
+     *     * from the kernel stack if no context switch
+     *     * from the tpl_load_context if there is a context switch
      */
-    ldr   r4,[sp,#KS_LR]
-    mov   lr,r4
+    mov   lr,r0
 
     /*-------------------------------------------------------------------------
      * 19 - Restore r4 and r5 from the kernel stack.

@@ -53,9 +53,12 @@ struct TPL_CONTEXT
 #endif
 };
 
-// typedef struct TPL_CONTEXT tpl_context;
-
-typedef struct ARM_CORE_CONTEXT *tpl_context;
+#if WITH_FLOAT == YES
+  typedef struct TPL_CONTEXT tpl_context;
+#else
+  //only one member, no struct needed
+  typedef struct ARM_CORE_CONTEXT *tpl_context;
+#endif
 
 extern struct ARM_CORE_CONTEXT idle_task_context;
 

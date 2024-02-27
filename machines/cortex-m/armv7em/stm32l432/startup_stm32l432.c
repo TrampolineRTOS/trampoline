@@ -1,4 +1,6 @@
 #include <sys/types.h>
+#include "stm32l4xx.h" //PFU related
+#include "core_cm4.h"  //FPU related
 
 void __attribute__((weak)) tpl_continue_reset_handler(void);
 
@@ -118,6 +120,13 @@ void __attribute__ ((section(".after_vectors"))) tpl_continue_reset_handler(void
 
   // Zero fill the bss segment
   bss_init(&__bss_start__, &__bss_end__);
+
+  // start FPU
+  #if (__FPU_PRESENT == 1) && (__FPU_USED == 1) && (WITH_FLOAT==YES)
+    SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */
+  #endif
+
+  FPU->FPCCR &= ~FPU_FPCCR_LSPEN_Msk; //remove Lazy Stack switch mode (for now).
 
   // Call the standard library initialisation (mandatory, SystemInit()
   // and C++ static constructors are called from here).

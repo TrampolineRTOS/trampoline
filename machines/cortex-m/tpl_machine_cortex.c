@@ -17,10 +17,6 @@
  *
  * @section infos File informations
  *
- * $Date$
- * $Rev$
- * $Author$
- * $URL$
  */
 #include "tpl_machine.h"
 #include "tpl_machine_interface.h"
@@ -112,7 +108,7 @@ FUNC (void, OS_CODE) tpl_init_machine_specific (void)
  * tpl_init_context initialize a context to prepare a task to run.
  * It sets up the stack and the entry point
  *
- * Initializing the context consists in the initializing the context structure.
+ * Initializing the context consists in the initializing the integer context structure.
  * The initialization of r4 to r11 is not mandatory but the PSP is:
  * +------------------+
  * | R4               | <- CTX_GPR4
@@ -152,13 +148,27 @@ FUNC (void, OS_CODE) tpl_init_machine_specific (void)
  * | Return Address (saved PC/R15) | <- PSP+24
  * +-------------------------------+
  * | xPSR (bit 9 = 1)              | <- PSP+28
- * +-------------------------------+
+ * +-----------------------------------------------------+
+ * | s0 (FPU)                      | <- PSP+32 - 0x20    |
+ * +-------------------------------+                     |
+ * | ..                            | <- PSP+.. -         |
+ * +-------------------------------+                     |
+ * | s15 (FPU)                     | <- PSP+92 - 0x5C    |- only if FPU is available
+ * +-------------------------------+                     |  and process is using FPU
+ * | FPSCR (FPU)                   | <- PSP+96 - 0x60    |  (USEFLOAT = TRUE in .oil)
+ * +-------------------------------+                     |
+ * | reserved (align)              | <- PSP+100- 0x64    |
+ * +-------------------------------+---------------------/
+
  */
 
 #define GPR_ON_EXCEPTION_FRAME  5 /* registers r0-r3 and r12 */
 #define LR_IDX                  5
 #define PC_IDX                  6
 #define xPSR_IDX                7
+
+#define SX_ON_EXCEPTION_FRAME  16 /* registers s0-s15 */
+#define S0_IDX                  8
 
 FUNC(void, OS_CODE) tpl_init_context(
   CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
@@ -171,17 +181,39 @@ FUNC(void, OS_CODE) tpl_init_context(
   CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) the_proc =
     tpl_stat_proc_table[proc_id];
 
-  /* The pointer to the context of the process */
-  CONSTP2VAR(arm_core_context, AUTOMATIC, OS_APPL_DATA) l_tpl_context =
-    the_proc->context;
+  /* get a pointer to the integer context and float context (if exists) */
+  #if WITH_FLOAT == YES
+    /* The pointer to the int context of the process */
+    CONSTP2VAR(arm_core_context, AUTOMATIC, OS_APPL_DATA) l_tpl_context =
+      the_proc->context.cc;
+    /* The pointer to the float context of the process */
+    CONSTP2VAR(arm_float_context, AUTOMATIC, OS_APPL_DATA) l_tpl_fc_context =
+      the_proc->context.fc;
+    tpl_bool proc_use_fpu = (l_tpl_fc_context != NULL);
+  #else
+    /* The pointer to the context of the process */
+    CONSTP2VAR(arm_core_context, AUTOMATIC, OS_APPL_DATA) l_tpl_context =
+      the_proc->context;
+  #endif
 
   /* The pointer to the stack of the process */
   CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) stack =
     the_proc->stack.stack_zone;
-
-  /* The size of the stack in 32 bits word above the esception frame */
-  CONST(uint32, AUTOMATIC) size_of_stack_above_exception_frame =
-    (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE) >> 2;
+  
+  /* we have to prepare the exception frame, and reserve place for it*/
+  #if WITH_FLOAT == YES
+  VAR(uint32, AUTOMATIC) size_of_stack_above_exception_frame;
+  if(proc_use_fpu) {
+    size_of_stack_above_exception_frame =
+    (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE_WITH_FPU) >> 2;
+  } else {
+    size_of_stack_above_exception_frame =
+    (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE_NO_FPU) >> 2;
+  }
+  #else //NO FLOAT
+    CONST(uint32, AUTOMATIC) size_of_stack_above_exception_frame =
+    (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE_NO_FPU) >> 2;
+  #endif
 
   /* The pointer to the exception frame */
   CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) exception_frame =
@@ -203,6 +235,18 @@ FUNC(void, OS_CODE) tpl_init_context(
   l_tpl_context->gpr10 =
   l_tpl_context->gpr11 = OS_STACK_PATTERN;
 
+  #if WITH_FLOAT == YES
+  if(l_tpl_fc_context != NULL) /* defined to NULL for an integer only context */
+  {
+    for(i=0;i<SX_ON_EXCEPTION_FRAME;i++) 
+    {
+      //16 registers on the exception frame s0->s15
+      exception_frame[S0_IDX+i] = OS_STACK_PATTERN+i;
+      //and 16 registers in l_tpl_fc_context s16->s31
+      l_tpl_fc_context->spr[i] = OS_STACK_PATTERN+(i+16);
+    }
+  }
+  #endif // WITH_FLOAT
   /*
    * Paint the registers on the exception frame : r0, r1, r2, r3 and r12
    */
@@ -210,14 +254,15 @@ FUNC(void, OS_CODE) tpl_init_context(
   {
     exception_frame[i] = OS_STACK_PATTERN;
   }
-#endif
+#endif // WITH_PAINT_REGISTERS
+
   /* sp : setup initial stack pointer.
    * The SP points to (stack_zone + stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE)
    * ARM_CORE_EXCEPTION_FRAME_SIZE is the frame pushed by the core at each exception.
    * This frame consists in pushing xpsr, pc, lr, r12, r3, r2, r1, r0
    *  */
   l_tpl_context->stackPointer = (uint32)exception_frame;
-
+  
 #if WITH_PAINT_STACK == YES
   /*
    * Paint the stack with a pattern. This is not mandatory, so it is done

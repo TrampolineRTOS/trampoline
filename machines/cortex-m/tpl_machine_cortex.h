@@ -50,7 +50,8 @@
  * ARM core registers
  */
 /*
- * ARM_CORE_EXCEPTION_FRAME_SIZE is 32 bytes long :
+ * ARM_CORE_EXCEPTION_FRAME_SIZE is 32 bytes long 
+ * (non-floating-point version):
  * +-------------------------------+
  * | R0                            | <- PSP
  * +-------------------------------+
@@ -69,22 +70,45 @@
  * | xPSR (bit 9 = 1)              | <- PSP+28
  * +-------------------------------+
  */
-#define ARM_CORE_EXCEPTION_FRAME_SIZE ((uint32)32)
-/* ARM_INITIAL_EXC_RETURN
- * Default value of exception return value
- * 0xFFFFFFF1 - Return to Handler mode, exception return uses non-floating-point
- * state from the MSP and execution uses MSP after return. 0xFFFFFFF9 - Return
- * to Thread mode, exception return uses non-floating-point state from MSP and
- * execution uses MSP after return. 0xFFFFFFFD - Return to Thread mode,
- * exception return uses non-floating-point state from the PSP and execution
- * uses PSP after return. 0xFFFFFFE1 - Return to Handler mode, exception return
- * uses floating-point-state from MSP and execution uses MSP after return.
- * 0xFFFFFFE9 - Return to Thread mode, exception return uses floating-point
- * state from MSP and execution uses MSP after return. 0xFFFFFFED - Return to
- * Thread mode, exception return uses floating-point state from PSP and
- * execution uses PSP after return.
+#define ARM_CORE_EXCEPTION_FRAME_SIZE_NO_FPU ((uint32)32)
+
+/*
+ * ARM_CORE_EXCEPTION_FRAME_SIZE is 26x4=104 bytes long 
+ * (floating-point version):
+ * +-------------------------------+
+ * | R0                            | <- PSP
+ * +-------------------------------+
+ * | R1                            | <- PSP+4  - 0x04
+ * +-------------------------------+
+ * | R2                            | <- PSP+8  - 0x08
+ * +-------------------------------+
+ * | R3                            | <- PSP+12 - 0x0C
+ * +-------------------------------+
+ * | R12                           | <- PSP+16 - 0x10
+ * +-------------------------------+
+ * | LR (aka R14)                  | <- PSP+20 - 0x14
+ * +-------------------------------+
+ * | Return Address (saved PC/R15) | <- PSP+24 - 0x18
+ * +-------------------------------+
+ * | xPSR (bit 9 = 1)              | <- PSP+28 - 0x1C
+ * +-------------------------------+
+ * | s0 (floating point)           | <- PSP+32 - 0x20
+ * +-------------------------------+
+ * | ..                            | <- PSP+.. - 
+ * +-------------------------------+
+ * | s15 (floating point)          | <- PSP+92 - 0x5C
+ * +-------------------------------+
+ * | FPSCR (floating point status) | <- PSP+96 - 0x60
+ * +-------------------------------+
+ * | reserved (8 bytes aligned)    | <- PSP+100- 0x64 
+ * +-------------------------------+
+ *  
+ * (one reserved register for a 8-bytes 
+ * alignment, 13x8 = 104 bytes)
  */
-#define ARM_INITIAL_EXC_RETURN ((uint32)0xFFFFFFF9)
+
+#define ARM_CORE_EXCEPTION_FRAME_SIZE_WITH_FPU ((uint32)104)
+
 
 /*----------------------------------------------------------------------------*
  * The second part of the context is stored in the following structure        *
@@ -131,12 +155,10 @@ typedef struct ARM_CORE_CONTEXT
  */
 typedef struct ARM_FLOAT_CONTEXT
 {
-  /* is Single Precision Register s0-s31 */
-  float spr[32];
-  /* Floating Point Status and Control Register */
-  uint32 fpscr;
-  /* Floating-point exception register */
-  uint32 fpexc;
+  /** s0-s15 and fpscr are saved by hardware on the stack 
+   * we only save s16 to s31 => 16 registers. 
+   **/
+  uint32 spr[16];
 } arm_float_context;
 #endif
 
