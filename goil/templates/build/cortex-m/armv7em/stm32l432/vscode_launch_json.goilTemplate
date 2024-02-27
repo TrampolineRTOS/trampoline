@@ -8,18 +8,30 @@ end if%
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-    {
-        "cwd": "${workspaceFolder}",
-        "executable": "./build/% !OS::BUILD_S::APP_NAME %",
-        "name": "Debug on STM32 target",
-        "request": "launch", //"launch" => reload firmware, "attach" => just start debug session
-        "type": "cortex-debug",
-        "showDevDebugOutput": "none",
-        "servertype": "stutil",
-        "runToEntryPoint": "main",
-        "device": "STM32L432KC",
-        "v1": false,
-        "svdFile": "% !basePath %/machines/cortex-m/armv7em/stm32l432/CMSIS-ST/STM32L4x2.svd",
+        {
+            "cwd": "${workspaceFolder}",
+            "executable": "./build/% !OS::BUILD_S::APP_NAME %",
+            "name": "Debug with ST-Link",
+            "request": "launch",
+            "type": "cortex-debug",
+            "runToEntryPoint": "main",
+            "showDevDebugOutput": "none",
+            "servertype": "stlink",
+            "device": "STM32L432KC",
+            "svdFile": "% !basePath %/machines/cortex-m/armv7em/stm32l432/CMSIS-ST/STM32L4x2.svd",
+        },
+        {
+            "cwd": "${workspaceFolder}",
+            "executable": "./build/% !OS::BUILD_S::APP_NAME %",
+            "name": "Debug with ST-Util",
+            "request": "launch", //"launch" => reload firmware, "attach" => just start debug session
+            "type": "cortex-debug",
+            "showDevDebugOutput": "none",
+            "servertype": "stutil",
+            "runToEntryPoint": "main",
+            "device": "STM32L432KC",
+            "v1": false,
+            "svdFile": "% !basePath %/machines/cortex-m/armv7em/stm32l432/CMSIS-ST/STM32L4x2.svd",
     }
     ]
 }
