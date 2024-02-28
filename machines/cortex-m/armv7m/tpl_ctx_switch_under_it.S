@@ -81,18 +81,7 @@
  *----------------------------------------------------------------------------*
  */
 
-#define CTX_GPR4    0
-#define CTX_GPR5    4
-#define CTX_GPR6    8
-#define CTX_GPR7    12
-#define CTX_GPR8    16
-#define CTX_GPR9    20
-#define CTX_GPR10   24
-#define CTX_GPR11   28
-#define CTX_PSP     32
-
-#define INT_CONTEXT   0
-#define FLOAT_CONTEXT 4
+#include "tpl_regs_offsets.h"
 
 /*=============================================================================
  * tpl_save_context_under_it is used to save the context of the running task.
@@ -100,6 +89,7 @@
  *
  * r0 contains a pointer to the static descriptor of the running task.
  * r1-r3 are working registers
+ *
  */
 
 .global tpl_save_context_under_it
@@ -140,6 +130,9 @@ tpl_save_context_under_it:
  *
  * r0 contains a pointer to the static descriptor of the running task.
  * r1-r3 are working registers
+ *
+ * ** it SHOULD return LR final value in r0 **
+ * LR should be 0xFFFFFFFD, as the context does not use any FPU
  */
 
 .global tpl_load_context_under_it
@@ -170,7 +163,9 @@ tpl_load_context_under_it:
     ldr r2,[r1,#CTX_PSP]
     msr psp,r2
 
-    bx  lr
+    ldr r0, =0xFFFFFFFD
+
+    bx   lr
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"
