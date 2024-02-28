@@ -9,6 +9,7 @@ IMPLEMENTATION thumb2_ressource {
   };
 
   ISR [] {
+    BOOLEAN USEFLOAT = FALSE;
     #include <interruptSources.oil>
   };
 

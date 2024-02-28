@@ -21,7 +21,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 
 TASK(blink)
 {
-	GPIOB->ODR ^= GPIO_ODR_OD3;	//toggle user led.
+	digitalToggle(GPIOB,3);	//toggle user led.
 	TerminateTask();
 }
 #define APP_Task_blink_STOP_SEC_CODE
