@@ -46,7 +46,7 @@ tpl_primary_irq_handler_% !handlerSource %:
      *     Load in r0 the pointer to the static descriptor of the running task
      *     r0 already points to tpl_kern (from stage 4)
      */
-    ldr  r0,[r0,#TPL_KERN_OFFSET_S_RUNNING]
+    ldr  r0,[r2,#TPL_KERN_OFFSET_S_RUNNING]
     bl   tpl_save_context_under_it
 
     /*-------------------------------------------------------------------------

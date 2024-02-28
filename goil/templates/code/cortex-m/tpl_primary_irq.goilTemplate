@@ -86,10 +86,6 @@ end foreach
  *
  * @section infos File informations
  *
- * $$Date$$
- * $$Rev$$
- * $$Author$$
- * $$URL$$
  */
 
 .syntax unified
