@@ -303,6 +303,7 @@ if OS::STATUS == "EXTENDED" then%
  */
 #define TPL_OPTIMIZE_TICKS % !yesNo(exists OS::OPTIMIZETICKS default (false)) %
 %
+template if exists tpl_library_defines_h
 template if exists custom_app_define_h
 %
 /* End of file TPL_APP_DEFINE_H */
