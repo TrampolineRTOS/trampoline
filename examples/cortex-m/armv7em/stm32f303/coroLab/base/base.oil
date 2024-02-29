@@ -24,6 +24,7 @@ CPU blink {
 			APP_CPPSRC = "buttonTasks.cpp";
 			APP_NAME = "base.elf";
 			CFLAGS	= "-Os -fstack-usage -Wno-strict-aliasing";
+			CPPFLAGS = " -Wno-register";
 			LIBRARY = coroBoard;
 			LDFLAGS = "-Map=blink.map";
 			COMPILER = "arm-none-eabi-gcc";

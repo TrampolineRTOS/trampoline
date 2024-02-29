@@ -217,12 +217,20 @@ end foreach
 
 let GLOBAL_LIB_PATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH + "/libraries/"
 
+# Build the set of libraries paths
+# This is to prevent multiple instances of the same path.
+let LIB_PATH_SET := @! !
 foreach library in exists USEDLIB default ( @() ) do
-  if library::GLOBAL == true then%
-includeDirs += ["-I","% !GLOBAL_LIB_PATH + library::PATH %"]%
-  else%
-includeDirs += ["-I","% !MACHINESPATH + "/" + library::PATH %"]%
+  if library::GLOBAL == true then
+    let LIB_PATH_SET := LIB_PATH_SET + (GLOBAL_LIB_PATH + library::PATH)
+  else
+    let LIB_PATH_SET := LIB_PATH_SET + (MACHINESPATH + "/" + library::PATH)
   end if
+end foreach
+# Output the libraries paths
+foreach libPath in LIB_PATH_SET do
+%
+includeDirs += ["-I","% !libPath %"]%
 end foreach
 %
 if with_ioc:
