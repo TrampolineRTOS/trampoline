@@ -2,6 +2,10 @@
 #include "serial.h"
 #include "tpl_app_define.h" /* buffer sizes */ 
 
+#ifndef SERIAL_TX_BUFFER_SIZE
+  #define SERIAL_TX_BUFFER_SIZE 16 
+#endif
+
 /* TX FIFO buffer
  * updated in interrupt handler
  */
