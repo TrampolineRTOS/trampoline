@@ -129,7 +129,7 @@ tpl_sc_handler:
     /*-------------------------------------------------------------------------
      * 0 - registers R0-R3 have to be restored from the stack. First the PSP
      *     (process stack pointer) is copied in R0. Second registers R0-R3 are 
-     * loaded from the process stack
+     *     loaded from the process stack
      */
     mrs   r0,psp
     ldmia r0,{r0, r1, r2, r3}
