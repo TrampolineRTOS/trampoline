@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  AC_GALGAS_sortedlist : base class for GALGAS sorted list
 //
@@ -16,27 +16,27 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "AC_GALGAS_root.h"
-#include "typeComparisonResult.h"
+#include "galgas2/AC_GALGAS_root.h"
+#include "galgas2/typeComparisonResult.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_uint ;
-class Compiler ;
+class C_Compiler ;
 class cSharedSortedListRoot ;
-class String ;
+class C_String ;
 class C_galgas_type_descriptor ;
 class capSortedListElement ;
 class cSortedListNode ;
 class capCollectionElementArray ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class AC_GALGAS_sortedlist : public AC_GALGAS_root {
 //--------------------------------- Private data member
@@ -65,7 +65,7 @@ class AC_GALGAS_sortedlist : public AC_GALGAS_root {
   public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Implementation of reader 'description'
-  public: virtual void description (String & ioString, const int32_t inIndentation) const override ;
+  public: virtual void description (C_String & ioString, const int32_t inIndentation) const override ;
 
 //--- Enumeration handling
   protected: void populateEnumerationArray (capCollectionElementArray & inEnumerationArray) const ;
@@ -78,11 +78,11 @@ class AC_GALGAS_sortedlist : public AC_GALGAS_root {
 
 //--------------------------------- Method Implementation
   protected: void smallestObjectAttributeList (capSortedListElement & outAttributeArray,
-                                                Compiler * inCompiler
+                                                C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) const ;
 
   protected: void greatestObjectAttributeList (capSortedListElement & outAttributeArray,
-                                                Compiler * inCompiler
+                                                C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) const ;
 
 //--------------------------------- Insulate
@@ -90,11 +90,11 @@ class AC_GALGAS_sortedlist : public AC_GALGAS_root {
 
 //--------------------------------- Modifier Implementation
   protected: void removeSmallestObject (capSortedListElement & outAttributeArray,
-                                         Compiler * inCompiler
+                                         C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) ;
 
   protected: void removeGreatestObject (capSortedListElement & outAttributeArray,
-                                         Compiler * inCompiler
+                                         C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Compare
@@ -108,4 +108,4 @@ class AC_GALGAS_sortedlist : public AC_GALGAS_root {
 
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

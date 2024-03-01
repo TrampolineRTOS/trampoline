@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  AC_GALGAS_enumAssociatedValues : class for enum associated values                            
 //
@@ -16,29 +16,29 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "SharedObject.h"
-#include "AC_GALGAS_root.h"
-#include "typeComparisonResult.h"
+#include "utilities/C_SharedObject.h"
+#include "galgas2/AC_GALGAS_root.h"
+#include "galgas2/typeComparisonResult.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-class cEnumAssociatedValues : public SharedObject {
+class cEnumAssociatedValues : public C_SharedObject {
   public: cEnumAssociatedValues (LOCATION_ARGS) ;
 
-  public: virtual void description (class String & ioString,
+  public: virtual void description (class C_String & ioString,
                                      const int32_t inIndentation) const = 0 ;
   public: virtual typeComparisonResult compare (const cEnumAssociatedValues * inOperand) const = 0 ;
   
   public: virtual ~ cEnumAssociatedValues (void) {}
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class AC_GALGAS_enumAssociatedValues {
   private: const cEnumAssociatedValues * mSharedPtr ;
@@ -57,7 +57,7 @@ class AC_GALGAS_enumAssociatedValues {
   public: virtual ~ AC_GALGAS_enumAssociatedValues (void) ;
 
 //---
-  public: VIRTUAL_IN_DEBUG void description (String & ioString, const int32_t inIndentation) const ;
+  public: VIRTUAL_IN_DEBUG void description (C_String & ioString, const int32_t inIndentation) const ;
 
 
   public: VIRTUAL_IN_DEBUG typeComparisonResult objectCompare (const AC_GALGAS_enumAssociatedValues & inOperand) const ;
@@ -67,4 +67,4 @@ class AC_GALGAS_enumAssociatedValues {
   }
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

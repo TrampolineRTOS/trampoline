@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  capCollectionElementArray                                                                    
 //
@@ -16,19 +16,19 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "capCollectionElement.h"
+#include "galgas2/capCollectionElement.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-class Compiler ;
+class C_Compiler ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class capCollectionElementArray final {
 //--- Default constructor
@@ -52,28 +52,28 @@ class capCollectionElementArray final {
 
   public: void insertObjectAtIndex (const capCollectionElement & inObject,
                                      const uint32_t inInsertionIndex,
-                                     Compiler * inCompiler
+                                     C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 
   public: void removeObjectAtIndex (capCollectionElement & outObject,
                                      const uint32_t inInsertionIndex,
-                                     Compiler * inCompiler
+                                     C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 
   public: void removeFirstObject (capCollectionElement & outObject,
-                                   Compiler * inCompiler
+                                   C_Compiler * inCompiler
                                    COMMA_LOCATION_ARGS) ;
 
   public: void readFirstObject (capCollectionElement & outObject,
-                                 Compiler * inCompiler
+                                 C_Compiler * inCompiler
                                  COMMA_LOCATION_ARGS) const ;
 
   public: void removeLastObject (capCollectionElement & outObject,
-                                  Compiler * inCompiler
+                                  C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
   public: void readLastObject (capCollectionElement & outObject,
-                                Compiler * inCompiler
+                                C_Compiler * inCompiler
                                 COMMA_LOCATION_ARGS) const ;
 
   public: void replaceObjectAtIndex (const capCollectionElement & inObject,
@@ -112,27 +112,27 @@ class capCollectionElementArray final {
   public: void subListToIndex (capCollectionElementArray & outSubList,
                                 const uint32_t inIndex,
                                 bool & outOk,
-                                Compiler * inCompiler
+                                C_Compiler * inCompiler
                                 COMMA_LOCATION_ARGS) const ;
 
   public: void subListWithRange (capCollectionElementArray & ioSubList,
                                   const uint32_t inStartIndex,
                                   const uint32_t inLength,
                                   bool & outOk,
-                                  Compiler * inCompiler
+                                  C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) const ;
 
   public: void subListFromIndex (capCollectionElementArray & ioSubList,
                                   const uint32_t inIndex,
                                   bool & outOk,
-                                  Compiler * inCompiler
+                                  C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) const ;
 
 //--- Compare
   public: typeComparisonResult compareCollectionElementArray (const capCollectionElementArray & inOperand) const ;
 
 //--- Description
-  public: void description (String & ioString,
+  public: void description (C_String & ioString,
                              const int32_t inIndentation) const ;
 
 //--- Internal
@@ -142,4 +142,4 @@ class capCollectionElementArray final {
   private: class capCollectionRoot * mSharedRoot ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

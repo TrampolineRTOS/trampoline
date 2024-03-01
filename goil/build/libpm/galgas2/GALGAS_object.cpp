@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  GALGAS_object : Base class for GALGAS object handling
 //
@@ -16,19 +16,19 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-predefined-types.h"
-#include "cPtr_object.h"
+#include "galgas2/cPtr_object.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_object::GALGAS_object (void) :
 AC_GALGAS_root (),
 mSharedObject (nullptr) {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_object::GALGAS_object (AC_GALGAS_root * inObjectPointer
                               COMMA_LOCATION_ARGS) :
@@ -37,7 +37,7 @@ mSharedObject (nullptr) {
   macroMyNew (mSharedObject, cPtr_object (inObjectPointer COMMA_THERE)) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_object::GALGAS_object (const GALGAS_object & inSource) :
 AC_GALGAS_root (),
@@ -45,26 +45,26 @@ mSharedObject (nullptr) {
   macroAssignSharedObject (mSharedObject, inSource.mSharedObject) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_object & GALGAS_object::operator = (const GALGAS_object & inSource) {
   macroAssignSharedObject (mSharedObject, inSource.mSharedObject) ;
   return * this ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_object::~ GALGAS_object (void) {
   macroDetachSharedObject (mSharedObject) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_object::drop (void) {
   macroDetachSharedObject (mSharedObject) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 const AC_GALGAS_root * GALGAS_object::embeddedObject (void) const {
   const AC_GALGAS_root * result = nullptr ;
@@ -74,13 +74,13 @@ const AC_GALGAS_root * GALGAS_object::embeddedObject (void) const {
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void GALGAS_object::description (String & /* ioString */,
+void GALGAS_object::description (C_String & /* ioString */,
                                  const int32_t /* inIndentation */) const {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_object::objectCompare (const GALGAS_object & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -97,7 +97,7 @@ typeComparisonResult GALGAS_object::objectCompare (const GALGAS_object & inOpera
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_type GALGAS_object::getter_objectStaticType (UNUSED_LOCATION_ARGS) const {
   GALGAS_type result ;
@@ -107,7 +107,7 @@ GALGAS_type GALGAS_object::getter_objectStaticType (UNUSED_LOCATION_ARGS) const 
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_type GALGAS_object::getter_objectDynamicType (UNUSED_LOCATION_ARGS) const {
   GALGAS_type result ;
@@ -117,4 +117,4 @@ GALGAS_type GALGAS_object::getter_objectDynamicType (UNUSED_LOCATION_ARGS) const
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

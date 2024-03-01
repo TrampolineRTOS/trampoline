@@ -3,15 +3,15 @@
 //  galgas-developer
 //
 //  Created by Pierre Molinaro on 22/05/14.
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "String-class.h"
+#include "strings/C_String.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class C_RelationSingleType final {
 //--- Internal class
@@ -21,20 +21,20 @@ class C_RelationSingleType final {
   public: inline C_RelationSingleType (void) : mTypePtr (nullptr) {}
 
 //--- Constructor with an enumerated type
-  public: C_RelationSingleType (const String & inTypeName,
-                                 const TC_UniqueArray <String> & inConstantNameArray
+  public: C_RelationSingleType (const C_String & inTypeName,
+                                 const TC_UniqueArray <C_String> & inConstantNameArray
                                  COMMA_LOCATION_ARGS) ;
 
 //--- Constructor with an unsigned type
-  public: C_RelationSingleType (const String & inTypeName,
+  public: C_RelationSingleType (const C_String & inTypeName,
                                  const uint32_t inValueCount // [0, inValueCount - 1]
                                  COMMA_LOCATION_ARGS) ;
 
 //--- Accessors
-  public: String typeName (void) const ;
+  public: C_String typeName (void) const ;
   public: uint32_t BDDBitCount (void) const ;
   public: uint32_t constantCount (void) const ;
-  public: String nameForValue (const uint32_t inIndex
+  public: C_String nameForValue (const uint32_t inIndex
                                   COMMA_LOCATION_ARGS) const ;
 
 //--- Destructor
@@ -53,4 +53,4 @@ class C_RelationSingleType final {
   private: cType * mTypePtr ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

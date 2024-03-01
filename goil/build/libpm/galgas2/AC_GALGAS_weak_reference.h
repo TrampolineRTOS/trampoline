@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  AC_GALGAS_weak_reference : base class for reference class objects
 //
@@ -16,23 +16,23 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "AC_GALGAS_root.h"
+#include "galgas2/AC_GALGAS_root.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-class String ;
+class C_String ;
 class C_galgas_type_descriptor ;
 class AC_GALGAS_reference_class ;
 class cPtr_weakReference_proxy ;
 class acStrongPtr_class ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class AC_GALGAS_weak_reference : public AC_GALGAS_root { // AC_GALGAS_weak_reference est une classe abstraite
 //--- Properties
@@ -62,8 +62,8 @@ class AC_GALGAS_weak_reference : public AC_GALGAS_root { // AC_GALGAS_weak_refer
 //--- Dynamic Type Descriptor
   public: virtual const C_galgas_type_descriptor * dynamicTypeDescriptor (void) const ;
 
-  public: virtual void description (String & ioString,
+  public: virtual void description (C_String & ioString,
                                     const int32_t inIndentation) const ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

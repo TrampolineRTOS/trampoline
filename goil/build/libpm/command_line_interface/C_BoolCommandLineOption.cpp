@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  Generic Boolean Command Line Interface Option
 //
@@ -16,42 +16,48 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "C_BoolCommandLineOption.h"
-#include "String-class.h"
+#include "command_line_interface/C_BoolCommandLineOption.h"
+#include "strings/C_String.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <string.h>
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 static C_BoolCommandLineOption * gFirstBoolCommand ;
+static C_BoolCommandLineOption * gLastBoolCommand ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-C_BoolCommandLineOption::C_BoolCommandLineOption (const String & inDomainName,
-                                                  const String & inIdentifier,
+C_BoolCommandLineOption::C_BoolCommandLineOption (const char * inDomainName,
+                                                  const char * inIdentifier,
                                                   const char inChar,
-                                                  const String & inString,
-                                                  const String & inComment,
+                                                  const char * inString,
+                                                  const char * inComment,
                                                   const bool inVisibleInGalgas) :
 C_CommandLineOption (inDomainName, inIdentifier, inChar, inString, inComment),
-mNext (gFirstBoolCommand),
+mNext (nullptr),
 mValue (false),
 mVisibleInGalgas (inVisibleInGalgas) {
-  gFirstBoolCommand = this ;
+  if (nullptr == gFirstBoolCommand) {
+    gFirstBoolCommand = this ;
+  }else{
+    gLastBoolCommand->mNext = this ;
+  }
+  gLastBoolCommand = this ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void C_BoolCommandLineOption::setBoolOptionForCommandChar (const utf32 inCommandChar,
+void C_BoolCommandLineOption::setBoolOptionForCommandChar (const char inCommandChar,
                                                            bool & outFound) {
   outFound = false ;
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
   while ((p != nullptr) && ! outFound) {
-    if (uint32_t (p->mCommandChar) == UNICODE_VALUE (inCommandChar)) {
+    if (p->mCommandChar == inCommandChar) {
       outFound = true ;
       p->mValue = true ;
     }
@@ -59,18 +65,18 @@ void C_BoolCommandLineOption::setBoolOptionForCommandChar (const utf32 inCommand
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void C_BoolCommandLineOption::setBoolOptionForCommandString (const String & inCommandString,
+void C_BoolCommandLineOption::setBoolOptionForCommandString (const char * inCommandString,
                                                              bool & outFound,
                                                              bool & outCocoaOutput) {
-  outFound = inCommandString == "cocoa" ;
+  outFound = strcmp (inCommandString, "cocoa") == 0 ;
   if (outFound) {
     outCocoaOutput = true ;
   }
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
   while ((p != nullptr) && ! outFound) {
-    if (p->mCommandString == inCommandString) {
+    if (strcmp (p->mCommandString, inCommandString) == 0) {
       outFound = true ;
       p->mValue = true ;
     }
@@ -78,7 +84,7 @@ void C_BoolCommandLineOption::setBoolOptionForCommandString (const String & inCo
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_BoolCommandLineOption::printUsageOfBoolOptions (void) {
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
@@ -87,44 +93,41 @@ void C_BoolCommandLineOption::printUsageOfBoolOptions (void) {
     if (c != '\0') {
       printf (" [-%c]", c) ;
     }
-    if (p->mCommandString.length () > 0) {
-      printf (" [--%s]", p->mCommandString.cString ()) ;
+    const char * s = p->mCommandString ;
+    if (s [0] != 0) {
+      printf (" [--%s]", s) ;
     }
     p = p->mNext ;
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_BoolCommandLineOption::printBoolOptions (void) {
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
   while (p != nullptr) {
     if (p->mCommandChar != '\0') {
-      gCout.setForeColor (kBlueForeColor) ;
-      gCout.setTextAttribute (kBoldTextAttribute) ;
-      gCout.appendCString ("-") ;
-      gCout.appendASCIIChar (p->mCommandChar) ;
-      gCout.setTextAttribute (kAllAttributesOff) ;
-      gCout.appendNewLine () ;
+      co.setForeColor (kBlueForeColor) ;
+      co.setTextAttribute (kBoldTextAttribute) ;
+      co << "-" << cStringWithCharacter (p->mCommandChar) ;
+      co.setTextAttribute (kAllAttributesOff) ;
+      co << "\n" ;
     }
-    if (p->mCommandString.length () > 0) {
-      gCout.setForeColor (kBlueForeColor) ;
-      gCout.setTextAttribute (kBoldTextAttribute) ;
-      gCout.appendCString ("--") ;
-      gCout.appendString (p->mCommandString) ;
-      gCout.setTextAttribute (kAllAttributesOff) ;
-      gCout.appendNewLine () ;
+    if (p->mCommandString [0] != '\0') {
+      co.setForeColor (kBlueForeColor) ;
+      co.setTextAttribute (kBoldTextAttribute) ;
+      co << "--" << p->mCommandString ;
+      co.setTextAttribute (kAllAttributesOff) ;
+      co << "\n" ;
     }
-    gCout.appendCString ("    ") ;
-    gCout.appendString (p->mComment) ;
-    gCout.appendNewLine () ;
+    co << "    " << p->mComment << "\n" ;
     p = p->mNext ;
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void C_BoolCommandLineOption::getBoolOptionNameList (TC_UniqueArray <String> & outArray) {
+void C_BoolCommandLineOption::getBoolOptionNameList (TC_UniqueArray <C_String> & outArray) {
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
   while (p != nullptr) {
     if (p->mVisibleInGalgas) {
@@ -135,10 +138,10 @@ void C_BoolCommandLineOption::getBoolOptionNameList (TC_UniqueArray <String> & o
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-utf32 C_BoolCommandLineOption::getBoolOptionInvocationLetter (const String & inDomainName,
-                                                              const String & inIdentifier) {
+utf32 C_BoolCommandLineOption::getBoolOptionInvocationLetter (const C_String & inDomainName,
+                                                              const C_String & inIdentifier) {
   utf32 result = TO_UNICODE (0) ;
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
   bool found = false ;
@@ -150,11 +153,11 @@ utf32 C_BoolCommandLineOption::getBoolOptionInvocationLetter (const String & inD
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-String C_BoolCommandLineOption::getBoolOptionInvocationString (const String & inDomainName,
-                                                               const String & inIdentifier) {
-  String result ;
+C_String C_BoolCommandLineOption::getBoolOptionInvocationString (const C_String & inDomainName,
+                                                                 const C_String & inIdentifier) {
+  C_String result ;
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
   bool found = false ;
   while ((p != nullptr) && not found) {
@@ -165,11 +168,11 @@ String C_BoolCommandLineOption::getBoolOptionInvocationString (const String & in
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-String C_BoolCommandLineOption::getBoolOptionCommentString (const String & inDomainName,
-                                                              const String & inIdentifier) {
-  String result ;
+C_String C_BoolCommandLineOption::getBoolOptionCommentString (const C_String & inDomainName,
+                                                              const C_String & inIdentifier) {
+  C_String result ;
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
   bool found = false ;
   while ((p != nullptr) && not found) {
@@ -180,10 +183,10 @@ String C_BoolCommandLineOption::getBoolOptionCommentString (const String & inDom
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-bool C_BoolCommandLineOption::getBoolOptionValue (const String & inDomainName,
-                                                  const String & inIdentifier) {
+bool C_BoolCommandLineOption::getBoolOptionValue (const C_String & inDomainName,
+                                                  const C_String & inIdentifier) {
   bool result = false ;
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
   bool found = false ;
@@ -195,10 +198,10 @@ bool C_BoolCommandLineOption::getBoolOptionValue (const String & inDomainName,
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void C_BoolCommandLineOption::setBoolOptionValue (const String & inDomainName,
-                                                  const String & inIdentifier,
+void C_BoolCommandLineOption::setBoolOptionValue (const C_String & inDomainName,
+                                                  const C_String & inIdentifier,
                                                   const bool inValue) {
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
   bool found = false ;
@@ -211,4 +214,4 @@ void C_BoolCommandLineOption::setBoolOptionValue (const String & inDomainName,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

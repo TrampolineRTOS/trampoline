@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  scanner_actions: hand-coded routines for building attribute values during scanning.
 //
@@ -16,32 +16,32 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "scanner_actions.h"
-#include "unicode_character_cpp.h"
-#include "BigSigned.h"
+#include "galgas2/scanner_actions.h"
+#include "strings/unicode_character_cpp.h"
+#include "big-integers/C_BigInt.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <errno.h>
 #include <ctype.h>
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  #define LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS , inLexique.sourceText ().sourceFilePath ().cString (), inLexique.lineNumber ()
+  #define LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS , inLexique.sourceText ().sourceFilePath ().cString (HERE), inLexique.lineNumber ()
 #else
   #define LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //   P R E D E F I N E D    S C A N N E R    A C T I O N S
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterHexDigitIntoASCIIcharacter (Lexique & inLexique,
+void scanner_routine_enterHexDigitIntoASCIIcharacter (C_Lexique & inLexique,
                                                       utf32 & ioValue,
                                                       const utf32 inChar,
                                                       const char * inErrorCodeGreaterThan255,
@@ -65,9 +65,9 @@ void scanner_routine_enterHexDigitIntoASCIIcharacter (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterDigitIntoASCIIcharacter (Lexique & inLexique,
+void scanner_routine_enterDigitIntoASCIIcharacter (C_Lexique & inLexique,
                                                    utf32 & ioValue,
                                                    const utf32 inChar,
                                                    const char * inErrorCodeGreaterThan255,
@@ -86,21 +86,21 @@ void scanner_routine_enterDigitIntoASCIIcharacter (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterCharacterIntoString (Lexique & /* inLexique */,
-                                               String & ioString,
+void scanner_routine_enterCharacterIntoString (C_Lexique & /* inLexique */,
+                                               C_String & ioString,
                                                const utf32 inChar) {
-  ioString.appendChar (inChar) ;
+  ioString.appendUnicodeCharacter (inChar COMMA_HERE) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertStringToDouble (Lexique & inLexique,
-                                            const String & inString,
+void scanner_routine_convertStringToDouble (C_Lexique & inLexique,
+                                            const C_String & inString,
                                             double & outValue,
                                             const char * inConversionError) {
-  const double value = ::strtod (inString.cString (), nullptr) ;
+  const double value = ::strtod (inString.cString (HERE), nullptr) ;
   if (errno == ERANGE) {
     inLexique.lexicalError (inConversionError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
   }else{
@@ -108,35 +108,35 @@ void scanner_routine_convertStringToDouble (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterCharacterIntoCharacter (Lexique & /* inLexique */,
+void scanner_routine_enterCharacterIntoCharacter (C_Lexique & /* inLexique */,
                                                   utf32 & outCharacter,
                                                   const utf32 inCharacter) {
   outCharacter = inCharacter ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-utf32 scanner_function_toLower (Lexique & /* inLexique */, const utf32 c) {
+utf32 scanner_function_toLower (C_Lexique & /* inLexique */, const utf32 c) {
   return unicodeToLower (c) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-utf32 scanner_function_toUpper (Lexique & /* inLexique */, const utf32 c) {
+utf32 scanner_function_toUpper (C_Lexique & /* inLexique */, const utf32 c) {
   return unicodeToUpper (c) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Predefined Scanner Actions (from GALGAS 1.4.0)
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_negateSInt (Lexique & inLexique,
+void scanner_routine_negateSInt (C_Lexique & inLexique,
                                  int32_t & ioValue,
                                  const char * inNumberTooLargeError) {
   if (ioValue == INT32_MIN) {
@@ -146,9 +146,9 @@ void scanner_routine_negateSInt (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_negateSInt64 (Lexique & inLexique,
+void scanner_routine_negateSInt64 (C_Lexique & inLexique,
                                    int64_t & ioValue,
                                    const char * inNumberTooLargeError) {
   if (ioValue == INT64_MIN) {
@@ -158,9 +158,9 @@ void scanner_routine_negateSInt64 (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertUIntToSInt (Lexique & inLexique,
+void scanner_routine_convertUIntToSInt (C_Lexique & inLexique,
                                         const uint32_t inValue,
                                         int32_t & outValue,
                                         const char * inNumberTooLargeError) {
@@ -171,9 +171,9 @@ void scanner_routine_convertUIntToSInt (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertUInt64ToSInt64 (Lexique & inLexique,
+void scanner_routine_convertUInt64ToSInt64 (C_Lexique & inLexique,
                                             const uint64_t inValue,
                                             int64_t & outValue,
                                             const char * inNumberTooLargeError) {
@@ -184,9 +184,9 @@ void scanner_routine_convertUInt64ToSInt64 (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterDigitIntoUInt (Lexique & inLexique,
+void scanner_routine_enterDigitIntoUInt (C_Lexique & inLexique,
                                          const utf32 inCharacter,
                                          uint32_t & inValue,
                                          const char * inNumberTooLargeError,
@@ -206,9 +206,9 @@ void scanner_routine_enterDigitIntoUInt (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterDigitIntoUInt64 (Lexique & inLexique,
+void scanner_routine_enterDigitIntoUInt64 (C_Lexique & inLexique,
                                            const utf32 inCharacter,
                                            uint64_t & ioValue,
                                            const char * inNumberTooLargeError,
@@ -228,9 +228,9 @@ void scanner_routine_enterDigitIntoUInt64 (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterHexDigitIntoUInt (Lexique & inLexique,
+void scanner_routine_enterHexDigitIntoUInt (C_Lexique & inLexique,
                                             const utf32 inCharacter,
                                             uint32_t & ioValue,
                                             const char * inNumberTooLargeError,
@@ -257,9 +257,9 @@ void scanner_routine_enterHexDigitIntoUInt (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterHexDigitIntoUInt64 (Lexique & inLexique,
+void scanner_routine_enterHexDigitIntoUInt64 (C_Lexique & inLexique,
                                               const utf32 inCharacter,
                                               uint64_t & ioValue,
                                               const char * inNumberTooLargeError,
@@ -286,10 +286,10 @@ void scanner_routine_enterHexDigitIntoUInt64 (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertDecimalStringIntoUInt (Lexique & inLexique,
-                                                   const String & inDecimalString,
+void scanner_routine_convertDecimalStringIntoUInt (C_Lexique & inLexique,
+                                                   const C_String & inDecimalString,
                                                    uint32_t & outValue,
                                                    const char * inNumberTooLargeError,
                                                    const char * inCharacterIsNotDecimalDigitError) {
@@ -297,7 +297,7 @@ void scanner_routine_convertDecimalStringIntoUInt (Lexique & inLexique,
   bool ok = true ;
   const uint32_t max = UINT32_MAX / 10 ;
   for (int32_t i=0 ; (i<inDecimalString.length ()) && ok ; i++) {
-    const utf32 c = inDecimalString.charAtIndex (i COMMA_HERE) ;
+    const utf32 c = inDecimalString (i COMMA_HERE) ;
     if ((UNICODE_VALUE (c) < '0') || (UNICODE_VALUE (c) > '9')) {
       inLexique.lexicalError (inCharacterIsNotDecimalDigitError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
       ok = false ;
@@ -316,17 +316,17 @@ void scanner_routine_convertDecimalStringIntoUInt (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertDecimalStringIntoSInt (Lexique & inLexique,
-                                                   const String & inDecimalString,
+void scanner_routine_convertDecimalStringIntoSInt (C_Lexique & inLexique,
+                                                   const C_String & inDecimalString,
                                                    int32_t & outValue,
                                                    const char * inNumberTooLargeError,
                                                    const char * inCharacterIsNotDecimalDigitError) {
   outValue = 0 ;
   bool ok = true ;
   for (int32_t i=0 ; (i<inDecimalString.length ()) && ok ; i++) {
-    const utf32 c = inDecimalString.charAtIndex (i COMMA_HERE) ;
+    const utf32 c = inDecimalString (i COMMA_HERE) ;
     if ((UNICODE_VALUE (c) < '0') || (UNICODE_VALUE (c) > '9')) {
       inLexique.lexicalError (inCharacterIsNotDecimalDigitError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
     }else{
@@ -345,17 +345,17 @@ void scanner_routine_convertDecimalStringIntoSInt (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertDecimalStringIntoUInt64 (Lexique & inLexique,
-                                                     const String & inDecimalString,
+void scanner_routine_convertDecimalStringIntoUInt64 (C_Lexique & inLexique,
+                                                     const C_String & inDecimalString,
                                                      uint64_t & outValue,
                                                      const char * inNumberTooLargeError,
                                                      const char * inCharacterIsNotDecimalDigitError) {
   outValue = 0 ;
   bool ok = true ;
   for (int32_t i=0 ; (i<inDecimalString.length ()) && ok ; i++) {
-    const utf32 c = inDecimalString.charAtIndex (i COMMA_HERE) ;
+    const utf32 c = inDecimalString (i COMMA_HERE) ;
     if ((UNICODE_VALUE (c) < '0') || (UNICODE_VALUE (c) > '9')) {
       inLexique.lexicalError (inCharacterIsNotDecimalDigitError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
     }else{
@@ -374,17 +374,17 @@ void scanner_routine_convertDecimalStringIntoUInt64 (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertDecimalStringIntoSInt64 (Lexique & inLexique,
-                                                     const String & inDecimalString,
+void scanner_routine_convertDecimalStringIntoSInt64 (C_Lexique & inLexique,
+                                                     const C_String & inDecimalString,
                                                      int64_t & outValue,
                                                      const char * inNumberTooLargeError,
                                                      const char * inCharacterIsNotDecimalDigitError) {
   outValue = 0 ;
   bool ok = true ;
   for (int32_t i=0 ; (i<inDecimalString.length ()) && ok ; i++) {
-    const utf32 c = inDecimalString.charAtIndex (i COMMA_HERE) ;
+    const utf32 c = inDecimalString (i COMMA_HERE) ;
     if ((UNICODE_VALUE (c) < '0') || (UNICODE_VALUE (c) > '9')) {
       inLexique.lexicalError (inCharacterIsNotDecimalDigitError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
     }else{
@@ -403,15 +403,15 @@ void scanner_routine_convertDecimalStringIntoSInt64 (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Predefined Scanner Actions (from GALGAS 1.4.3)
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterBinDigitIntoUInt (Lexique & inLexique,
+void scanner_routine_enterBinDigitIntoUInt (C_Lexique & inLexique,
                                             const utf32 inCharacter,
                                             uint32_t & inValue,
                                             const char * inNumberTooLargeError,
@@ -429,9 +429,9 @@ void scanner_routine_enterBinDigitIntoUInt (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterBinDigitIntoUInt64 (Lexique & inLexique,
+void scanner_routine_enterBinDigitIntoUInt64 (C_Lexique & inLexique,
                                               const utf32 inCharacter,
                                               uint64_t & ioValue,
                                               const char * inNumberTooLargeError,
@@ -449,15 +449,15 @@ void scanner_routine_enterBinDigitIntoUInt64 (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Predefined Scanner Actions (from GALGAS 1.4.7)
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterOctDigitIntoUInt (Lexique & inLexique,
+void scanner_routine_enterOctDigitIntoUInt (C_Lexique & inLexique,
                                             const utf32 inCharacter,
                                             uint32_t & inValue,
                                             const char * inNumberTooLargeError,
@@ -475,9 +475,9 @@ void scanner_routine_enterOctDigitIntoUInt (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterOctDigitIntoUInt64 (Lexique & inLexique,
+void scanner_routine_enterOctDigitIntoUInt64 (C_Lexique & inLexique,
                                               const utf32 inCharacter,
                                               uint64_t & ioValue,
                                               const char * inNumberTooLargeError,
@@ -495,15 +495,15 @@ void scanner_routine_enterOctDigitIntoUInt64 (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Predefined Scanner Actions (from GALGAS 1.6.9)
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_multiplyUInt (Lexique & inLexique,
+void scanner_routine_multiplyUInt (C_Lexique & inLexique,
                                    const uint32_t inFactor,
                                    uint32_t & ioValue,
                                    const char * inResultTooLargeError) {
@@ -517,9 +517,9 @@ void scanner_routine_multiplyUInt (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_multiplyUInt64 (Lexique & inLexique,
+void scanner_routine_multiplyUInt64 (C_Lexique & inLexique,
                                      const uint64_t inFactor,
                                      uint64_t & ioValue,
                                      const char * inResultTooLargeError) {
@@ -537,16 +537,16 @@ void scanner_routine_multiplyUInt64 (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Predefined Scanner Actions (from GALGAS 1.7.7)
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertHexStringIntoUInt (Lexique & inLexique,
-                                               const String & inHexString,
+void scanner_routine_convertHexStringIntoUInt (C_Lexique & inLexique,
+                                               const C_String & inHexString,
                                                uint32_t & outValue,
                                                const char * inNumberTooLargeError,
                                                const char * inCharacterIsNotHexDigitError) {
@@ -554,7 +554,7 @@ void scanner_routine_convertHexStringIntoUInt (Lexique & inLexique,
   bool ok = true ;
   const uint32_t max = UINT32_MAX >> 4 ;
   for (int32_t i=0 ; (i<inHexString.length ()) && ok ; i++) {
-    const utf32 c = inHexString.charAtIndex (i COMMA_HERE) ;
+    const utf32 c = inHexString (i COMMA_HERE) ;
     if (outValue > max) {
       inLexique.lexicalError (inNumberTooLargeError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
       ok = false ;
@@ -574,10 +574,10 @@ void scanner_routine_convertHexStringIntoUInt (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertHexStringIntoUInt64 (Lexique & inLexique,
-                                                 const String & inHexString,
+void scanner_routine_convertHexStringIntoUInt64 (C_Lexique & inLexique,
+                                                 const C_String & inHexString,
                                                  uint64_t & outValue,
                                                  const char * inNumberTooLargeError,
                                                  const char * inCharacterIsNotHexDigitError) {
@@ -585,7 +585,7 @@ void scanner_routine_convertHexStringIntoUInt64 (Lexique & inLexique,
   bool ok = true ;
   const uint64_t max = UINT64_MAX >> 4 ;
   for (int32_t i=0 ; (i<inHexString.length ()) && ok ; i++) {
-    const utf32 c = inHexString.charAtIndex (i COMMA_HERE) ;
+    const utf32 c = inHexString (i COMMA_HERE) ;
     if (outValue > max) {
       inLexique.lexicalError (inNumberTooLargeError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
       ok = false ;
@@ -605,10 +605,10 @@ void scanner_routine_convertHexStringIntoUInt64 (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertHexStringIntoSInt (Lexique & inLexique,
-                                               const String & inHexString,
+void scanner_routine_convertHexStringIntoSInt (C_Lexique & inLexique,
+                                               const C_String & inHexString,
                                                int32_t & outValue,
                                                const char * inNumberTooLargeError,
                                                const char * inCharacterIsNotHexDigitError) {
@@ -616,7 +616,7 @@ void scanner_routine_convertHexStringIntoSInt (Lexique & inLexique,
   bool ok = true ;
   const int32_t max = INT32_MAX >> 4 ;
   for (int32_t i=0 ; (i<inHexString.length ()) && ok ; i++) {
-    const utf32 c = inHexString.charAtIndex (i COMMA_HERE) ;
+    const utf32 c = inHexString (i COMMA_HERE) ;
     if (outValue > max) {
       inLexique.lexicalError (inNumberTooLargeError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
       ok = false ;
@@ -636,10 +636,10 @@ void scanner_routine_convertHexStringIntoSInt (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertHexStringIntoSInt64 (Lexique & inLexique,
-                                                 const String & inHexString,
+void scanner_routine_convertHexStringIntoSInt64 (C_Lexique & inLexique,
+                                                 const C_String & inHexString,
                                                  int64_t & outValue,
                                                  const char * inNumberTooLargeError,
                                                  const char * inCharacterIsNotHexDigitError) {
@@ -647,7 +647,7 @@ void scanner_routine_convertHexStringIntoSInt64 (Lexique & inLexique,
   bool ok = true ;
   const int64_t max = INT64_MAX >> 4 ;
   for (int32_t i=0 ; (i<inHexString.length ()) && ok ; i++) {
-    const utf32 c = inHexString.charAtIndex (i COMMA_HERE) ;
+    const utf32 c = inHexString (i COMMA_HERE) ;
     if (outValue > max) {
       inLexique.lexicalError (inNumberTooLargeError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
       ok = false ;
@@ -667,15 +667,15 @@ void scanner_routine_convertHexStringIntoSInt64 (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Predefined Scanner Actions (from GALGAS 1.8.3)
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertUnsignedNumberToUnicodeChar (Lexique & inLexique,
+void scanner_routine_convertUnsignedNumberToUnicodeChar (C_Lexique & inLexique,
                                                          uint32_t & ioValue,
                                                          utf32 & outUnicodeCharacter,
                                                          const char * inUnassignedUnicodeValueError) {
@@ -686,32 +686,32 @@ void scanner_routine_convertUnsignedNumberToUnicodeChar (Lexique & inLexique,
   ioValue = 0 ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertHTMLSequenceToUnicodeCharacter (Lexique & inLexique,
-                                                            String & ioStringValue,
+void scanner_routine_convertHTMLSequenceToUnicodeCharacter (C_Lexique & inLexique,
+                                                            C_String & ioStringValue,
                                                             utf32 & outUnicodeCharacter,
                                                             const char * inUnassignedHTMLSequenceError) {
   outUnicodeCharacter = unicodeCharacterFromHTMLSequence (ioStringValue) ;
   if (UNICODE_VALUE (outUnicodeCharacter) == 0) {
     inLexique.lexicalError (inUnassignedHTMLSequenceError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
   }
-  ioStringValue.removeAllKeepingCapacity () ;
+  ioStringValue.setLengthToZero () ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_codePointToUnicode (Lexique & inLexique,
-                                         const String & inElementString,
-                                         String & ioTemplateString) {
+void scanner_routine_codePointToUnicode (C_Lexique & inLexique,
+                                         const C_String & inElementString,
+                                         C_String & ioTemplateString) {
   if (inElementString.length () == 0) {
     inLexique.lexicalError ("the escape sequence '&#...;' contains no character(s)" COMMA_HERE) ;
-  }else if ((UNICODE_VALUE (inElementString.charAtIndex (0 COMMA_HERE)) == 'x') || (UNICODE_VALUE (inElementString.charAtIndex (0 COMMA_HERE)) == 'X')) {
+  }else if ((UNICODE_VALUE (inElementString (0 COMMA_HERE)) == 'x') || (UNICODE_VALUE (inElementString (0 COMMA_HERE)) == 'X')) {
     bool ok = true ;
     uint32_t code = 0 ;
     for (int32_t i=1 ; (i<inElementString.length ()) && ok ; i++) {
       code <<= 4 ;
-      const utf32 c = inElementString.charAtIndex (i COMMA_HERE) ;
+      const utf32 c = inElementString (i COMMA_HERE) ;
       if ((UNICODE_VALUE (c) >= '0') && (UNICODE_VALUE (c) <= '9')) {
         code += UNICODE_VALUE (c) - '0' ;
       }else if ((UNICODE_VALUE (c) >= 'A') && (UNICODE_VALUE (c) <= 'F')) {
@@ -724,7 +724,7 @@ void scanner_routine_codePointToUnicode (Lexique & inLexique,
       }
     }
     if (isUnicodeCharacterAssigned (TO_UNICODE (code))) {
-      ioTemplateString.appendChar (TO_UNICODE (code)) ;
+      ioTemplateString.appendUnicodeCharacter (TO_UNICODE (code) COMMA_HERE) ;
     }else{
       inLexique.lexicalError ("the escape sequence '&#...;' is not an assigned unicode character" COMMA_HERE) ;
     }
@@ -733,7 +733,7 @@ void scanner_routine_codePointToUnicode (Lexique & inLexique,
     uint32_t code = 0 ;
     for (int32_t i=0 ; (i<inElementString.length ()) && ok ; i++) {
       code *= 10 ;
-      const utf32 c = inElementString.charAtIndex (i COMMA_HERE) ;
+      const utf32 c = inElementString (i COMMA_HERE) ;
       if ((UNICODE_VALUE (c) >= '0') && (UNICODE_VALUE (c) <= '9')) {
         code += UNICODE_VALUE (c) - '0' ;
       }else{
@@ -742,64 +742,64 @@ void scanner_routine_codePointToUnicode (Lexique & inLexique,
       }
     }
     if (isUnicodeCharacterAssigned (TO_UNICODE (code))) {
-      ioTemplateString.appendChar (TO_UNICODE (code)) ;
+      ioTemplateString.appendUnicodeCharacter (TO_UNICODE (code) COMMA_HERE) ;
     }else{
       inLexique.lexicalError ("the escape sequence '&#...;' is not an assigned unicode character" COMMA_HERE) ;
     }
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Predefined Scanner Actions (from GALGAS 3.0.0)
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_resetString (Lexique & /* inLexique */,
-                                  String & ioString) {
-  ioString.removeAllKeepingCapacity () ;
+void scanner_routine_resetString (C_Lexique & /* inLexique */,
+                                  C_String & ioString) {
+  ioString.setLengthToZero () ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Predefined Scanner Actions (from GALGAS 3.1.0)
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterDecimalDigitIntoBigInt (Lexique & inLexique,
+void scanner_routine_enterDecimalDigitIntoBigInt (C_Lexique & inLexique,
                                                   const utf32 inCharacter,
-                                                  BigSigned & ioBigInt,
+                                                  C_BigInt & ioBigInt,
                                                   const char * inCharacterIsNotDecimalDigitError) {
   if ((UNICODE_VALUE (inCharacter) < '0') || (UNICODE_VALUE (inCharacter) > '9')) {
     inLexique.lexicalError (inCharacterIsNotDecimalDigitError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
   }else{
-    const uint8_t digit = uint8_t (UNICODE_VALUE (inCharacter) - '0') ;
+    const uint32_t digit = UNICODE_VALUE (inCharacter) - '0' ;
     ioBigInt *= 10 ;
     ioBigInt += digit ;
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterHexDigitIntoBigInt (Lexique & inLexique,
+void scanner_routine_enterHexDigitIntoBigInt (C_Lexique & inLexique,
                                               const utf32 inCharacter,
-                                              BigSigned & ioBigInt,
+                                              C_BigInt & ioBigInt,
                                               const char * inCharacterIsNotDecimalDigitError) {
 
   if ((UNICODE_VALUE (inCharacter) >= '0') && (UNICODE_VALUE (inCharacter) <= '9')) {
-    const uint8_t digit = uint8_t (UNICODE_VALUE (inCharacter) - '0') ;
+    const uint32_t digit = UNICODE_VALUE (inCharacter) - '0' ;
     ioBigInt *= 16 ;
     ioBigInt += digit ;
   }else if ((UNICODE_VALUE (inCharacter) >= 'A') && (UNICODE_VALUE (inCharacter) <= 'F')) {
-    const uint8_t digit = uint8_t (UNICODE_VALUE (inCharacter) - 'A' + 10) ;
+    const uint32_t digit = UNICODE_VALUE (inCharacter) - 'A' + 10 ;
     ioBigInt *= 16 ;
     ioBigInt += digit ;
   }else if ((UNICODE_VALUE (inCharacter) >= 'a') && (UNICODE_VALUE (inCharacter) <= 'f')) {
-    const uint8_t digit = uint8_t (UNICODE_VALUE (inCharacter) - 'a' + 10) ;
+    const uint32_t digit = UNICODE_VALUE (inCharacter) - 'a' + 10 ;
     ioBigInt *= 16 ;
     ioBigInt += digit ;
   }else{
@@ -807,73 +807,73 @@ void scanner_routine_enterHexDigitIntoBigInt (Lexique & inLexique,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertDecimalStringIntoBigInt (Lexique & inLexique,
-                                                     const String & inDecimalString,
-                                                     BigSigned & outValue,
+void scanner_routine_convertDecimalStringIntoBigInt (C_Lexique & inLexique,
+                                                     const C_String & inDecimalString,
+                                                     C_BigInt & outValue,
                                                      const char * inCharacterIsNotDecimalDigitError) {
   bool ok = true ;
-  outValue = BigSigned (inDecimalString.cString (), BigUnsignedBase::ten, ok) ;
+  outValue = C_BigInt (inDecimalString.cString (HERE), 10, ok) ;
   if (! ok) {
     inLexique.lexicalError (inCharacterIsNotDecimalDigitError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertHexStringIntoBigInt (Lexique & inLexique,
-                                                 const String & inHexString,
-                                                 BigSigned & outValue,
+void scanner_routine_convertHexStringIntoBigInt (C_Lexique & inLexique,
+                                                 const C_String & inHexString,
+                                                 C_BigInt & outValue,
                                                  const char * inCharacterIsNotHexDigitError) {
   bool ok = true ;
-  outValue = BigSigned (inHexString.cString (), BigUnsignedBase::sixteen, ok) ;
+  outValue = C_BigInt (inHexString.cString (HERE), 16, ok) ;
   if (! ok) {
     inLexique.lexicalError (inCharacterIsNotHexDigitError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Predefined Scanner Actions (from GALGAS 3.1.6)
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_enterBinaryDigitIntoBigInt (Lexique & inLexique,
+void scanner_routine_enterBinaryDigitIntoBigInt (C_Lexique & inLexique,
                                                  const utf32 inCharacter,
-                                                 BigSigned & ioBigInt,
+                                                 C_BigInt & ioBigInt,
                                                  const char * inCharacterIsNotBinaryDigitError) {
   if ((UNICODE_VALUE (inCharacter) < '0') || (UNICODE_VALUE (inCharacter) > '1')) {
     inLexique.lexicalError (inCharacterIsNotBinaryDigitError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
   }else{
-    const uint8_t digit = uint8_t (UNICODE_VALUE (inCharacter) - '0') ;
+    const uint32_t digit = UNICODE_VALUE (inCharacter) - '0' ;
     ioBigInt *= 2 ;
     ioBigInt += digit ;
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_convertBinaryStringIntoBigInt (Lexique & inLexique,
-                                                     const String & inBinaryString,
-                                                     BigSigned & outValue,
+void scanner_routine_convertBinaryStringIntoBigInt (C_Lexique & inLexique,
+                                                     const C_String & inBinaryString,
+                                                     C_BigInt & outValue,
                                                      const char * inCharacterIsNotBinaryDigitError) {
   bool ok = true ;
-  outValue = BigSigned (inBinaryString.cString (), BigUnsignedBase::two, ok) ;
+  outValue = C_BigInt (inBinaryString.cString (HERE), 2, ok) ;
   if (! ok) {
     inLexique.lexicalError (inCharacterIsNotBinaryDigitError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void scanner_routine_negateBigInt (Lexique & /* inLexique */,
-                                   BigSigned & ioValue) {
+void scanner_routine_negateBigInt (C_Lexique & /* inLexique */,
+                                   C_BigInt & ioValue) {
   ioValue.negateInPlace () ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  'cIndexingDictionary': dictionary for indexing soures                                        
 //
@@ -16,24 +16,24 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "M_machine.h"
+#include "utilities/M_machine.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-class String ;
+class C_String ;
 class cIndexEntryNode ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //                 cIndexingDictionary                                                           
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class cIndexingDictionary final {
 
@@ -49,22 +49,22 @@ class cIndexingDictionary final {
 
 //--- Add indexed entry
   public: void addIndexedKey (const uint32_t inIndexingKind,
-                               const String & inIndexedKey,
-                               const String & inSourceFilePath,
+                               const C_String & inIndexedKey,
+                               const C_String & inSourceFilePath,
                                const uint32_t inTokenLineInSource,
                                const uint32_t inTokenLocationInSource,
                                const uint32_t inTokenLengthInSource) ;
 
 //--- Generate Index file (in a plist format)
-  public: void generateIndexFile (const String & inOutputIndexFilePath) const ;
+  public: void generateIndexFile (const C_String & inOutputIndexFilePath) const ;
 
 //--- Internal private method
   private: cIndexEntryNode * findOrAddEntry (cIndexEntryNode * & ioRootPtr,
-                                              const String & inKey,
+                                              const C_String & inKey,
                                               bool & ioExtension) ;
 
 //--- Private attributes
   private: cIndexEntryNode * mEntryRoot ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

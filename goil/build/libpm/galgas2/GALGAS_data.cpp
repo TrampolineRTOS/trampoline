@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //   GALGAS_data : this class implements the GALGAS 'data' native type
 //
@@ -16,21 +16,21 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-predefined-types.h"
-#include "capCollectionElement.h"
-#include "cCollectionElement.h"
-#include "Compiler.h"
-#include "C_galgas_io.h"
-#include "unicode_character_cpp.h"
-#include "C_galgas_CLI_Options.h"
-#include "BinaryFileWrite.h"
-#include "F_verbose_output.h"
+#include "galgas2/capCollectionElement.h"
+#include "galgas2/cCollectionElement.h"
+#include "galgas2/C_Compiler.h"
+#include "galgas2/C_galgas_io.h"
+#include "strings/unicode_character_cpp.h"
+#include "galgas2/C_galgas_CLI_Options.h"
+#include "files/C_BinaryFileWrite.h"
+#include "galgas2/F_verbose_output.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //   GALGAS_data
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_data::GALGAS_data (void) :
 AC_GALGAS_root (),
@@ -38,43 +38,42 @@ mIsValid (false),
 mData () {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-GALGAS_data::GALGAS_data (const U8Data & inData) :
+GALGAS_data::GALGAS_data (const C_Data & inData) :
 AC_GALGAS_root (),
 mIsValid (true),
 mData (inData) {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-GALGAS_data GALGAS_data::class_func_emptyData (UNUSED_LOCATION_ARGS) {
-  return GALGAS_data (U8Data ()) ;
+GALGAS_data GALGAS_data::constructor_emptyData (UNUSED_LOCATION_ARGS) {
+  return GALGAS_data (C_Data ()) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-GALGAS_data GALGAS_data::class_func_dataWithContentsOfFile (const GALGAS_string & inFilePath,
-                                                            Compiler * inCompiler
-                                                            COMMA_LOCATION_ARGS) {
+GALGAS_data GALGAS_data::constructor_dataWithContentsOfFile (const GALGAS_string & inFilePath,
+                                                             C_Compiler * inCompiler
+                                                             COMMA_LOCATION_ARGS) {
   GALGAS_data result ;
   if (inFilePath.isValid()){
-    U8Data binaryData ;
-    const bool ok = FileManager::binaryDataWithContentOfFile (inFilePath.stringValue (), binaryData) ;
+    C_Data binaryData ;
+    const bool ok = C_FileManager::binaryDataWithContentOfFile (inFilePath.stringValue (), binaryData) ;
     if (ok) {
 
       result = GALGAS_data (binaryData) ;
     }else{
-      String s = "cannot read binary file at path '" ;
-      s.appendString (inFilePath.stringValue ()) ;
-      s.appendCString ("'") ;
+      C_String s ;
+      s << "cannot read binary file at path '" << inFilePath.stringValue () << "'" ;
       inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
     }
   }
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_data::objectCompare (const GALGAS_data & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -91,21 +90,20 @@ typeComparisonResult GALGAS_data::objectCompare (const GALGAS_data & inOperand) 
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void GALGAS_data::description (String & ioString,
+void GALGAS_data::description (C_String & ioString,
                                const int32_t /* inIndentation */) const {
-  ioString.appendCString ("<@data:") ;
+  ioString << "<@data:" ;
   if (isValid ()) {
-    ioString.appendCString ("length=") ;
-    ioString.appendSigned (mData.count ()) ;
+    ioString << "length=" << cStringWithSigned (mData.count ()) ;
   }else{
-    ioString.appendCString ("not built") ;
+    ioString << "not built" ;
   }
-  ioString.appendCString (">") ;
+  ioString << ">" ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint GALGAS_data::getter_count (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -115,18 +113,16 @@ GALGAS_uint GALGAS_data::getter_count (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_data::getter_cStringRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
-    String s ;
-    s.appendUnsigned (mData (0 COMMA_HERE)) ;
+    C_String s (cStringWithUnsigned (mData (0 COMMA_HERE))) ;
     for (int32_t i=1 ; i<mData.count () ; i++) {
-      s.appendCString (", ") ;
-      s.appendUnsigned (mData (i COMMA_HERE)) ;
+      s << ", " << cStringWithUnsigned (mData (i COMMA_HERE)) ;
       if ((i % 16) == 0) {
-        s.appendCString ("\n") ;
+        s << "\n" ;
       }
     }
     result = GALGAS_string (s) ;
@@ -134,10 +130,10 @@ GALGAS_string GALGAS_data::getter_cStringRepresentation (UNUSED_LOCATION_ARGS) c
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_data::setter_appendByte (GALGAS_uint inArgument0,
-                                     Compiler * inCompiler
+                                     C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) {
   if (inArgument0.isValid ()) {
     if (inArgument0.uintValue () > 255) {
@@ -149,10 +145,10 @@ void GALGAS_data::setter_appendByte (GALGAS_uint inArgument0,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_data::setter_appendShortBE (GALGAS_uint inArgument0,
-                                        Compiler * inCompiler
+                                        C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) {
   if (inArgument0.isValid ()) {
     if (inArgument0.uintValue () > 0xFFFF) {
@@ -165,10 +161,10 @@ void GALGAS_data::setter_appendShortBE (GALGAS_uint inArgument0,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_data::setter_appendShortLE (GALGAS_uint inArgument0,
-                                        Compiler * inCompiler
+                                        C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) {
   if (inArgument0.isValid ()) {
     if (inArgument0.uintValue () > 0xFFFF) {
@@ -181,7 +177,7 @@ void GALGAS_data::setter_appendShortLE (GALGAS_uint inArgument0,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_data::setter_appendUIntBE (GALGAS_uint inArgument0
                                        COMMA_UNUSED_LOCATION_ARGS) {
@@ -194,7 +190,7 @@ void GALGAS_data::setter_appendUIntBE (GALGAS_uint inArgument0
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_data::setter_appendUIntLE (GALGAS_uint inArgument0
                                        COMMA_UNUSED_LOCATION_ARGS) {
@@ -207,14 +203,14 @@ void GALGAS_data::setter_appendUIntLE (GALGAS_uint inArgument0
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_data::setter_appendUTF_38_String (GALGAS_string inString
                                               COMMA_UNUSED_LOCATION_ARGS) {
   if (inString.isValid ()) {
-    const String s = inString.stringValue () ;
+    const C_String s = inString.stringValue () ;
     for (int32_t i=0 ; i<s.length () ; i++) {
-      const utf32 c = s.charAtIndex (i COMMA_HERE) ;
+      const utf32 c = s (i COMMA_HERE) ;
       char sequence [5] ;
       const int32_t n = UTF8StringFromUTF32Character (c, sequence) ;
       for (int32_t j=0 ; j<n ; j++) {
@@ -225,7 +221,7 @@ void GALGAS_data::setter_appendUTF_38_String (GALGAS_string inString
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_data::setter_appendData (GALGAS_data inData
                                      COMMA_UNUSED_LOCATION_ARGS) {
@@ -234,90 +230,82 @@ void GALGAS_data::setter_appendData (GALGAS_data inData
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_data::method_writeToFileWhenDifferentContents (GALGAS_string inFilePath,
                                                            GALGAS_bool & outFileWritten,
-                                                           Compiler * inCompiler
+                                                           C_Compiler * inCompiler
                                                            COMMA_LOCATION_ARGS) const {
   outFileWritten.drop () ;
   if (inFilePath.isValid ()) {
     bool needToWrite = true ;
-    const bool fileAlreadyExists = FileManager::fileExistsAtPath (inFilePath.stringValue ()) ;
+    const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (inFilePath.stringValue ()) ;
     if (fileAlreadyExists) {
       inCompiler->logFileRead (inFilePath.stringValue ()) ;
-      U8Data binaryData ;
-      FileManager::binaryDataWithContentOfFile (inFilePath.stringValue (), binaryData) ;
+      C_Data binaryData ;
+      C_FileManager::binaryDataWithContentOfFile (inFilePath.stringValue (), binaryData) ;
       needToWrite = mData != binaryData ;
     }
     outFileWritten = GALGAS_bool (needToWrite) ;
     if (needToWrite) {
-      if (Compiler::performGeneration ()) {
+      if (C_Compiler::performGeneration ()) {
         const bool verboseOptionOn = verboseOutput () ;
-        bool ok = FileManager::makeDirectoryIfDoesNotExist (inFilePath.stringValue ().stringByDeletingLastPathComponent ()) ;
+        bool ok = C_FileManager::makeDirectoryIfDoesNotExist (inFilePath.stringValue ().stringByDeletingLastPathComponent ()) ;
         if (! ok) {
-          String message ;
-          message.appendCString ("cannot create '") ;
-          message.appendString (inFilePath.stringValue ()) ;
-          message.appendCString ("' directory") ;
+          C_String message ;
+          message << "cannot create '" << inFilePath.stringValue () << "' directory" ;
           inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
           outFileWritten.drop () ;
         }else{
-          ok = FileManager::writeBinaryDataToFile (mData, inFilePath.stringValue ()) ;
+          ok = C_FileManager::writeBinaryDataToFile (mData, inFilePath.stringValue ()) ;
           if (ok && verboseOptionOn && fileAlreadyExists) {
-            ggs_printFileOperationSuccess (String ("Replaced '") + inFilePath.stringValue () + "'.\n") ;
+            ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.stringValue () + "'.\n") ;
           }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
-            ggs_printFileCreationSuccess (String ("Created '") + inFilePath.stringValue () + "'.\n") ;
+            ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.stringValue () + "'.\n") ;
           }else if (! ok) {
-            String message ;
-            message.appendCString ("cannot write '") ;
-            message.appendString (inFilePath.stringValue ()) ;
-            message.appendCString ("' file") ;
+            C_String message ;
+            message << "cannot write '" << inFilePath.stringValue () << "' file" ;
             inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
             outFileWritten.drop () ;
           }
         }
       }else{
-        ggs_printWarning (inCompiler, SourceTextInString (), C_IssueWithFixIt (), String ("Need to write '") + inFilePath.stringValue () + "'." COMMA_HERE) ;
+        ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.stringValue () + "'." COMMA_HERE) ;
       }
     }
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_data::method_writeToFile (GALGAS_string inFilePath,
-                                      Compiler * inCompiler
+                                      C_Compiler * inCompiler
                                       COMMA_LOCATION_ARGS) const {
   if (inFilePath.isValid ()) {
-    const String filePath = inFilePath.stringValue () ;
+    const C_String filePath = inFilePath.stringValue () ;
     if (filePath.length () == 0) {
       inCompiler->onTheFlyRunTimeError ("'@data writeToFile' modifier invoked with empty file path argument" COMMA_THERE) ;
-    }else if (! Compiler::performGeneration ()) {
-      ggs_printWarning (inCompiler, SourceTextInString (), C_IssueWithFixIt (), String ("Need to write '") + filePath + "'." COMMA_HERE) ;
+    }else if (! C_Compiler::performGeneration ()) {
+      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + filePath + "'." COMMA_HERE) ;
     }else{
-      const bool fileAlreadyExists = FileManager::fileExistsAtPath (filePath) ;
+      const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (filePath) ;
       const bool verboseOptionOn = verboseOutput () ;
-      FileManager::makeDirectoryIfDoesNotExist (filePath.stringByDeletingLastPathComponent()) ;
-      BinaryFileWrite binaryFile (filePath) ;
+      C_FileManager::makeDirectoryIfDoesNotExist (filePath.stringByDeletingLastPathComponent()) ;
+      C_BinaryFileWrite binaryFile (filePath) ;
       if (! binaryFile.isOpened ()) {
-        String s ;
-        s.appendCString ("'@data writeToFile': cannot open '") ;
-        s.appendString (filePath) ;
-        s.appendCString ("' file in write mode") ;
-        inCompiler->onTheFlyRunTimeError (s.cString () COMMA_THERE) ;
+        C_String s ;
+        s << "'@data writeToFile': cannot open '" << filePath << "' file in write mode" ;
+        inCompiler->onTheFlyRunTimeError (s.cString (HERE) COMMA_THERE) ;
       }else{
         binaryFile.appendData (mData) ;
         const bool ok = binaryFile.close () ;
         if (ok && verboseOptionOn && fileAlreadyExists) {
-          ggs_printFileOperationSuccess (String ("Replaced '") + filePath + "'.\n") ;
+          ggs_printFileOperationSuccess (C_String ("Replaced '") + filePath + "'.\n") ;
         }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
-          ggs_printFileCreationSuccess (String ("Created '") + filePath + "'.\n") ;
+          ggs_printFileCreationSuccess (C_String ("Created '") + filePath + "'.\n") ;
         }else if (! ok) {
-          String message ;
-          message.appendCString ("cannot write '") ;
-          message.appendString (filePath) ;
-          message.appendCString ("' file") ;
+          C_String message ;
+          message << "cannot write '" << filePath << "' file" ;
           inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
         }
       }
@@ -325,41 +313,37 @@ void GALGAS_data::method_writeToFile (GALGAS_string inFilePath,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_data::method_writeToExecutableFile (GALGAS_string inFilePath,
-                                                Compiler * inCompiler
+                                                C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) const {
   if (inFilePath.isValid ()) {
-    const String filePath = inFilePath.stringValue () ;
+    const C_String filePath = inFilePath.stringValue () ;
     if (filePath.length () == 0) {
       inCompiler->onTheFlyRunTimeError ("'@data writeToFile' modifier invoked with empty file path argument" COMMA_THERE) ;
-    }else if (! Compiler::performGeneration ()) {
-      ggs_printWarning (inCompiler, SourceTextInString (), C_IssueWithFixIt (), String ("Need to write '") + filePath + "'." COMMA_HERE) ;
+    }else if (! C_Compiler::performGeneration ()) {
+      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + filePath + "'." COMMA_HERE) ;
     }else{
-      const bool fileAlreadyExists = FileManager::fileExistsAtPath (filePath) ;
+      const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (filePath) ;
       const bool verboseOptionOn = verboseOutput () ;
-      FileManager::makeDirectoryIfDoesNotExist (filePath.stringByDeletingLastPathComponent()) ;
-      BinaryFileWrite binaryFile (filePath) ;
+      C_FileManager::makeDirectoryIfDoesNotExist (filePath.stringByDeletingLastPathComponent()) ;
+      C_BinaryFileWrite binaryFile (filePath) ;
       if (! binaryFile.isOpened ()) {
-        String s ;
-        s.appendCString ("'@data writeToExecutableFile': cannot open '") ;
-        s.appendString (filePath) ;
-        s.appendCString ("' file in write mode") ;
-        inCompiler->onTheFlyRunTimeError (s.cString () COMMA_THERE) ;
+        C_String s ;
+        s << "'@data writeToExecutableFile': cannot open '" << filePath << "' file in write mode" ;
+        inCompiler->onTheFlyRunTimeError (s.cString (HERE) COMMA_THERE) ;
       }else{
         binaryFile.appendData (mData) ;
         const bool ok = binaryFile.close () ;
-        FileManager::makeFileExecutable (filePath) ;
+        C_FileManager::makeFileExecutable (filePath) ;
         if (ok && verboseOptionOn && fileAlreadyExists) {
-          ggs_printFileOperationSuccess (String ("Replaced '") + filePath + "'.\n") ;
+          ggs_printFileOperationSuccess (C_String ("Replaced '") + filePath + "'.\n") ;
         }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
-          ggs_printFileOperationSuccess (String ("Created '") + filePath + "'.\n") ;
+          ggs_printFileOperationSuccess (C_String ("Created '") + filePath + "'.\n") ;
         }else if (! ok) {
-          String message ;
-          message.appendCString ("cannot write '") ;
-          message.appendString (filePath) ;
-          message.appendCString ("' file") ;
+          C_String message ;
+          message << "cannot write '" << filePath << "' file" ;
           inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
         }
       }
@@ -367,9 +351,9 @@ void GALGAS_data::method_writeToExecutableFile (GALGAS_string inFilePath,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //   cCollectionElement_data
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class cCollectionElement_data : public cCollectionElement {
 //--- Private member
@@ -378,7 +362,7 @@ class cCollectionElement_data : public cCollectionElement {
 
 //--- Default constructor
   public: cCollectionElement_data (const GALGAS_uint & inData
-                                   COMMA_LOCATION_ARGS) ;
+                                    COMMA_LOCATION_ARGS) ;
 
 //--- No copy
   private: cCollectionElement_data (const cCollectionElement_data &) ;
@@ -394,10 +378,10 @@ class cCollectionElement_data : public cCollectionElement {
   public: virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public: virtual void description (String & ioString, const int32_t inIndentation) const ;
+ public: virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 cCollectionElement_data::cCollectionElement_data (const GALGAS_uint & inData
                                                   COMMA_LOCATION_ARGS) :
@@ -405,13 +389,13 @@ cCollectionElement (THERE),
 mProperty_data (inData) {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 bool cCollectionElement_data::isValid (void) const {
   return mProperty_data.isValid () ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult cCollectionElement_data::compare (const cCollectionElement * inOperand) const {
   const cCollectionElement_data * operand = (const cCollectionElement_data *) inOperand ;
@@ -419,7 +403,7 @@ typeComparisonResult cCollectionElement_data::compare (const cCollectionElement 
   return mProperty_data.objectCompare (operand->mProperty_data) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 cCollectionElement * cCollectionElement_data::copy (void) {
   cCollectionElement_data * p = nullptr ;
@@ -427,23 +411,23 @@ cCollectionElement * cCollectionElement_data::copy (void) {
   return p ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void cCollectionElement_data::description (String & ioString, const int32_t inIndentation) const {
+void cCollectionElement_data::description (C_String & ioString, const int32_t inIndentation) const {
   mProperty_data.description (ioString, inIndentation) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //     cEnumerator_data class
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark cEnumerator_data
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_data::populateEnumerationArray (capCollectionElementArray & inEnumerationArray) const {
   const int32_t count = mData.count () ;
@@ -458,7 +442,7 @@ void GALGAS_data::populateEnumerationArray (capCollectionElementArray & inEnumer
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 cEnumerator_data::cEnumerator_data (const GALGAS_data & inEnumeratedObject,
                                     const typeEnumerationOrder inOrder) :
@@ -466,7 +450,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint cEnumerator_data::current_data (LOCATION_ARGS) const {
   const cCollectionElement_data * p = (const cCollectionElement_data *) (currentObjectPtr (THERE)) ;
@@ -474,7 +458,7 @@ GALGAS_uint cEnumerator_data::current_data (LOCATION_ARGS) const {
   return p->attribute_data () ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint cEnumerator_data::current (LOCATION_ARGS) const {
   const cCollectionElement_data * p = (const cCollectionElement_data *) (currentObjectPtr (THERE)) ;
@@ -482,4 +466,4 @@ GALGAS_uint cEnumerator_data::current (LOCATION_ARGS) const {
   return p->attribute_data () ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

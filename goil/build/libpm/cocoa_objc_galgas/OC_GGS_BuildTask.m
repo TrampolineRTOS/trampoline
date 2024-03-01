@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  This file is part of libpm library                                                           
 //
@@ -14,7 +14,7 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #import "OC_GGS_BuildTask.h"
 #import "PMIssueDescriptor.h"
@@ -23,20 +23,20 @@
 #import "F_CocoaWrapperForGalgas.h"
 #import "PMDebug.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <netdb.h>
 #include <netinet/in.h>
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 //#define DEBUG_MESSAGES
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 @implementation OC_GGS_BuildTask 
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (OC_GGS_BuildTask *) initWithDocument: (OC_GGS_Document *) inDocument
                        filePath: (NSString *) inFilePath
@@ -100,12 +100,12 @@
       ] ;
       [mTaskOutputPipe.fileHandleForReading readInBackgroundAndNotify] ;
     //---
-//      [[NSNotificationCenter defaultCenter]
-//        addObserver: self
-//        selector: @selector (taskDidTerminate:)
-//        name: NSTaskDidTerminateNotification
-//        object: mTask
-//      ] ;
+      [[NSNotificationCenter defaultCenter]
+        addObserver: self
+        selector: @selector (taskDidTerminate:)
+        name: NSTaskDidTerminateNotification
+        object: mTask
+      ] ;
     //--- Start task
       [mTask launch] ;
     }
@@ -113,21 +113,21 @@
   return self ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) dealloc {
   noteObjectDeallocation (self) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) getDataFromTaskOutput: (NSNotification *) inNotification {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  NSData * data = [inNotification.userInfo objectForKey: NSFileHandleNotificationDataItem];
+  NSData * data = [inNotification.userInfo objectForKey:NSFileHandleNotificationDataItem];
   if (data.length > 0) {
-    [mDocument appendBuildOutputData: data] ;
+    [mDocument appendBuildOutputData:data] ;
     [inNotification.object readInBackgroundAndNotify] ;
   }else{
     [[NSNotificationCenter defaultCenter]
@@ -135,11 +135,11 @@
       name: NSFileHandleReadCompletionNotification
       object: mTaskOutputPipe.fileHandleForReading
     ] ;
-//    [[NSNotificationCenter defaultCenter]
-//      removeObserver: self
-//      name: NSTaskDidTerminateNotification
-//      object: mTask
-//    ] ;
+    [[NSNotificationCenter defaultCenter]
+      removeObserver: self
+      name: NSTaskDidTerminateNotification
+      object: mTask
+    ] ;
     [mTaskOutputPipe.fileHandleForReading closeFile] ;
     const int terminationStatus = [mTask terminationStatus] ;
     mOutputBufferedDataHasBeenTransmitted = YES ;
@@ -149,24 +149,24 @@
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-//- (void) taskDidTerminate: (NSNotification *) inNotification {
-//  mTaskCompleted = YES ;
-//}
+- (void) taskDidTerminate: (NSNotification *) inNotification {
+  mTaskCompleted = YES ;
+}
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) terminate {
   [mTask terminate] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-//- (BOOL) isCompleted {
-//  return mTaskCompleted && mOutputBufferedDataHasBeenTransmitted ;
-//}
+- (BOOL) isCompleted {
+  return mTaskCompleted && mOutputBufferedDataHasBeenTransmitted ;
+}
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 @end

@@ -10,6 +10,8 @@ import generic_galgas_makefile
 #-----------------------------------------------------------------------------------------
 
 def buildForUnix (dictionary, jsonFilePath, EXECUTABLE, BUILD_DIR_NAME, GOAL, maxParallelJobs, displayCommands) :
+  if os.path.exists (os.path.expanduser ("~/galgas-tools-for-cross-compilation")) :
+    print (makefile.BLUE () + makefile.BOLD () + "The '~/galgas-tools-for-cross-compilation' is useless from now: you can delete it" + makefile.ENDC ()) ;
   gmf = generic_galgas_makefile.GenericGalgasMakefile ()
   gmf.mJSONfilePath = jsonFilePath
   gmf.mDictionary = dictionary
@@ -31,7 +33,7 @@ def buildForUnix (dictionary, jsonFilePath, EXECUTABLE, BUILD_DIR_NAME, GOAL, ma
   gmf.mStripMessage = "Stripping"
 
   if (os.name == "nt") or sys.platform.startswith ("cygwin") : # Cygwin
-    gmf.mLinkerOptions = ["-lComdlg32"]
+    gmf.mLinkerTool.append ("-static")
     gmf.mExecutableSuffix = ".exe"
     gmf.mCompilationMessage = "Compiling for Cygwin"
     gmf.mLinkingMessage = "Linking for Cygwin"
@@ -39,7 +41,7 @@ def buildForUnix (dictionary, jsonFilePath, EXECUTABLE, BUILD_DIR_NAME, GOAL, ma
 #--- Options for all compilers
   gmf.mAllCompilerOptions = default_build_options.allCompilerOptions (["-Wconversion"])
 #--- Options for release mode
-  gmf.mCompilerReleaseOptions = default_build_options.compilerReleaseOptions (["-O2"])
+  gmf.mCompilerReleaseOptions = default_build_options.compilerReleaseOptions (["-O1"])
 #--- Options for debug mode
   gmf.mCompilerDebugOptions = default_build_options.compilerDebugOptions ([])
 #--- Options for C compiling (.c extension)

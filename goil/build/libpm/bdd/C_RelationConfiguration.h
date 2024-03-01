@@ -3,16 +3,16 @@
 //  galgas-developer
 //
 //  Created by Pierre Molinaro on 22/05/14.
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "C_BDD.h"
-#include "C_RelationSingleType.h"
+#include "bdd/C_BDD.h"
+#include "bdd/C_RelationSingleType.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class C_RelationConfiguration final {
 //--- Default constructor (no variable, empty)
@@ -26,7 +26,7 @@ class C_RelationConfiguration final {
   public: C_RelationConfiguration & operator = (const C_RelationConfiguration & inSource) ;
 
 //--- Add variable
-  public: void addVariable (const String & inVariableName,
+  public: void addVariable (const C_String & inVariableName,
                              const C_RelationSingleType & inType) ;
 
   public: void appendConfiguration (const C_RelationConfiguration & inConfiguration) ;
@@ -34,12 +34,12 @@ class C_RelationConfiguration final {
 //--- Accessors
   public: int32_t variableCount (void) const ;
   public: uint32_t bitCount (void) const ;
-  public: String nameForVariable (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
+  public: C_String nameForVariable (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
   public: C_RelationSingleType typeForVariable (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
   public: uint32_t constantCountForVariable (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
   public: uint32_t bddStartBitIndexForVariable (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
   public: uint32_t bddBitCountForVariable (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
-  public: String constantNameForVariableAndValue (const int32_t inIndex,
+  public: C_String constantNameForVariableAndValue (const int32_t inIndex,
                                                      const uint32_t inValue
                                                      COMMA_LOCATION_ARGS) const ;
   public: void deleteVariableAtIndex (const int32_t inIndex COMMA_LOCATION_ARGS) ;
@@ -67,4 +67,4 @@ class C_RelationConfiguration final {
   private: class cVariablesInRelationConfiguration * mVariablesPtr ; 
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

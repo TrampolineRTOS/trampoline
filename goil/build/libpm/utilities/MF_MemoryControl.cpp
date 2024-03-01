@@ -1,8 +1,8 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
-//  Implementation of routines for handling dynamic allocation checking.
+//  Implementation of routines for handling dynamic allocation checking.                         
 //
-//  This file is part of libpm library
+//  This file is part of libpm library                                                           
 //
 //  Copyright (C) 1994, ..., 2016 Pierre Molinaro.
 //
@@ -16,21 +16,21 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "M_machine.h"
-#include "MF_MemoryControl.h"
-#include "basic-allocation.h"
+#include "utilities/M_machine.h"
+#include "utilities/MF_MemoryControl.h"
+#include "utilities/basic-allocation.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <stdio.h>
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
-//         Enum for describing a pointer
+//         Enum for describing a pointer                                                         
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   typedef enum {
@@ -40,7 +40,7 @@
   } enumAllocationKind ;
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static uint32_t gAllocatedPODArrayCount = 0 ;
@@ -49,7 +49,7 @@
   static int32_t gExistingPODArrayCount = 0 ;
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void unregisterPointer (const void * inPointerToUnregister,
@@ -60,13 +60,13 @@
                                          COMMA_LOCATION_ARGS) ;
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark -
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void * allocAndRegisterPODArray (const size_t inSize COMMA_LOCATION_ARGS) {
@@ -79,7 +79,7 @@
 #endif
 
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void * reallocAndRegisterPODArray (void * inPointer,
@@ -104,7 +104,7 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineFreePODArrayPointer (void * inPointer COMMA_LOCATION_ARGS) {
@@ -113,7 +113,7 @@
       myFreeRoutine (inPointer) ;
       unregisterPointer (inPointer, kAllocatedByMacroMyNewPODArray COMMA_THERE) ;
       #ifdef TRACE_DELETE
-        gCout << "macroMyDeleteStructC -> "
+        co << "macroMyDeleteStructC -> "
            << inPointer
            << " at line "
            << IN_SOURCE_LINE
@@ -125,24 +125,24 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark -
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
-//          Localisation de l'appel du deallocateur 'delete'
+//          Localisation de l'appel du deallocateur 'delete'                                     
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineFreePointer (const void * inPointer COMMA_LOCATION_ARGS) {
     if (inPointer != nullptr) {
       unregisterPointer (inPointer, kAllocatedByMacroMyNew COMMA_THERE) ;
       #ifdef TRACE_DELETE
-        gCout << "macroMyDelete -> "
+        co << "macroMyDelete -> "
            << inPointer
            << " at line "
            << IN_SOURCE_LINE
@@ -154,14 +154,14 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineFreeArrayPointer (const void * inPointer COMMA_LOCATION_ARGS) {
     if (inPointer != nullptr) {
       unregisterPointer (inPointer, kAllocatedByMacroMyNewArray COMMA_THERE) ;
       #ifdef TRACE_DELETE
-        gCout << "macroMyDeleteArray -> "
+        co << "macroMyDeleteArray -> "
            << inPointer
            << " at line "
            << IN_SOURCE_LINE
@@ -173,16 +173,16 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark -
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  class cPointerDescriptor final {
+  class cPointerDescriptor {
     public: const void * mPointer ;
     public: cPointerDescriptor * mInfPtr ;
     public: cPointerDescriptor * mSupPtr ;
@@ -194,7 +194,7 @@
   } ;
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static const uint32_t ROOT_TABLE_SIZE = 33554467 ;
@@ -203,19 +203,19 @@
   static int32_t gPointersCurrentCount = 0 ;
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
-//                Comparaison de deux clefs
+//                Comparaison de deux clefs                                                      
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   typedef enum {kLeftKeyGreater, kEqualKeys, kRightKeyGreater} enumCompareResult ;
 #endif
 
-//--------------------------------------------------------------------------------------------------
-//   Prototypes
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+//   Prototypes                                                                                  
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static enumCompareResult comparePointers (const void * inLeftPointer,
@@ -239,7 +239,7 @@
                                           bool & ioExtension) ;
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static enumCompareResult comparePointers (const void * inLeftPointer, const void * inRightPointer) {
@@ -251,19 +251,19 @@
     }
     return result ;
   }
-#endif
+#endif 
 
-//--------------------------------------------------------------------------------------------------
-//     Rotations elementaires de reequilibrage d'un ioRoot binaire
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+//     Rotations elementaires de reequilibrage d'un ioRoot binaire                               
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void rotateLeft (cPointerDescriptor * & ioPtr) {
-  //--- faire la rotation
+  //--- faire la rotation 
     cPointerDescriptor * b = ioPtr->mSupPtr;
     ioPtr->mSupPtr = b->mInfPtr;
     b->mInfPtr = ioPtr;
-  //--- recalculer l'equilibrage
+  //--- recalculer l'equilibrage 
     if (b->mBalance >= 0) {
       ioPtr->mBalance ++ ;
     }else{
@@ -275,18 +275,18 @@
       b->mBalance ++ ;
     }
     ioPtr = b ;
-  }
+  } 
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void rotateRight (cPointerDescriptor * & ioPtr) {
-  //-- faire la rotation
+  //-- faire la rotation 
     cPointerDescriptor * b = ioPtr->mInfPtr;
     ioPtr->mInfPtr = b->mSupPtr;
     b->mSupPtr = ioPtr;
-   //--- recalculer l'equilibrage
+   //--- recalculer l'equilibrage 
     if (b->mBalance > 0) {
       ioPtr->mBalance -= 1 + b->mBalance ;
     }else{
@@ -300,10 +300,10 @@
     ioPtr = b ;
   }
 #endif
-
-//--------------------------------------------------------------------------------------------------
-//    Suppression d'un element dans un ioRoot binaire equilibre
-//--------------------------------------------------------------------------------------------------
+ 
+//----------------------------------------------------------------------------------------------------------------------
+//    Suppression d'un element dans un ioRoot binaire equilibre                                  
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void supBranchDecreased (cPointerDescriptor * & ioPtr, bool & h) {
@@ -332,8 +332,8 @@
     }
   }
 #endif
-
-//--------------------------------------------------------------------------------------------------
+ 
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void infBranchDecreased (cPointerDescriptor * & ioPtr, bool & h) {
@@ -363,7 +363,7 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void getPreviousElement (cPointerDescriptor * & ioRoot,
@@ -382,7 +382,7 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void recursiveDeleteInBalancedBinaryTree (cPointerDescriptor * & ioRoot,
@@ -433,7 +433,7 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void insertInBalancedBinaryTree (cPointerDescriptor *& ioRoot,
@@ -506,8 +506,8 @@
     }
   }
 #endif
-
-//--------------------------------------------------------------------------------------------------
+ 
+//----------------------------------------------------------------------------------------------------------------------
 //   http://stackoverflow.com/questions/3442639/hashing-of-pointer-values
 //   https://gist.github.com/badboy/6267743
 
@@ -518,7 +518,7 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void registerPointerDescriptor (const void * inPointerToRegister,
@@ -543,7 +543,7 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void registerPointer (const void * inPointer COMMA_LOCATION_ARGS) {
@@ -551,7 +551,7 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void registerArray (const void * inPointer COMMA_LOCATION_ARGS) {
@@ -559,7 +559,7 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static cPointerDescriptor * searchPointerDescriptor (const void * inPointer) {
@@ -585,7 +585,7 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void unregisterPointer (const void * inPointer,
@@ -604,19 +604,19 @@
       switch (inAllocationKind) {
       case kAllocatedByMacroMyNew :
         if (pointerToDelete->mAllocationKind != kAllocatedByMacroMyNew) {
-          runtime_error_routine ("(" __FILE__ ") Appel de 'macroMyDelete' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNew'",
+          runtime_error_routine ("(" __FILE__ ") Appel de 'macroMyDelete' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNew'", 
                                  (intptr_t) nomFichierSource, inSourceFileLine, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
         }
         break ;
       case kAllocatedByMacroMyNewArray :
         if (pointerToDelete->mAllocationKind != kAllocatedByMacroMyNewArray) {
-          runtime_error_routine ("(" __FILE__ ") Appel de 'macroMyDeleteArray' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNewArray'",
+          runtime_error_routine ("(" __FILE__ ") Appel de 'macroMyDeleteArray' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNewArray'", 
                                  (intptr_t) nomFichierSource, inSourceFileLine, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
         }
         break ;
       case kAllocatedByMacroMyNewPODArray :
         if (pointerToDelete->mAllocationKind != kAllocatedByMacroMyNewPODArray) {
-          runtime_error_routine ("(" __FILE__ ") Appel de 'macroMyDeletePODArray' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNewPODArray'",
+          runtime_error_routine ("(" __FILE__ ") Appel de 'macroMyDeletePODArray' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNewPODArray'", 
                                  (intptr_t) nomFichierSource, inSourceFileLine, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
         }
         break ;
@@ -627,34 +627,25 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
-//             Routine garantissant la nullite d'un pointeur
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+//
+//             Routine garantissant la nullite d'un pointeur                                     
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  void routineCheckPointerIsNull (const void * inPointer COMMA_LOCATION_ARGS) {
+  void routineVoidPointer (const void * inPointer COMMA_LOCATION_ARGS) {
     if (inPointer != nullptr) {
       runtime_error_routine ("pointer (%p) not nullptr", (intptr_t) inPointer, 0 COMMA_THERE) ;
     }
   }
 #endif
-//--------------------------------------------------------------------------------------------------
-//             Routine garantissant qu'un pointeur est non nul
-//--------------------------------------------------------------------------------------------------
 
-#ifndef DO_NOT_GENERATE_CHECKINGS
-  void routineCheckPointerIsNotNull (const void * inPointer COMMA_LOCATION_ARGS) {
-    if (inPointer == nullptr) {
-      runtime_error_routine ("pointer (%p) is nullptr", 0, 0 COMMA_THERE) ;
-    }
-  }
-#endif
-
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
-//            Routine garantissant la validite d'un pointeur
+//            Routine garantissant la validite d'un pointeur                                     
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineValidPointer (const void * inPointer COMMA_LOCATION_ARGS) {
@@ -668,7 +659,7 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void recursiveDisplay (const cPointerDescriptor * inRoot) {
@@ -693,7 +684,7 @@
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void displayAllocatedBlocksInfo (void) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -704,7 +695,7 @@ void displayAllocatedBlocksInfo (void) {
     }
     if (gPointersCurrentCount != 0) {
       printf ("*** Warning: %d block information datas (instead of 0):\n", gPointersCurrentCount) ;
-      printf ("  address | source line | source file\n") ;
+      printf ("  address | source line | source file\n") ;  
     }
     for (uint32_t i=0 ; i<ROOT_TABLE_SIZE ; i++) {
       recursiveDisplay (gPointerDescriptorTreeRoot [i]) ;
@@ -712,4 +703,4 @@ void displayAllocatedBlocksInfo (void) {
   #endif
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  This file is part of libpm library                                                           
 //
@@ -14,7 +14,7 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #import "OC_GGS_TextDisplayDescriptor.h"
 #import "OC_GGS_TextSyntaxColoring.h"
@@ -29,42 +29,42 @@
 #import "PMDebug.h"
 #import "OC_Token.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <netdb.h>
 #include <netinet/in.h>
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 //#define DEBUG_MESSAGES
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 static inline NSUInteger imin (const NSUInteger a, const NSUInteger b) { return a < b ? a : b ; }
 static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return a > b ? a : b ; }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 @implementation OC_GGS_TextDisplayDescriptor
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 @synthesize documentData ;
 @synthesize isDirty ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSString *) description {
   return documentData.fileURL.path ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSImage *) imageForClosingInUserInterface {
   return [NSImage imageNamed:@"NSStopProgressFreestandingTemplate"] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) refreshShowInvisibleCharacters {
   #ifdef DEBUG_MESSAGES
@@ -75,13 +75,13 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   [mTextView setNeedsDisplay: YES] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSUInteger) textSelectionStart {
   return mTextSelectionStart ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (OC_GGS_TextDisplayDescriptor *) initWithDocumentData: (OC_GGS_DocumentData *) inDocumentData
                                    displayDocument: (OC_GGS_Document *) inDocumentUsedForDisplaying  {
@@ -173,33 +173,32 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   return self ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) setSelectionAndScrollToVisibleAfterInit {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   NSString * key = [NSString stringWithFormat:@"SELECTION:%@:%@", mDocumentUsedForDisplaying.fileURL.path, documentData.fileURL.path] ;
-  NSString * selectionRangeString = [[NSUserDefaults standardUserDefaults] objectForKey: key] ;
-  if (selectionRangeString != NULL) {
-    const NSRange selectionRange = NSRangeFromString (selectionRangeString) ;
-    const NSUInteger sourceTextLength = documentData.sourceString.length ;
-    if (NSMaxRange (selectionRange) <= sourceTextLength) {
-      [self setSelectionRangeAndMakeItVisible:selectionRange] ;
-    }
-  }
+  NSString * selectionRangeString = [[NSUserDefaults standardUserDefaults] objectForKey:key] ;
+  // NSLog (@"READ '%@' -> %@", key, selectionRangeString) ;
+  const NSRange selectionRange = NSRangeFromString (selectionRangeString) ;
+  const NSUInteger sourceTextLength = documentData.sourceString.length ;
+  if (NSMaxRange (selectionRange) <= sourceTextLength) {
+    [self setSelectionRangeAndMakeItVisible:selectionRange] ;
+  } 
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s:DONE", __PRETTY_FUNCTION__) ;
   #endif
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) dealloc {
   noteObjectDeallocation (self) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) detachTextDisplayDescriptor {
   NSUserDefaultsController * udc = [NSUserDefaultsController sharedUserDefaultsController] ;
@@ -223,31 +222,31 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   mScrollView = nil ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSTextView *) textView {
   return mTextView ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSView *) enclosingView {
   return mEnclosingView ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSURL *) sourceURL {
   return documentData.fileURL ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSString *) title {
   return documentData.fileURL.lastPathComponent ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) observeValueForKeyPath:(NSString *) inKeyPath
          ofObject: (id) inObject
@@ -268,15 +267,15 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Goto Line
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //        G O T O    L I N E    A N D     C O L U M N                                            
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) gotoLine: (NSUInteger) inLine {
   #ifdef DEBUG_MESSAGES
@@ -301,11 +300,11 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   [mTextView scrollRangeToVisible: range] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Block Comment
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) commentSelection {
   #ifdef DEBUG_MESSAGES
@@ -315,7 +314,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   mTextView.selectedRange = newRange ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) uncommentSelection {
   #ifdef DEBUG_MESSAGES
@@ -325,23 +324,23 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   mTextView.selectedRange = newRange ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Indentation
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSString *) spaceString {
   const NSUInteger spaceCount = (NSUInteger) [[NSUserDefaults standardUserDefaults] integerForKey:GGS_editor_space_for_tab] ;
   //NSLog (@"spaceCount %u", spaceCount) ;
   NSMutableString * s = [[NSMutableString alloc] init] ;
   for (NSUInteger i=0 ; i<spaceCount ; i++) {
-    [s appendString: @" "] ;
+    [s appendString:@" "] ;
   }
   return s ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSAttributedString *) spaceAttributedString {
   #ifdef DEBUG_MESSAGES
@@ -354,7 +353,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   return [[NSAttributedString alloc] initWithString:self.spaceString attributes:attributeDictionary] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) shiftRightRange: (NSValue *) inRangeValue {
   #ifdef DEBUG_MESSAGES
@@ -391,7 +390,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   ] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) shiftRightAction {
   #ifdef DEBUG_MESSAGES
@@ -401,7 +400,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   [self shiftRightRange:[NSValue valueWithRange:selectedRange]] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) shiftLeftRange: (NSValue *) inRangeValue {
   #ifdef DEBUG_MESSAGES
@@ -466,7 +465,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   ] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) shiftLeftAction {
   #ifdef DEBUG_MESSAGES
@@ -476,11 +475,11 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   [self shiftLeftRange:[NSValue valueWithRange:selectedRange]] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Text Macros
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) actionInsertTextMacro: (NSMenuItem *) inSender {
   #ifdef DEBUG_MESSAGES
@@ -490,11 +489,11 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   [mTextView insertText:macroString] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Entry Pop up
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) populatePopUpButtonWithMenu: (NSMenu *) inMenu {
   #ifdef DEBUG_MESSAGES
@@ -524,7 +523,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   // NSLog (@"mEntryListPopUpButton %@", mEntryListPopUpButton) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) gotoEntry: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -535,7 +534,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   [mTextView scrollRangeToVisible:range] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) selectEntryPopUp {
   #ifdef DEBUG_MESSAGES
@@ -561,11 +560,11 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark NSTextView delegate methods
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSUndoManager *) undoManagerForTextView: (NSTextView *) inTextView { // Delegate Method
   #ifdef DEBUG_MESSAGES
@@ -574,7 +573,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   return documentData.textSyntaxColoring.undoManager ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) textViewDidChangeSelection: (NSNotification *) inNotification { // Delegate Method
   #ifdef DEBUG_MESSAGES
@@ -592,11 +591,11 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   ] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Displaying issues
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) setTextDisplayIssueArray: (NSArray *) inIssueArray {
   #ifdef DEBUG_MESSAGES
@@ -605,7 +604,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   [mTextView setIssueArray:inIssueArray] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) setSelectionRangeAndMakeItVisible: (NSRange) inRange {
   #ifdef DEBUG_MESSAGES
@@ -623,7 +622,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   #endif
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) setSelectionRange: (NSRange) inRange {
   #ifdef DEBUG_MESSAGES
@@ -639,17 +638,17 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   #endif
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSRange) selectedRange {
   return mTextView.selectedRange ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Fix-it Replace selected range by string
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) replaceRange: (NSRange) inRange withString: (NSString *) inReplacement {
   NSTextStorage * ts = mTextView.textStorage ;
@@ -664,7 +663,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
 
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) undoReplaceSelectedRange : (NSArray *) inObject {
   NSString * s = [inObject objectAtIndex:0] ;
@@ -681,7 +680,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   ] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) redoReplaceSelectedRange : (NSArray *) inObject {
   NSString * s = [inObject objectAtIndex:0] ;
@@ -698,6 +697,6 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   ] ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 @end

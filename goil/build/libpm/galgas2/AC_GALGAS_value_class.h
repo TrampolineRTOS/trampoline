@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  AC_GALGAS_value_class : Base class for value class objects
 //
@@ -16,21 +16,21 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "AC_GALGAS_root.h"
+#include "galgas2/AC_GALGAS_root.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-class String ;
+class C_String ;
 class C_galgas_type_descriptor ;
 class acPtr_class ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class AC_GALGAS_value_class : public AC_GALGAS_root { // AC_GALGAS_value_class est une classe abstraite
 //--- Properties
@@ -59,11 +59,11 @@ class AC_GALGAS_value_class : public AC_GALGAS_root { // AC_GALGAS_value_class e
 //--- Dynamic Type Descriptor
   public: virtual const C_galgas_type_descriptor * dynamicTypeDescriptor (void) const ;
 
-  public: virtual void description (String & ioString,
+  public: virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
 
 //--- Insulate
   public: VIRTUAL_IN_DEBUG void insulate (LOCATION_ARGS) ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  'C_galgas_io'                                                                                
 //
@@ -16,87 +16,88 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//--------------------------------------------------------------------------------------------------
-
-#include "String-class.h"
-#include "TC_UniqueArray.h"
-#include "LocationInSource.h"
-#include "SourceTextInString.h"
-#include "C_IssueWithFixIt.h"
-#include "SharedObject.h"
-
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <typeinfo>
-#include <initializer_list>
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-class Compiler ;
+#include "strings/C_String.h"
+#include "generic-arraies/TC_UniqueArray.h"
+#include "galgas2/C_LocationInSource.h"
+#include "galgas2/C_SourceTextInString.h"
+#include "galgas2/C_IssueWithFixIt.h"
+#include "utilities/C_SharedObject.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+
+class C_Compiler ;
+
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  Exception raised when maximum error count is reached                                         
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class max_error_count_reached_exception : public::std::exception {
   public: virtual const char * what (void) const throw () ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  Exception raised when maximum warning count is reached                                       
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class max_warning_count_reached_exception : public::std::exception {
   public: virtual const char * what (void) const throw () ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //     Internal exception thrown when a lexical error has been detected                          
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class C_lexicalErrorException {
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //   Class used for defining a reserved words table entry                                        
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class C_unicode_lexique_table_entry final {
-  public: const std::initializer_list <utf32> mEntryString ;
+  public: const utf32 * mEntryString ;
+  public: const int16_t mEntryStringLength ;
   public: const int16_t mTokenCode ;
 
 //--- Constructor
-  public: C_unicode_lexique_table_entry (const std::initializer_list <utf32> & inEntryString,
+  public: C_unicode_lexique_table_entry (const utf32 * inEntryString,
+                                         const int16_t inEntryStringLength,
                                          const int16_t inTokenCode) ;
-//--- Handle copy
+//--- No copy
   public: C_unicode_lexique_table_entry (const C_unicode_lexique_table_entry & inOperand) ;
-  private: C_unicode_lexique_table_entry & operator = (const C_unicode_lexique_table_entry &) = delete ;
+  private: C_unicode_lexique_table_entry & operator = (const C_unicode_lexique_table_entry &) ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //                 Token class                                                                   
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class cToken {
   public: cToken * mNextToken ;
-  public: LocationInSource mStartLocation ;
-  public: LocationInSource mEndLocation ;
-  public: String mTemplateStringBeforeToken ; // Template string before the token
-  public: String mSeparatorStringBeforeToken ;
+  public: C_LocationInSource mStartLocation ;
+  public: C_LocationInSource mEndLocation ;
+  public: C_String mTemplateStringBeforeToken ; // Template string before the token
+  public: C_String mSeparatorStringBeforeToken ;
   public: int32_t mTokenCode ;
 
   public: cToken (void) ;
@@ -107,35 +108,35 @@ class cToken {
   private: cToken & operator = (const cToken &) ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //                 Class for handling parsing context                                            
 //          (used by parse ... rewind ... end parse ; instruction)                               
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-class ParsingContext final {
+class C_parsingContext {
   private: int32_t mParsingArrayIndex ;
-  private: LocationInSource mLocation ;
+  private: C_LocationInSource mLocation ;
   private: cToken * mCurrentTokenPtr ;
   private: utf32 mCurrentChar ;
   private: utf32 mPreviousChar ;
-  private: String mTemplateString ;
+  private: C_String mTemplateString ;
 
-  friend class Lexique ;
+  friend class C_Lexique ;
   
-  public: ParsingContext (void) ;
+  public: C_parsingContext (void) ;
 
-//--- Copy
-  public: ParsingContext (const ParsingContext & inSource) ;
-  public: ParsingContext & operator = (const ParsingContext & inSource) ;
+//--- No copy
+  public: C_parsingContext (const C_parsingContext & inSource) ;
+  public: C_parsingContext & operator = (const C_parsingContext & inSource) ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //         Abstract class for GALGAS input/output                                                
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 //--- Errors count
 int32_t maxErrorCount (void) ;
@@ -147,84 +148,84 @@ int32_t maxWarningCount (void) ;
 
 int32_t totalWarningCount (void) ;
  
-void signalParsingError (Compiler * inCompiler,
-                         const SourceTextInString & inSourceText,
-                         const LocationInSource & inPreviousTokenEndLocation,
+void signalParsingError (C_Compiler * inCompiler,
+                         const C_SourceTextInString & inSourceText,
+                         const C_LocationInSource & inPreviousTokenEndLocation,
                          const C_IssueWithFixIt & inIssue,
-                         const String & inFoundTokenMessage,
-                         const TC_UniqueArray <String> & inAcceptedTokenNames
+                         const C_String & inFoundTokenMessage,
+                         const TC_UniqueArray <C_String> & inAcceptedTokenNames
                          COMMA_LOCATION_ARGS) ;
 
-void signalExtractError (Compiler * inCompiler,
-                         const SourceTextInString & inSourceText,
+void signalExtractError (C_Compiler * inCompiler,
+                         const C_SourceTextInString & inSourceText,
                          const C_IssueWithFixIt & inIssue,
-                         const TC_UniqueArray <String> & inExpectedClassesErrorStringsArray,
-                         const String & inActualFoundClassErrorString
+                         const TC_UniqueArray <C_String> & inExpectedClassesErrorStringsArray,
+                         const C_String & inActualFoundClassErrorString
                          COMMA_LOCATION_ARGS) ;
 
-void signalCastError (Compiler * inCompiler,
-                      const SourceTextInString & inSourceText,
+void signalCastError (C_Compiler * inCompiler,
+                      const C_SourceTextInString & inSourceText,
                       const C_IssueWithFixIt & inIssue,
                       const std::type_info * inBaseClass,
                       const bool inUseKindOfClass,
-                      const String & inActualFoundClassErrorString
+                      const C_String & inActualFoundClassErrorString
                       COMMA_LOCATION_ARGS) ;
 
-void signalLexicalWarning (Compiler * inCompiler,
-                           const SourceTextInString & inSourceText,
+void signalLexicalWarning (C_Compiler * inCompiler,
+                           const C_SourceTextInString & inSourceText,
                            const C_IssueWithFixIt & inIssue,
-                           const String & inLexicalWarningMessage
+                           const C_String & inLexicalWarningMessage
                            COMMA_LOCATION_ARGS) ;
 
-void signalLexicalError (Compiler * inCompiler,
-                         const SourceTextInString & inSourceText,
+void signalLexicalError (C_Compiler * inCompiler,
+                         const C_SourceTextInString & inSourceText,
                          const C_IssueWithFixIt & inIssue,
-                         const String & inLexicalErrorMessage
+                         const C_String & inLexicalErrorMessage
                          COMMA_LOCATION_ARGS) ;
 
-void signalSemanticWarning (Compiler * inCompiler,
-                            const SourceTextInString & inSourceText,
+void signalSemanticWarning (C_Compiler * inCompiler,
+                            const C_SourceTextInString & inSourceText,
                             const C_IssueWithFixIt & inIssue,
-                            const String & inWarningMessage
+                            const C_String & inWarningMessage
                             COMMA_LOCATION_ARGS) ;
 
-void signalSemanticError (Compiler * inCompiler,
-                          const SourceTextInString & inSourceText,
+void signalSemanticError (C_Compiler * inCompiler,
+                          const C_SourceTextInString & inSourceText,
                           const C_IssueWithFixIt & inIssue,
-                          const String & inErrorMessage
+                          const C_String & inErrorMessage
                           COMMA_LOCATION_ARGS) ;
 
-void signalRunTimeError (Compiler * inCompiler,
-                         const String & inErrorMessage
+void signalRunTimeError (C_Compiler * inCompiler,
+                         const C_String & inErrorMessage
                          COMMA_LOCATION_ARGS) ;
 
-void signalRunTimeWarning (Compiler * inCompiler,
-                           const String & inWarningMessage
+void signalRunTimeWarning (C_Compiler * inCompiler,
+                           const C_String & inWarningMessage
                            COMMA_LOCATION_ARGS) ;
 
-void ggs_printError (Compiler * inCompiler,
-                     const SourceTextInString & inSourceText,
+void ggs_printError (C_Compiler * inCompiler,
+                     const C_SourceTextInString & inSourceText,
                      const C_IssueWithFixIt & inIssue,
-                     const String & inMessage
+                     const C_String & inMessage
                      COMMA_LOCATION_ARGS) ;
 
-void ggs_printWarning (Compiler * inCompiler,
-                       const SourceTextInString & inSourceText,
+void ggs_printWarning (C_Compiler * inCompiler,
+                       const C_SourceTextInString & inSourceText,
                        const C_IssueWithFixIt & inIssue,
-                       const String & inMessage
+                       const C_String & inMessage
                        COMMA_LOCATION_ARGS) ;
 
-void ggs_printFileOperationSuccess (const String & inMessage) ;
+void ggs_printFileOperationSuccess (const C_String & inMessage) ;
 
-void ggs_printFileCreationSuccess (const String & inMessage) ;
+void ggs_printFileCreationSuccess (const C_String & inMessage) ;
 
-void ggs_printMessage (const String & inMessage
+void ggs_printMessage (const C_String & inMessage
                        COMMA_LOCATION_ARGS) ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void fatalError (const String & inErrorMessage,
+void fatalError (const C_String & inErrorMessage,
                  const char * inSourceFile,
                  const int inSourceLine) ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

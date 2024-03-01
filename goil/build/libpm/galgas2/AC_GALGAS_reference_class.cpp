@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  AC_GALGAS_reference_class : base class for reference class objects
 //
@@ -16,18 +16,18 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "AC_GALGAS_reference_class.h"
-#include "acStrongPtr_class.h"
-#include "C_galgas_type_descriptor.h"
-#include "String-class.h"
+#include "galgas2/AC_GALGAS_reference_class.h"
+#include "galgas2/acStrongPtr_class.h"
+#include "galgas2/C_galgas_type_descriptor.h"
+#include "strings/C_String.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <iostream>
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * AC_GALGAS_reference_class::dynamicTypeDescriptor (void) const {
   const C_galgas_type_descriptor * result = nullptr ;
@@ -37,14 +37,14 @@ const C_galgas_type_descriptor * AC_GALGAS_reference_class::dynamicTypeDescripto
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_reference_class::AC_GALGAS_reference_class (void) :
 AC_GALGAS_root (),
 mObjectPtr (nullptr) {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_reference_class::AC_GALGAS_reference_class (const acStrongPtr_class * inPointer) :
 AC_GALGAS_root (),
@@ -52,19 +52,19 @@ mObjectPtr (nullptr) {
   macroAssignSharedObject (mObjectPtr, (acStrongPtr_class *) inPointer) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_reference_class::~AC_GALGAS_reference_class (void) {
   macroDetachSharedObject (mObjectPtr) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_reference_class::drop (void) {
   macroDetachSharedObject (mObjectPtr) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_reference_class::AC_GALGAS_reference_class (const AC_GALGAS_reference_class & inSource) :
 AC_GALGAS_root (),
@@ -72,29 +72,29 @@ mObjectPtr (nullptr) {
   macroAssignSharedObject (mObjectPtr, inSource.mObjectPtr) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_reference_class & AC_GALGAS_reference_class::operator = (const AC_GALGAS_reference_class & inSource) {
   macroAssignSharedObject (mObjectPtr, inSource.mObjectPtr) ;
   return * this ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void AC_GALGAS_reference_class::description (String & ioString,
+void AC_GALGAS_reference_class::description (C_String & ioString,
                                              const int32_t inIndentation) const {
-  ioString.appendCString ("<@") ;
-  ioString.appendString (staticTypeDescriptor ()->mGalgasTypeName) ;
-  ioString.appendCString (":") ;
+  ioString << "<@"
+           << staticTypeDescriptor ()->mGalgasTypeName
+           << ":" ;
   if (isValid ()) {
     mObjectPtr->description (ioString, inIndentation) ;
   }else{
-    ioString.appendCString ("not built") ;
+    ioString << "not built" ;
   }
-  ioString.appendCString (">") ;
+  ioString << ">" ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void AC_GALGAS_reference_class::printNonNullClassInstanceProperties (const char * inPropertyName) const {
@@ -104,4 +104,4 @@ void AC_GALGAS_reference_class::description (String & ioString,
   }
 #endif
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  GALGAS_enumerable : Base class for GALGAS enumerable object                                  
 //
@@ -16,22 +16,22 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "SharedObject.h"
-#include "typeComparisonResult.h"
+#include "utilities/C_SharedObject.h"
+#include "galgas2/typeComparisonResult.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-class String ;
+class C_String ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-class cCollectionElement : public SharedObject {
+class cCollectionElement : public C_SharedObject {
 //--- Default constructor
   public: cCollectionElement (LOCATION_ARGS) ;
 
@@ -49,7 +49,7 @@ class cCollectionElement : public SharedObject {
   public: virtual cCollectionElement * copy (void) = 0 ;
 
 //--- Description
-  public: virtual void description (String & ioString, const int32_t inIndentation) const = 0 ;
+  public: virtual void description (C_String & ioString, const int32_t inIndentation) const = 0 ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

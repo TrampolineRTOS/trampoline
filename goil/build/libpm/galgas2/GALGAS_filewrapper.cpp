@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  GALGAS_filewrapper : class for GALGAS file wrappers
 //
@@ -18,12 +18,12 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-predefined-types.h"
-#include "Compiler.h"
+#include "galgas2/C_Compiler.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 cRegularFileWrapper::cRegularFileWrapper (const char * inName,
                                           const char * inExtension,
@@ -37,7 +37,7 @@ mFileLength (inFileLength),
 mContents (inContents) {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 cDirectoryWrapper::cDirectoryWrapper (const char * inDirectoryName,
                                       const uint32_t inFileCount,
@@ -51,7 +51,7 @@ mDirectoryCount (inDirectoryCount),
 mDirectories (inDirectories) {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_filewrapper::GALGAS_filewrapper (const cDirectoryWrapper & inRootDirectory) :
 AC_GALGAS_root (),
@@ -59,14 +59,14 @@ mRootDirectoryPtr (& inRootDirectory),
 mCurrentDirectory ("/") {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_filewrapper::GALGAS_filewrapper (void) :
 mRootDirectoryPtr (nullptr),
 mCurrentDirectory () {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_filewrapper::GALGAS_filewrapper (const GALGAS_filewrapper & inSource) :
 AC_GALGAS_root (),
@@ -74,7 +74,7 @@ mRootDirectoryPtr (inSource.mRootDirectoryPtr),
 mCurrentDirectory (inSource.mCurrentDirectory) {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_filewrapper & GALGAS_filewrapper::operator = (const GALGAS_filewrapper & inSource) {
   mRootDirectoryPtr = inSource.mRootDirectoryPtr ;
@@ -82,17 +82,17 @@ GALGAS_filewrapper & GALGAS_filewrapper::operator = (const GALGAS_filewrapper & 
   return * this ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 static void internalEnumerateFiles (const cDirectoryWrapper & inDirectory,
-                                    const String & inWrapperPath,
+                                    const C_String & inWrapperPath,
                                     const bool inEnumerateTextFile,
                                     GALGAS_stringlist & ioList) {
 //--- Enumerate regular files
   const cRegularFileWrapper * * mFiles = inDirectory.mFiles ;
   while ((* mFiles) != nullptr) {
-    String path = inWrapperPath ;
-    path.appendString ((* mFiles)->mName) ;
+    C_String path = inWrapperPath ;
+    path << (* mFiles)->mName ;
     if ((* mFiles)->mIsTextFile == inEnumerateTextFile) {
       ioList.addAssign_operation (GALGAS_string (path) COMMA_HERE) ;
     }
@@ -101,77 +101,75 @@ static void internalEnumerateFiles (const cDirectoryWrapper & inDirectory,
 //--- Walk throught directories
   const cDirectoryWrapper * * mDirs = inDirectory.mDirectories ;
   while ((* mDirs) != nullptr) {
-    String path = inWrapperPath ;
-    path.appendString ((* mDirs)->mDirectoryName) ;
-    path.appendCString ("/") ;
+    C_String path = inWrapperPath ;
+    path << (* mDirs)->mDirectoryName << "/" ;
     internalEnumerateFiles (* * mDirs, path, inEnumerateTextFile, ioList) ;
     mDirs ++ ;
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_filewrapper::getter_allTextFilePathes (LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if (mRootDirectoryPtr != nullptr) {
-    result = GALGAS_stringlist::class_func_emptyList (THERE) ;
+    result = GALGAS_stringlist::constructor_emptyList (THERE) ;
     internalEnumerateFiles (* mRootDirectoryPtr, "/", true, result) ;
   }
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_filewrapper::getter_allBinaryFilePathes (LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if (mRootDirectoryPtr != nullptr) {
-    result = GALGAS_stringlist::class_func_emptyList (THERE) ;
+    result = GALGAS_stringlist::constructor_emptyList (THERE) ;
     internalEnumerateFiles (* mRootDirectoryPtr, "/", false, result) ;
   }
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 static void internalEnumerateDirectories (const cDirectoryWrapper & inDirectory,
-                                          const String & inWrapperPath,
+                                          const C_String & inWrapperPath,
                                           GALGAS_stringlist & ioList) {
 //--- Enumerate regular files
   ioList.addAssign_operation (GALGAS_string (inWrapperPath) COMMA_HERE) ;
 //--- Walk throught directories
   const cDirectoryWrapper * * mDirs = inDirectory.mDirectories ;
   while ((* mDirs) != nullptr) {
-    String path = inWrapperPath ;
-    path.appendString ((* mDirs)->mDirectoryName) ;
-    path.appendCString ("/") ;
+    C_String path = inWrapperPath ;
+    path << (* mDirs)->mDirectoryName << "/" ;
     internalEnumerateDirectories (* * mDirs, path, ioList) ;
     mDirs ++ ;
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_filewrapper::getter_allDirectoryPathes (LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if (mRootDirectoryPtr != nullptr) {
-    result = GALGAS_stringlist::class_func_emptyList (THERE) ;
+    result = GALGAS_stringlist::constructor_emptyList (THERE) ;
     internalEnumerateDirectories (* mRootDirectoryPtr, "/", result) ;
   }
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 static void internalEnumerateFilesWithExtension (const cDirectoryWrapper & inDirectory,
-                                                 const String & inWrapperPath,
+                                                 const C_String & inWrapperPath,
                                                  GALGAS_stringlist & ioList,
-                                                 const String & inExtension) {
+                                                 const C_String & inExtension) {
 //--- Enumerate regular files
   const cRegularFileWrapper * * mFiles = inDirectory.mFiles ;
   while ((* mFiles) != nullptr) {
-    String path = inWrapperPath ;
+    C_String path = inWrapperPath ;
     if (inExtension.compare ((* mFiles)->mExtension) == 0) {
-      path.appendString ((* mFiles)->mName) ;
+      path << (* mFiles)->mName ;
       ioList.addAssign_operation (GALGAS_string (path) COMMA_HERE) ;
     }
     mFiles ++ ;
@@ -179,27 +177,26 @@ static void internalEnumerateFilesWithExtension (const cDirectoryWrapper & inDir
 //--- Walk throught directories
   const cDirectoryWrapper * * mDirs = inDirectory.mDirectories ;
   while ((* mDirs) != nullptr) {
-    String path = inWrapperPath ;
-    path.appendString ((* mDirs)->mDirectoryName) ;
-    path.appendCString ("/") ;
+    C_String path = inWrapperPath ;
+    path << (* mDirs)->mDirectoryName << "/" ;
     internalEnumerateFilesWithExtension (* * mDirs, path, ioList, inExtension) ;
     mDirs ++ ;
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_filewrapper::getter_allFilePathesWithExtension (const GALGAS_string & inExtension
                                                                          COMMA_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if ((mRootDirectoryPtr != nullptr) && inExtension.isValid ()) {
-    result = GALGAS_stringlist::class_func_emptyList (THERE) ;
+    result = GALGAS_stringlist::constructor_emptyList (THERE) ;
     internalEnumerateFilesWithExtension (* mRootDirectoryPtr, "/", result, inExtension.stringValue ()) ;
   }
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_filewrapper::objectCompare (const GALGAS_filewrapper & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -216,25 +213,20 @@ typeComparisonResult GALGAS_filewrapper::objectCompare (const GALGAS_filewrapper
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-static void enumerateWrapper (String & ioString,
+static void enumerateWrapper (C_String & ioString,
                               const cDirectoryWrapper * inDir,
-                              const String & inPath,
+                              const C_String & inPath,
                               const int32_t inIndentation) {
-  const String currentPath = inPath + inDir->mDirectoryName + "/" ;
-  ioString.appendCString ("\n") ;
-  for (int32_t i=0 ; i<inIndentation ; i++) { ioString.appendCString (" ") ; }
-  ioString.appendCString ("'") ;
-  ioString.appendString (currentPath) ;
-  ioString.appendCString ("'") ;
+  const C_String currentPath = inPath + inDir->mDirectoryName + "/" ;
+  ioString << "\n" ;
+  for (int32_t i=0 ; i<inIndentation ; i++) { ioString << " " ; }
+  ioString << "'" << currentPath << "'" ;
   for (uint32_t i=0 ; i<inDir->mFileCount ; i++) {
-    ioString.appendCString ("\n") ;
-    for (int32_t j=0 ; j<inIndentation ; j++) { ioString.appendCString (" ") ; }
-    ioString.appendCString ("'") ;
-    ioString.appendString (currentPath) ;
-    ioString.appendString (inDir->mFiles [i]->mName) ;
-    ioString.appendCString ("'") ;
+    ioString << "\n" ;
+    for (int32_t j=0 ; j<inIndentation ; j++) { ioString << " " ; }
+    ioString << "'" << currentPath << inDir->mFiles [i]->mName << "'" ;
   }
   for (uint32_t i=0 ; i<inDir->mDirectoryCount ; i++) {
     enumerateWrapper (ioString,
@@ -244,20 +236,20 @@ static void enumerateWrapper (String & ioString,
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void GALGAS_filewrapper::description (String & ioString,
+void GALGAS_filewrapper::description (C_String & ioString,
                                       const int32_t inIndentation) const {
-  ioString.appendCString ("<@filewrapper") ;
+  ioString << "<@filewrapper" ;
   if (isValid ()) {
     enumerateWrapper (ioString, mRootDirectoryPtr, "", inIndentation + 2) ;
   }else{
-    ioString.appendCString (" (not built)") ;
+    ioString << " (not built)" ;
   }
-  ioString.appendCString (">") ;
+  ioString << ">" ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_filewrapper::getter_currentDirectory (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -267,10 +259,10 @@ GALGAS_string GALGAS_filewrapper::getter_currentDirectory (UNUSED_LOCATION_ARGS)
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 static const cDirectoryWrapper * findDirectoryInDirectory (const cDirectoryWrapper * inDir,
-                                                           const String & inSearchedDir) {
+                                                           const C_String & inSearchedDir) {
   const cDirectoryWrapper * result = nullptr ;
   if (inDir != nullptr) {
     int32_t first = 0 ;
@@ -292,10 +284,10 @@ static const cDirectoryWrapper * findDirectoryInDirectory (const cDirectoryWrapp
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 static const cRegularFileWrapper * findFileInDirectory (const cDirectoryWrapper * inDir,
-                                                        const String & inSearchedFile) {
+                                                        const C_String & inSearchedFile) {
   const cRegularFileWrapper * result = nullptr ;
   if (inDir != nullptr) {
     int32_t first = 0 ;
@@ -317,11 +309,11 @@ static const cRegularFileWrapper * findFileInDirectory (const cDirectoryWrapper 
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-static const cDirectoryWrapper * getDirectory (const String & inDirectory,
+static const cDirectoryWrapper * getDirectory (const C_String & inDirectory,
                                                const cDirectoryWrapper * inRootDirectoryPtr) {
-  TC_UniqueArray <String> componentArray ;
+  TC_UniqueArray <C_String> componentArray ;
   inDirectory.componentsSeparatedByString ("/", componentArray) ;
   const cDirectoryWrapper * dir = inRootDirectoryPtr ;
   for (int32_t i=1 ; i<componentArray.count () ; i++) {
@@ -330,10 +322,10 @@ static const cDirectoryWrapper * getDirectory (const String & inDirectory,
   return dir ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_filewrapper::getter_directoryExistsAtPath (const GALGAS_string & inPath,
-                                                              Compiler * inCompiler
+                                                              C_Compiler * inCompiler
                                                               COMMA_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid () && inPath.isValid ()) {
@@ -345,16 +337,16 @@ GALGAS_bool GALGAS_filewrapper::getter_directoryExistsAtPath (const GALGAS_strin
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_filewrapper::getter_fileExistsAtPath (const GALGAS_string & inPath,
-                                                         Compiler * inCompiler
+                                                         C_Compiler * inCompiler
                                                          COMMA_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid () && inPath.isValid ()) {
     const GALGAS_string path = getter_absolutePathForPath (inPath, inCompiler COMMA_THERE) ;
     if (path.isValid ()) {
-      const String directoryPath = path.stringValue ().stringByDeletingLastPathComponent () ;
+      const C_String directoryPath = path.stringValue ().stringByDeletingLastPathComponent () ;
       const cDirectoryWrapper * dir = getDirectory (directoryPath, mRootDirectoryPtr) ;
       const cRegularFileWrapper * file = findFileInDirectory (dir, path.stringValue ().lastPathComponent ()) ;
       result = GALGAS_bool (file != nullptr) ;
@@ -363,29 +355,25 @@ GALGAS_bool GALGAS_filewrapper::getter_fileExistsAtPath (const GALGAS_string & i
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_filewrapper::getter_textFileContentsAtPath (const GALGAS_string & inPath,
-                                                                 Compiler * inCompiler
+                                                                 C_Compiler * inCompiler
                                                                  COMMA_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid () && inPath.isValid ()) {
     const GALGAS_string path = getter_absolutePathForPath (inPath, inCompiler COMMA_THERE) ;
     if (path.isValid ()) {
-      const String directoryPath = path.stringValue ().stringByDeletingLastPathComponent () ;
+      const C_String directoryPath = path.stringValue ().stringByDeletingLastPathComponent () ;
       const cDirectoryWrapper * dir = getDirectory (directoryPath, mRootDirectoryPtr) ;
       const cRegularFileWrapper * file = findFileInDirectory (dir, path.stringValue ().lastPathComponent ()) ;
       if (file == nullptr) {
-        String errorMessage ;
-        errorMessage.appendCString ("textFileContentsAtPath: the '") ;
-        errorMessage.appendString (inPath.stringValue ()) ;
-        errorMessage.appendCString ("' path does not exist") ;
+        C_String errorMessage ;
+        errorMessage << "textFileContentsAtPath: the '" << inPath.stringValue () << "' path does not exist" ;
         inCompiler->onTheFlyRunTimeError (errorMessage COMMA_THERE) ;
       }else if (! file->mIsTextFile) {
-        String errorMessage ;
-        errorMessage.appendCString ("textFileContentsAtPath: the '") ;
-        errorMessage.appendString (inPath.stringValue ()) ;
-        errorMessage.appendCString ("' path points on a binary file") ;
+        C_String errorMessage ;
+        errorMessage << "textFileContentsAtPath: the '" << inPath.stringValue () << "' path points on a binary file" ;
         inCompiler->onTheFlyRunTimeError (errorMessage COMMA_THERE) ;
       }else{
         result = GALGAS_string (file->mContents) ;
@@ -395,27 +383,26 @@ GALGAS_string GALGAS_filewrapper::getter_textFileContentsAtPath (const GALGAS_st
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_data GALGAS_filewrapper::getter_binaryFileContentsAtPath (const GALGAS_string & inPath,
-                                                                 Compiler * inCompiler
+                                                                 C_Compiler * inCompiler
                                                                  COMMA_LOCATION_ARGS) const {
   GALGAS_data result ;
   if (isValid () && inPath.isValid ()) {
     const GALGAS_string path = getter_absolutePathForPath (inPath, inCompiler COMMA_THERE) ;
     if (path.isValid ()) {
-      const String directoryPath = path.stringValue ().stringByDeletingLastPathComponent () ;
+      const C_String directoryPath = path.stringValue ().stringByDeletingLastPathComponent () ;
       const cDirectoryWrapper * dir = getDirectory (directoryPath, mRootDirectoryPtr) ;
       const cRegularFileWrapper * file = findFileInDirectory (dir, path.stringValue ().lastPathComponent ()) ;
       if (file == nullptr) {
-        String errorMessage = "binaryFileContentsAtPath: the '" ;
-        errorMessage.appendString (inPath.stringValue ()) ;
-        errorMessage.appendCString ("' path does not exist") ;
+        C_String errorMessage ;
+        errorMessage << "binaryFileContentsAtPath: the '" << inPath.stringValue () << "' path does not exist" ;
         inCompiler->onTheFlyRunTimeError (errorMessage COMMA_THERE) ;
       }else{
         const uint8_t * sourcePtr = (const uint8_t *) file->mContents ;
         const uint32_t sourceLength = file->mFileLength ;
-        U8Data data ;
+        C_Data data ;
         data.appendDataFromPointer (sourcePtr, (int32_t) sourceLength) ;
         result = GALGAS_data (data) ;
       }
@@ -424,43 +411,42 @@ GALGAS_data GALGAS_filewrapper::getter_binaryFileContentsAtPath (const GALGAS_st
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_filewrapper::setter_setCurrentDirectory (const GALGAS_string inNewDirectory,
-                                                       Compiler * inCompiler
+                                                       C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) {
   if ((mRootDirectoryPtr != nullptr) && inNewDirectory.isValid ()) {
     GALGAS_string absolutePath = getter_absolutePathForPath (inNewDirectory, inCompiler COMMA_THERE) ;
     if (absolutePath.isValid ()) {
-      const String absolutePathString = absolutePath.stringValue () ;
+      const C_String absolutePathString = absolutePath.stringValue () ;
       if (getDirectory (absolutePath.stringValue (), mRootDirectoryPtr) != nullptr) {
         mCurrentDirectory = absolutePath.stringValue () ;
       }else{
-        String errorMessage = "setCurrentDirectory: the '" ;
-        errorMessage.appendString (inNewDirectory.stringValue ()) ;
-        errorMessage.appendCString ("' path does not exist") ;
+        C_String errorMessage ;
+        errorMessage << "setCurrentDirectory: the '" << inNewDirectory.stringValue () << "' path does not exist" ;
         inCompiler->onTheFlyRunTimeError (errorMessage COMMA_THERE) ;
       }
     }
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_filewrapper::getter_absolutePathForPath (const GALGAS_string & inPath,
-                                                              Compiler * inCompiler
+                                                              C_Compiler * inCompiler
                                                               COMMA_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid () && inPath.isValid ()) {
-    const String path = inPath.stringValue () ;
+    const C_String path = inPath.stringValue () ;
   //--- Build absolute path
-    String absolutePath = path ;
-    if ((path.length () == 0) || (UNICODE_VALUE (path.charAtIndex (0 COMMA_HERE)) != '/')) {
+    C_String absolutePath = path ;
+    if ((path.length () == 0) || (UNICODE_VALUE (path (0 COMMA_HERE)) != '/')) {
       absolutePath = mCurrentDirectory ;
-      absolutePath.appendString (path) ;
+      absolutePath << path ;
     }
   //--- Normalize path
-    TC_UniqueArray <String> componentArray ;
+    TC_UniqueArray <C_String> componentArray ;
     absolutePath.componentsSeparatedByString ("/", componentArray) ;
   //--- Remove empty components (but the first one)
     int32_t componentIndex = 1 ;
@@ -495,21 +481,20 @@ GALGAS_string GALGAS_filewrapper::getter_absolutePathForPath (const GALGAS_strin
     }
   //--- Error ?
     if (! validPath) {
-      String errorMessage = "absolutePathForPath: the '" ;
-      errorMessage.appendString (path) ;
-      errorMessage.appendCString ("' path is mal-formed") ;
+      C_String errorMessage ;
+      errorMessage << "absolutePathForPath: the '" << path << "' path is mal-formed" ;
       inCompiler->onTheFlyRunTimeError (errorMessage COMMA_THERE) ;
     }else{ //--- Recompose path
-      result = GALGAS_string (String::componentsJoinedByString (componentArray, "/")) ;
+      result = GALGAS_string (C_String::componentsJoinedByString (componentArray, "/")) ;
     }
   }
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_filewrapper::getter_directoriesAtPath (const GALGAS_string & inPath,
-                                                                Compiler * inCompiler
+                                                                C_Compiler * inCompiler
                                                                 COMMA_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if ((mRootDirectoryPtr != nullptr) && inPath.isValid ()) {
@@ -517,7 +502,7 @@ GALGAS_stringlist GALGAS_filewrapper::getter_directoriesAtPath (const GALGAS_str
     if (path.isValid ()) {
       const cDirectoryWrapper * dir = getDirectory (path.stringValue (), mRootDirectoryPtr) ;
       if (nullptr != dir) {
-        result = GALGAS_stringlist::class_func_emptyList (THERE) ;
+        result = GALGAS_stringlist::constructor_emptyList (THERE) ;
         const cDirectoryWrapper * * dirs = dir->mDirectories ;
         while ((*dirs) != nullptr) {
           result.addAssign_operation (GALGAS_string ((*dirs)->mDirectoryName) COMMA_HERE) ;
@@ -529,10 +514,10 @@ GALGAS_stringlist GALGAS_filewrapper::getter_directoriesAtPath (const GALGAS_str
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_filewrapper::getter_textFilesAtPath (const GALGAS_string & inPath,
-                                                              Compiler * inCompiler
+                                                              C_Compiler * inCompiler
                                                               COMMA_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if ((mRootDirectoryPtr != nullptr) && inPath.isValid ()) {
@@ -540,7 +525,7 @@ GALGAS_stringlist GALGAS_filewrapper::getter_textFilesAtPath (const GALGAS_strin
     if (path.isValid ()) {
       const cDirectoryWrapper * dir = getDirectory (path.stringValue (), mRootDirectoryPtr) ;
       if (nullptr != dir) {
-        result = GALGAS_stringlist::class_func_emptyList (THERE) ;
+        result = GALGAS_stringlist::constructor_emptyList (THERE) ;
         const cRegularFileWrapper * * files = dir->mFiles ;
         while ((*files) != nullptr) {
           if ((*files)->mIsTextFile) {
@@ -554,10 +539,10 @@ GALGAS_stringlist GALGAS_filewrapper::getter_textFilesAtPath (const GALGAS_strin
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_filewrapper::getter_binaryFilesAtPath (const GALGAS_string & inPath,
-                                                                Compiler * inCompiler
+                                                                C_Compiler * inCompiler
                                                                 COMMA_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if ((mRootDirectoryPtr != nullptr) && inPath.isValid ()) {
@@ -565,7 +550,7 @@ GALGAS_stringlist GALGAS_filewrapper::getter_binaryFilesAtPath (const GALGAS_str
     if (path.isValid ()) {
       const cDirectoryWrapper * dir = getDirectory (path.stringValue (), mRootDirectoryPtr) ;
       if (nullptr != dir) {
-        result = GALGAS_stringlist::class_func_emptyList (THERE) ;
+        result = GALGAS_stringlist::constructor_emptyList (THERE) ;
         const cRegularFileWrapper * * files = dir->mFiles ;
         while ((*files) != nullptr) {
           if (! (*files)->mIsTextFile) {
@@ -579,4 +564,4 @@ GALGAS_stringlist GALGAS_filewrapper::getter_binaryFilesAtPath (const GALGAS_str
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //     BDD package (implementation of ROBDD)                                                     
 //
@@ -16,29 +16,29 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "M_machine.h"
-#include "UInt128.h"
-#include "TC_UniqueArray.h"
-#include "TC_Array.h"
-#include "BigSigned.h"
+#include "utilities/M_machine.h"
+#include "big-integers/PMUInt128.h"
+#include "generic-arraies/TC_UniqueArray.h"
+#include "generic-arraies/TC_Array.h"
+#include "big-integers/C_BigInt.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <stdio.h>
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class C_bdd_value_traversing ;
-class String ;
-class AbstractOutputStream ;
+class C_String ;
+class AC_OutputStream ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class C_BDD final {
 //--- enum for comparison operators
@@ -117,33 +117,33 @@ class C_BDD final {
                                          const compareEnum inComparison,
                                          const uint64_t inComparisonConstant) ;
 
-  public: static C_BDD bddWithConstants (const uint32_t * inValues,
-                                         const uint32_t * inBitCountArray,
-                                         const int32_t inEntryCount) ;
+  public: static C_BDD bddWithConstants (const uint32_t inValues [],
+                                          const uint32_t inBitCount [],
+                                          const int32_t inEntryCount) ;
 
 //--- Buil a BDD from a value list. This method sorts value list in ascending order
-  public: static C_BDD buildBDDFromValueList (uint64_t * ioValueArray,
-                                              const uint32_t inValueCount,
-                                              const uint32_t inBitCount) ;
+  public: static C_BDD buildBDDFromValueList (uint64_t ioValueList [],
+                                               const uint32_t inValueCount,
+                                               const uint32_t inBitCount) ;
 
 //--- Get BDD values count
   public: uint64_t valueCount64 (const uint32_t inVariableCount) const ;
 
-  public: UInt128 valueCount128 (const uint32_t inVariableCount) const ;
+  public: PMUInt128 valueCount128 (const uint32_t inVariableCount) const ;
 
-  public: BigSigned valueCount (const uint32_t inVariableCount) const ;
+  public: C_BigInt valueCount (const uint32_t inVariableCount) const ;
 
   public: uint64_t valueCount64UsingCache (const uint32_t inVariableCount,
-                                           TC_UniqueArray <uint64_t> & ioDirectCacheArray,
-                                           TC_UniqueArray <uint64_t> & ioComplementCacheArray) const ;
+                                            TC_UniqueArray <uint64_t> & ioDirectCacheArray,
+                                            TC_UniqueArray <uint64_t> & ioComplementCacheArray) const ;
 
-  public: UInt128 valueCount128UsingCache (const uint32_t inVariableCount,
-                                           TC_UniqueArray <UInt128> & ioDirectCacheArray,
-                                           TC_UniqueArray <UInt128> & ioComplementCacheArray) const ;
+  public: PMUInt128 valueCount128UsingCache (const uint32_t inVariableCount,
+                                              TC_UniqueArray <PMUInt128> & ioDirectCacheArray,
+                                              TC_UniqueArray <PMUInt128> & ioComplementCacheArray) const ;
 
-  public: BigSigned valueCountUsingCache (const uint32_t inVariableCount,
-                                          TC_UniqueArray <BigSigned> & ioDirectCacheArray,
-                                          TC_UniqueArray <BigSigned> & ioComplementCacheArray) const ;
+  public: C_BigInt valueCountUsingCache (const uint32_t inVariableCount,
+                                          TC_UniqueArray <C_BigInt> & ioDirectCacheArray,
+                                          TC_UniqueArray <C_BigInt> & ioComplementCacheArray) const ;
 
 //--- Return highest bit index + 1
   public: uint32_t significantVariableCount (void) const ;
@@ -164,30 +164,30 @@ class C_BDD final {
 
 //--- Test if a BDD does contain a value
   public: bool containsValue64 (const uint64_t inValue,
-                                const uint32_t inFirstBit,
-                                const uint32_t inBitCount) const ;
+                                 const uint32_t inFirstBit,
+                                 const uint32_t inBitCount) const ;
 
   public: bool containsValue (const TC_Array <bool> & inValue,
-                              const uint32_t inFirstBit,
-                              const uint32_t inBitCount) const ;
+                               const uint32_t inFirstBit,
+                               const uint32_t inBitCount) const ;
 
 //------------------------ Updating a relation
-  public: C_BDD updateRelation (const uint32_t * inRelationBitNeededCountArray,
-                                uint32_t* * inRelationBitCurrentCountArray,
-                                const int32_t inRelationCardinality) const ;
+  public: C_BDD updateRelation (const uint32_t inRelationBitNeededCount [], 
+                                 uint32_t * inRelationBitCurrentCount [], 
+                                 const int32_t inRelationCardinality) const ;
 
 //--- Translate BDD bits
   public: C_BDD translate (const uint32_t inVariableCount,
-                           const uint32_t inTranslation) const ;
+                            const uint32_t inTranslation) const ;
 
   public: void getBoolArray (TC_UniqueArray <bool> & outArray,
-                             const uint32_t inMaxValues,
-                             const uint32_t inBitSize) const ;
+                              const uint32_t inMaxValues,
+                              const uint32_t inBitSize) const ;
 
 //---- Substituing variables
-  public: C_BDD substitution (const uint32_t * inSubstitutionArray,
-                              const uint32_t inVariableCount
-                              COMMA_LOCATION_ARGS) const ;
+  public: C_BDD substitution (const uint32_t inSubstitutionArray [],
+                               const uint32_t inVariableCount
+                               COMMA_LOCATION_ARGS) const ;
 
   public: C_BDD exchangeVariables (const uint32_t var1, const uint32_t var2) const ;
 
@@ -197,74 +197,74 @@ class C_BDD final {
 
 //--- BDD as 2-relations
   public: C_BDD swap10 (const uint32_t inBitSize1,
-                        const uint32_t inBitSize2) const ;
+                         const uint32_t inBitSize2) const ;
 
   public: C_BDD accessibleStates (const C_BDD & inInitialStateSet,
-                                  const uint32_t inBitSize,
-                                  int32_t * outIterationCount) const ;
-
-  public: C_BDD transitiveClosure (const uint32_t inBitSize,
+                                   const uint32_t inBitSize,
                                    int32_t * outIterationCount) const ;
 
+  public: C_BDD transitiveClosure (const uint32_t inBitSize,
+                                    int32_t * outIterationCount) const ;
+
   public: void getArray2 (TC_UniqueArray <TC_UniqueArray <uint64_t> > & outArray,
-                          const uint32_t inMaxValueCount,
-                          const uint32_t inBitSize1,
-                          const uint32_t inBitSize2) const ;
+                           const uint32_t inMaxValueCount,
+                           const uint32_t inBitSize1,
+                           const uint32_t inBitSize2) const ;
 
 //--- BDD as 3-relations
   public: C_BDD swap021 (const uint32_t inBitSize1,
-                         const uint32_t inBitSize2,
-                         const uint32_t inBitSize3) const ;
+                          const uint32_t inBitSize2,
+                          const uint32_t inBitSize3) const ;
 
   public: C_BDD swap102 (const uint32_t inBitSize1,
-                         const uint32_t inBitSize2,
-                         const uint32_t inBitSize3) const ;
+                          const uint32_t inBitSize2,
+                          const uint32_t inBitSize3) const ;
 
   public: C_BDD swap120 (const uint32_t inBitSize1,
-                         const uint32_t inBitSize2,
-                         const uint32_t inBitSize3) const ;
+                          const uint32_t inBitSize2,
+                          const uint32_t inBitSize3) const ;
 
   public: C_BDD swap201 (const uint32_t inBitSize1,
-                         const uint32_t inBitSize2,
-                         const uint32_t inBitSize3) const ;
+                          const uint32_t inBitSize2,
+                          const uint32_t inBitSize3) const ;
 
   public: C_BDD swap210 (const uint32_t inBitSize1,
-                         const uint32_t inBitSize2,
-                         const uint32_t inBitSize3) const ;
+                          const uint32_t inBitSize2,
+                          const uint32_t inBitSize3) const ;
 
 
 
 //--- Printing
-  public: String graphvizRepresentation (void) const ;
-  public: String graphvizRepresentationWithNames (const TC_UniqueArray <String> & inBitNames) const ;
+  public: C_String graphvizRepresentation (void) const ;
+  public: C_String graphvizRepresentationWithNames (const TC_UniqueArray <C_String> & inBitNames) const ;
 
-  public: void print (AbstractOutputStream & outputStream) const ;
+  public: void print (AC_OutputStream & outputStream) const ;
 
-  public: void printHeader (AbstractOutputStream & outputStream) const ;
+  public: void printHeader (AC_OutputStream & outputStream) const ;
 
-  public: void printWithHeader (AbstractOutputStream & outputStream) const ;
+  public: void printWithHeader (AC_OutputStream & outputStream) const ;
 
-  public: void print (AbstractOutputStream & outputStream,
-                       const TC_UniqueArray <String> & inVariablesNames,
+  public: void print (AC_OutputStream & outputStream,
+                       const TC_UniqueArray <C_String> & inVariablesNames,
                        const TC_UniqueArray <int32_t> & inBitCounts) const ;
 
-  public: void print (AbstractOutputStream & outputStream,
+  public: void print (AC_OutputStream & outputStream,
                        const TC_UniqueArray <int32_t> & inValueSeparation,
                        const TC_UniqueArray <int32_t> & inBitCounts,
                        const int32_t inPrefixedSpaceCount) const ;
 
 //--- Buid string compressed representation
-  public: void buildCompressedLittleEndianStringValueArray (TC_UniqueArray <String> & outStringArray
+  public: void buildCompressedLittleEndianStringValueArray (TC_UniqueArray <C_String> & outStringArray
                                                              COMMA_LOCATION_ARGS) const ;
 
-  public: void buildCompressedLittleEndianStringValueArray (TC_UniqueArray <String> & outStringArray,
+  public: void buildCompressedLittleEndianStringValueArray (TC_UniqueArray <C_String> & outStringArray,
                                                              const uint32_t inVariableCount
                                                              COMMA_LOCATION_ARGS) const ;
 
-  public: void buildCompressedBigEndianStringValueArray (TC_UniqueArray <String> & outStringArray
+  public: void buildCompressedBigEndianStringValueArray (TC_UniqueArray <C_String> & outStringArray
                                                           COMMA_LOCATION_ARGS) const ;
 
-  public: void buildCompressedBigEndianStringValueArray (TC_UniqueArray <String> & outStringArray,
+  public: void buildCompressedBigEndianStringValueArray (TC_UniqueArray <C_String> & outStringArray,
                                                           const uint32_t inVariableCount
                                                           COMMA_LOCATION_ARGS) const ;
 
@@ -284,16 +284,16 @@ class C_BDD final {
   public: void buildValueArray (TC_UniqueArray <TC_Array <bool> > & outValuesArray,
                                   const uint32_t inVariableCount) const ;
 
-  public: void buildLittleEndianStringValueArray (TC_UniqueArray <String> & outStringArray,
+  public: void buildLittleEndianStringValueArray (TC_UniqueArray <C_String> & outStringArray,
                                                    const uint32_t inVariableCount) const ;
 
-  public: void buildBigEndianStringValueArray (TC_UniqueArray <String> & outStringArray,
+  public: void buildBigEndianStringValueArray (TC_UniqueArray <C_String> & outStringArray,
                                                 const uint32_t inVariableCount) const ;
 
-  public: String queryStringValue (LOCATION_ARGS) const ;
+  public: C_String queryStringValue (LOCATION_ARGS) const ;
 
 //--- Build a BDD from the string returned by 'queryStringValue'
-  public: static C_BDD BDDWithPredicateString (const String & inPredicateStringValue
+  public: static C_BDD BDDWithPredicateString (const C_String & inPredicateStringValue
                                                 COMMA_LOCATION_ARGS) ;
 
 //--- Traversing BBD (call C_bdd_value_traversing::action method for every value) 
@@ -337,17 +337,17 @@ class C_BDD final {
   public: static uint32_t getCreatedNodesCount (void)  ;
 
 //--- Print BDD package statistics 
-  public: static void printBDDpackageOperationsSummary (AbstractOutputStream & inStream) ;
+  public: static void printBDDpackageOperationsSummary (AC_OutputStream & inStream) ;
 
 //--- Free BDD data structures
   public: static void freeBDDStataStructures (void) ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //   Abstract class for value traversing of a BDD                                                
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class C_bdd_value_traversing {
 //--- Constructor et destructor
@@ -355,12 +355,12 @@ class C_bdd_value_traversing {
   public: virtual ~C_bdd_value_traversing (void) {}
 
 //--- Virtual method called for every value
-  public: virtual void action (const bool * tableauDesValeurs,
-                               const uint32_t inVariableCount) = 0 ;
-
+  public: virtual void action (const bool tableauDesValeurs [],
+                                const uint32_t inVariableCount) = 0 ;
+  
 //--- No instance copy
-  private: C_bdd_value_traversing (const C_bdd_value_traversing &) = delete ;
-  private: C_bdd_value_traversing & operator = (const C_bdd_value_traversing &) = delete ;
+  private: C_bdd_value_traversing (const C_bdd_value_traversing &) ;
+  private: C_bdd_value_traversing & operator = (const C_bdd_value_traversing &) ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

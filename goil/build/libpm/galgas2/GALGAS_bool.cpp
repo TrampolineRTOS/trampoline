@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //   GALGAS_bool : this class implements the GALGAS 'bool' native type                           
 //
@@ -16,16 +16,16 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-predefined-types.h"
-#include "Compiler.h"
+#include "galgas2/C_Compiler.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //                     'GALGAS_bool' class                                                       
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool::GALGAS_bool (void) :
 AC_GALGAS_root (),
@@ -33,7 +33,13 @@ mIsValid (false),
 mBoolValue (false) {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_bool GALGAS_bool::constructor_default (UNUSED_LOCATION_ARGS) {
+  return GALGAS_bool (false) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool::GALGAS_bool (const bool inValue) :
 AC_GALGAS_root (),
@@ -41,7 +47,7 @@ mIsValid (true),
 mBoolValue (inValue) {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool::GALGAS_bool (const bool inIsBuilt,
                           const bool inValue) :
@@ -50,13 +56,7 @@ mIsValid (inIsBuilt),
 mBoolValue (inValue) {
 }
 
-//--------------------------------------------------------------------------------------------------
-
-GALGAS_bool GALGAS_bool::class_func_default (UNUSED_LOCATION_ARGS) {
-  return GALGAS_bool (false) ;
-}
-
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool::GALGAS_bool (const typeComparisonKind inComparisonKind,
                           const typeComparisonResult inComparisonResult) :
@@ -64,7 +64,7 @@ mIsValid (kOperandNotValid != inComparisonResult),
 mBoolValue (boolValueFromComparisonKindAndComparisonResult (inComparisonKind, inComparisonResult)) {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 enumGalgasBool GALGAS_bool::boolEnum (void) const {
   enumGalgasBool result = kBoolNotValid ;
@@ -74,7 +74,7 @@ enumGalgasBool GALGAS_bool::boolEnum (void) const {
   return result ;  
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_bool::objectCompare (const GALGAS_bool & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -90,7 +90,7 @@ typeComparisonResult GALGAS_bool::objectCompare (const GALGAS_bool & inOperand) 
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_bool::operator_and (const GALGAS_bool & inOperand2
                                        COMMA_UNUSED_LOCATION_ARGS) const {
@@ -101,7 +101,7 @@ GALGAS_bool GALGAS_bool::operator_and (const GALGAS_bool & inOperand2
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_bool::operator_or (const GALGAS_bool & inOperand2
                                       COMMA_UNUSED_LOCATION_ARGS) const {
@@ -112,7 +112,7 @@ GALGAS_bool GALGAS_bool::operator_or (const GALGAS_bool & inOperand2
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_bool::operator_xor (const GALGAS_bool & inOperand2
                                        COMMA_UNUSED_LOCATION_ARGS) const {
@@ -123,7 +123,7 @@ GALGAS_bool GALGAS_bool::operator_xor (const GALGAS_bool & inOperand2
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_bool::operator_not (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -133,7 +133,7 @@ GALGAS_bool GALGAS_bool::operator_not (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_bool::getter_cString (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -143,7 +143,7 @@ GALGAS_string GALGAS_bool::getter_cString (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_bool::getter_ocString (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -153,7 +153,7 @@ GALGAS_string GALGAS_bool::getter_ocString (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint GALGAS_bool::getter_uint (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -163,17 +163,17 @@ GALGAS_uint GALGAS_bool::getter_uint (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bool::getter_bigint (UNUSED_LOCATION_ARGS) const {
   GALGAS_bigint result ;
   if (isValid ()) {
-    result = GALGAS_bigint (BigSigned (true, uint64_t (mBoolValue ? 1 : 0))) ;
+    result = GALGAS_bigint (C_BigInt ((uint32_t) (mBoolValue ? 1 : 0))) ;
   }
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sint GALGAS_bool::getter_sint (UNUSED_LOCATION_ARGS) const {
   GALGAS_sint result ;
@@ -183,7 +183,7 @@ GALGAS_sint GALGAS_bool::getter_sint (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint_36__34_ GALGAS_bool::getter_uint_36__34_ (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint_36__34_ result ;
@@ -193,7 +193,7 @@ GALGAS_uint_36__34_ GALGAS_bool::getter_uint_36__34_ (UNUSED_LOCATION_ARGS) cons
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sint_36__34_ GALGAS_bool::getter_sint_36__34_ (UNUSED_LOCATION_ARGS) const {
   GALGAS_sint_36__34_ result ;
@@ -203,17 +203,17 @@ GALGAS_sint_36__34_ GALGAS_bool::getter_sint_36__34_ (UNUSED_LOCATION_ARGS) cons
   return result ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void GALGAS_bool::description (String & ioString,
+void GALGAS_bool::description (C_String & ioString,
                                const int32_t /* inIndentation */) const {
-  ioString.appendCString ("<@bool:") ;
+  ioString << "<@bool:" ;
   if (isValid ()) {
-    ioString.appendString (mBoolValue ? "true" : "false") ;
+    ioString << (mBoolValue ? "true" : "false") ;
   }else{
-    ioString.appendCString ("not built") ;
+    ioString << "not built" ;
   }
-  ioString.appendCString (">") ;
+  ioString << ">" ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

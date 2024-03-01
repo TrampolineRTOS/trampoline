@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  Generic String list Command Line Interface Option                                            
 //
@@ -16,57 +16,56 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "C_CommandLineOption.h"
-#include "String-class.h"
+#include "strings/C_String.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 class C_StringListCommandLineOption final : public C_CommandLineOption {
 //--- Constructor
-  public: C_StringListCommandLineOption (const String & inDomainName,
-                                         const String & inIdentifier,
-                                         const char inChar,
-                                         const String & inString,
-                                         const String & inComment) ;
+  public: C_StringListCommandLineOption (const char * inDomainName,
+                                          const char * inIdentifier,
+                                          const char inChar,
+                                          const char * inString,
+                                          const char * inComment) ;
 //--- No Copy
-  private: C_StringListCommandLineOption (const C_StringListCommandLineOption &) = delete ;
-  private: C_StringListCommandLineOption & operator = (const C_StringListCommandLineOption &) = delete ;
+  private: C_StringListCommandLineOption (const C_StringListCommandLineOption &) ;
+  private: C_StringListCommandLineOption & operator = (const C_StringListCommandLineOption &) ;
 
 //--- Attributes
   private: C_StringListCommandLineOption * mNext ;
-  public: TC_Array <String> mValue ;
-  public: inline TC_Array <String> readProperty_value (void) const { return mValue ; }
+  public: TC_Array <C_String> mValue ;
+  public: inline TC_Array <C_String> readProperty_value (void) const { return mValue ; }
 
 //--- Static methods
-  public: static void setStringListOptionForCommandChar (const String & inCommandCommandLineOptionString,
-                                                         bool & outFound,
-                                                         bool & outCommandLineOptionStringIsValid) ;
-
-  public: static void setStringListOptionForCommandString (const String & inCommandCommandLineOptionString,
-                                                           bool & outFound,
-                                                           bool & outCommandLineOptionStringIsValid)  ;
+  public: static void setStringListOptionForCommandChar (const char * inCommandCommandLineOptionString,
+                                                          bool & outFound,
+                                                          bool & outCommandLineOptionStringIsValid) ;
+  public: static void setStringListOptionForCommandString (const char * inCommandCommandLineOptionString,
+                                                            bool & outFound,
+                                                            bool & outCommandLineOptionStringIsValid)  ;
   public: static void printUsageOfStringOptions (void) ;
   public: static void printStringOptions (void) ;
 
   public: static void releaseStrings (void) ; // Called at the end of main routine
 
 //--- Option introspection
-  public: static void getStringOptionNameList (TC_UniqueArray <String> & outArray) ;
+  public: static void getStringOptionNameList (TC_UniqueArray <C_String> & outArray) ;
 
-  public: static utf32 getStringOptionInvocationLetter (const String & inDomainName,
-                                                       const String & inIdentifier) ;
+  public: static utf32 getStringOptionInvocationLetter (const C_String & inDomainName,
+                                                       const C_String & inIdentifier) ;
 
-  public: static String getStringOptionInvocationString (const String & inDomainName,
-                                                          const String & inIdentifier) ;
+  public: static C_String getStringOptionInvocationString (const C_String & inDomainName,
+                                                          const C_String & inIdentifier) ;
 
-  public: static String getStringOptionCommentString (const String & inDomainName,
-                                                       const String & inIdentifier) ;
+  public: static C_String getStringOptionCommentString (const C_String & inDomainName,
+                                                       const C_String & inIdentifier) ;
 } ;
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

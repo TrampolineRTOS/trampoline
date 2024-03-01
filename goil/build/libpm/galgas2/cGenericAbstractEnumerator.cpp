@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //
 //  GALGAS_enumerable : Base class for GALGAS enumerable object                                  
 //
@@ -16,16 +16,16 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "cGenericAbstractEnumerator.h"
+#include "galgas2/cGenericAbstractEnumerator.h"
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 cGenericAbstractEnumerator::~ cGenericAbstractEnumerator (void) {
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
 const cCollectionElement * cGenericAbstractEnumerator::currentObjectPtr (LOCATION_ARGS) const {
   const uint32_t idx = (mOrder == kENUMERATION_UP)
@@ -35,4 +35,4 @@ const cCollectionElement * cGenericAbstractEnumerator::currentObjectPtr (LOCATIO
   return mEnumerationArray.pointerAtIndexForReadAccess (idx COMMA_THERE) ;
 }
 
-//--------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------

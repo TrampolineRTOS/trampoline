@@ -25,12 +25,12 @@ def buildForWin32OnMacOSX (dictionary, jsonFilePath, EXECUTABLE, BUILD_DIR_NAME,
   gmf.mMaxParallelJobs = maxParallelJobs
   gmf.mDisplayCommands = displayCommands
   gmf.mTargetName = "win32"
-  gmf.mLinkerOptions = ["-lComdlg32"]
+  gmf.mLinkerOptions = ["-lComdlg32", "-static"]
   gmf.mExecutableSuffix = ".exe"
   gmf.mBuildDirName = BUILD_DIR_NAME
 #---
   gmf.mCompilerTool = ["x86_64-w64-mingw32-gcc"]
-  gmf.mLinkerTool = ["x86_64-w64-mingw32-g++"]
+  gmf.mLinkerTool = ["x86_64-w64-mingw32-g++", "-std=c++11"]
   gmf.mStripTool = ["x86_64-w64-mingw32-strip", "--strip-all"]
   gmf.mCompilationMessage = "Compiling for Win32"
   gmf.mLinkingMessage = "Linking for Win32"
