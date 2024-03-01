@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  unicode_character : an implementation of Unicode character                                   
 //
@@ -16,19 +16,19 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 //--- Character assigned ?
 bool isUnicodeCharacterAssigned (const utf32 inUnicodeCharacterCode) ;
 
 //--- Returns character name, or empty string if not assigned
 #ifdef __cplusplus
-  #include "strings/C_String.h"
-  C_String unicodeName (const utf32 inUnicodeCharacter) ;
+  #include "String-class.h"
+  String unicodeName (const utf32 inUnicodeCharacter) ;
 #endif
 #ifdef __OBJC__
   NSString * unicodeName (const utf32 inUnicodeCharacter) ;
@@ -76,7 +76,7 @@ bool isUnicodeSymbol (const utf32 inUnicodeCharacter) ;
 //--- Returns the number of bytes needed for encoding this character in UTF8
 uint32_t utf8Length (const utf32 inUnicodeCharacter) ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 extern const utf32 UNICODE_REPLACEMENT_CHARACTER ;
 extern const utf32 UNICODE_MAX_LEGAL_UTF32_CHARACTER ;
@@ -84,22 +84,22 @@ extern const utf32 UNICODE_MAX_LEGAL_UTF32_CHARACTER ;
 //--- Returns true if unicode letter
 bool isRestrictedUnicodeLetter (const utf32 inUnicodeCharacter) ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //   D E C O D E    H T M L    E N C O D I N G                                                   
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 //--- Decode HTML in string, return Unicode (or NULL if not found)
 #ifdef __cplusplus
-  utf32 unicodeCharacterFromHTMLSequence (const C_String & inString) ;
+  utf32 unicodeCharacterFromHTMLSequence (const String & inString) ;
 #endif
 
 #ifdef __OBJC__
   utf32 unicodeCharacterFromHTMLSequence (NSString * inString) ;
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 utf32 unicodeCharacterForSingleByteCharacter (const char inChar, const PMStringEncoding inStringEncoding) ;
 
@@ -109,11 +109,11 @@ int32_t UTF8StringFromUTF32Character (const utf32 inUnicodeChar, char outSequenc
 
 //--- inEndOfStringPtr points just beyond the last available byte
 #ifdef __cplusplus
-  class C_Data ;
+  class U8Data ;
   utf32 utf32CharacterForPointer (const uint8_t * inDataString,
                                   int32_t & ioIndex,
                                   const int32_t inLength,
                                   bool & ioOK) ;
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------

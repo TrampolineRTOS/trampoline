@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  cPtr_weakReference_proxy : Base class for reference class class
 //
@@ -16,20 +16,20 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-#include "galgas2/cPtr_weakReference_proxy.h"
-#include "galgas2/acStrongPtr_class.h"
-#include "strings/C_String.h"
+#include "cPtr_weakReference_proxy.h"
+#include "acStrongPtr_class.h"
+#include "String-class.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 cPtr_weakReference_proxy::cPtr_weakReference_proxy (LOCATION_ARGS) :
 acPtr_class (THERE),
 mStrongObjectPtr (nullptr) {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 cPtr_weakReference_proxy::~ cPtr_weakReference_proxy (void) {
   if (mStrongObjectPtr != nullptr) {
@@ -37,7 +37,7 @@ cPtr_weakReference_proxy::~ cPtr_weakReference_proxy (void) {
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * cPtr_weakReference_proxy::classDescriptor (void) const {
   const C_galgas_type_descriptor * result = nullptr ;
@@ -47,10 +47,10 @@ const C_galgas_type_descriptor * cPtr_weakReference_proxy::classDescriptor (void
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_weakReference_proxy::duplicate (UNUSED_LOCATION_ARGS) const {
   return nullptr ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------

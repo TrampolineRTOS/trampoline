@@ -18,7 +18,7 @@ atexit.register (cleanup)
 #--- Get script absolute path
 scriptDir = os.path.dirname (os.path.abspath (sys.argv [0]))
 #---
-childProcess = subprocess.Popen (["/usr/bin/python3", "build.py", "debug"], cwd=scriptDir)
+childProcess = subprocess.Popen (["python3", "build.py", "debug"], cwd=scriptDir)
 #--- Wait for subprocess termination
 if childProcess.poll () == None :
   childProcess.wait ()

@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  acPtr_class : Base class for GALGAS class                                                    
 //
@@ -16,26 +16,26 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-#include "utilities/C_SharedObject.h"
-#include "galgas2/typeComparisonResult.h"
+#include "SharedObject.h"
+#include "typeComparisonResult.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-class C_String ;
+class String ;
 class C_galgas_type_descriptor ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-class acPtr_class : public C_SharedObject {
+class acPtr_class : public SharedObject {
   public: acPtr_class (LOCATION_ARGS) ;
 
-  public: virtual void description (C_String & ioString,
+  public: virtual void description (String & ioString,
                                     const int32_t inIndentation) const = 0 ;
 
   public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const = 0 ;
@@ -45,4 +45,4 @@ class acPtr_class : public C_SharedObject {
   public: virtual acPtr_class * duplicate (LOCATION_ARGS) const = 0 ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------

@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 //
 //  Built-in GALGAS Command Line Interface Options
 //
 //  This file is part of libpm library
 //
-//  Copyright (C) 2015, ..., 2021 Pierre Molinaro.
+//  Copyright (C) 2015, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -16,12 +16,12 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
-#include "galgas2/C_galgas_verbose_option.h"
-#include "galgas2/F_verbose_output.h"
+#include "C_galgas_verbose_option.h"
+#include "F_verbose_output.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_verbose_5F_output ("galgas_builtin_options",
                                                                                 "verbose_output",
@@ -30,10 +30,10 @@ C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_verbose_5F_output (
                                                                                 "Verbose Output",
                                                                                 false) ; // Not visible in GALGAS
 
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 bool verboseOutput (void) {
   return gOption_galgas_5F_builtin_5F_options_verbose_5F_output.readProperty_value () ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------

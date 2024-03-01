@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  This file is part of libpm library                                                           
 //
@@ -14,7 +14,7 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #import "OC_GGS_DocumentData.h"
 #import "OC_GGS_Document.h"
@@ -24,15 +24,15 @@
 #import "PMDebug.h"
 #import "PMIssueDescriptor.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 //#define DEBUG_MESSAGES
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 static NSMutableDictionary * gDocumentDataDictionary ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 @implementation OC_GGS_DocumentData
 
@@ -136,12 +136,12 @@ static NSMutableDictionary * gDocumentDataDictionary ;
         if (CRcount > 0) {
           source = [a componentsJoinedByString:@"\n"] ;
           if ([s length] > 0) {
-            [s appendString:@"\n"] ;
+            [s appendString: @"\n"] ;
           }
           if (CRcount == 1) {
-            [s appendFormat:@"1 CR has been converted to LF."] ;
+            [s appendFormat: @"1 CR has been converted to LF."] ;
           }else if (CRcount > 1) {
-            [s appendFormat:@"%lu CR have been converted to LF.", CRcount] ;
+            [s appendFormat: @"%lu CR have been converted to LF.", CRcount] ;
           }
         }
       }
@@ -151,7 +151,7 @@ static NSMutableDictionary * gDocumentDataDictionary ;
         if (HTABcount > 0) {
           source = [a componentsJoinedByString:@" "] ;
           if ([s length] > 0) {
-            [s appendString:@"\n"] ;
+            [s appendString: @"\n"] ;
           }
           if (HTABcount == 1) {
             [s appendFormat:@"1 HTAB has been converted to SPACE."] ;
@@ -405,4 +405,4 @@ static NSMutableDictionary * gDocumentDataDictionary ;
 
 @end
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------

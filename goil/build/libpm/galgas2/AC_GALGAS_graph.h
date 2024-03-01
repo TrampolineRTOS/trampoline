@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  AC_GALGAS_graph : Base class for GALGAS graph
 //
@@ -16,21 +16,21 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-#include "galgas2/AC_GALGAS_root.h"
-#include "galgas2/typeComparisonResult.h"
-#include "galgas2/cCollectionElement.h"
+#include "AC_GALGAS_root.h"
+#include "typeComparisonResult.h"
+#include "cCollectionElement.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  A C _ G A L G A S _ g r a p h
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 class AC_GALGAS_graph : public AC_GALGAS_root {
 //--- Private Data member
@@ -72,7 +72,7 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
   public: VIRTUAL_IN_DEBUG GALGAS_stringlist getter_undefinedNodeKeyList (LOCATION_ARGS) const ;
 
   public: VIRTUAL_IN_DEBUG GALGAS_location getter_locationForKey (const GALGAS_string & inKey,
-                                                                   C_Compiler * inCompiler
+                                                                   Compiler * inCompiler
                                                                    COMMA_LOCATION_ARGS) const ;
 
 //--------------------------------- Setters
@@ -81,7 +81,7 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
                                                  COMMA_LOCATION_ARGS) ;
 
   public: VIRTUAL_IN_DEBUG void setter_removeEdgesToNode (const GALGAS_string & inNodeName,
-                                                           C_Compiler * inCompiler
+                                                           Compiler * inCompiler
                                                            COMMA_LOCATION_ARGS) ;
 
   public: VIRTUAL_IN_DEBUG void setter_removeEdgesToDominators (LOCATION_ARGS) ;
@@ -93,7 +93,7 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
   public: virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const override = 0 ;
 
 //--- Description
-  public: VIRTUAL_IN_DEBUG void description (C_String & ioString, const int32_t inIndentation) const override ;
+  public: VIRTUAL_IN_DEBUG void description (String & ioString, const int32_t inIndentation) const override ;
 
 //--- Internal methods for handling graph
   protected: VIRTUAL_IN_DEBUG void reversedGraphFromGraph (const AC_GALGAS_graph & inGraph
@@ -102,7 +102,7 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
   protected: VIRTUAL_IN_DEBUG void subGraph (AC_GALGAS_graph & outResultingGraph,
                                               const GALGAS_lstringlist & inStartNodes,
                                               const GALGAS_stringset & inNodesToExclude,
-                                              C_Compiler * inCompiler
+                                              Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) const ;
 
 
@@ -113,7 +113,7 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
   protected: VIRTUAL_IN_DEBUG void internalAddNode (const GALGAS_lstring & inKey,
                                                      const char * inErrorMessage,
                                                      const capCollectionElement & inAttributes,
-                                                     C_Compiler * inCompiler
+                                                     Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
 
   public: VIRTUAL_IN_DEBUG void setter_noteNode (const GALGAS_lstring & inKey
@@ -125,7 +125,7 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
                                                              GALGAS_lstringlist & outSortedNodeKeyList,
                                                              capCollectionElementArray & outUnsortedList,
                                                              GALGAS_lstringlist & outUnsortedNodeKeyList,
-                                                             C_Compiler * inCompiler
+                                                             Compiler * inCompiler
                                                              COMMA_LOCATION_ARGS) const ;
 
   protected: VIRTUAL_IN_DEBUG void internalFindCircularities (capCollectionElementArray & outInfoList,
@@ -145,7 +145,7 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
                                                                        GALGAS_lstringlist & outSortedNodeKeyList,
                                                                        capCollectionElementArray & outUnsortedList,
                                                                        GALGAS_lstringlist & outUnsortedNodeKeyList,
-                                                                       C_Compiler * inCompiler
+                                                                       Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) const ;
 
   public: VIRTUAL_IN_DEBUG GALGAS_string getter_graphviz (UNUSED_LOCATION_ARGS) const ;
@@ -155,5 +155,5 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
   friend class cSharedGraph ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 #pragma once

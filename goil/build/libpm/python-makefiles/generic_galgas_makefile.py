@@ -62,21 +62,21 @@ class GenericGalgasMakefile :
   #--- Linker options
     self.mLinkerOptions += self.mDictionary ["USER_LINK_OPTIONS"].copy ()
   #--- LIBPM
-    LIBPM_DIRECTORY_PATH = self.mDictionary ["LIBPM_DIRECTORY_PATH"]
+#     LIBPM_DIRECTORY_PATH = self.mDictionary ["LIBPM_DIRECTORY_PATH"]
   #--- Source directory list
     SOURCES_DIR = self.mDictionary ["SOURCES_DIR"].copy ()
-    SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/bdd")
-    SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/big-integers")
-    SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/command_line_interface")
-    SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/files")
-    SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/galgas2")
-    SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/gmp")
-    SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/streams")
-    SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/time")
-    SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/strings")
-    SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/utilities")
+#     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/bdd")
+#     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/big-integers")
+#     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/command_line_interface")
+#     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/files")
+#     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/galgas2")
+#     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/gmp")
+#     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/streams")
+#     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/time")
+#     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/strings")
+#     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/utilities")
   #--------------------------------------------------------------------------- Include dirs
-    includeDirs = ["-I" + LIBPM_DIRECTORY_PATH + "/gmp"]
+    includeDirs = [] # ["-I" + LIBPM_DIRECTORY_PATH + "/gmp"]
     for d in SOURCES_DIR:
       includeDirs.append ("-I" + d)
   #--- Make object

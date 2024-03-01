@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  Generic Command Line Interface Option                                                        
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2009, ..., 2010 Pierre Molinaro.
+//  Copyright (C) 2009, ..., 2024 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -16,17 +16,17 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #include "C_CommandLineOption.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-C_CommandLineOption::C_CommandLineOption (const char * inDomainName,
-                                          const char * inIdentifier,
+C_CommandLineOption::C_CommandLineOption (const String & inDomainName,
+                                          const String & inIdentifier,
                                           const char inChar,
-                                          const char * inString,
-                                          const char * inComment) :
+                                          const String & inString,
+                                          const String & inComment) :
 mDomainName (inDomainName),
 mIdentifier (inIdentifier),
 mCommandChar (inChar),
@@ -34,9 +34,9 @@ mCommandString (inString),
 mComment (inComment) {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 C_CommandLineOption::~C_CommandLineOption (void) {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------

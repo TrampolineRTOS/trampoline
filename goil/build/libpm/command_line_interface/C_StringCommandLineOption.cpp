@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  Generic String Command Line Interface Option
 //
@@ -16,28 +16,28 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-#include "command_line_interface/C_StringCommandLineOption.h"
-#include "utilities/C_PrologueEpilogue.h"
+#include "C_StringCommandLineOption.h"
+#include "PrologueEpilogue.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #include <string.h>
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 static C_StringCommandLineOption * gFirstStringOption ;
 static C_StringCommandLineOption * gLastStringOption ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-C_StringCommandLineOption::C_StringCommandLineOption (const char * inDomainName,
-                                                      const char * inIdentifier,
+C_StringCommandLineOption::C_StringCommandLineOption (const String & inDomainName,
+                                                      const String & inIdentifier,
                                                       const char inChar,
-                                                      const char * inString,
-                                                      const char * inComment,
-                                                      const char * inDefaultValue) :
+                                                      const String & inString,
+                                                      const String & inComment,
+                                                      const String & inDefaultValue) :
 C_CommandLineOption (inDomainName, inIdentifier, inChar, inString, inComment),
 mNext (nullptr),
 mValue (inDefaultValue),
@@ -50,39 +50,39 @@ mDefaultValue (inDefaultValue) {
   gLastStringOption = this ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-void C_StringCommandLineOption::setStringOptionForCommandChar (const char * inCommandString,
+void C_StringCommandLineOption::setStringOptionForCommandChar (const String & inCommandString,
                                                                bool & outFound,
                                                                bool & outCommandLineOptionStringIsValid) {
-  outCommandLineOptionStringIsValid = (strlen (inCommandString) > 2) && (inCommandString [1] == '=') ;
+  outCommandLineOptionStringIsValid = (inCommandString.length () > 2) && (inCommandString.charAtIndex (1 COMMA_HERE) == '=') ;
   outFound = false ;
   if (outCommandLineOptionStringIsValid) {
     C_StringCommandLineOption * p = gFirstStringOption ;
     while ((p != nullptr) && ! outFound) {
-      outFound = inCommandString [0] == p->mCommandChar ;
+      outFound = UNICODE_VALUE (inCommandString.charAtIndex (0 COMMA_HERE)) == uint32_t (p->mCommandChar) ;
       if (outFound) {
-        p->mValue.setLengthToZero () ;
-        p->mValue << & inCommandString [2] ;
+        p->mValue.removeAllKeepingCapacity () ;
+        p->mValue.appendString (inCommandString.subStringFromIndex (2)) ;
       }
       p = p->mNext ;
     }
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-void C_StringCommandLineOption::setStringOptionForCommandString (const char * inCommandString,
+void C_StringCommandLineOption::setStringOptionForCommandString (const String & inCommandString,
                                                                  bool & outFound,
                                                                  bool & outCommandLineOptionStringIsValid) {
-  const uint32_t optionLength = (uint32_t) (strlen (inCommandString) & UINT32_MAX) ;
+  const int32_t optionLength = inCommandString.length () ;
   outCommandLineOptionStringIsValid = optionLength > 4 ;
 //--- Find '=' character
-  uint32_t equalSignIndex = 0 ;
+  int32_t equalSignIndex = 0 ;
   if (outCommandLineOptionStringIsValid) {
     outFound = false ;
     while ((equalSignIndex < optionLength) && outCommandLineOptionStringIsValid && ! outFound) {
-      outFound = inCommandString [equalSignIndex] == '=' ;
+      outFound = UNICODE_VALUE (inCommandString.charAtIndex (equalSignIndex COMMA_HERE)) == '=' ;
       if (! outFound) {
         equalSignIndex ++ ;
       }
@@ -90,22 +90,22 @@ void C_StringCommandLineOption::setStringOptionForCommandString (const char * in
     outCommandLineOptionStringIsValid = outFound && (equalSignIndex > 0) && (equalSignIndex < (optionLength - 1)) ;
   }
 //--- Search option
+  const String command = inCommandString.leftSubString (equalSignIndex) ;
   outFound = false ;
   if (outCommandLineOptionStringIsValid) {
     C_StringCommandLineOption * p = gFirstStringOption ;
     while ((p != nullptr) && ! outFound) {
-      outFound = (strlen (p->mCommandString) == equalSignIndex) &&
-                 (strncmp (p->mCommandString, inCommandString, equalSignIndex) == 0) ;
+      outFound = p->mCommandString == command ;
       if (outFound) {
-        p->mValue.setLengthToZero () ;
-        p->mValue << & inCommandString [strlen (p->mCommandString) + 1] ;
+        p->mValue.removeAllKeepingCapacity () ;
+        p->mValue.appendString (inCommandString.subStringFromIndex (p->mCommandString.length () + 1)) ;
       }
       p = p->mNext ;
     }
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void C_StringCommandLineOption::printUsageOfStringOptions (void) {
   C_StringCommandLineOption * p = gFirstStringOption ;
@@ -114,57 +114,62 @@ void C_StringCommandLineOption::printUsageOfStringOptions (void) {
     if (c != '\0') {
       printf (" [-%c=string]", c) ;
     }
-    const char * s = p->mCommandString ;
-    if (s [0] != 0) {
-      printf (" [--%s=string]", s) ;
+    if (p->mCommandString.length () > 0) {
+      printf (" [--%s=string]", p->mCommandString.cString ()) ;
     }
     p = p->mNext ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void C_StringCommandLineOption::printStringOptions (void) {
   C_StringCommandLineOption * p = gFirstStringOption ;
   while (p != nullptr) {
     if (p->mCommandChar != '\0') {
-      co.setForeColor (kBlueForeColor) ;
-      co.setTextAttribute (kBoldTextAttribute) ;
-      co << "-" << cStringWithCharacter (p->mCommandChar) << "=string" ;
-      co.setTextAttribute (kAllAttributesOff) ;
-      co << "\n" ;
+      gCout.setForeColor (kBlueForeColor) ;
+      gCout.setTextAttribute (kBoldTextAttribute) ;
+      gCout.appendCString ("-") ;
+      gCout.appendASCIIChar (p->mCommandChar) ;
+      gCout.appendCString ("=string") ;
+      gCout.setTextAttribute (kAllAttributesOff) ;
+      gCout.appendNewLine () ;
     }
-    if (p->mCommandString [0] != '\0') {
-      co.setForeColor (kBlueForeColor) ;
-      co.setTextAttribute (kBoldTextAttribute) ;
-      co << "--" << p->mCommandString << "=string" ;
-      co.setTextAttribute (kAllAttributesOff) ;
-      co << "\n" ;
+    if (p->mCommandString.length () > 0) {
+      gCout.setForeColor (kBlueForeColor) ;
+      gCout.setTextAttribute (kBoldTextAttribute) ;
+      gCout.appendCString ("--") ;
+      gCout.appendString (p->mCommandString) ;
+      gCout.appendCString ("=string") ;
+      gCout.setTextAttribute (kAllAttributesOff) ;
+      gCout.appendNewLine () ;
     }
-    co << "    " << p->mComment  << " (default value: '"
-       << p->mDefaultValue
-       << "')\n" ;
+    gCout.appendCString ("    ") ;
+    gCout.appendString (p->mComment)  ;
+    gCout.appendCString (" (default value: '") ;
+    gCout.appendString (p->mDefaultValue) ;
+    gCout.appendCString ("')\n") ;
     p = p->mNext ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void C_StringCommandLineOption::releaseStrings (void) {
   C_StringCommandLineOption * p = gFirstStringOption ;
   while (p != nullptr) {
-    p->mValue.releaseString () ;
+    p->mValue.removeAll () ;
     p = p->mNext ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gReleaseString (nullptr, C_StringCommandLineOption::releaseStrings) ;
+PrologueEpilogue gReleaseString (nullptr, C_StringCommandLineOption::releaseStrings) ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-void C_StringCommandLineOption::getStringOptionNameList (TC_UniqueArray <C_String> & outArray) {
+void C_StringCommandLineOption::getStringOptionNameList (TC_UniqueArray <String> & outArray) {
   C_StringCommandLineOption * p = gFirstStringOption ;
   while (p != nullptr) {
     outArray.appendObject (p->mDomainName) ;
@@ -173,10 +178,10 @@ void C_StringCommandLineOption::getStringOptionNameList (TC_UniqueArray <C_Strin
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-utf32 C_StringCommandLineOption::getStringOptionInvocationLetter (const C_String & inDomainName,
-                                                                  const C_String & inIdentifier) {
+utf32 C_StringCommandLineOption::getStringOptionInvocationLetter (const String & inDomainName,
+                                                                  const String & inIdentifier) {
   utf32 result = TO_UNICODE (0) ;
   C_StringCommandLineOption * p = gFirstStringOption ;
   bool found = false ;
@@ -188,11 +193,11 @@ utf32 C_StringCommandLineOption::getStringOptionInvocationLetter (const C_String
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-C_String C_StringCommandLineOption::getStringOptionInvocationString (const C_String & inDomainName,
-                                                                     const C_String & inIdentifier) {
-  C_String result ;
+String C_StringCommandLineOption::getStringOptionInvocationString (const String & inDomainName,
+                                                                     const String & inIdentifier) {
+  String result ;
   C_StringCommandLineOption * p = gFirstStringOption ;
   bool found = false ;
   while ((p != nullptr) && not found) {
@@ -203,11 +208,11 @@ C_String C_StringCommandLineOption::getStringOptionInvocationString (const C_Str
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-C_String C_StringCommandLineOption::getStringOptionCommentString (const C_String & inDomainName,
-                                                                  const C_String & inIdentifier) {
-  C_String result ;
+String C_StringCommandLineOption::getStringOptionCommentString (const String & inDomainName,
+                                                                  const String & inIdentifier) {
+  String result ;
   C_StringCommandLineOption * p = gFirstStringOption ;
   bool found = false ;
   while ((p != nullptr) && not found) {
@@ -218,11 +223,11 @@ C_String C_StringCommandLineOption::getStringOptionCommentString (const C_String
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-C_String C_StringCommandLineOption::getStringOptionValue (const C_String & inDomainName,
-                                                          const C_String & inIdentifier) {
-  C_String result ;
+String C_StringCommandLineOption::getStringOptionValue (const String & inDomainName,
+                                                          const String & inIdentifier) {
+  String result ;
   C_StringCommandLineOption * p = gFirstStringOption ;
   bool found = false ;
   while ((p != nullptr) && not found) {
@@ -233,11 +238,11 @@ C_String C_StringCommandLineOption::getStringOptionValue (const C_String & inDom
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-void C_StringCommandLineOption::setStringOptionValue (const C_String & inDomainName,
-                                                      const C_String & inIdentifier,
-                                                      const C_String & inValue) {
+void C_StringCommandLineOption::setStringOptionValue (const String & inDomainName,
+                                                      const String & inIdentifier,
+                                                      const String & inValue) {
   C_StringCommandLineOption * p = gFirstStringOption ;
   bool found = false ;
   while ((p != nullptr) && not found) {
@@ -249,4 +254,4 @@ void C_StringCommandLineOption::setStringOptionValue (const C_String & inDomainN
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------

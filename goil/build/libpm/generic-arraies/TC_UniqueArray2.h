@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  Declaration and implementation of the template class 'TC_UniqueArray2'
 //
@@ -20,27 +20,27 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-#include "utilities/MF_MemoryControl.h"
-#include "utilities/TF_Swap.h"
+#include "MF_MemoryControl.h"
+#include "TF_Swap.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #include <stddef.h>
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 template <typename TYPE> class TC_UniqueArray2 ;
 
 template <typename TYPE> void swap (TC_UniqueArray2 <TYPE> & ioOperand1,
                                     TC_UniqueArray2 <TYPE> & ioOperand2) ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 template <typename TYPE> class TC_UniqueArray2 {
   protected: TYPE * mArray ;
@@ -49,7 +49,7 @@ template <typename TYPE> class TC_UniqueArray2 {
 
 //--- Constructor
   public: TC_UniqueArray2 (const int32_t inRowCount,
-                            const int32_t inColumnCount) ;
+                           const int32_t inColumnCount) ;
 
 //--- Destructor
   public: virtual ~TC_UniqueArray2 (void) ;
@@ -80,28 +80,28 @@ template <typename TYPE> class TC_UniqueArray2 {
   #endif
 
   protected: size_t long2size_t (const int32_t inRowIndex, const int32_t inColumnIndex COMMA_LOCATION_ARGS) const {
-    MF_AssertThere (inRowIndex >= 0, "indice ligne (%ld) < 0", inRowIndex, 0) ;
-    MF_AssertThere (inRowIndex < mCurrentRowCount, "indice ligne (%ld) >= nombre de lignes (%ld)", inRowIndex, mCurrentRowCount) ;
-    MF_AssertThere (inColumnIndex >= 0, "indice colonne (%ld) < 0", inColumnIndex, 0) ;
-    MF_AssertThere (inColumnIndex < mCurrentColumnCount, "indice ligne (%ld) >= nombre de colonnes (%ld)", inColumnIndex, mCurrentColumnCount) ;
+    macroAssertThere (inRowIndex >= 0, "indice ligne (%ld) < 0", inRowIndex, 0) ;
+    macroAssertThere (inRowIndex < mCurrentRowCount, "indice ligne (%ld) >= nombre de lignes (%ld)", inRowIndex, mCurrentRowCount) ;
+    macroAssertThere (inColumnIndex >= 0, "indice colonne (%ld) < 0", inColumnIndex, 0) ;
+    macroAssertThere (inColumnIndex < mCurrentColumnCount, "indice ligne (%ld) >= nombre de colonnes (%ld)", inColumnIndex, mCurrentColumnCount) ;
     return (size_t) (inRowIndex * mCurrentColumnCount + inColumnIndex) ;
   }
 
   public: void setObjectAtIndexes (const TYPE & inObject,
-                                    const int32_t inRowIndex,
-                                    const int32_t inColumnIndex
-                                    COMMA_LOCATION_ARGS) ;
+                                   const int32_t inRowIndex,
+                                   const int32_t inColumnIndex
+                                   COMMA_LOCATION_ARGS) ;
 
 //--- Exchange
   friend void swap <TYPE> (TC_UniqueArray2 <TYPE> & ioOperand1,
                            TC_UniqueArray2 <TYPE> & ioOperand2) ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //                         Implementation
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 template <typename TYPE>
 TC_UniqueArray2 <TYPE>::
@@ -117,14 +117,14 @@ mCurrentColumnCount (0) {
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 template <typename TYPE>
 TC_UniqueArray2 <TYPE>::~TC_UniqueArray2 (void) {
   macroMyDeleteArray (mArray) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   template <typename TYPE>
@@ -133,7 +133,7 @@ TC_UniqueArray2 <TYPE>::~TC_UniqueArray2 (void) {
   }
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   template <typename TYPE>
@@ -142,7 +142,7 @@ TC_UniqueArray2 <TYPE>::~TC_UniqueArray2 (void) {
   }
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 template <typename TYPE>
 void swap (TC_UniqueArray2 <TYPE> & ioOperand1,
@@ -153,7 +153,7 @@ void swap (TC_UniqueArray2 <TYPE> & ioOperand1,
   swap (ioOperand1.mCapacity, ioOperand2.mCapacity) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 template <typename TYPE>
 void TC_UniqueArray2 <TYPE>::setObjectAtIndexes (const TYPE & inObject,
@@ -166,4 +166,4 @@ void TC_UniqueArray2 <TYPE>::setObjectAtIndexes (const TYPE & inObject,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
