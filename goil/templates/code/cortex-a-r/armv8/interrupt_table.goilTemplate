@@ -88,7 +88,6 @@ foreach objList in objForSRC do
 FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 {
 %
-  let indexISR2 := 0
   foreach obj in objList do
     if obj::KIND == "ISR" then
 # ISR 1
@@ -100,9 +99,8 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
         if obj::CATEGORY == 2 then
 # ISR2
 %
-  tpl_central_interrupt_handler(% !([TASKS length] + indexISR2) %);
+  tpl_central_interrupt_handler(% !obj::NAME %_id);
 %
-          let indexISR2 := indexISR2 + 1
         else
           error obj::CATEGORY : "This interrupt category ".obj::CATEGORY." does not exist"
         end if
