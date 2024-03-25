@@ -42,7 +42,7 @@ if exists POSTBUILD then
   let postgoals := mapof exists POSTBUILD default ( @() ) by NAME
 end if
 
-%#! /usr/bin/env python
+%#! /usr/bin/env python3
 # -*- coding: UTF-8 -*-
 #----------------------------------------------------------------------
 #--- Python Build file for application % !CPUNAME %
@@ -61,7 +61,7 @@ end if
 #---     build.py is generated each time goil is called by make.py
 #----------------------------------------------------------------------
 
-import sys, os, subprocess, string, distutils.spawn
+import sys, os, subprocess, string
 from string import Template
 
 #--- Add some function for Python3 support
@@ -197,6 +197,7 @@ foreach flags in exists OS::BUILD_S::PRECOMMONFLAGS default ( @() ) do
 precflags += "% !flags::VALUE %".split()
 precppflags += "% !flags::VALUE %".split()%
 end foreach
+
 #include dirs
 
 let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH+"/machines"
@@ -209,6 +210,7 @@ end foreach
 %
 if with_ioc:
   includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/ioc"]
+includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/com"]
 includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"]
 includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"]
 includeDirs += ["-I", "% !PROJECT %"]
@@ -241,7 +243,8 @@ end foreach
 
 if exists OS::MEMMAP_S::LINKER then
 %
-ldflags += ["-T", "% !PROJECT %/% !OS::MEMMAP_S::LINKER_S::SCRIPT %"]%
+ldflags += ["-L", "% !PROJECT %"]
+ldflags += ["-T", "%!OS::MEMMAP_S::LINKER_S::SCRIPT %"]%
 end if
 #ASFLAGS
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do
