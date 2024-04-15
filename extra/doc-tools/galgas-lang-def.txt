@@ -1,0 +1,11 @@
+Galgas
+    filter remove_matches ^\s*#
+    filter remove_inline #.*$
+    extension galgas
+    3rd_gen_scale 1.0
+OIL
+    filter rm_comments_in_strings " /* */
+    filter rm_comments_in_strings " // 
+    extension oil
+    extension OIL
+    3rd_gen_scale 1.0

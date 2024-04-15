@@ -1,0 +1,2 @@
+#!/bin/sh
+cloc ../../os ../../autosar ../../com ../../examples ../../tests ../../machines ../../goil/galgas-sources --exclude-dir=GTL,CMSIS,CMSIS-Atmel,CMSIS-ST,ccxml,rh850,armv8 --read-lang-def=galgas-lang-def.txt --include-lang=C,C++,OIL,Galgas,Assembly,Linker\ Script,Python
