@@ -29,7 +29,7 @@ CPU blink {
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
       COPIER = "arm-none-eabi-objcopy";
-      SYSTEM = PYTHON;
+      SYSTEM = CMAKE {VSCODE=TRUE;};
     };
     SYSTEM_CALL = TRUE;
     MEMMAP = TRUE {

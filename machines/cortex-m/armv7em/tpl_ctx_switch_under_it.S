@@ -207,6 +207,10 @@ tpl_load_context_under_it:
     mov r0, #0xFFED  /* low 16 bits of LR, FPU */
     b end_fp 
 no_load_fp:
+    ldr r0, =0xE000EF34 /* load FPCCR */
+    ldr r1,[r0]
+    bic.w r1,r1,#1 /* clear FPCCR.LSPACT */
+    str r1, [r0]
 #endif // WITH_FLOAT
     mov r0, #0xFFFD  /* low 16 bits of LR, NO FPU */
 end_fp:

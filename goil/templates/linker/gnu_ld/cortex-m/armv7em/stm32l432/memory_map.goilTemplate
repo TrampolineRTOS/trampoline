@@ -1,4 +1,4 @@
-/* Specify the memory areas for stm32f303 */
+/* Specify the memory areas for stm32l432 */
 MEMORY
 {
   VECTOR (rx)     : ORIGIN = 0x08000000, LENGTH = 0x168

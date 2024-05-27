@@ -186,7 +186,8 @@ struct TPL_STACK
  */
 typedef struct TPL_STACK tpl_stack;
 
-#define OS_STACK_PATTERN ((uint32)0xDEADBEEF)
+#define OS_STACK_PATTERN  ((uint32)0xDEADBEEF)
+#define OS_FPUREG_PATTERN ((uint32)0xC0FFEE00)
 
 /**
  * Defines the entry point of the idle task

@@ -169,6 +169,7 @@ FUNC (void, OS_CODE) tpl_init_machine_specific (void)
 
 #define SX_ON_EXCEPTION_FRAME  16 /* registers s0-s15 */
 #define S0_IDX                  8
+#define FPSCR_IDX               (S0_IDX+SX_ON_EXCEPTION_FRAME)
 
 FUNC(void, OS_CODE) tpl_init_context(
   CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
@@ -241,10 +242,11 @@ FUNC(void, OS_CODE) tpl_init_context(
     for(i=0;i<SX_ON_EXCEPTION_FRAME;i++) 
     {
       //16 registers on the exception frame s0->s15
-      exception_frame[S0_IDX+i] = OS_STACK_PATTERN+i;
+      exception_frame[S0_IDX+i] = OS_FPUREG_PATTERN+i;
       //and 16 registers in l_tpl_fc_context s16->s31
-      l_tpl_fc_context->spr[i] = OS_STACK_PATTERN+(i+16);
+      l_tpl_fc_context->spr[i] = OS_FPUREG_PATTERN+(i+16);
     }
+    exception_frame[FPSCR_IDX] = 0;
   }
   #endif // WITH_FLOAT
   /*

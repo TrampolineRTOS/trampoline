@@ -1,0 +1,20 @@
+%
+template if exists tpl_library_defines
+%
+/*-----------------------------------------------------------------------------
+ * Use FLOAT truc instructions
+ */%
+let use_float := false
+foreach isr in ISRS do
+  if isr::USEFLOAT then
+    let use_float := true
+  end if
+end foreach
+
+foreach task in TASKS do
+  if task::USEFLOAT then
+    let use_float := true
+  end if
+end foreach
+%
+#define WITH_FLOAT     % !yesNo(use_float) %
