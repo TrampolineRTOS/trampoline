@@ -67,7 +67,14 @@ jobs:
         run: ${{ env.GOIL }} --target=cortex-a-r/armv7/bcm2836/rpi2 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
         working-directory: examples/cortex-a-r/armv7/bcm2836/rpi2/${{ matrix.example_name }}
       - name: Build the code
-        run: ./make.py
+        run: |
+          if [ -e CMakeLists.txt ]
+          then
+            cmake .
+            make -j $(nproc)
+          else
+            ./make.py
+          fi
         working-directory: examples/cortex-a-r/armv7/bcm2836/rpi2/${{ matrix.example_name }}
 
   cortex-a-r-spider-examples:
@@ -123,7 +130,14 @@ jobs:
         run: ${{ env.GOIL }} --target=avr/arduino/uno --templates=../../../../goil/templates/ *.oil
         working-directory: examples/avr/arduinoUno/${{ matrix.example_name }}
       - name: Build the code
-        run: ./make.py
+        run: |
+          if [ -e CMakeLists.txt ]
+          then
+            cmake .
+            make -j $(nproc)
+          else
+            ./make.py
+          fi
         working-directory: examples/avr/arduinoUno/${{ matrix.example_name }}
 
   avr-arduino-mega-2560-examples:
@@ -147,7 +161,14 @@ jobs:
         run: ${{ env.GOIL }} --target=avr/arduino/mega --templates=../../../../goil/templates/ ${{ matrix.example_name }}.oil
         working-directory: examples/avr/arduinoMega2560/${{ matrix.example_name }}
       - name: Build the code
-        run: ./make.py
+        run: |
+          if [ -e CMakeLists.txt ]
+          then
+            cmake .
+            make -j $(nproc)
+          else
+            ./make.py
+          fi
         working-directory: examples/avr/arduinoMega2560/${{ matrix.example_name }}
 
   posix-examples:
@@ -167,7 +188,14 @@ jobs:
         run: ${{ env.GOIL }} --target=posix/linux  --templates=../../../goil/templates/ ${{ matrix.example_name }}.oil
         working-directory: examples/posix/${{ matrix.example_name }}
       - name: Build the code
-        run: ./make.py
+        run: |
+          if [ -e CMakeLists.txt ]
+          then
+            cmake .
+            make -j $(nproc)
+          else
+            ./make.py
+          fi
         working-directory: examples/posix/${{ matrix.example_name }}
 
   cortex-m-arduino-m0-examples:
@@ -191,7 +219,14 @@ jobs:
         run: ${{ env.GOIL }} --target=cortex-m/armv6m/samd21/ArduinoM0 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
         working-directory: examples/cortex-m/armv6m/samd21/ArduinoM0/${{ matrix.example_name }}
       - name: Build the code
-        run: ./make.py
+        run: |
+          if [ -e CMakeLists.txt ]
+          then
+            cmake .
+            make -j $(nproc)
+          else
+            ./make.py
+          fi
         working-directory: examples/cortex-m/armv6m/samd21/ArduinoM0/${{ matrix.example_name }}
 
   cortex-m-xplained-pro-examples:
@@ -215,7 +250,14 @@ jobs:
         run: ${{ env.GOIL }} --target=cortex-m/armv6m/samd21/XPlainedPro --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
         working-directory: examples/cortex-m/armv6m/samd21/XPlainedPro/${{ matrix.example_name }}
       - name: Build the code
-        run: ./make.py
+        run: |
+          if [ -e CMakeLists.txt ]
+          then
+            cmake .
+            make -j $(nproc)
+          else
+            ./make.py
+          fi
         working-directory: examples/cortex-m/armv6m/samd21/XPlainedPro/${{ matrix.example_name }}
 
   cortex-m-arduino-due-examples:
@@ -239,7 +281,14 @@ jobs:
         run: ${{ env.GOIL }} --target=cortex-m/armv7m/atsam3x8e/arduino_due --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
         working-directory: examples/cortex-m/armv7m/atsam3x8e/arduino_due/${{ matrix.example_name }}
       - name: Build the code
-        run: ./make.py
+        run: |
+          if [ -e CMakeLists.txt ]
+          then
+            cmake .
+            make -j $(nproc)
+          else
+            ./make.py
+          fi
         working-directory: examples/cortex-m/armv7m/atsam3x8e/arduino_due/${{ matrix.example_name }}
 
   cortex-m-smart-fusion-2-examples:
@@ -263,7 +312,14 @@ jobs:
         run: ${{ env.GOIL }} --target=cortex-m/armv7m/SmartFusion2 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
         working-directory: examples/cortex-m/armv7m/SmartFusion2/starterKit/${{ matrix.example_name }}
       - name: Build the code
-        run: ./make.py
+        run: |
+          if [ -e CMakeLists.txt ]
+          then
+            cmake .
+            make -j $(nproc)
+          else
+            ./make.py
+          fi
         working-directory: examples/cortex-m/armv7m/SmartFusion2/starterKit/${{ matrix.example_name }}
 
   cortex-m-corolab-f303-examples:
@@ -318,11 +374,18 @@ jobs:
         run: ${{ env.GOIL }} --target=cortex-m/armv7em/stm32f303 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
         working-directory: examples/cortex-m/armv7em/stm32f303/Nucleo-32/${{ matrix.example_name }}
       - name: Build the code
-        run: ./make.py
+        run: |
+          if [ -e CMakeLists.txt ]
+          then
+            cmake .
+            make -j $(nproc)
+          else
+            ./make.py
+          fi
         working-directory: examples/cortex-m/armv7em/stm32f303/Nucleo-32/${{ matrix.example_name }}
 
   cortex-m-smart-nucleo-l432-examples:
-    name: Build Cortex-M Nucleo-F432 examples
+    name: Build Cortex-M Nucleo-l432 examples
     runs-on: ubuntu-22.04
     needs: goil-linux
     strategy:
@@ -342,7 +405,14 @@ jobs:
         run: ${{ env.GOIL }} --target=cortex-m/armv7em/stm32l432 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
         working-directory: examples/cortex-m/armv7em/stm32l432/Nucleo-32/${{ matrix.example_name }}
       - name: Build the code
-        run: ./make.py
+        run: |
+          if [ -e CMakeLists.txt ]
+          then
+            cmake .
+            make -j $(nproc)
+          else
+            ./make.py
+          fi
         working-directory: examples/cortex-m/armv7em/stm32l432/Nucleo-32/${{ matrix.example_name }}
 
   cortex-m-smart-stm32f4discovery-examples:
@@ -366,5 +436,12 @@ jobs:
         run: ${{ env.GOIL }} --target=cortex-m/armv7em/stm32f407/stm32f4discovery --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
         working-directory: examples/cortex-m/armv7em/stm32f407/stm32f4discovery/${{ matrix.example_name }}
       - name: Build the code
-        run: ./make.py
+        run: |
+          if [ -e CMakeLists.txt ]
+          then
+            cmake .
+            make -j $(nproc)
+          else
+            ./make.py
+          fi
         working-directory: examples/cortex-m/armv7em/stm32f407/stm32f4discovery/${{ matrix.example_name }}
