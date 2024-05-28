@@ -1220,51 +1220,20 @@ Processors with a floating-point unit add the following registers to the context
 
 \reg{fpsid} is the floating-point system ID register but as this register seems to be read-only, it is not part of the context.
 
-\subsubsection{Interrupts/SVC}
-
-A system call (svc or interrupt) will stack a different exception frame depending on whether the FPU is present or not. If the FPU is present, registers \reg{s0} to \reg{s15} and \reg{fpscr} are stacked, and a reserved word for 8-bytes alignment:
-
-\begin{lstlisting}{language=C}
-/*-----------------------------------------------------------------------*
- * +-------------------------------+                                     *
- * | R0                            | <- PSP                              *
- * +-------------------------------+                                     *
- * | R1                            | <- PSP+4                            *
- * +-------------------------------+                                     *
- * | R2                            | <- PSP+8                            *
- * +-------------------------------+                                     *
- * | R3                            | <- PSP+12                           *
- * +-------------------------------+                                     *
- * | R12                           | <- PSP+16                           *
- * +-------------------------------+                                     *
- * | LR (aka R14)                  | <- PSP+20                           *
- * +-------------------------------+                                     *
- * | Return Address (saved PC/R15) | <- PSP+24                           *
- * +-------------------------------+                                     *
- * | xPSR (bit 9 = 1)              | <- PSP+28                           *
- * +------------------------+---------------------\                      *
- * | s0 (FPU)               | <- PSP+32 - 0x20    |                      *
- * +------------------------+                     |                      *
- * | ..                     | <- PSP+.. -         |                      *
- * +------------------------+                     |                      *
- * | s15 (FPU)              | <- PSP+92 - 0x5C    |- only if FPU is      *
- * +------------------------+                     | available and        *
- * | FPSCR (FPU)            | <- PSP+96 - 0x60    | process is using FPU *
- * +------------------------+                     | (USEFLOAT = TRUE     *
- * | reserved (align)       | <- PSP+100- 0x64    |  in .oil)            *
- * +------------------------+---------------------/                      */
- 
-\end{lstlisting}
-
-In addition, during a system call, the value of the LR register is different depending on whether or not the FPU is used. The 2 values of interest here are: 
+From the ARMv7-M Architecture Reference Manual (\texttt{DDI 0403E.e}), 3 different context state stacking methods are available on exception entry with the FP extension (section \texttt{B 1.5.7}):
 \begin{itemize}
-  \item \texttt{0xFFFFFFFD} - Return to Thread mode, exception return uses non-floating-point state from MSP and execution uses PSP after return.
-  \item \texttt{0xFFFFFFED} - Return to Thread mode, exception return uses floating-point state from MSP and execution uses PSP after return.
+  \item do not stack any FP context (by hardware)
+  \item stack an extended frame context, including the integer basic frame and volatile FP registers (\texttt{s0} to \texttt{s15} and \texttt{fpscr})
+  \item an intermediate approach, named \textsl{lazy context save}, that reserves place on the stack, but writes data only if needed, \textsl{i.e.} if there is an FPU related instruction during the exception. This is the default behavior.
 \end{itemize}
-Note that bit 4 of \reg{lr} indicates FPU usage in all cases.
+
+In Trampoline, we choose to deal with the FP context in software only, as:
+\begin{itemize}
+  \item we need to use both FPU enabled tasks and integer only tasks, and the context does not always need to be saved (end of a job with \texttt{TerminateTask} for instance). 
+  \item The last 2 approaches are interesting because they don't require the use of an assembler part, but in our case the interest is limited (we already have assembly…)
+\end{itemize}
 
 \subsubsection{Data structure}
-
 
 When floating point is activated, the static task descriptor has an additional member, a pointer to the floating point context structure, which is located just after the pointer to the integer context structure. Function that save and load the context, \cfunction{tpl_save_context}, \cfunction{tpl_load_context}, \cfunction{tpl_save_context_under_it} and \cfunction{tpl_load_context_under_it} all have a pointer to the static task descriptor in \reg{r0} register. The floating context is accessed by reading its pointer. If the pointer is \constant{NULL}, the is not saved:
 
@@ -1274,52 +1243,53 @@ When floating point is activated, the static task descriptor has an additional m
   beq no_save_fp
 \end{lstlisting}
 
-Saving the floating-point context is a two-part process: \reg{s0} to \reg{s31} and \reg{fpscr} are saved on the stack during the interrupt call by hardware, and \reg{s16} to \reg{s31} are saved by software.
+Saving the floating-point context needs to save \texttt{spr} registers and the \texttt{fpscr} status register.
 
 \begin{lstlisting}[language=C]
-  vstm r1!, {s16-s31}
-no_save_fp:
+  /* save all s0 to s31 */
+  vstm r1!, {s0-s31}
+  /* save fpscr */
+  vmrs r0,fpscr
+  str r0,[r1]
 \end{lstlisting}
 
-Loading the floating-point context is the same reversed. However, when loading the context, we have to update \reg{lr} so that it uses an FPU ro non-FPU exception frame scheme. The \lstinline|tpl_load_context|and \lstinline|tpl_load_context_under_it| have been updated so that they return the new value of \reg{lr} (either \texttt{0xFFFFFFFD} or \texttt{0xFFFFFFED}). The return value is in \reg{r0} and is built through 2 instructions:
+Loading the floating-point context is the same reversed. Assuming \reg{r1} is loaded with a pointer to the floating-point context. Remember that if the pointer is \constant{NULL}, these instructions are skiped:
 
 \begin{lstlisting}[language=C]
-  mov r0, #0xFFED  /* low 16 bits of LR, FPU */
-  movt r0, #0xFFFF /* high 16 bits of LR */
-\end{lstlisting}
-
-
-Assuming \reg{r1} is loaded with a pointer to the floating-point context. Remember that if the pointer is \constant{NULL}, these instructions are skiped:
-
-\begin{lstlisting}[language=C]
-  #if WITH_FLOAT == YES
-  /*--------------------------------------------------
-   * Get a the pointer to the floating point context 
-   * from the pointer to the static descriptor of the 
-   * running task
+#if WITH_FLOAT == YES
+  /*-------------------------------------------------------------------------
+   * Get a the pointer to the floating point context from the pointer to the
+   * static descriptor of the running task
    */
   ldr r1,[r0,#FLOAT_CONTEXT]
-  /* r1 is NULL if there is no float context for this process */
-  cmp r1, #0
+  cmp r1, #0 /* r1 is NULL if there is no float context for this process */
   beq no_load_fp
-  vldm r1!, {s16-s31} /* load s[16..31] */
-  /* now update LR to use the FPU */
-  mov r0, #0xFFED  /* low 16 bits of LR, FPU */
-  b end_fp 
+  vldm r1!, {s0-s31} /* load s[0..31] */
+  ldr r0,[r1]
+  vmsr fpscr, r0 /* load fpscr */
 no_load_fp:
 #endif // WITH_FLOAT
-  mov r0, #0xFFFD  /* low 16 bits of LR, NO FPU */
-end_fp:
-  movt r0, #0xFFFF /* high 16 bits of LR */
-  bx   lr
 \end{lstlisting}
 
 \subsubsection{Lazy Context Switch mode}
-The Lazy Context Switch mode (LSPEN bit in FPU->FPCCR) is enabled by default. 
+The Lazy Context Switch mode (\texttt{LSPEN} bit in \texttt{FPU->FPCCR}) is enabled by default. In order to use software-only context stacking, we need to update  \texttt{FPU->FPCCR} \emph{BEFORE} enabling the FPU. In the startup code (before calling \texttt{main()}):
 
-This means that when an interrupt occurs, the stack frame is reserved for FPU registers, but these registers are not pushed effectively. They are pushed when an FPU related instruction is executed in the handler.
+\begin{lstlisting}[language=C]
+// start FPU
+#if (__FPU_PRESENT == 1) && (__FPU_USED == 1) && (WITH_FLOAT==YES)
+  /* We do not stack any FP register automatically on interrupt    
+   * This is managed by Trampoline manually if required.
+   *
+   * These 2 bits should be configured BEFORE enabling CP10/11
+   * ArmV7 - Architecture Reference manual (DDI 0403E.e), sec. B.3.2.21
+   */
+  FPU->FPCCR &= ~(1 << FPU_FPCCR_ASPEN_Pos | 1 << FPU_FPCCR_LSPEN_Pos);
+  /* set CP10 and CP11 Full Access */
+  SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));
+#endif
+\end{lstlisting}
 
-Thus, if a system call does not preempt the task, the registers \reg{s0}-\reg{s15} and \reg{fpscr} are not effectively saved. When a context switch occurs, the instruction to save registers \reg{s16}-\reg{s31} (\lstinline|vstm r1!, {s16-s31}|) will trigger the stack update.
+
 
 \subsection{Interrupt handler}
 
