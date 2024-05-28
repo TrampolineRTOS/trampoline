@@ -3,6 +3,7 @@ build
 *.elf
 *.bin
 *.map
-*.py
 .vscode
+make.py
+build.py
 CMakeLists.txt

@@ -3,4 +3,6 @@ build
 *_exe
 *.hex
 *.map
-*.py
+make.py
+build.py
+CMakeLists.txt

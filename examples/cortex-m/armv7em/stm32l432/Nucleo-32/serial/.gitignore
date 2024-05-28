@@ -3,4 +3,7 @@ build
 *_exe
 *.bin
 *.map
-*.py
+build.py
+make.py
+CMakeLists.txt
+
