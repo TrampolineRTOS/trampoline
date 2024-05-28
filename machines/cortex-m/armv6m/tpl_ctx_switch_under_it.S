@@ -139,9 +139,6 @@ tpl_save_context_under_it:
  *
  * r0 contains a pointer to the static descriptor of the running task.
  * r1-r3 are working registers
- *
- * ** it SHOULD return LR final value in r0 **
- * LR should be 0xFFFFFFFD, as the context does not use any FPU
  */
 
 .global tpl_load_context_under_it
@@ -181,9 +178,7 @@ tpl_load_context_under_it:
     ldr r2,[r1,#CTX_PSP]
     msr psp,r2
 
-    ldr r0, =0xFFFFFFFD
-
-    bx   lr
+    bx  lr
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"

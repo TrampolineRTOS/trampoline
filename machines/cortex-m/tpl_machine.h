@@ -17,12 +17,6 @@
  *
  * @section infos File informations
  *
- * $Date: 2010-10-27 15:34:11 +0200 (mer., 27 oct. 2010) $
- * $Rev: 1227 $
- * $Author: pacco $
- * $URL:
- * https://trampoline.rts-software.org/svn/trunk/machines/thumb2/cortex-m3/tpl_machine.h
- * $
  */
 #ifndef TPL_MACHINE_H
 #define TPL_MACHINE_H

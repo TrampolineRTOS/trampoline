@@ -1,5 +1,5 @@
 /**
- * @file tpl_machine_stm32l432.c
+ * @file tpl_machine_stm32h743.c
  *
  * @section descr File description
  *

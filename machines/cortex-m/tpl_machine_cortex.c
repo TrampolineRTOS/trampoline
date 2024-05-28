@@ -148,28 +148,13 @@ FUNC (void, OS_CODE) tpl_init_machine_specific (void)
  * | Return Address (saved PC/R15) | <- PSP+24
  * +-------------------------------+
  * | xPSR (bit 9 = 1)              | <- PSP+28
- * +-----------------------------------------------------+
- * | s0 (FPU)                      | <- PSP+32 - 0x20    |
- * +-------------------------------+                     |
- * | ..                            | <- PSP+.. -         |
- * +-------------------------------+                     |
- * | s15 (FPU)                     | <- PSP+92 - 0x5C    |- only if FPU is available
- * +-------------------------------+                     |  and process is using FPU
- * | FPSCR (FPU)                   | <- PSP+96 - 0x60    |  (USEFLOAT = TRUE in .oil)
- * +-------------------------------+                     |
- * | reserved (align)              | <- PSP+100- 0x64    |
- * +-------------------------------+---------------------/
-
+ * +-------------------------------+
  */
 
 #define GPR_ON_EXCEPTION_FRAME  5 /* registers r0-r3 and r12 */
 #define LR_IDX                  5
 #define PC_IDX                  6
 #define xPSR_IDX                7
-
-#define SX_ON_EXCEPTION_FRAME  16 /* registers s0-s15 */
-#define S0_IDX                  8
-#define FPSCR_IDX               (S0_IDX+SX_ON_EXCEPTION_FRAME)
 
 FUNC(void, OS_CODE) tpl_init_context(
   CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
@@ -202,19 +187,8 @@ FUNC(void, OS_CODE) tpl_init_context(
     the_proc->stack.stack_zone;
   
   /* we have to prepare the exception frame, and reserve place for it*/
-  #if WITH_FLOAT == YES
-  VAR(uint32, AUTOMATIC) size_of_stack_above_exception_frame;
-  if(proc_use_fpu) {
-    size_of_stack_above_exception_frame =
-    (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE_WITH_FPU) >> 2;
-  } else {
-    size_of_stack_above_exception_frame =
-    (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE_NO_FPU) >> 2;
-  }
-  #else //NO FLOAT
-    CONST(uint32, AUTOMATIC) size_of_stack_above_exception_frame =
-    (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE_NO_FPU) >> 2;
-  #endif
+  CONST(uint32, AUTOMATIC) size_of_stack_above_exception_frame =
+  (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE) >> 2;
 
   /* The pointer to the exception frame */
   CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) exception_frame =
@@ -239,14 +213,12 @@ FUNC(void, OS_CODE) tpl_init_context(
   #if WITH_FLOAT == YES
   if(l_tpl_fc_context != NULL) /* defined to NULL for an integer only context */
   {
-    for(i=0;i<SX_ON_EXCEPTION_FRAME;i++) 
+    for(i=0;i<NB_SPR;i++) 
     {
-      //16 registers on the exception frame s0->s15
-      exception_frame[S0_IDX+i] = OS_FPUREG_PATTERN+i;
       //and 16 registers in l_tpl_fc_context s16->s31
-      l_tpl_fc_context->spr[i] = OS_FPUREG_PATTERN+(i+16);
+      l_tpl_fc_context->spr[i] = OS_FPUREG_PATTERN+(i);
     }
-    exception_frame[FPSCR_IDX] = 0;
+    l_tpl_fc_context->fpscr = 0;
   }
   #endif // WITH_FLOAT
   /*
@@ -264,7 +236,7 @@ FUNC(void, OS_CODE) tpl_init_context(
    * This frame consists in pushing xpsr, pc, lr, r12, r3, r2, r1, r0
    *  */
   l_tpl_context->stackPointer = (uint32)exception_frame;
-  
+
 #if WITH_PAINT_STACK == YES
   /*
    * Paint the stack with a pattern. This is not mandatory, so it is done

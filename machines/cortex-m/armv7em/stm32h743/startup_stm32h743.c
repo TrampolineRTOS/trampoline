@@ -1,4 +1,6 @@
 #include <sys/types.h>
+#include "stm32l4xx.h" //PFU related
+#include "core_cm4.h"  //FPU related
 
 void __attribute__((weak)) tpl_continue_reset_handler(void);
 
@@ -118,6 +120,19 @@ void __attribute__ ((section(".after_vectors"))) tpl_continue_reset_handler(void
 
   // Zero fill the bss segment
   bss_init(&__bss_start__, &__bss_end__);
+
+  // start FPU
+  #if (__FPU_PRESENT == 1) && (__FPU_USED == 1) && (WITH_FLOAT==YES)
+    /* We do not stack any FP register automatically on interrupt    
+     * This is managed by Trampoline manually if required.
+     *
+     * These 2 bits should be configured BEFORE enabling CP10/11
+     * ArmV7 - Architecture Reference manual (DDI 0403E.e), sec. B.3.2.21
+     */
+    FPU->FPCCR &= ~(1 << FPU_FPCCR_ASPEN_Pos | 1 << FPU_FPCCR_LSPEN_Pos);
+    /* set CP10 and CP11 Full Access */
+    SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));
+  #endif
 
   // Call the standard library initialisation (mandatory, SystemInit()
   // and C++ static constructors are called from here).

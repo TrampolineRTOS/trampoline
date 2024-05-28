@@ -144,9 +144,6 @@ tpl_save_context:
  *
  * r0 contains a pointer to the static descriptor of the running task.
  * r1-r3 are working registers
- *
- * ** it SHOULD return LR in r0 **
- *
  * values to be loaded into r4 and r5 are put in the MSP.
  */
 
@@ -198,8 +195,6 @@ tpl_load_context:
     ldr r2,[r1,#CTX_PSP]
     msr psp,r2
 
-    /* set LR value in return argument (r0) */
-    ldr r0, =0xFFFFFFFD
     bx   lr
 
 #define OS_STOP_SEC_CODE

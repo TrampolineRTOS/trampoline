@@ -123,7 +123,15 @@ void __attribute__ ((section(".after_vectors"))) tpl_continue_reset_handler(void
 
   // start FPU
   #if (__FPU_PRESENT == 1) && (__FPU_USED == 1) && (WITH_FLOAT==YES)
-    SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */
+    /* We do not stack any FP register automatically on interrupt    
+     * This is managed by Trampoline manually if required.
+     *
+     * These 2 bits should be configured BEFORE enabling CP10/11
+     * ArmV7 - Architecture Reference manual (DDI 0403E.e), sec. B.3.2.21
+     */
+    FPU->FPCCR &= ~(1 << FPU_FPCCR_ASPEN_Pos | 1 << FPU_FPCCR_LSPEN_Pos);
+    /* set CP10 and CP11 Full Access */
+    SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));
   #endif
 
   // Call the standard library initialisation (mandatory, SystemInit()

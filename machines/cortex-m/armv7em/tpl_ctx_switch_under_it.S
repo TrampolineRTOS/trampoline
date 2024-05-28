@@ -56,17 +56,11 @@
  * | Return Address (saved PC/R15) | <- PSP+24                                *
  * +-------------------------------+                                          *
  * | xPSR (bit 9 = 1)              | <- PSP+28                                *
- * +------------------------+---------------------\                           *
- * | s0 (FPU)               | <- PSP+32 - 0x20    |                           *
- * +------------------------+                     |                           *
- * | ..                     | <- PSP+.. -         |                           *
- * +------------------------+                     |                           *
- * | s15 (FPU)              | <- PSP+92 - 0x5C    |- only if FPU is available *
- * +------------------------+                     |  and process is using FPU *
- * | FPSCR (FPU)            | <- PSP+96 - 0x60    |  (USEFLOAT = TRUE in .oil)*
- * +------------------------+                     |                           *
- * | reserved (align)       | <- PSP+100- 0x64    |                           *
- * +------------------------+---------------------/                           *
+ * +-------------------------------+                                          *
+ * If the FPU is enabled, the FPU context is not saved by hardware,           *
+ * as the kernel do not use FPU instructions. The FPU registers should        *
+ * be saved/restored in the load/save context functions                       *
+ * (ArmV7 - Architecture Reference manual (DDI 0403E.e), sec. B.3.2.21)       *
  *                                                                            * 
  * The second part is stored in a structure defined in tpl_machine_cortex.h   *
  * with a pointer from the static task descriptor                             *
@@ -100,7 +94,6 @@
  *
  * r0 contains a pointer to the static descriptor of the running task.
  * r1-r3 are working registers
- *
  */
 
 .global tpl_save_context_under_it
@@ -139,13 +132,11 @@ tpl_save_context_under_it:
     ldr r1,[r0,#FLOAT_CONTEXT]
     cmp r1, #0 /* r1 is NULL if there is no float context for this process */
     beq no_save_fp
-    /* save all s16 to 31
-     * In Lazy Context Switch (LSPEN bit in FPU->FPCCR, enabled by default),
-     * s0-s15 may have not been pushed on the stack (PSP) yet. This 
-     * FPU related instruction force the push (on PSP).
-     * So, this instruction leads to write 17 words on PSP and 16 words on r1! 
-     */
-    vstm r1!, {s16-s31} 
+    /* save all s0 to s31 */
+    vstm r1!, {s0-s31}
+    /* save fpscr */
+    vmrs r0,fpscr
+    str r0,[r1]
 no_save_fp:
 #endif
 
@@ -159,11 +150,6 @@ no_save_fp:
  *
  * r0 contains a pointer to the static descriptor of the running task.
  * r1-r3 are working registers
- *
- * ** it SHOULD return LR final value in r0 **
- * LR can be 
- *  * 0xFFFFFFED if the context uses FPU
- *  * 0xFFFFFFFD if the context uses no FPU
  */
 
 .global tpl_load_context_under_it
@@ -202,20 +188,13 @@ tpl_load_context_under_it:
     ldr r1,[r0,#FLOAT_CONTEXT]
     cmp r1, #0 /* r1 is NULL if there is no float context for this process */
     beq no_load_fp
-    vldm r1!, {s16-s31} /* load spr[16..31] */
-    /* now update LR to use the FPU */
-    mov r0, #0xFFED  /* low 16 bits of LR, FPU */
-    b end_fp 
+    vldm r1!, {s0-s31} /* load s[0..31] */
+    ldr r0,[r1]
+    vmsr fpscr, r0 /* load fpscr */
 no_load_fp:
-    ldr r0, =0xE000EF34 /* load FPCCR */
-    ldr r1,[r0]
-    bic.w r1,r1,#1 /* clear FPCCR.LSPACT */
-    str r1, [r0]
 #endif // WITH_FLOAT
-    mov r0, #0xFFFD  /* low 16 bits of LR, NO FPU */
 end_fp:
-    movt r0, #0xFFFF /* high 16 bits of LR */
-    bx   lr
+    bx  lr
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"
