@@ -1,0 +1,620 @@
+{
+  "version": 3,
+  "operator_codes": [
+    {
+      "deprecated_builtin_code": 44,
+      "version": 1,
+      "builtin_code": "UNIDIRECTIONAL_SEQUENCE_LSTM"
+    }
+  ],
+  "subgraphs": [
+    {
+      "tensors": [
+        {
+          "shape": [
+            batch_size,
+            time_steps,
+            input_size
+          ],
+          "type": "INT16",
+          "buffer": 0,
+          "name": "serving_default_input:0",
+          "quantization": {
+            "scale": [
+              input_scale
+            ],
+            "zero_point": [
+              input_zero_point
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            hidden_size
+          ],
+          "type": "INT64",
+          "buffer": 2,
+          "name": "arith.constant4",
+          "quantization": {
+            "scale": [
+              0.000029
+            ],
+            "zero_point": [
+              0
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            hidden_size
+          ],
+          "type": "INT64",
+          "buffer": 3,
+          "name": "arith.constant5",
+          "quantization": {
+            "scale": [
+              0.000024
+            ],
+            "zero_point": [
+              0
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            hidden_size
+          ],
+          "type": "INT64",
+          "buffer": 4,
+          "name": "arith.constant6",
+          "quantization": {
+            "scale": [
+              0.000028
+            ],
+            "zero_point": [
+              0
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            hidden_size
+          ],
+          "type": "INT64",
+          "buffer": 5,
+          "name": "arith.constant7",
+          "quantization": {
+            "scale": [
+              0.00002
+            ],
+            "zero_point": [
+              0
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            hidden_size,
+            hidden_size
+          ],
+          "type": "INT8",
+          "buffer": 6,
+          "name": "arith.constant",
+          "quantization": {
+            "scale": [
+              output_gate_hidden_scale
+            ],
+            "zero_point": [
+              0
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            hidden_size,
+            hidden_size
+          ],
+          "type": "INT8",
+          "buffer": 7,
+          "name": "arith.constant1",
+          "quantization": {
+            "scale": [
+              cell_gate_hidden_scale
+            ],
+            "zero_point": [
+              0
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            hidden_size,
+            hidden_size
+          ],
+          "type": "INT8",
+          "buffer": 8,
+          "name": "arith.constant2",
+          "quantization": {
+            "scale": [
+              forget_gate_hidden_scale
+            ],
+            "zero_point": [
+              0
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            hidden_size,
+            hidden_size
+          ],
+          "type": "INT8",
+          "buffer": 9,
+          "name": "arith.constant3",
+          "quantization": {
+            "scale": [
+              input_gate_hidden_scale
+            ],
+            "zero_point": [
+              0
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            hidden_size,
+            input_size
+          ],
+          "type": "INT8",
+          "buffer": 10,
+          "name": "arith.constant8",
+          "quantization": {
+            "scale": [
+              output_gate_input_scale
+            ],
+            "zero_point": [
+              0
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            hidden_size,
+            input_size
+          ],
+          "type": "INT8",
+          "buffer": 11,
+          "name": "arith.constant9",
+          "quantization": {
+            "scale": [
+              cell_gate_input_scale
+            ],
+            "zero_point": [
+              0
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            hidden_size,
+            input_size
+          ],
+          "type": "INT8",
+          "buffer": 12,
+          "name": "arith.constant10",
+          "quantization": {
+            "scale": [
+              forget_gate_input_scale
+            ],
+            "zero_point": [
+              0
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            hidden_size,
+            input_size
+          ],
+          "type": "INT8",
+          "buffer": 13,
+          "name": "arith.constant11",
+          "quantization": {
+            "scale": [
+              input_gate_input_scale
+            ],
+            "zero_point": [
+              0
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            batch_size,
+            hidden_size
+          ],
+          "type": "INT16",
+          "buffer": 0,
+          "name": "tfl.pseudo_qconst",
+          "quantization": {
+            "scale": [
+              output_scale
+            ],
+            "zero_point": [
+              output_zero_point
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": true,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            batch_size,
+            hidden_size
+          ],
+          "type": "INT16",
+          "buffer": 0,
+          "name": "tfl.pseudo_qconst1",
+          "quantization": {
+            "scale": [
+              cell_scale
+            ],
+            "zero_point": [
+              0
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": true,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            0
+          ],
+          "type": "FLOAT32",
+          "buffer": 0,
+          "name": "input_to_input_intermediate",
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            0
+          ],
+          "type": "FLOAT32",
+          "buffer": 0,
+          "name": "input_to_forget_intermediate",
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            0
+          ],
+          "type": "FLOAT32",
+          "buffer": 0,
+          "name": "input_to_cell_intermediate",
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            0
+          ],
+          "type": "FLOAT32",
+          "buffer": 0,
+          "name": "input_to_output_intermediate",
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            0
+          ],
+          "type": "INT16",
+          "buffer": 0,
+          "name": "effective_hidden_scale_intermediate",
+          "quantization": {
+            "scale": [
+              0
+            ],
+            "zero_point": [
+              0
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        },
+        {
+          "shape": [
+            batch_size,
+            time_steps,
+            hidden_size
+          ],
+          "type": "INT16",
+          "buffer": 16,
+          "name": "StatefulPartitionedCall:0",
+          "quantization": {
+            "scale": [
+              output_scale
+            ],
+            "zero_point": [
+              output_zero_point
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false,
+          "has_rank": true
+        }
+      ],
+      "inputs": [
+        0
+      ],
+      "outputs": [
+        20
+      ],
+      "operators": [
+        {
+          "opcode_index": 0,
+          "inputs": [
+            0,
+            12,
+            11,
+            10,
+            9,
+            8,
+            7,
+            6,
+            5,
+            -1,
+            -1,
+            -1,
+            4,
+            3,
+            2,
+            1,
+            -1,
+            -1,
+            13,
+            14,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "outputs": [
+            20
+          ],
+          "builtin_options_type": "UnidirectionalSequenceLSTMOptions",
+          "builtin_options": {
+            "fused_activation_function": "TANH",
+            "cell_clip": cell_clip,
+            "proj_clip": 0.0,
+            "time_major": time_major,
+            "asymmetric_quantize_inputs": false,
+            "diagonal_recurrent_tensors": false
+          },
+          "custom_options_format": "FLEXBUFFERS",
+          "intermediates": [
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "large_custom_options_offset": 0,
+          "large_custom_options_size": 0,
+          "builtin_options_2_type": "NONE"
+        }
+      ],
+      "name": "main"
+    }
+  ],
+  "description": "MLIR Converted.",
+  "buffers": [
+    {
+      "offset": 0,
+      "size": 10
+    },
+    {
+      "offset": 0,
+      "size": 0
+    },
+    {
+      "data": [
+        output_gate_bias
+      ],
+      "offset": 0,
+      "size": 0
+    },
+    {
+"data": [
+        cell_gate_bias
+      ],
+      "offset": 0,
+      "size": 0
+    },
+    {
+"data": [
+        forget_gate_bias
+      ],
+      "offset": 0,
+      "size": 0
+    },
+    {
+"data": [
+        input_gate_bias
+      ],
+      "offset": 0,
+      "size": 0
+    },
+    {
+      "data": [
+        output_gate_hidden_weights
+      ],
+      "offset": 0,
+      "size": 0
+    },
+    {
+      "data": [
+        cell_gate_hidden_weights
+      ],
+      "offset": 0,
+      "size": 0
+    },
+    {
+      "data": [
+        forget_gate_hidden_weights
+      ],
+      "offset": 0,
+      "size": 0
+    },
+    {
+      "data": [
+        input_gate_hidden_weights
+      ],
+      "offset": 0,
+      "size": 0
+    },
+    {
+      "data": [
+        output_gate_input_weights
+      ],
+      "offset": 0,
+      "size": 0
+    },
+    {
+      "data": [
+        cell_gate_input_weights
+      ],
+      "offset": 0,
+      "size": 0
+    },
+    {
+      "data": [
+        forget_gate_input_weights
+      ],
+      "offset": 0,
+      "size": 0
+    },
+    {
+      "data": [
+        input_gate_input_weights
+      ],
+      "offset": 0,
+      "size": 0
+    },
+    {
+      "data": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "offset": 0,
+      "size": 0
+    },
+    {
+      "offset": 0,
+      "size": 0
+    },
+    {
+      "offset": 0,
+      "size": 0
+    },
+    {
+      "offset": 0,
+      "size": 0
+    },
+    {
+      "offset": 0,
+      "size": 0
+    }
+  ],
+  "metadata": [
+    {
+      "name": "min_runtime_version",
+      "buffer": 17
+    },
+    {
+      "name": "CONVERSION_METADATA",
+      "buffer": 18
+    }
+  ],
+  "signature_defs": [
+    {
+      "inputs": [
+        {
+          "name": "input",
+          "tensor_index": 0
+        }
+      ],
+      "outputs": [
+        {
+          "name": "lstm",
+          "tensor_index": 20
+        }
+      ],
+      "signature_key": "serving_default",
+      "subgraph_index": 0
+    }
+  ]
+}

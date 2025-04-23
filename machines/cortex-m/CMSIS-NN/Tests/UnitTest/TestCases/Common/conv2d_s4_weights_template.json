@@ -1,0 +1,131 @@
+{
+  "version": 3,
+  "operator_codes": [
+    {
+      "deprecated_builtin_code": 3,
+      "version": 1,
+      "builtin_code": "CONV_2D"
+    }
+  ],
+  "subgraphs": [
+    {
+      "tensors": [
+        {
+          "shape": [
+            batches,
+            input_y,
+            input_x,
+            input_ch
+          ],
+          "type": "INT8",
+          "buffer": 0,
+          "name": "tensor_input",
+          "quantization": {
+            "scale": [
+              input_scale
+            ],
+            "zero_point": [
+              input_zp
+            ],
+            "quantized_dimension": 0
+          },
+          "is_variable": false
+        },
+        {
+          "shape": [
+            output_ch,
+            weight_y,
+            weight_x,
+            input_ch
+          ],
+          "type": "INT4",
+          "buffer": 1,
+          "name": "tensor_weight",
+          "quantization": {
+            "scale": w_scale,
+            "zero_point": w_zp,
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false
+        },
+        {
+          "shape": [
+            output_ch
+          ],
+          "type": "INT32",
+          "buffer": 2,
+          "name": "tensor_bias",
+          "quantization": {
+            "scale": bias_scale,
+            "zero_point": bias_zp,
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false
+        },
+        {
+          "shape": [
+            batches,
+            output_y,
+            output_x,
+            output_ch
+          ],
+          "type": "INT8",
+          "name": "tensor_output",
+          "buffer": 3,
+          "quantization": {
+            "scale": [
+              output_scale
+            ],
+            "zero_point": [
+              output_zp
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false
+        }
+      ],
+      "inputs": [
+        0
+      ],
+      "outputs": [
+        3
+      ],
+      "operators": [
+        {
+          "opcode_index": 0,
+          "inputs": [
+            0,
+            1,
+            2
+          ],
+          "outputs": [
+            3
+          ],
+          "builtin_options_type": "Conv2DOptions",
+          "builtin_options": {
+            "padding": "type_pad",
+            "stride_w": stride_x,
+            "stride_h": stride_y,
+            "fused_activation_function": "NONE",
+            "dilation_w_factor": dilation_x,
+            "dilation_h_factor": dilation_y
+          },
+          "custom_options_format": "FLEXBUFFERS"
+        }
+      ]
+    }
+  ],
+  "buffers": [
+    {},
+    {
+      "data": []
+    },
+    {
+      "data": []
+    },
+    {}
+  ]
+}

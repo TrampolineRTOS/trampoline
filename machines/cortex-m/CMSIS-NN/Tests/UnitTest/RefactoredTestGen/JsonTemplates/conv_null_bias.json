@@ -1,0 +1,114 @@
+{
+  "version": 3,
+  "operator_codes": [
+    {
+      "deprecated_builtin_code": 3,
+      "version": 1,
+      "builtin_code": "CONV_2D"
+    }
+  ],
+  "subgraphs": [
+    {
+      "tensors": [
+        {
+          "shape": [
+            batch_size,
+            input_h,
+            input_w,
+            in_ch
+          ],
+          "type": "INT8",
+          "buffer": 0,
+          "name": "tensor_input",
+          "quantization": {
+            "scale": [
+              input_scale
+            ],
+            "zero_point": [
+              input_zp
+            ],
+            "quantized_dimension": 0
+          },
+          "is_variable": false
+        },
+        {
+          "shape": [
+            out_ch,
+            filter_y,
+            filter_x,
+            in_ch
+          ],
+          "type": "INT4",
+          "buffer": 1,
+          "name": "tensor_weight",
+          "quantization": {
+            "scale": w_scale,
+            "zero_point": w_zp,
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false
+        },
+        {
+          "shape": [
+            batch_size,
+            output_h,
+            output_w,
+            out_ch
+          ],
+          "type": "INT8",
+          "name": "tensor_output",
+          "buffer": 2,
+          "quantization": {
+            "scale": [
+              output_scale
+            ],
+            "zero_point": [
+              output_zp
+            ],
+            "details_type": "NONE",
+            "quantized_dimension": 0
+          },
+          "is_variable": false
+        }
+      ],
+      "inputs": [
+        0
+      ],
+      "outputs": [
+        2
+      ],
+      "operators": [
+        {
+          "opcode_index": 0,
+          "inputs": [
+            0,
+            1
+          ],
+          "outputs": [
+            2
+          ],
+          "builtin_options_type": "Conv2DOptions",
+          "builtin_options": {
+            "padding": padding,
+            "stride_w": stride_x,
+            "stride_h": stride_y,
+            "fused_activation_function": "NONE",
+            "dilation_w_factor": dilation_x,
+            "dilation_h_factor": dilation_y
+          },
+          "custom_options_format": "FLEXBUFFERS"
+        }
+      ]
+    }
+  ],
+  "buffers": [
+    {},
+    {
+        "data": [
+            input_weights
+        ]
+    },
+    {}
+  ]
+}
