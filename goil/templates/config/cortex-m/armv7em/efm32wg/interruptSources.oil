@@ -1,0 +1,9 @@
+/*
+ * Interrupt sources for the EFM32WG micro-controller
+ */
+ENUM [
+  SysTick,
+  DMA_IRQ,
+  ADC0_IRQ, 
+  RTC_IRQ
+] SOURCE;

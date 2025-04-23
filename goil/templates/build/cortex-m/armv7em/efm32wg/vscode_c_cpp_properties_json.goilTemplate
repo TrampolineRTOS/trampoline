@@ -1,0 +1,9 @@
+{
+    "configurations": [
+        {
+            "name": "EFM32WG ARM",
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}

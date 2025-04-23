@@ -1,0 +1,831 @@
+
+
+CPU efm32wg {
+
+  BUILDOPTIONS buildOptions {
+     COMMONFLAGS = "-DEFM32WG380F256=1"; //processor def
+     COMMONFLAGS = "-DARM_MATH_CM4=1";
+     COMMONFLAGS = "-D__FPU_PRESENT=1";
+  };
+
+  OS features {
+    ISR2_PRIORITY_MASKING = TRUE;
+  };
+
+  CORTEX efm32wg {
+    PRIO_BITS = 4;      // used in tpl_cortex_definitions for NVIC config
+    CLOCK = 140000000;  // init freq of HFRCO
+  };
+
+  INTERRUPT_COUNT nb_it {
+    IT_TABLE_SIZE = 54;
+  };
+  INTERRUPT NMI          {SETPRIO = TRUE { NUMBER = -14; };};
+  INTERRUPT HardFault    {SETPRIO = TRUE { NUMBER = -13; };};
+  INTERRUPT MemManage    {SETPRIO = TRUE { NUMBER = -12; };};
+  INTERRUPT BusFault     {SETPRIO = TRUE { NUMBER = -11; };};
+  INTERRUPT UsageFault   {SETPRIO = TRUE { NUMBER = -10; };};
+  INTERRUPT SVCall       {SETPRIO = TRUE { NUMBER = -5 ; };};
+  INTERRUPT DebugMonitor {SETPRIO = TRUE { NUMBER = -4 ; };};
+  INTERRUPT PendSV       {SETPRIO = TRUE { NUMBER = -2 ; };};
+  INTERRUPT SysTick      {SETPRIO = TRUE { NUMBER = -1 ; };};
+
+  INTERRUPT DMA_IRQ {
+    VECT = 16;
+    SETPRIO = TRUE { NUMBER = 0; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA_IRQ_Handler";
+    };
+  } : "DMA Interrupt";
+
+  INTERRUPT GPIO_EVEN_IRQ {
+    VECT = 17;
+    SETPRIO = TRUE { NUMBER = 1; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "GPIO_EVEN_IRQ_Handler";
+    };
+  } : "GPIO EVEN Interrupt";
+
+  INTERRUPT TIMER0_IRQ {
+    VECT = 18;
+    SETPRIO = TRUE { NUMBER = 2; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIMER0_IRQ_Handler";
+    };
+  } : "TIMER0 Interrupt";
+
+  INTERRUPT USART0_RX_IRQ {
+    VECT = 19;
+    SETPRIO = TRUE { NUMBER = 3; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "USART0_RX_IRQ_Handler";
+    };
+  } : "USART0 RX Interrupt";
+
+  INTERRUPT USART0_TX_IRQ {
+    VECT = 20;
+    SETPRIO = TRUE { NUMBER = 4; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "USART0_TX_IRQ_Handler";
+    };
+  } : "USART0 TX Interrupt";
+
+  INTERRUPT USB_IRQ {
+    VECT = 21;
+    SETPRIO = TRUE { NUMBER = 5; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "USB_IRQ_Handler";
+    };
+  } : "USB Interrupt";
+
+  INTERRUPT ACMP0_IRQ {
+    VECT = 22;
+    SETPRIO = TRUE { NUMBER = 6; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "ACMP0_IRQ_Handler";
+    };
+  } : "ACMP0 Interrupt";
+
+  INTERRUPT ADC0_IRQ {
+    VECT = 23;
+    SETPRIO = TRUE { NUMBER = 7; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "ADC0_IRQ_Handler";
+    };
+  } : "ADC0 Interrupt";
+
+  INTERRUPT DAC0_IRQ {
+    VECT = 24;
+    SETPRIO = TRUE { NUMBER = 8; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DAC0_IRQ_Handler";
+    };
+  } : "DAC0 Interrupt";
+
+  INTERRUPT I2C0_IRQ {
+    VECT = 25;
+    SETPRIO = TRUE { NUMBER = 9; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "I2C0_IRQ_Handler";
+    };
+  } : "I2C0 Interrupt";
+
+  INTERRUPT I2C1_IRQ {
+    VECT = 26;
+    SETPRIO = TRUE { NUMBER = 10; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "I2C1_IRQ_Handler";
+    };
+  } : "I2C1 Interrupt";
+
+  INTERRUPT GPIO_ODD_IRQ {
+    VECT = 27;
+    SETPRIO = TRUE { NUMBER = 11; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "GPIO_ODD_IRQ_Handler";
+    };
+  } : "GPIO ODD Interrupt";
+
+  INTERRUPT TIMER1_IRQ {
+    VECT = 28;
+    SETPRIO = TRUE { NUMBER = 12; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIMER1_IRQ_Handler";
+    };
+  } : "TIMER1 Interrupt";
+
+  INTERRUPT TIMER2_IRQ {
+    VECT = 29;
+    SETPRIO = TRUE { NUMBER = 13; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIMER2_IRQ_Handler";
+    };
+  } : "TIMER2 Interrupt";
+
+  INTERRUPT TIMER3_IRQ {
+    VECT = 30;
+    SETPRIO = TRUE { NUMBER = 14; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIMER3_IRQ_Handler";
+    };
+  } : "TIMER3 Interrupt";
+
+  INTERRUPT USART1_RX_IRQ {
+    VECT = 31;
+    SETPRIO = TRUE { NUMBER = 15; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "USART_RX_IRQ_Handler";
+    };
+  } : "USART1 RX Interrupt";
+
+  INTERRUPT USART1_TX_IRQ {
+    VECT = 32;
+    SETPRIO = TRUE { NUMBER = 16; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "USART1_TX_IRQ_Handler";
+    };
+  } : "USART1 TX Interrupt";
+
+  INTERRUPT LESENSE_IRQ {
+    VECT = 33;
+    SETPRIO = TRUE { NUMBER = 17; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "LESENSE_IRQ_Handler";
+    };
+  } : "LESENSE Interrupt";
+
+  INTERRUPT USART2_RX_IRQ {
+    VECT = 34;
+    SETPRIO = TRUE { NUMBER = 18; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "USART2_RX_IRQ_Handler";
+    };
+  } : "USART2 RX Interrupt";
+
+  INTERRUPT USART2_TX_IRQ {
+    VECT = 35;
+    SETPRIO = TRUE { NUMBER = 19; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "USART2_TX_IRQ_Handler";
+    };
+  } : "USART2 TX Interrupt";
+
+  INTERRUPT UART0_RX_IRQ {
+    VECT = 36;
+    SETPRIO = TRUE { NUMBER = 20; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "UART0_RX_IRQ_Handler";
+    };
+  } : "UART0 RX Interrupt";
+
+  INTERRUPT UART0_TX_IRQ {
+    VECT = 37;
+    SETPRIO = TRUE { NUMBER = 21; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "UART0_TX_IRQ_Handler";
+    };
+  } : "UART0 TX Interrupt";
+
+  INTERRUPT UART1_RX_IRQ {
+    VECT = 38;
+    SETPRIO = TRUE { NUMBER = 22; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "UART1_RX_IRQ_Handler";
+    };
+  } : "UART1 RX Interrupt";
+
+  INTERRUPT UART1_TX_IRQ {
+    VECT = 39;
+    SETPRIO = TRUE { NUMBER = 23; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "UART1_TX_IRQ_Handler";
+    };
+  } : "UART1 TX Interrupt";
+
+  INTERRUPT LEUART0_IRQ {
+    VECT = 40;
+    SETPRIO = TRUE { NUMBER = 24; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "LEUART0_IRQ_Handler";
+    };
+  } : "LEUART0 Interrupt";
+
+  INTERRUPT LEUART1_IRQ {
+    VECT = 41;
+    SETPRIO = TRUE { NUMBER = 25; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "LEUART1_IRQ_Handler";
+    };
+  } : "LEUART1 Interrupt";
+
+  INTERRUPT LETIMER0_IRQ {
+    VECT = 42;
+    SETPRIO = TRUE { NUMBER = 26; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "LETIMER0_IRQ_Handler";
+    };
+  } : "LETIMER0 Interrupt";
+
+  INTERRUPT PCNT0_IRQ {
+    VECT = 43;
+    SETPRIO = TRUE { NUMBER = 27; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "PCNT0_IRQ_Handler";
+    };
+  } : "PCNT0 Interrupt";
+
+  INTERRUPT PCNT1_IRQ {
+    VECT = 44;
+    SETPRIO = TRUE { NUMBER = 28; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "PCNT1_IRQ_Handler";
+    };
+  } : "PCNT1 Interrupt";
+
+  INTERRUPT PCNT2_IRQ {
+    VECT = 45;
+    SETPRIO = TRUE { NUMBER = 29; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "PCNT2_IRQ_Handler";
+    };
+  } : "PCNT2 Interrupt";
+
+  INTERRUPT RTC_IRQ {
+    VECT = 46;
+    SETPRIO = TRUE { NUMBER = 30; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "RTC_IRQ_Handler";
+    };
+  } : "RTC Interrupt";
+
+  INTERRUPT BURTC_IRQ {
+    VECT = 47;
+    SETPRIO = TRUE { NUMBER = 31; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "BURTC_IRQ_Handler";
+    };
+  } : "BURTC Interrupt";
+
+  INTERRUPT CMU_IRQ {
+    VECT = 48;
+    SETPRIO = TRUE { NUMBER = 32; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "CMU_IRQ_Handler";
+    };
+  } : "CMU Interrupt";
+
+  INTERRUPT VCMP_IRQ {
+    VECT = 49;
+    SETPRIO = TRUE { NUMBER = 33; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "VCMP_IRQ_Handler";
+    };
+  } : "VCMP Interrupt";
+
+  INTERRUPT LCD_IRQ {
+    VECT = 50;
+    SETPRIO = TRUE { NUMBER = 34; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "LCD_IRQ_Handler";
+    };
+  } : "LCD Interrupt";
+
+  INTERRUPT MSC_IRQ {
+    VECT = 51;
+    SETPRIO = TRUE { NUMBER = 35; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "MSC_IRQ_Handler";
+    };
+  } : "MSC Interrupt";
+
+  INTERRUPT AES_IRQ {
+    VECT = 52;
+    SETPRIO = TRUE { NUMBER = 36; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "AES_IRQ_Handler";
+    };
+  } : "AES Interrupt";
+
+  INTERRUPT EBI_IRQ {
+    VECT = 53;
+    SETPRIO = TRUE { NUMBER = 37; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "EBI_IRQ_Handler";
+    };
+  } : "EBI Interrupt";
+
+  INTERRUPT EMU_IRQ {
+    VECT = 54;
+    SETPRIO = TRUE { NUMBER = 38; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "EMU_IRQ_Handler";
+    };
+  } : "EMU Interrupt";
+
+  INTERRUPT FPUEH_IRQ {
+    VECT = 55;
+    SETPRIO = TRUE { NUMBER = 39; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "FPUEH_IRQ_Handler";
+    };
+  } : "FPUEH Interrupt";
+
+  PLATFORM_FILES efm32wg {
+    PATH = "cortex/armv7em/efm32wg";
+    CFILE = "startup_efm32wg.c";
+    CFILE = "system_efm32wg.c";
+    CFILE = "handlers_efm32wg.c";
+    CFILE = "tpl_machine_efm32wg.c";
+  };
+
+  PLATFORM_FILES efm32wg_device {
+    PATH = "cortex/armv7em/efm32wg/inc";
+  };
+
+  PLATFORM_FILES efm32wg_emlib_inc {
+    PATH    = "cortex/armv7em/efm32wg/emlib/inc";
+  };
+
+  PLATFORM_FILES efm32wg_emlib_src {
+    PATH  = "cortex/armv7em/efm32wg/emlib/src";
+    CFILE = "em_acmp.c";
+    CFILE = "em_adc.c";
+    CFILE = "em_aes.c";
+    CFILE = "em_assert.c";
+    CFILE = "em_burtc.c";
+    CFILE = "em_can.c";
+    CFILE = "em_cmu.c";
+    CFILE = "em_core.c";
+    CFILE = "em_cryotimer.c";
+    CFILE = "em_crypto.c";
+    CFILE = "em_csen.c";
+    CFILE = "em_dac.c";
+    CFILE = "em_dbg.c";
+    CFILE = "em_dma.c";
+    CFILE = "em_ebi.c";
+    CFILE = "em_emu.c";
+    CFILE = "em_gpcrc.c";
+    CFILE = "em_gpio.c";
+    CFILE = "em_i2c.c";
+    CFILE = "em_idac.c";
+    CFILE = "em_lcd.c";
+    CFILE = "em_ldma.c";
+    CFILE = "em_lesense.c";
+    CFILE = "em_letimer.c";
+    CFILE = "em_leuart.c";
+    CFILE = "em_mpu.c";
+    CFILE = "em_msc.c";
+    CFILE = "em_opamp.c";
+    CFILE = "em_pcnt.c";
+    CFILE = "em_prs.c";
+    CFILE = "em_qspi.c";
+    CFILE = "em_rmu.c";
+    CFILE = "em_rtc.c";
+    CFILE = "em_rtcc.c";
+    CFILE = "em_system.c";
+    CFILE = "em_timer.c";
+    CFILE = "em_usart.c";
+    CFILE = "em_vcmp.c";
+    CFILE = "em_vdac.c";
+    CFILE = "em_wdog.c";
+  };
+
+  POSTBUILD all {
+    COMMAND buildbin {
+      TYPE = COPIER;
+      INPUT = TARGET;
+      OUTPUT = ".bin";
+      PREOPTION = "-O binary";
+    };
+  };
+
+  LIBRARY dmactrl {
+    PATH = "cortex/armv7em/efm32wg/driver/dmactrl";
+    CHEADER = "dmactrl.h";
+    CFILE   = "dmactrl.c";
+  };
+
+  LIBRARY microsd {
+    PATH = "cortex/armv7em/efm32wg/driver/microsd";
+    CHEADER = "microsd.h";
+    CFILE   = "microsd.c";
+    CHEADER = "diskio.h";
+    CFILE   = "diskio.c";
+    CHEADER = "ff.h";
+    CFILE   = "ff.c";
+    CHEADER = "ffconf.h";
+    CHEADER = "integer.h";
+    CFILE   = "ffunicode.c";    
+  };
+ 
+ PLATFORM_FILES cmsis_dsp_inc {
+    PATH    = "cortex/CMSIS-DSP/Include";
+  };
+  
+  PLATFORM_FILES cmsis_dsp_dsp_inc {
+    PATH    = "cortex/CMSIS-DSP/Include/dsp";
+  };
+   
+ PLATFORM_FILES cmsis_dsp_private_inc {
+    PATH    = "cortex/CMSIS-DSP/PrivateInclude";
+  };
+  
+ LIBRARY cmsisdsp {
+   PATH = "cortex/CMSIS-DSP";
+   CFILE = "Source/MatrixFunctions/MatrixFunctionsF16.c";
+   CFILE = "Source/MatrixFunctions/MatrixFunctions.c";
+//   CFILE = "Source/MatrixFunctions/_arm_mat_mult_neon.c";
+   CFILE = "Source/TransformFunctions/TransformFunctions.c";
+   CFILE = "Source/TransformFunctions/TransformFunctionsF16.c";
+   CFILE = "Source/CommonTables/CommonTablesF16.c";
+   CFILE = "Source/CommonTables/CommonTables.c";
+   CFILE = "Source/FilteringFunctions/FilteringFunctionsF16.c";
+   CFILE = "Source/FilteringFunctions/FilteringFunctions.c";
+   CFILE = "Source/StatisticsFunctions/StatisticsFunctionsF16.c";
+   CFILE = "Source/StatisticsFunctions/StatisticsFunctions.c";
+   CFILE = "Source/BasicMathFunctions/BasicMathFunctions.c";
+   CFILE = "Source/BasicMathFunctions/BasicMathFunctionsF16.c";
+   CFILE = "Source/InterpolationFunctions/InterpolationFunctions.c";
+   CFILE = "Source/InterpolationFunctions/InterpolationFunctionsF16.c";
+   CFILE = "Source/SupportFunctions/SupportFunctionsF16.c";
+   CFILE = "Source/SupportFunctions/SupportFunctions.c";
+   CFILE = "Source/DistanceFunctions/DistanceFunctions.c";
+   CFILE = "Source/DistanceFunctions/DistanceFunctionsF16.c";
+   CFILE = "Source/ControllerFunctions/ControllerFunctions.c";
+   CFILE = "Source/FastMathFunctions/FastMathFunctions.c";
+   CFILE = "Source/FastMathFunctions/FastMathFunctionsF16.c";
+   CFILE = "Source/WindowFunctions/WindowFunctions.c";
+   CFILE = "Source/BayesFunctions/BayesFunctionsF16.c";
+   CFILE = "Source/BayesFunctions/BayesFunctions.c";
+   CFILE = "Source/SVMFunctions/SVMFunctions.c";
+   CFILE = "Source/SVMFunctions/SVMFunctionsF16.c";
+   CFILE = "Source/QuaternionMathFunctions/QuaternionMathFunctions.c";
+   CFILE = "Source/ComplexMathFunctions/ComplexMathFunctions.c";
+   CFILE = "Source/ComplexMathFunctions/ComplexMathFunctionsF16.c";
+ };
+ 
+ 
+ PLATFORM_FILES cmsis_nn_inc {
+    PATH    = "cortex/CMSIS-NN/Include";
+  };
+  
+ PLATFORM_FILES cmsis_dsp_private_inc {
+    PATH    = "cortex/CMSIS-DSP/PrivateInclude";
+  };
+  
+ LIBRARY cmsisnn {
+   PATH = "cortex/CMSIS-NN";
+   CFILE = "Source/PoolingFunctions/arm_avgpool_s8.c";
+   CFILE = "Source/PoolingFunctions/arm_avgpool_get_buffer_sizes_s8.c";
+   CFILE = "Source/PoolingFunctions/arm_max_pool_s16.c";
+   CFILE = "Source/PoolingFunctions/arm_avgpool_s16.c";
+   CFILE = "Source/PoolingFunctions/arm_avgpool_get_buffer_sizes_s16.c";
+   CFILE = "Source/PoolingFunctions/arm_max_pool_s8.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_mat_mult_nt_interleaved_t_even_s4.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_transpose_conv_row_s8_s32.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_depthwise_conv_nt_t_s8.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_vec_mat_mult_t_svdf_s8.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_mat_mul_core_1x_s8.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_lstm_step_s16.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_vec_mat_mult_t_s8.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_depthwise_conv_nt_t_padded_s8.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_lstm_calculate_gate_s8_s16.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_mat_mult_nt_t_s8_s32.c";
+   CFILE = "Source/NNSupportFunctions/arm_nntables.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_mat_mul_core_4x_s8.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_mat_mult_nt_t_s8.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_vec_mat_mult_t_per_ch_s8.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_lstm_calculate_gate_s16.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_vec_mat_mul_result_acc_s16.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_depthwise_conv_nt_t_s4.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_lstm_step_s8.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_vec_mat_mult_t_s16.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_mat_mul_core_1x_s4.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_mat_mult_nt_t_s16.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_depthwise_conv_nt_t_s16.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_vec_mat_mul_result_acc_s8_s16.c";
+   CFILE = "Source/NNSupportFunctions/arm_q7_to_q15_with_offset.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_vec_mat_mult_t_s4.c";
+   CFILE = "Source/NNSupportFunctions/arm_s8_to_s16_unordered_with_offset.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_mat_mult_nt_t_s4.c";
+   CFILE = "Source/NNSupportFunctions/arm_nn_vec_mat_mult_t_s16_s16.c";
+   CFILE = "Source/PadFunctions/arm_pad_s8.c";
+   CFILE = "Source/FullyConnectedFunctions/arm_fully_connected_get_buffer_sizes_s8.c";
+   CFILE = "Source/FullyConnectedFunctions/arm_fully_connected_s8.c";
+   CFILE = "Source/FullyConnectedFunctions/arm_fully_connected_per_channel_s8.c";
+   CFILE = "Source/FullyConnectedFunctions/arm_fully_connected_s16.c";
+   CFILE = "Source/FullyConnectedFunctions/arm_fully_connected_get_buffer_sizes_s16.c";
+   CFILE = "Source/FullyConnectedFunctions/arm_vector_sum_s8.c";
+   CFILE = "Source/FullyConnectedFunctions/arm_batch_matmul_s16.c";
+   CFILE = "Source/FullyConnectedFunctions/arm_batch_matmul_s8.c";
+   CFILE = "Source/FullyConnectedFunctions/arm_fully_connected_wrapper_s8.c";
+   CFILE = "Source/FullyConnectedFunctions/arm_fully_connected_s4.c";
+   CFILE = "Source/FullyConnectedFunctions/arm_vector_sum_s8_s64.c";
+   CFILE = "Source/ConcatenationFunctions/arm_concatenation_s8_x.c";
+   CFILE = "Source/ConcatenationFunctions/arm_concatenation_s8_w.c";
+   CFILE = "Source/ConcatenationFunctions/arm_concatenation_s8_y.c";
+   CFILE = "Source/ConcatenationFunctions/arm_concatenation_s8_z.c";
+   CFILE = "Source/SoftmaxFunctions/arm_softmax_u8.c";
+   CFILE = "Source/SoftmaxFunctions/arm_nn_softmax_common_s8.c";
+   CFILE = "Source/SoftmaxFunctions/arm_softmax_s8.c";
+   CFILE = "Source/SoftmaxFunctions/arm_softmax_s16.c";
+   CFILE = "Source/SoftmaxFunctions/arm_softmax_s8_s16.c";
+   CFILE = "Source/SVDFunctions/arm_svdf_get_buffer_sizes_s8.c";
+   CFILE = "Source/SVDFunctions/arm_svdf_state_s16_s8.c";
+   CFILE = "Source/SVDFunctions/arm_svdf_s8.c";
+   CFILE = "Source/ActivationFunctions/arm_relu_q15.c";
+   CFILE = "Source/ActivationFunctions/arm_nn_activation_s16.c";
+   CFILE = "Source/ActivationFunctions/arm_relu6_s8.c";
+   CFILE = "Source/ActivationFunctions/arm_relu_q7.c";
+   CFILE = "Source/BasicMathFunctions/arm_elementwise_mul_s16.c";
+   CFILE = "Source/BasicMathFunctions/arm_elementwise_add_s8.c";
+   CFILE = "Source/BasicMathFunctions/arm_elementwise_mul_s16_s8.c";
+   CFILE = "Source/BasicMathFunctions/arm_elementwise_mul_acc_s16.c";
+   CFILE = "Source/BasicMathFunctions/arm_elementwise_mul_s8.c";
+   CFILE = "Source/BasicMathFunctions/arm_maximum_s8.c";
+   CFILE = "Source/BasicMathFunctions/arm_elementwise_mul_s16_batch_offset.c";
+   CFILE = "Source/BasicMathFunctions/arm_elementwise_add_s16.c";
+   CFILE = "Source/BasicMathFunctions/arm_minimum_s8.c";
+   CFILE = "Source/LSTMFunctions/arm_lstm_unidirectional_s8.c";
+   CFILE = "Source/LSTMFunctions/arm_lstm_unidirectional_s16.c";
+   CFILE = "Source/ConvolutionFunctions/arm_depthwise_conv_get_buffer_sizes_s4.c";
+   CFILE = "Source/ConvolutionFunctions/arm_nn_mat_mult_kernel_s16.c";
+   CFILE = "Source/ConvolutionFunctions/arm_nn_mat_mult_kernel_s4_s16.c";
+   CFILE = "Source/ConvolutionFunctions/arm_depthwise_conv_wrapper_s4.c";
+   CFILE = "Source/ConvolutionFunctions/arm_depthwise_conv_get_buffer_sizes_s16.c";
+   CFILE = "Source/ConvolutionFunctions/arm_depthwise_conv_s16.c";
+   CFILE = "Source/ConvolutionFunctions/arm_transpose_conv_get_buffer_sizes_s8.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_1_x_n_s4.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_s16.c";
+   CFILE = "Source/ConvolutionFunctions/arm_depthwise_conv_s4.c";
+   CFILE = "Source/ConvolutionFunctions/arm_depthwise_conv_s4_opt.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_1x1_s4_fast.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_1x1_s8_fast.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_s4.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_1x1_s4.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_wrapper_s16.c";
+   CFILE = "Source/ConvolutionFunctions/arm_depthwise_conv_3x3_s8.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_get_buffer_sizes_s8.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_wrapper_s4.c";
+   CFILE = "Source/ConvolutionFunctions/arm_nn_mat_mult_s8.c";
+   CFILE = "Source/ConvolutionFunctions/arm_depthwise_conv_wrapper_s8.c";
+   CFILE = "Source/ConvolutionFunctions/arm_depthwise_conv_get_buffer_sizes_s8.c";
+   CFILE = "Source/ConvolutionFunctions/arm_transpose_conv_wrapper_s8.c";
+   CFILE = "Source/ConvolutionFunctions/arm_nn_depthwise_conv_s8_core.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_1_x_n_s8.c";
+   CFILE = "Source/ConvolutionFunctions/arm_depthwise_conv_s8_opt.c";
+   CFILE = "Source/ConvolutionFunctions/arm_depthwise_conv_fast_s16.c";
+   CFILE = "Source/ConvolutionFunctions/arm_transpose_conv_s8.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_even_s4.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_1x1_s8.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_get_buffer_sizes_s16.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_s8.c";
+   CFILE = "Source/ConvolutionFunctions/arm_depthwise_conv_s8.c";
+   CFILE = "Source/ConvolutionFunctions/arm_nn_mat_mult_kernel_row_offset_s8_s16.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_wrapper_s8.c";
+   CFILE = "Source/ConvolutionFunctions/arm_depthwise_conv_wrapper_s16.c";
+   CFILE = "Source/ConvolutionFunctions/arm_convolve_get_buffer_sizes_s4.c";
+   CFILE = "Source/ConvolutionFunctions/arm_nn_mat_mult_kernel_s8_s16.c";
+   CFILE = "Source/TransposeFunctions/arm_transpose_s8.c";
+   CFILE = "Source/ReshapeFunctions/arm_reshape_s8.c";
+ };
+ 
+ 
+// PLATFORM_FILES tflite_micro_inc {
+//    PATH    = "cortex/armv7em/efm32wg/tensorflow-microlite/include";
+//  };
+  
+  LIBRARY tflite {
+     PATH = "../../../bin/tflite-micro";
+     CPPFILE = "tensorflow/lite/kernels/kernel_util.cc";
+     CPPFILE = "tensorflow/lite/core/api/tensor_utils.cc";
+     CPPFILE = "tensorflow/lite/core/api/flatbuffer_conversions.cc";
+     CPPFILE = "tensorflow/lite/core/c/common.cc";
+     CPPFILE = "tensorflow/compiler/mlir/lite/core/api/error_reporter.cc";
+     CPPFILE = "tensorflow/compiler/mlir/lite/schema/schema_utils.cc";
+     CPPFILE = "tensorflow/lite/kernels/internal/tensor_utils.cc";
+     CPPFILE = "tensorflow/lite/kernels/internal/common.cc";
+     CPPFILE = "tensorflow/lite/kernels/internal/portable_tensor_utils.cc";
+     CPPFILE = "tensorflow/lite/kernels/internal/tensor_ctypes.cc";
+     CPPFILE = "tensorflow/lite/kernels/internal/runtime_shape.cc";
+     CPPFILE = "tensorflow/lite/kernels/internal/reference/portable_tensor_utils.cc";
+     CPPFILE = "tensorflow/lite/kernels/internal/reference/comparisons.cc";
+     CPPFILE = "tensorflow/lite/kernels/internal/quantization_util.cc";
+     CPPFILE = "tensorflow/lite/micro/debug_log.cc";
+     CPPFILE = "tensorflow/lite/micro/fake_micro_context.cc";
+     CPPFILE = "tensorflow/lite/micro/flatbuffer_utils.cc";
+     CPPFILE = "tensorflow/lite/micro/hexdump.cc";
+     CPPFILE = "tensorflow/lite/micro/memory_helpers.cc";
+     CPPFILE = "tensorflow/lite/micro/micro_allocation_info.cc";
+     CPPFILE = "tensorflow/lite/micro/micro_allocator.cc";
+     CPPFILE = "tensorflow/lite/micro/micro_context.cc";
+     CPPFILE = "tensorflow/lite/micro/micro_interpreter_context.cc";
+     CPPFILE = "tensorflow/lite/micro/micro_interpreter_graph.cc";
+     CPPFILE = "tensorflow/lite/micro/micro_interpreter.cc";
+     CPPFILE = "tensorflow/lite/micro/micro_log.cc";
+     CPPFILE = "tensorflow/lite/micro/micro_op_resolver.cc";
+     CPPFILE = "tensorflow/lite/micro/micro_profiler.cc";
+     CPPFILE = "tensorflow/lite/micro/micro_resource_variable.cc";
+     CPPFILE = "tensorflow/lite/micro/micro_time.cc";
+     CPPFILE = "tensorflow/lite/micro/micro_utils.cc";
+     CPPFILE = "tensorflow/lite/micro/mock_micro_graph.cc";
+     CPPFILE = "tensorflow/lite/micro/recording_micro_allocator.cc";
+     CPPFILE = "tensorflow/lite/micro/arena_allocator/non_persistent_arena_buffer_allocator.cc";
+     CPPFILE = "tensorflow/lite/micro/arena_allocator/persistent_arena_buffer_allocator.cc";
+     CPPFILE = "tensorflow/lite/micro/arena_allocator/recording_single_arena_buffer_allocator.cc";
+     CPPFILE = "tensorflow/lite/micro/arena_allocator/single_arena_buffer_allocator.cc";
+     CPPFILE = "tensorflow/lite/micro/memory_planner/greedy_memory_planner.cc";
+     CPPFILE = "tensorflow/lite/micro/memory_planner/linear_memory_planner.cc";
+     CPPFILE = "tensorflow/lite/micro/memory_planner/non_persistent_buffer_planner_shim.cc";
+     CPPFILE = "tensorflow/lite/micro/tflite_bridge/flatbuffer_conversions_bridge.cc";
+     CPPFILE = "tensorflow/lite/micro/tflite_bridge/micro_error_reporter.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/activations.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/activations_common.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/add_common.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/add_n.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/arg_min_max.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/assign_variable.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/batch_matmul_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/batch_to_space_nd.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/broadcast_args.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/broadcast_to.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/call_once.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/cast.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/ceil.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/circular_buffer.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/circular_buffer_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/comparisons.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/concatenation.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/conv_common.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/cumsum.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/decompress.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/decompress_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/depth_to_space.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/depthwise_conv_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/dequantize.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/dequantize_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/detection_postprocess.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/div.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/elementwise.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/elu.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/embedding_lookup.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/ethosu.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/exp.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/expand_dims.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/fill.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/floor.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/floor_div.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/floor_mod.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/fully_connected_common.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/gather.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/gather_nd.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/hard_swish.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/hard_swish_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/if.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/kernel_runner.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/kernel_util.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/l2norm.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/l2_pool_2d.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/leaky_relu.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/leaky_relu_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/logical.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/logical_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/logistic.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/logistic_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/log_softmax.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/lstm_eval.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/lstm_eval_common.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/micro_tensor_utils.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/mirror_pad.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/mul.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/mul_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/neg.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/pack.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/pad.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/pad_common.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/pooling_common.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/prelu.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/prelu_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/quantize.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/quantize_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/read_variable.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/reduce.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/reduce_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/reshape.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/reshape_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/resize_bilinear.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/resize_nearest_neighbor.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/round.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/select.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/shape.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/slice.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/softmax_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/space_to_batch_nd.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/space_to_depth.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/split.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/split_v.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/squared_difference.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/squeeze.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/strided_slice.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/strided_slice_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/sub.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/sub_common.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/svdf_common.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/tanh.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/transpose_common.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/unpack.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/var_handle.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/while.cc"; 
+     CPPFILE = "tensorflow/lite/micro/kernels/zeros_like.cc";
+     CPPFILE = "tensorflow/lite/micro/kernels/cmsis_nn/add.cc";
+    CPPFILE = "tensorflow/lite/micro/kernels/cmsis_nn/batch_matmul.cc";
+    CPPFILE = "tensorflow/lite/micro/kernels/cmsis_nn/conv.cc";
+    CPPFILE = "tensorflow/lite/micro/kernels/cmsis_nn/depthwise_conv.cc";
+    CPPFILE = "tensorflow/lite/micro/kernels/cmsis_nn/fully_connected.cc";
+    CPPFILE = "tensorflow/lite/micro/kernels/cmsis_nn/maximum_minimum.cc";
+    CPPFILE = "tensorflow/lite/micro/kernels/cmsis_nn/pooling.cc";
+    CPPFILE = "tensorflow/lite/micro/kernels/cmsis_nn/softmax.cc";
+    CPPFILE = "tensorflow/lite/micro/kernels/cmsis_nn/svdf.cc";
+    CPPFILE = "tensorflow/lite/micro/kernels/cmsis_nn/transpose.cc";
+    CPPFILE = "tensorflow/lite/micro/kernels/cmsis_nn/transpose_conv.cc";
+    CPPFILE = "tensorflow/lite/micro/kernels/cmsis_nn/unidirectional_sequence_lstm.cc";
+    CPPFILE = "signal/micro/kernels/delay.cc"; 
+    CPPFILE = "signal/micro/kernels/energy.cc"; 
+    CPPFILE = "signal/micro/kernels/fft_auto_scale_kernel.cc"; 
+    CPPFILE = "signal/micro/kernels/fft_auto_scale_common.cc"; 
+    CPPFILE = "signal/micro/kernels/filter_bank.cc"; 
+    CPPFILE = "signal/micro/kernels/filter_bank_log.cc"; 
+    CPPFILE = "signal/micro/kernels/filter_bank_square_root.cc"; 
+    CPPFILE = "signal/micro/kernels/filter_bank_square_root_common.cc"; 
+    CPPFILE = "signal/micro/kernels/filter_bank_spectral_subtraction.cc"; 
+    CPPFILE = "signal/micro/kernels/framer.cc"; 
+    CPPFILE = "signal/micro/kernels/irfft.cc"; 
+    CPPFILE = "signal/micro/kernels/rfft.cc"; 
+    CPPFILE = "signal/micro/kernels/stacker.cc"; 
+    CPPFILE = "signal/micro/kernels/overlap_add.cc"; 
+    CPPFILE = "signal/micro/kernels/pcan.cc"; 
+    CPPFILE = "signal/micro/kernels/window.cc"; 
+    CPPFILE = "signal/src/circular_buffer.cc"; 
+    CPPFILE = "signal/src/energy.cc"; 
+    CPPFILE = "signal/src/fft_auto_scale.cc"; 
+    CPPFILE = "signal/src/filter_bank.cc"; 
+    CPPFILE = "signal/src/filter_bank_log.cc"; 
+    CPPFILE = "signal/src/filter_bank_square_root.cc"; 
+    CPPFILE = "signal/src/filter_bank_spectral_subtraction.cc"; 
+    CPPFILE = "signal/src/irfft_float.cc"; 
+    CPPFILE = "signal/src/irfft_int16.cc"; 
+    CPPFILE = "signal/src/irfft_int32.cc"; 
+    CPPFILE = "signal/src/log.cc"; 
+    CPPFILE = "signal/src/max_abs.cc"; 
+    CPPFILE = "signal/src/msb_32.cc"; 
+    CPPFILE = "signal/src/msb_64.cc"; 
+    CPPFILE = "signal/src/overlap_add.cc"; 
+    CPPFILE = "signal/src/pcan_argc_fixed.cc"; 
+    CPPFILE = "signal/src/rfft_float.cc"; 
+    CPPFILE = "signal/src/rfft_int16.cc"; 
+    CPPFILE = "signal/src/rfft_int32.cc"; 
+    CPPFILE = "signal/src/square_root_32.cc"; 
+    CPPFILE = "signal/src/square_root_64.cc"; 
+    CPPFILE = "signal/src/window.cc";
+    CPPFILE = "signal/src/kiss_fft_wrappers/kiss_fft_float.cc";
+    CPPFILE = "signal/src/kiss_fft_wrappers/kiss_fft_int16.cc";
+    CPPFILE = "signal/src/kiss_fft_wrappers/kiss_fft_int32.cc";
+  };
+};
+
+IMPLEMENTATION audiomoth {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          dmactrl,
+          microsd,
+          cmsisdsp,
+          cmsisnn,
+          tflite
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};

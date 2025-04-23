@@ -1,0 +1,7 @@
+{
+    "cmake.configureSettings": {
+        "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/% !PROJECT %/compiler.cmake"
+    },
+    "cmake.configureOnOpen": false,
+    "cmake.cmakePath": cmake
+}
