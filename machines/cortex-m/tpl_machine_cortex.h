@@ -117,18 +117,22 @@ typedef struct ARM_CORE_CONTEXT
   uint32 gpr9;          /* General purpose register r9 */
   uint32 gpr10;         /* General purpose register r10 */
   uint32 gpr11;         /* General purpose register r11 */
-	uint32 stackPointer;  /* Stack Pointer - r13          */
+  uint32 stackPointer;  /* Stack Pointer - r13          */
 } arm_core_context;
 
-#ifdef WITH_FLOAT
+#if WITH_FLOAT == YES
 /*
  * Floating Point Context
  */
+
+/* Number of single precision registers */
+#define NB_SPR 32
+
 struct ARM_FLOAT_CONTEXT {
-	/* is Single Precision Register s0-s31 */
-    double  spr[32];
-	/* Floating Point Status and Control Register */
-    double  fpscr;
+	/* We save s0-s31 */
+    uint32  spr[NB_SPR];
+	/* and Floating Point Status and Control Register */
+    uint32  fpscr;
 };
 
 typedef struct ARM_FLOAT_CONTEXT arm_float_context;

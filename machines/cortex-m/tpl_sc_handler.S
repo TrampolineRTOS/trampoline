@@ -99,6 +99,11 @@
  * | xPSR (bit 9 = 1) | <- PSP+28
  * +------------------+
  *
+ * If the FPU is enabled, the FPU context is not saved by hardware,
+ * as the kernel do not use FPU instructions. The FPU registers should
+ * be saved/restored in the load/save context functions
+ * (ArmV7 - Architecture Reference manual (DDI 0403E.e), sec. B.3.2.21)
+ *
  * 2 - The system call wrapper uses r3 to pass the identifier of the service.
  *     This identifier is used as an index in a function pointer table, each of
  *     these function pointer being a service of Trampoline. Services callable

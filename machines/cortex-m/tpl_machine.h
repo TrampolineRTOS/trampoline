@@ -45,15 +45,15 @@
 
 struct TPL_CONTEXT {
 	arm_core_context	*cc;
-#ifdef WITH_FLOAT
+#if WITH_FLOAT == YES
   arm_float_context	*fc;
 #endif
 };
 
 
-//typedef struct TPL_CONTEXT tpl_context;
+typedef struct TPL_CONTEXT tpl_context;
 
-typedef struct ARM_CORE_CONTEXT *tpl_context;
+// typedef struct ARM_CORE_CONTEXT *tpl_context;
 
 extern struct ARM_CORE_CONTEXT idle_task_context;
 
