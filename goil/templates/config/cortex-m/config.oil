@@ -9,6 +9,7 @@ IMPLEMENTATION thumb2_ressource {
   };
 
   ISR [] {
+    BOOLEAN USEFLOAT = FALSE;
     #include <interruptSources.oil>
   };
 
@@ -79,7 +80,7 @@ CPU thumb2_ressource {
   };
 
   PLATFORM_FILES cortex_cmsis {
-    PATH = "cortex-m/CMSIS/Include";
+    PATH = "cortex-m/CMSIS-5/CMSIS/Core/Include";
   };
 
   INTERRUPT InitialSPValue {
