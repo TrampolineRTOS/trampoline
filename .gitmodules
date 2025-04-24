@@ -13,3 +13,6 @@
 [submodule "machines/cortex-m/CMSIS-NN"]
 	path = machines/cortex-m/CMSIS-NN
 	url = https://github.com/ARM-software/CMSIS-NN
+[submodule "machines/cortex-m/CMSIS-DSP"]
+	path = machines/cortex-m/CMSIS-DSP
+	url = https://github.com/ARM-software/CMSIS-DSP
