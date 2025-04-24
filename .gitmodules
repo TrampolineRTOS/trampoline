@@ -19,3 +19,6 @@
 [submodule "machines/cortex-m/CMSIS_5"]
 	path = machines/cortex-m/CMSIS_5
 	url = https://github.com/ARM-software/CMSIS_5
+[submodule "machines/cortex-m/tflite-micro"]
+	path = machines/cortex-m/tflite-micro
+	url = https://github.com/tensorflow/tflite-micro
