@@ -611,12 +611,92 @@ CPU efm32wg {
  };
  
  
-// PLATFORM_FILES tflite_micro_inc {
-//    PATH    = "cortex/armv7em/efm32wg/tensorflow-microlite/include";
-//  };
+ PLATFORM_FILES tflite_micro_inc {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_c {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/c";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_core {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/core";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_core_api {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/core/api";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_core_c {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/core/c";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_kernels {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/kernels";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_kernels_internal {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/kernels/internal";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_kernels_internal_reference {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/kernels/internal/reference";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_compiler_mlir_lite_kernels_internal {
+    PATH    = "cortex-m/tflite-micro/tensorflow/compiler/mlir/lite/kernels/internal";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_compiler_mlir_lite_core_api {
+    PATH    = "cortex-m/tflite-micro/tensorflow/compiler/mlir/lite/core/api";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_compiler_mlir_lite_core_c {
+    PATH    = "cortex-m/tflite-micro/tensorflow/compiler/mlir/lite/core/c";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_compiler_mlir_lite_schema {
+    PATH    = "cortex-m/tflite-micro/tensorflow/compiler/mlir/lite/schema";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_lite_micro {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/micro";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_lite_micro_kernels {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/micro/kernels";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_lite_micro_arena_allocator {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/micro/arena_allocator";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_lite_micro_memory_planner {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/micro/memory_planner";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_lite_micro_tflite_bridge {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/micro/tflite_bridge";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_lite_micro_tools_make {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/micro/tools/make";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_signal_src_kiss_fft_wrappers {
+    PATH    = "cortex-m/tflite-micro/signal/src/kiss_fft_wrappers";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_signal_micro_kernels {
+    PATH    = "cortex-m/tflite-micro/signal/micro/kernels";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_signal_src {
+    PATH    = "cortex-m/tflite-micro/signal/src";
+  };
   
   LIBRARY tflite {
-    PATH = "../../../bin/tflite-micro";
+    PATH = "cortex-m/tflite-micro";
     CPPFILE = "tensorflow/lite/kernels/kernel_util.cc";
     CPPFILE = "tensorflow/lite/core/api/tensor_utils.cc";
     CPPFILE = "tensorflow/lite/core/api/flatbuffer_conversions.cc";
