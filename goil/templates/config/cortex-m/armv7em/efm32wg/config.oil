@@ -695,6 +695,22 @@ CPU efm32wg {
     PATH    = "cortex-m/tflite-micro/signal/src";
   };
   
+  PLATFORM_FILES tflite_micro_inc_lite_micro_tools_make_downloads_flatbuffers_include {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/micro/tools/make/downloads/flatbuffers/include";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_lite_micro_tools_make_downloads_gemmlowp {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/micro/tools/make/downloads/gemmlowp";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_lite_micro_tools_make_downloads_kissfft {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/micro/tools/make/downloads/kissfft";
+  };
+  
+  PLATFORM_FILES tflite_micro_inc_lite_micro_tools_make_downloads_ruy {
+    PATH    = "cortex-m/tflite-micro/tensorflow/lite/micro/tools/make/downloads/ruy";
+  };
+  
   LIBRARY tflite {
     PATH = "cortex-m/tflite-micro";
     CPPFILE = "tensorflow/lite/kernels/kernel_util.cc";
