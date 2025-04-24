@@ -10,3 +10,6 @@
 [submodule "goil/galgas-sources/GTL"]
 	path = goil/galgas-sources/GTL
 	url = https://github.com/TrampolineRTOS/GTL.git
+[submodule "machines/cortex-m/CMSIS-NN"]
+	path = machines/cortex-m/CMSIS-NN
+	url = https://github.com/ARM-software/CMSIS-NN

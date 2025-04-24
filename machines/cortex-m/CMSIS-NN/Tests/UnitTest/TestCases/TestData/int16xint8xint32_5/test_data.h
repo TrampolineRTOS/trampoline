@@ -1,7 +1,0 @@
-#include "bias.h"
-#include "config_data.h"
-#include "input.h"
-#include "output.h"
-#include "output_multiplier.h"
-#include "output_shift.h"
-#include "weights.h"
