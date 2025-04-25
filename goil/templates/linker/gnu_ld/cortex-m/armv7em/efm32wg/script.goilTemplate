@@ -76,7 +76,7 @@ SECTIONS {
 SECTIONS {
   . = ALIGN(4);
   /* --- code of OS --- */
-  ostext (READONLY): {
+  ostext: {
     *(.SC_handler)
     *(.EI_handler)
     *(.osCode)
@@ -85,7 +85,7 @@ SECTIONS {
   } >FLASH
   . = ALIGN(4);
   /* --- const of OS --- */
-  osconst (READONLY): {
+  osconst: {
     *(.osConst)
     *(.osApiConst) /* API constants */
   } >FLASH
@@ -96,7 +96,7 @@ SECTIONS {
  */
 SECTIONS {
   . = ALIGN(4);
-  apptext (READONLY): {
+  apptext: {
     __PROGCONST_SECTION_START = .;
     __SEG_START_APP_CODE_CONST_RGN = .;
   . = ALIGN(4);
@@ -116,7 +116,7 @@ end foreach
 %
   } >FLASH
   . = ALIGN(4);
-  appconst (READONLY): {
+  appconst: {
   /* --- Sections for application const --- */
     *(.rodata)     /* litteral strings (constants, strings, etc.) */
     *(.rodata*)    /* litteral strings (constants, strings, etc.) */
@@ -138,7 +138,7 @@ end foreach
  */
 SECTIONS {
   . = ALIGN(4);
-  procconst (READONLY): {
+  procconst: {
 %
 foreach proc in PROCESSES do
  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
@@ -185,7 +185,7 @@ SECTIONS {
 }
 
 SECTIONS {
-  .preinit_array  (READONLY):
+  .preinit_array:
   {
     PROVIDE_HIDDEN (__preinit_array_start = .);
     KEEP (*(.preinit_array*))
@@ -194,7 +194,7 @@ SECTIONS {
 }
 
 SECTIONS {
-  .init_array (READONLY):
+  .init_array:
   {
     PROVIDE_HIDDEN (__init_array_start = .);
     KEEP (*(SORT(.init_array.*)))
@@ -204,7 +204,7 @@ SECTIONS {
 }
 
 SECTIONS {
-  .fini_array (READONLY):
+  .fini_array:
   {
     PROVIDE_HIDDEN (__fini_array_start = .);
     KEEP (*(.fini_array*))

@@ -1,7 +1,7 @@
 /* Specify the memory areas for stm32f303 */
 MEMORY
 {
-    VECTOR (rx)  : ORIGIN = 0x00000000, LENGTH = 0xD8
-	FLASH  (rx)  : ORIGIN = 0x000000D8, LENGTH = 0x3FF28    /* 256k */
-	RAM    (rwx) : ORIGIN = 0x20000000, LENGTH = 0x8000 	/* 32k */
+ VECTOR (rx)  : ORIGIN = 0x00000000, LENGTH = 0xD8
+ FLASH  (rx)  : ORIGIN = 0x000000D8, LENGTH = 0x3FF28    /* 256k */
+ RAM    (rwx) : ORIGIN = 0x20000000, LENGTH = 0x8000  /* 32k */
 }
