@@ -5,7 +5,7 @@ This example use the CMake build system with VSCode.
 - First open a terminal from this folder
 - Then run goil
 ```sh
-goil --target=cortex/armv7em/efm32wg --templates=../../../../../../goil/templates/ blink.oil
+goil --target=cortex-m/armv7em/efm32wg --templates=../../../../../../goil/templates/ blink.oil
 ```
 - Finally open vscode from this folder
 ```sh
