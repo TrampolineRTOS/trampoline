@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  GALGAS Type Inspector (for introspection)
 //
@@ -16,32 +16,32 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-#include "galgas2/C_galgas_type_descriptor.h"
-#include "strings/C_String.h"
-#include "galgas2/C_galgas_io.h"
+#include "C_galgas_type_descriptor.h"
+#include "String-class.h"
+#include "C_galgas_io.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #include <string.h>
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  GALGAS type reference (for type introspection)
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ======== C_galgas_type_descriptor
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 static C_galgas_type_descriptor * gGalgasTypeListRoot = nullptr ;
 static int32_t gSlotID = 0 ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 C_galgas_type_descriptor::C_galgas_type_descriptor (const char * inGalgasTypeName,
                                                     const C_galgas_type_descriptor * inSuperClassDescriptor) :
@@ -56,7 +56,7 @@ mSuperclassDescriptor (inSuperClassDescriptor) {
   recursiveInsert (gGalgasTypeListRoot, this, extension) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void C_galgas_type_descriptor::recursiveGetSortedTypeList (C_galgas_type_descriptor * inRoot,
                                                            TC_UniqueArray <C_galgas_type_descriptor *> & ioTypeList) {
@@ -67,19 +67,19 @@ void C_galgas_type_descriptor::recursiveGetSortedTypeList (C_galgas_type_descrip
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void C_galgas_type_descriptor::typeListRoot (TC_UniqueArray <C_galgas_type_descriptor *> & outTypeList) {
   recursiveGetSortedTypeList (gGalgasTypeListRoot, outTypeList) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Insertion Implementation
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void C_galgas_type_descriptor::rotateLeft (C_galgas_type_descriptor * & ioRootPtr) {
   C_galgas_type_descriptor * b = ioRootPtr->mNextType ;
@@ -100,7 +100,7 @@ void C_galgas_type_descriptor::rotateLeft (C_galgas_type_descriptor * & ioRootPt
   ioRootPtr = b ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void C_galgas_type_descriptor::rotateRight (C_galgas_type_descriptor * & ioRootPtr) {
   C_galgas_type_descriptor * b = ioRootPtr->mPreviousType ;
@@ -120,7 +120,7 @@ void C_galgas_type_descriptor::rotateRight (C_galgas_type_descriptor * & ioRootP
   ioRootPtr = b ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void C_galgas_type_descriptor::recursiveInsert (C_galgas_type_descriptor * & ioRootPtr,
                                                 C_galgas_type_descriptor * inDescriptor,
@@ -160,11 +160,13 @@ void C_galgas_type_descriptor::recursiveInsert (C_galgas_type_descriptor * & ioR
       }
     }else{
       ioExtension = false;
-      C_String errorMessage ;
-      errorMessage << "FATAL ERROR (type '@" << inDescriptor->mGalgasTypeName << "' already defined)" ;
+      String errorMessage ;
+      errorMessage.appendCString ("FATAL ERROR (type '@") ;
+      errorMessage.appendString (inDescriptor->mGalgasTypeName) ;
+      errorMessage.appendCString ("' already defined)") ;
       fatalError (errorMessage, __FILE__, __LINE__) ;
     }
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------

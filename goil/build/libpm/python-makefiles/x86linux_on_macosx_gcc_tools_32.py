@@ -45,7 +45,7 @@ def buildForLinux32OnMacOSX (dictionary, jsonFilePath, EXECUTABLE, BUILD_DIR_NAM
 #--- Options for C compiling (.c extension)
   gmf.m_C_CompilerOptions = default_build_options.C_CompilerOptions ([])
 #--- Options for C++ compiling (.cpp extension)
-  gmf.m_Cpp_CompilerOptions = default_build_options.Cpp_CompilerOptions (["-Weffc++", "-Wsign-promo"])
+  gmf.m_Cpp_CompilerOptions = default_build_options.Cpp_CompilerOptions (["-Weffc++", "-Wsign-promo", "-std=c++14"])
 #--- Options for Objective-C compiling (.m extension)
   gmf.m_ObjectiveC_CompilerOptions = default_build_options.ObjectiveC_CompilerOptions ([])
 #--- Options for Objective-C++ compiling (.mm extension)
