@@ -1,0 +1,26 @@
+
+CPU efm32wg_low_power {
+    APICONFIG low_power {
+        ID_PREFIX = OS;
+        DIRECTORY = "machines/cortex-m/armv7em/efm32wg";
+        HEADER = "efm32wg_low_power";
+        FILE = "efm32wg_low_power";
+        SYSCALL StopSystick {
+            KERNEL = tpl_stop_systick_service;
+            LOCK_KERNEL = FALSE;
+            CALLABLE_BY_ISR1 = FALSE;
+        };
+        SYSCALL StartSystick {
+            KERNEL = tpl_start_systick_service;
+            LOCK_KERNEL = FALSE;
+            CALLABLE_BY_ISR1 = FALSE;
+        };
+        SYSCALL EnterLowPower {
+            KERNEL = tpl_enter_low_power_service;
+            LOCK_KERNEL = TRUE;
+            CALLABLE_BY_ISR1 = FALSE;
+            ARGUMENT low_power_mode { KIND = CONST; TYPE = EnergyModeType; }
+            : "Type of energy mode.";
+        };
+    };
+};

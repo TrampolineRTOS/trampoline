@@ -57,6 +57,12 @@ IMPLEMENTATION thumb2_ressource {
     UINT32 PRIO_BITS; /* Number of bits in interrupt priority */
     UINT32 CLOCK;     /* Clock frequency in Hz                */
   };
+
+  OS {
+    /* Power mode when in idle task */
+    ENUM [ACTIVE, EM1, EM2, EM3, EM4] IDLE_POWER_MODE = ACTIVE;
+  };
+
 };
 
 CPU thumb2_ressource {

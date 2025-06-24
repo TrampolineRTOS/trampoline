@@ -5,6 +5,15 @@
 #include "tpl_machine.h"
 %
 
+if OS::IDLE_POWER_MODE != "ACTIVE" then
+  let ISR += @{
+    NAME : "RTC_IRQ_Handler",
+    SOURCE : "RTC_IRQ",
+    CATEGORY : 1,
+    PRIORITY : 1  
+  }
+end if
+
 #------------------------------------------------------------------------------*
 # Target specific initializations
 # build the maps for IRQ
@@ -100,8 +109,13 @@ loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
                 # check whether we have an ISR or a COUNTER
                 if obj::KIND == "ISR" then
                   if obj::CATEGORY == 1 then
+                    if obj::NAME == "RTC_IRQ_Handler" then
+                    %extern FUNC(void, OS_CODE) % !KEY %_Handler(void);
+%
+                    else
                     %extern FUNC(void, OS_CODE) % !KEY %_Handler(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
 %
+                  end if
                   else
                     if obj::CATEGORY == 2 then
                       %extern FUNC(void, OS_CODE) tpl_primary_irq_handler_% !KEY %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));

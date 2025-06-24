@@ -350,6 +350,11 @@ CPU efm32wg {
     };
   } : "FPUEH Interrupt";
 
+  PLATFORM_FILES low_power {
+    PATH = "cortex-m/armv7em/efm32wg";
+    CFILE = "efm32wg_low_power.c";
+  };
+
   PLATFORM_FILES efm32wg {
     PATH = "cortex-m/armv7em/efm32wg";
     CFILE = "startup_efm32wg.c";
@@ -925,3 +930,5 @@ IMPLEMENTATION audiomoth {
     ] BUILD = FALSE;
   };
 };
+
+#include "low_power.oil"
