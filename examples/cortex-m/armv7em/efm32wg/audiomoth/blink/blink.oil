@@ -18,7 +18,6 @@ CPU blink {
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
-
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "blink.c";
@@ -30,7 +29,7 @@ CPU blink {
       LINKER = "arm-none-eabi-ld";
       COPIER = "arm-none-eabi-objcopy";
       SYSTEM = CMAKE {VSCODE=TRUE;};
-    };
+    }; 
     SYSTEM_CALL = TRUE;
     MEMMAP = TRUE {
       COMPILER = gcc;
@@ -56,8 +55,8 @@ CPU blink {
     };
     AUTOSTART = TRUE {
       APPMODE = std;
-      ALARMTIME = 100;
-      CYCLETIME = 100;
+      ALARMTIME = 2000;
+      CYCLETIME = 2000;
     };
   };
 };
