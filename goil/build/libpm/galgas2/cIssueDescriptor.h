@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  'cIssueDescriptor'                                                                           
 //
@@ -16,19 +16,19 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-#include "strings/C_String.h"
+#include "String-class.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //         cIssueDescriptor                                                                      
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 class cIssueDescriptor final {
 //--- Default constructor
@@ -36,11 +36,11 @@ class cIssueDescriptor final {
 
 //--- Constructor
   public: cIssueDescriptor (const bool inIsError,
-                             const C_String & inFile,
+                             const String & inFile,
                              const int32_t inLine,
                              const int32_t inStartColumn,
                              const int32_t inEndColumn,
-                             const C_String & inMessage) ;
+                             const String & inMessage) ;
 
 //--- Copy constructor
   public: cIssueDescriptor (const cIssueDescriptor & inSource) ;
@@ -49,15 +49,15 @@ class cIssueDescriptor final {
   public: cIssueDescriptor & operator = (const cIssueDescriptor & inSource) ;
 
 //--- Append issue to JSON string
-  public: void appendToJSONstring (C_String & ioJSONstring, const bool inIsFirstIssue) const ;
+  public: void appendToJSONstring (String & ioJSONstring, const bool inIsFirstIssue) const ;
 
 //--- Properties
   private: bool mIsError ; // false: warning
-  private: C_String mFile ;
+  private: String mFile ;
   private: int32_t mLine ;
   private: int32_t mStartColumn ;
   private: int32_t mEndColumn ;
-  private: C_String mMessage ;
+  private: String mMessage ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------

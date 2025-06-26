@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  GALGAS_timer                                                                                 
 //
@@ -16,12 +16,12 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #include "all-predefined-types.h"
-#include "galgas2/C_Compiler.h"
+#include "Compiler.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 GALGAS_timer::GALGAS_timer (void) :
 AC_GALGAS_root (),
@@ -29,28 +29,28 @@ mIsValid (false),
 mTimer () {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-void GALGAS_timer::description (C_String & ioString,
+void GALGAS_timer::description (String & ioString,
                                 const int32_t /* inIndentation */) const {
-  ioString << "<@timer: " ;
+  ioString.appendCString ("<@timer: ") ;
   if (!mIsValid) {
-    ioString << "not built" ;
+    ioString.appendCString ("not built") ;
   }else{
-    ioString << mTimer.timeString () ;
+    ioString.appendString (mTimer.timeString ()) ;
   }
-  ioString << ">" ;
+  ioString.appendCString (">") ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-GALGAS_timer GALGAS_timer::constructor_start (UNUSED_LOCATION_ARGS) {
+GALGAS_timer GALGAS_timer::class_func_start (UNUSED_LOCATION_ARGS) {
   GALGAS_timer result ;
   result.mIsValid = true ;
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void GALGAS_timer::setter_stop (UNUSED_LOCATION_ARGS) {
   if (isValid ()) {
@@ -58,15 +58,15 @@ void GALGAS_timer::setter_stop (UNUSED_LOCATION_ARGS) {
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void GALGAS_timer::setter_resume (UNUSED_LOCATION_ARGS) {
   if (isValid ()) {
-    mTimer = C_Timer () ;
+    mTimer = Timer () ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_timer::getter_isRunning (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -76,7 +76,7 @@ GALGAS_bool GALGAS_timer::getter_isRunning (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 GALGAS_uint GALGAS_timer::getter_msFromStart (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -86,7 +86,7 @@ GALGAS_uint GALGAS_timer::getter_msFromStart (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_timer::getter_string (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -96,4 +96,4 @@ GALGAS_string GALGAS_timer::getter_string (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------

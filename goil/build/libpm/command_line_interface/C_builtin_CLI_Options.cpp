@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  Generic Command Line Interface Options                                                       
 //   --help : Display help information                                                           
@@ -19,11 +19,11 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-#include "command_line_interface/C_builtin_CLI_Options.h"
+#include "C_builtin_CLI_Options.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 C_BoolCommandLineOption
 gOption_generic_5F_cli_5F_options_display_5F_help ("generic_cli_options",
@@ -32,7 +32,7 @@ gOption_generic_5F_cli_5F_options_display_5F_help ("generic_cli_options",
                                                    "help",
                                                    "Display help information") ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 C_BoolCommandLineOption
 gOption_generic_5F_cli_5F_options_display_5F_version ("generic_cli_options",
@@ -41,7 +41,7 @@ gOption_generic_5F_cli_5F_options_display_5F_version ("generic_cli_options",
                                                       "version",
                                                       "Display version") ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 C_StringCommandLineOption
 gOption_generic_5F_cli_5F_options_emit_5F_issue_5F_json_5F_file ("generic_cli_options",
@@ -51,7 +51,7 @@ gOption_generic_5F_cli_5F_options_emit_5F_issue_5F_json_5F_file ("generic_cli_op
                                                       "Emit a JSON file that contains all compilation issues",
                                                       "") ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #if COMPILE_FOR_WINDOWS == 0
   C_BoolCommandLineOption
@@ -62,7 +62,7 @@ gOption_generic_5F_cli_5F_options_emit_5F_issue_5F_json_5F_file ("generic_cli_op
                                                  "Do not issue colored messages") ;
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
   #if COMPILE_FOR_WINDOWS == 1
   C_BoolCommandLineOption
@@ -73,4 +73,4 @@ gOption_generic_5F_cli_5F_options_emit_5F_issue_5F_json_5F_file ("generic_cli_op
                                               "Do Not Display any dialog when no input file (Windows only)") ;
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------

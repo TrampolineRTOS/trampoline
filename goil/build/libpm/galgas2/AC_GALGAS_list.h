@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  AC_GALGAS_list : Base class for GALGAS list
 //
@@ -16,17 +16,17 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-#include "galgas2/AC_GALGAS_root.h"
-#include "galgas2/typeComparisonResult.h"
-#include "galgas2/cCollectionElement.h"
+#include "AC_GALGAS_root.h"
+#include "typeComparisonResult.h"
+#include "cCollectionElement.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 class AC_GALGAS_list : public AC_GALGAS_root {
 //--- Private properties
@@ -62,7 +62,7 @@ class AC_GALGAS_list : public AC_GALGAS_root {
   public: VIRTUAL_IN_DEBUG GALGAS_range getter_range (LOCATION_ARGS) const ;
 
 //--- Description
-  public: VIRTUAL_IN_DEBUG void description (C_String & ioString, const int32_t inIndentation) const override ;
+  public: VIRTUAL_IN_DEBUG void description (String & ioString, const int32_t inIndentation) const override ;
 
 //--- introspection
   public: virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const override = 0 ;
@@ -72,71 +72,71 @@ class AC_GALGAS_list : public AC_GALGAS_root {
 
   protected: VIRTUAL_IN_DEBUG void insertObjectAtIndex (const capCollectionElement & inElementToAdd,
                                                       const uint32_t inInsertionIndex,
-                                                      C_Compiler * inCompiler
+                                                      Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) ;
 
   protected: VIRTUAL_IN_DEBUG void removeObjectAtIndex (capCollectionElement & outAttributes,
                                                          const uint32_t inRemoveIndex,
-                                                         C_Compiler * inCompiler
+                                                         Compiler * inCompiler
                                                          COMMA_LOCATION_ARGS) ;
 
   protected: VIRTUAL_IN_DEBUG void removeFirstObject (capCollectionElement & outAttributes,
-                                                       C_Compiler * inCompiler
+                                                       Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) ;
 
   protected: VIRTUAL_IN_DEBUG void removeLastObject (capCollectionElement & outAttributes,
-                                                      C_Compiler * inCompiler
+                                                      Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) ;
 
   protected: VIRTUAL_IN_DEBUG void readFirst (capCollectionElement & outAttributes,
-                                               C_Compiler * inCompiler
+                                               Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) const ;
 
   protected: VIRTUAL_IN_DEBUG void readLast (capCollectionElement & outAttributes,
-                                              C_Compiler * inCompiler
+                                              Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) const ;
 
   protected: VIRTUAL_IN_DEBUG void appendList (const AC_GALGAS_list & inList) ;
 
   protected: VIRTUAL_IN_DEBUG void subListWithRange (AC_GALGAS_list & outList,
                                                       const GALGAS_range & inRange,
-                                                      C_Compiler * inCompiler
+                                                      Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) const ;
 
   protected: VIRTUAL_IN_DEBUG void subListFromIndex (AC_GALGAS_list & outList,
                                                       const GALGAS_uint & inIndex,
-                                                      C_Compiler * inCompiler
+                                                      Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) const ;
 
   protected: VIRTUAL_IN_DEBUG void subListToIndex (AC_GALGAS_list & outList,
                                                     const GALGAS_uint & inIndex,
-                                                    C_Compiler * inCompiler
+                                                    Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) const ;
 
   protected: VIRTUAL_IN_DEBUG capCollectionElement readObjectAtIndex (const GALGAS_uint & inIndex,
-                                                                       C_Compiler * inCompiler
+                                                                       Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) const ;
 
 
   protected: VIRTUAL_IN_DEBUG
   cCollectionElement * uniquelyReferencedPointerAtIndex (const GALGAS_uint & inIndex,
-                                                         C_Compiler * inCompiler
+                                                         Compiler * inCompiler
                                                          COMMA_LOCATION_ARGS) ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  cListMapElement
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 class cListMapElement : public cCollectionElement {
 //--- Attributes
-  public: C_String mKey ;
+  public: String mKey ;
   public: capCollectionElementArray mSharedListMapList ;
 
 //--- Default constructor
-  public: cListMapElement (const C_String & inKey,
+  public: cListMapElement (const String & inKey,
                             const capCollectionElementArray & inSharedList
                             COMMA_LOCATION_ARGS) ;
 
@@ -157,14 +157,14 @@ class cListMapElement : public cCollectionElement {
   public: virtual cCollectionElement * copy (void) ;
 
 //--- Description
-  public: virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+  public: virtual void description (String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  AC_GALGAS_listmap
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 class AC_GALGAS_listmap : public AC_GALGAS_root {
 //--- Constructor
@@ -196,7 +196,7 @@ class AC_GALGAS_listmap : public AC_GALGAS_root {
   public: virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const override = 0 ;
 
 //--------------------------------- Implementation of reader 'description'
-  public: virtual void description (C_String & ioString,
+  public: virtual void description (String & ioString,
                                     const int32_t inIndentation) const override ;
 
 //--- Internal methods for enumeration
@@ -222,4 +222,4 @@ class AC_GALGAS_listmap : public AC_GALGAS_root {
   private: class cSharedListMapRoot * mSharedListMap ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------

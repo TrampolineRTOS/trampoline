@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  This file is part of libpm library                                                           
 //
@@ -14,25 +14,25 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #import "OC_Lexique.h"
 #import "OC_Token.h"
 #import "unicode_character_m.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //   OC_GGS_TemplateDelimiter                                                                    
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 @implementation OC_GGS_TemplateDelimiter
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 @synthesize startString ;
 @synthesize endString ;
 @synthesize discardStartString ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (id) initWithStartString: (NSString *) inStartString
        endString: (NSString *) inEndString
@@ -48,21 +48,21 @@
 
 @end
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 //#define DEBUG_MESSAGES
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //   OC_Lexique                                                                                  
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 @implementation OC_Lexique
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 @synthesize menuForEntryPopUpButton ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (instancetype) init {
   self = [super init] ;
@@ -72,18 +72,18 @@
   return self ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (void) detach {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (NSArray *) indexingTitles { // Array of NSString
   return [NSArray array] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (void) advance {
   // NSLog (@"mCurrentLocation %d, [mSourceString length] %u", mCurrentLocation, [mSourceString length]) ;
@@ -98,7 +98,7 @@
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (void) searchForReplacementPattern:(NSArray *) inReplacementPatternArray {
   BOOL found = NO ;
@@ -120,7 +120,7 @@
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (void) saveScanningPoint: (scanningPointStructForCocoa *) outScanningPoint {
   outScanningPoint->mPreviousChar = mPreviousChar ; 
@@ -128,7 +128,7 @@
   outScanningPoint->mCurrentLocation = mCurrentLocation ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (void) restoreScanningPoint: (scanningPointStructForCocoa *) inScanningPoint {
   mPreviousChar = inScanningPoint->mPreviousChar ; 
@@ -136,7 +136,7 @@
   mCurrentLocation = inScanningPoint->mCurrentLocation ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (BOOL) testForInputChar: (utf32) inUnicodeCharacter {
   const BOOL result = mCurrentChar == inUnicodeCharacter ;
@@ -146,7 +146,7 @@
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (BOOL) testForInputFromChar:(utf32) inUnicodeLowerBound toChar:(utf32) inUnicodeUpperBound {
   const BOOL result = (mCurrentChar >= inUnicodeLowerBound) && (mCurrentChar <= inUnicodeUpperBound) ;
@@ -156,7 +156,7 @@
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (BOOL) testForCharWithFunction: (bool (*) (const utf32 inUnicodeCharacter)) inFunction {
   const BOOL ok = inFunction (mCurrentChar) ;
@@ -166,7 +166,7 @@
   return ok ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (BOOL) testForInputString: (NSString *) inTestedString advance:(BOOL) inFlag {
   //NSLog (@"testForInputString: mCurrentLocation %d, [mSourceString length] %u, inTestedString '%@'", mCurrentLocation, [mSourceString length], inTestedString) ;
@@ -189,7 +189,7 @@
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (BOOL) notTestForInputString: (NSString *) inSearchString error: (BOOL *) ioScanningOk {
   BOOL loop = NO ;
@@ -214,7 +214,7 @@
   return loop ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (SInt32) findTemplateDelimiterIndex: (NSArray *) inTemplateDelimiterArray { // Array of OC_GGS_TemplateDelimiter
   SInt32 templateIndex = 0 ;
@@ -235,27 +235,27 @@
   return templateIndex ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (const UInt16 **) popupListData {
   return NULL ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (void) parseLexicalTokenForLexicalColoring {
   NSLog (@"Error: OC_Lexique <parseLexicalTokenForLexicalColoring> is abstract!") ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (NSUInteger) styleIndexForTerminal: (NSInteger) inTerminal {
   return 0 ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-- (void) buildPopupMenuItemArrayWithStyleArray:(NSArray *) inTokenArray {
+- (void) buildPopupMenuItemArrayWithStyleArray: (NSArray *) inTokenArray {
   NSDictionary * defaultAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
     [NSFont systemFontOfSize:11.0], NSFontAttributeName,
     nil
@@ -275,36 +275,36 @@
   const UInt16 ** popUpListData = [self popupListData] ;
   if (NULL != popUpListData) {
     const NSUInteger tokenCount = inTokenArray.count ;
-    for (NSUInteger tokenIndex=0 ; tokenIndex<tokenCount ; tokenIndex++) {
-      OC_Token * token = [inTokenArray objectAtIndex:tokenIndex] ;
+    for (NSUInteger tokenIndex = 0 ; tokenIndex < tokenCount ; tokenIndex++) {
+      OC_Token * token = [inTokenArray objectAtIndex: tokenIndex] ;
       const NSUInteger terminal = token.tokenCode ;
-      // printf ("terminal %u\n", terminal) ;
       BOOL found = NO ;
       NSUInteger idx = 0 ;
       NSUInteger labelLength = 0 ;
-      const UInt16 * p = popUpListData [idx] ;
-      while ((p != NULL) && ! found) {
-        p++ ; // Pass display flags
-        if (*p == terminal) {
+      const UInt16 * ptr = popUpListData [idx] ;
+      while (!found && (ptr != NULL)) {
+        ptr += 1 ; // Pass display flags
+        if (*ptr == terminal) {
           found = YES ;
-          p += 2 ;
+          ptr += 2 ;
           labelLength = 0 ;
-          while ((*p != 0) && found) {
-            labelLength ++ ;
-            found = ((tokenIndex+labelLength) < tokenCount) && ([[inTokenArray objectAtIndex:tokenIndex+labelLength] tokenCode] == *p) ;
-            p += 2 ;
+          while (found && (*ptr != 0)) {
+            labelLength += 1 ;
+            found = ((tokenIndex+labelLength) < tokenCount) && ([[inTokenArray objectAtIndex:tokenIndex+labelLength] tokenCode] == *ptr) ;
+            ptr += 2 ;
           }
-        }else{
-          idx ++ ;
-          p = popUpListData [idx] ;
+        }
+        if (!found) {
+          idx += 1 ;
+          ptr = popUpListData [idx] ;
         }
       }
       if (found) {
-        p = popUpListData [idx] ;
+        const UInt16 * p = popUpListData [idx] ;
         const UInt16 displayFlags = *p ;
         p += 2 ; // Goto display strip description
         NSMutableString * title = [NSMutableString new] ;
-        [title appendString:@" "] ;
+        [title appendString: @" "] ;
         for (NSUInteger k=0 ; k<=labelLength ; k++) {
           const UInt16 stripDescription = *p ;
           if (stripDescription != 0xFFFF) {
@@ -325,9 +325,9 @@
               }
             }
             if (k > 0) {
-              [title appendString:@" "] ;
+              [title appendString: @" "] ;
             }
-            [title appendString:[mSourceString substringWithRange:range]] ;
+            [title appendString: [mSourceString substringWithRange:range]] ;
           }
           p += 2 ;
         }
@@ -337,16 +337,14 @@
           keyEquivalent:@""
         ] ;
         if (displayFlags == 0) {
-          [item setAttributedTitle:[[NSAttributedString alloc]
-            initWithString:title
-            attributes:defaultAttributes
-          ]] ;
+          [item setAttributedTitle:
+            [[NSAttributedString alloc] initWithString:title attributes:defaultAttributes]
+          ] ;
         }else{
           NSMutableAttributedString * s = prefixString.mutableCopy ;
-          [s appendAttributedString:[[NSAttributedString alloc]
-            initWithString:title
-            attributes:specialAttributes
-          ]] ;
+          [s appendAttributedString:
+            [[NSAttributedString alloc] initWithString: title attributes: specialAttributes]
+          ] ;
           [item setAttributedTitle:s] ;
         }
         [item setTag:(NSInteger) [[inTokenArray objectAtIndex:tokenIndex] range].location] ;
@@ -358,7 +356,7 @@
   menuForEntryPopUpButton = menu ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (void) presentCustomSyntaxColoringErrorForKey: (NSString *) inKey
          forStyle: (NSString *) inStyle
@@ -392,13 +390,13 @@
   [window makeKeyAndOrderFront:nil] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (NSString *) lexiqueIdentifier {
   return @"" ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (NSDictionary *) customSyntaxColoringDictionary {
   if (nil == mCustomSyntaxColoringDictionary) {
@@ -436,7 +434,7 @@
   return mCustomSyntaxColoringDictionary ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (NSUInteger) styleIndexForTokenCode: (NSInteger) inTokenCode
                spelling: (NSString *) inSpelling {
@@ -450,7 +448,7 @@
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (void) tokenizeForSourceString: (NSString *) inSourceString
          tokenArray: (NSMutableArray *) ioStyledRangeArray // Array of OC_Token
@@ -503,7 +501,10 @@
     NSLog (@"  Suppress affected Tokens") ;
   #endif
   search = YES ;
-  const NSUInteger affectedRangeEndLocation = inEditedRange.location + inEditedRange.length - (NSUInteger) inChangeInLength ;
+  const NSUInteger affectedRangeEndLocation = (inChangeInLength >= 0)
+    ? (inEditedRange.location + inEditedRange.length - (NSUInteger) inChangeInLength)
+    : (inEditedRange.location + inEditedRange.length + (NSUInteger) -inChangeInLength)
+  ;
   while ((*outLowerIndexToRedrawInStyleArray < (SInt32) [ioStyledRangeArray count]) && search) {
     OC_Token * token = [ioStyledRangeArray objectAtIndex:(NSUInteger) * outLowerIndexToRedrawInStyleArray] ;
     search = [token range].location < affectedRangeEndLocation ;
@@ -611,78 +612,78 @@
   #ifdef DEBUG_MESSAGES
     NSLog (@"build popup") ;
   #endif
-  [self buildPopupMenuItemArrayWithStyleArray:ioStyledRangeArray] ;
+  [self buildPopupMenuItemArrayWithStyleArray: ioStyledRangeArray] ;
 //---
   #ifdef DEBUG_MESSAGES
     NSLog (@"tokenizeForSourceString:tokenArray:... DONE") ;
   #endif
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (NSString *) blockComment {
   return @"" ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (BOOL) isTemplateLexique {
   return NO ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (NSUInteger) styleCount {
   return 0 ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (NSString *) styleIdentifierForStyleIndex: (const NSInteger) inIndex {
   return @"" ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (NSString *) styleNameForStyleIndex: (const NSInteger) inIndex {
   return @"" ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (NSUInteger) textMacroCount {
   return 0 ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (NSString *) textMacroTitleAtIndex: (const NSUInteger) inIndex {
   return @"" ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (NSString *) textMacroContentAtIndex: (const NSUInteger) inIndex {
   return @"" ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (NSString *) tabItemTitle {
   return @"Source" ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 - (BOOL) atomicSelectionForToken: (NSUInteger) inTokenIndex {
   return YES ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 @end
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 NSInteger searchStringInTable (NSString * inSearchedString,
                                const C_cocoa_lexique_table_entry * inTable,
@@ -700,15 +701,15 @@ NSInteger searchStringInTable (NSString * inSearchedString,
 }
 
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 #pragma mark Lexical Routines
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //   P R E D E F I N E D    S C A N N E R    A C T I O N S                                       
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterHexDigitIntoASCIIcharacter (BOOL * ioScanningOk,
                                                             UInt32 * ioValue,
@@ -732,7 +733,7 @@ void scanner_cocoa_routine_enterHexDigitIntoASCIIcharacter (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterDigitIntoASCIIcharacter (BOOL * ioScanningOk,
                                                          UInt32 * ioValue,
@@ -751,7 +752,7 @@ void scanner_cocoa_routine_enterDigitIntoASCIIcharacter (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterCharacterIntoString (BOOL * ioScanningOk,
                                                      NSMutableString * ioString,
@@ -759,7 +760,7 @@ void scanner_cocoa_routine_enterCharacterIntoString (BOOL * ioScanningOk,
   [ioString appendFormat:@"%C", (uint16_t) inChar] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertStringToDouble (BOOL * ioScanningOk,
                                                   NSMutableString * inString,
@@ -767,7 +768,7 @@ void scanner_cocoa_routine_convertStringToDouble (BOOL * ioScanningOk,
   * outValue = [inString doubleValue] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterCharacterIntoCharacter (BOOL * ioScanningOk,
                                                         utf32 * outCharacter,
@@ -775,19 +776,19 @@ void scanner_cocoa_routine_enterCharacterIntoCharacter (BOOL * ioScanningOk,
   * outCharacter = inCharacter ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 utf32 scanner_cocoa_function_toLower (const utf32 c) {
   return unicodeToLower (c) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 utf32 scanner_cocoa_function_toUpper (const utf32 c) {
   return unicodeToUpper (c) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_negateSInt (BOOL * ioScanningOk,
                                        SInt32 * ioValue) {
@@ -798,7 +799,7 @@ void scanner_cocoa_routine_negateSInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_negateSInt64 (BOOL * ioScanningOk,
                                          SInt64 * ioValue) {
@@ -809,7 +810,7 @@ void scanner_cocoa_routine_negateSInt64 (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertUIntToSInt (BOOL * ioScanningOk,
                                               const UInt32 inValue,
@@ -821,7 +822,7 @@ void scanner_cocoa_routine_convertUIntToSInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertUInt64ToSInt64 (BOOL * ioScanningOk,
                                                   const UInt64 inValue,
@@ -832,7 +833,7 @@ void scanner_cocoa_routine_convertUInt64ToSInt64 (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterDigitIntoUInt (BOOL * ioScanningOk,
                                                const utf32 inCharacter,
@@ -852,7 +853,7 @@ void scanner_cocoa_routine_enterDigitIntoUInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterDigitIntoUInt64 (BOOL * ioScanningOk,
                                                  const utf32 inCharacter,
@@ -872,7 +873,7 @@ void scanner_cocoa_routine_enterDigitIntoUInt64 (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterHexDigitIntoUInt (BOOL * ioScanningOk,
                                                   const utf32 inCharacter,
@@ -899,7 +900,7 @@ void scanner_cocoa_routine_enterHexDigitIntoUInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterHexDigitIntoUInt64 (BOOL * ioScanningOk,
                                                     const utf32 inCharacter,
@@ -926,7 +927,7 @@ void scanner_cocoa_routine_enterHexDigitIntoUInt64 (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertDecimalStringIntoUInt (BOOL * ioScanningOk,
                                                          NSString * inDecimalString,
@@ -954,7 +955,7 @@ void scanner_cocoa_routine_convertDecimalStringIntoUInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertDecimalStringIntoSInt (BOOL * ioScanningOk,
                                                          NSString * inDecimalString,
@@ -981,7 +982,7 @@ void scanner_cocoa_routine_convertDecimalStringIntoSInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertDecimalStringIntoUInt64 (BOOL * ioScanningOk,
                                                            NSString * inDecimalString,
@@ -1008,7 +1009,7 @@ void scanner_cocoa_routine_convertDecimalStringIntoUInt64 (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertDecimalStringIntoSInt64 (BOOL * ioScanningOk,
                                                            NSString * inDecimalString,
@@ -1035,7 +1036,7 @@ void scanner_cocoa_routine_convertDecimalStringIntoSInt64 (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterBinDigitIntoUInt (BOOL * ioScanningOk,
                                                   const utf32 inCharacter,
@@ -1053,7 +1054,7 @@ void scanner_cocoa_routine_enterBinDigitIntoUInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterBinDigitIntoUInt64 (BOOL * ioScanningOk,
                                                     const utf32 inCharacter,
@@ -1071,7 +1072,7 @@ void scanner_cocoa_routine_enterBinDigitIntoUInt64 (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterOctDigitIntoUInt (BOOL * ioScanningOk,
                                                   const utf32 inCharacter,
@@ -1089,7 +1090,7 @@ void scanner_cocoa_routine_enterOctDigitIntoUInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterOctDigitIntoUInt64 (BOOL * ioScanningOk,
                                                     const utf32 inCharacter,
@@ -1107,7 +1108,7 @@ void scanner_cocoa_routine_enterOctDigitIntoUInt64 (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_multiplyUInt (BOOL * ioScanningOk,
                                          const UInt32 inFactor,
@@ -1122,7 +1123,7 @@ void scanner_cocoa_routine_multiplyUInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_multiplyUInt64 (BOOL * ioScanningOk,
                                            const UInt64 inFactor,
@@ -1141,7 +1142,7 @@ void scanner_cocoa_routine_multiplyUInt64 (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertHexStringIntoUInt (BOOL * ioScanningOk,
                                                      NSString * inHexString,
@@ -1170,7 +1171,7 @@ void scanner_cocoa_routine_convertHexStringIntoUInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertHexStringIntoUInt64 (BOOL * ioScanningOk,
                                                        NSString * inHexString,
@@ -1199,7 +1200,7 @@ void scanner_cocoa_routine_convertHexStringIntoUInt64 (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertHexStringIntoSInt (BOOL * ioScanningOk,
                                                      NSString * inHexString,
@@ -1228,7 +1229,7 @@ void scanner_cocoa_routine_convertHexStringIntoSInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertHexStringIntoSInt64 (BOOL * ioScanningOk,
                                                        NSString * inHexString,
@@ -1257,7 +1258,7 @@ void scanner_cocoa_routine_convertHexStringIntoSInt64 (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertUnsignedNumberToUnicodeChar (BOOL * ioScanningOk,
                                                                UInt32 * ioValue,
@@ -1269,7 +1270,7 @@ void scanner_cocoa_routine_convertUnsignedNumberToUnicodeChar (BOOL * ioScanning
   *ioValue = 0 ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertHTMLSequenceToUnicodeCharacter (BOOL * ioScanningOk,
                                                                   NSMutableString * ioStringValue,
@@ -1281,7 +1282,7 @@ void scanner_cocoa_routine_convertHTMLSequenceToUnicodeCharacter (BOOL * ioScann
   [ioStringValue setString:@""] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_codePointToUnicode (BOOL * ioScanningOk,
                                                NSString * inElementString,
@@ -1331,14 +1332,14 @@ void scanner_cocoa_routine_codePointToUnicode (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_resetString (BOOL * ioNoLexicalError,
                                         NSMutableString * ioString) {
   [ioString setString:@""] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterDecimalDigitIntoBigInt (BOOL * ioScanningOk,
                                                         const utf32 inChar,
@@ -1350,7 +1351,7 @@ void scanner_cocoa_routine_enterDecimalDigitIntoBigInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterHexDigitIntoBigInt (BOOL * ioScanningOk,
                                                     const utf32 inChar,
@@ -1366,7 +1367,7 @@ void scanner_cocoa_routine_enterHexDigitIntoBigInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertDecimalStringIntoBigInt (BOOL * ioScanningOk,
                                                            NSString * inDecimalString,
@@ -1381,7 +1382,7 @@ void scanner_cocoa_routine_convertDecimalStringIntoBigInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertHexStringIntoBigInt (BOOL * ioScanningOk,
                                                        NSString * inHexString,
@@ -1401,7 +1402,7 @@ void scanner_cocoa_routine_convertHexStringIntoBigInt (BOOL * ioScanningOk,
 }
 
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_enterBinaryDigitIntoBigInt (BOOL * ioScanningOk,
                                                        const utf32 inChar,
@@ -1413,7 +1414,7 @@ void scanner_cocoa_routine_enterBinaryDigitIntoBigInt (BOOL * ioScanningOk,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_convertBinaryStringIntoBigInt (BOOL * ioScanningOk,
                                                           NSString * inHexString,
@@ -1429,4 +1430,4 @@ void scanner_cocoa_routine_convertBinaryStringIntoBigInt (BOOL * ioScanningOk,
 }
 
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------

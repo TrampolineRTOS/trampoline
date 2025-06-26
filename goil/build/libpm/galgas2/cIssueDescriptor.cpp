@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  'cIssueDescriptor'                                                                           
 //
@@ -16,11 +16,11 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-#include "galgas2/cIssueDescriptor.h"
+#include "cIssueDescriptor.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 cIssueDescriptor::cIssueDescriptor (void) :
 mIsError (false),
@@ -31,14 +31,14 @@ mEndColumn (0),
 mMessage ("") {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 cIssueDescriptor::cIssueDescriptor (const bool inIsError,
-                                    const C_String & inFile,
+                                    const String & inFile,
                                     const int32_t inLine,
                                     const int32_t inStartColumn,
                                     const int32_t inEndColumn,
-                                    const C_String & inMessage) :
+                                    const String & inMessage) :
 mIsError (inIsError),
 mFile (inFile),
 mLine (inLine),
@@ -47,7 +47,7 @@ mEndColumn (inEndColumn),
 mMessage (inMessage) {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 cIssueDescriptor::cIssueDescriptor (const cIssueDescriptor & inSource) :
 mIsError (inSource.mIsError),
@@ -58,7 +58,7 @@ mEndColumn (inSource.mEndColumn),
 mMessage (inSource.mMessage) {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 cIssueDescriptor & cIssueDescriptor::operator = (const cIssueDescriptor & inSource) {
   if (this != & inSource) {
@@ -72,19 +72,31 @@ cIssueDescriptor & cIssueDescriptor::operator = (const cIssueDescriptor & inSour
   return *this ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-void cIssueDescriptor::appendToJSONstring (C_String & ioJSONstring, const bool inIsFirstIssue) const {
-  C_String s = mMessage.stringByReplacingStringByString("\n", "\\n") ;
-  s = s.stringByReplacingStringByString("\"", "\\\"") ;
-  ioJSONstring << (inIsFirstIssue ? "" : ",\n")
-               << "  { \"ERROR\" : " << (mIsError ? "true" : "false") << ",\n"
-               << "    \"SOURCE\" : \"" << mFile.lastPathComponent () << "\",\n"
-               << "    \"LINE\"  : " << cStringWithSigned (mLine) << ",\n"
-               << "    \"START_COLUMN\"  : " << cStringWithSigned (mStartColumn) << ",\n"
-               << "    \"END_COLUMN\"  : " << cStringWithSigned (mEndColumn) << ",\n"
-               << "    \"MESSAGE\" : \"" << s << "\"\n"
-               << "  }" ;
+void cIssueDescriptor::appendToJSONstring (String & ioJSONstring, const bool inIsFirstIssue) const {
+  String s = mMessage.stringByReplacingStringByString (String ("\n"), String ("\\n")) ;
+  s = s.stringByReplacingStringByString (String ("\""), String ("\\\"")) ;
+  ioJSONstring.appendCString (inIsFirstIssue ? "" : ",\n") ;
+  ioJSONstring.appendCString ("  { \"ERROR\" : ") ;
+  ioJSONstring.appendCString (mIsError ? "true" : "false") ;
+  ioJSONstring.appendCString (",\n") ;
+  ioJSONstring.appendCString ("    \"SOURCE\" : \"") ;
+  ioJSONstring.appendString (mFile.lastPathComponent ()) ;
+  ioJSONstring.appendCString ("\",\n") ;
+  ioJSONstring.appendCString ("    \"LINE\"  : ") ;
+  ioJSONstring.appendSigned (mLine) ;
+  ioJSONstring.appendCString (",\n") ;
+  ioJSONstring.appendCString ("    \"START_COLUMN\"  : ") ;
+  ioJSONstring.appendSigned (mStartColumn) ;
+  ioJSONstring.appendCString (",\n") ;
+  ioJSONstring.appendCString ("    \"END_COLUMN\"  : ") ;
+  ioJSONstring.appendSigned (mEndColumn) ;
+  ioJSONstring.appendCString (",\n") ;
+  ioJSONstring.appendCString ("    \"MESSAGE\" : \"") ;
+  ioJSONstring.appendString (s) ;
+  ioJSONstring.appendCString ("\"\n"
+                  "  }") ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------

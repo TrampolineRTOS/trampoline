@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //  Built-in GALGAS Command Line Interface Options
 //
@@ -16,14 +16,13 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 //  more details.
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-#include "galgas2/C_galgas_CLI_Options.h"
-#include "galgas2/C_galgas_CLI_Options.h"
-//#include "streams/C_TCPSocketOut.h"
-#include "utilities/C_PrologueEpilogue.h"
+#include "C_galgas_CLI_Options.h"
+#include "C_galgas_CLI_Options.h"
+#include "PrologueEpilogue.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_outputConcreteSyntaxTree ("galgas_builtin_options",
                                          "outputConcreteSyntaxTree",
@@ -31,7 +30,7 @@ C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_outputConcreteSynta
                                          "output-concrete-syntax-tree",
                                          "Generate the concrete syntax tree, in .dot format (suitable for Graphviz)") ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 C_BoolCommandLineOption
 gOption_galgas_5F_builtin_5F_options_log_5F_file_5F_read ("galgas_cli_options",
@@ -40,7 +39,7 @@ gOption_galgas_5F_builtin_5F_options_log_5F_file_5F_read ("galgas_cli_options",
                                                       "log-file-read",
                                                       "Log every file read") ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 C_BoolCommandLineOption
 gOption_galgas_5F_builtin_5F_options_do_5F_not_5F_generate_5F_any_5F_file ("galgas_cli_options",
@@ -49,7 +48,7 @@ gOption_galgas_5F_builtin_5F_options_do_5F_not_5F_generate_5F_any_5F_file ("galg
                                                                            "no-file-generation",
                                                                            "Do not generate any file") ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 C_BoolCommandLineOption
 gOption_galgas_5F_builtin_5F_options_treat_5F_warnings_5F_as_5F_error ("galgas_cli_options",
@@ -58,7 +57,7 @@ gOption_galgas_5F_builtin_5F_options_treat_5F_warnings_5F_as_5F_error ("galgas_c
                                                                        "Werror",
                                                                        "Treat warnings as errors") ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 C_UIntCommandLineOption
 gOption_galgas_5F_builtin_5F_options_max_5F_errors ("galgas_cli_options",
@@ -68,7 +67,7 @@ gOption_galgas_5F_builtin_5F_options_max_5F_errors ("galgas_cli_options",
                                                     "Stop after the given number of errors has been reached",
                                                     100) ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 C_UIntCommandLineOption
 gOption_galgas_5F_builtin_5F_options_max_5F_warnings ("galgas_cli_options",
@@ -78,7 +77,7 @@ gOption_galgas_5F_builtin_5F_options_max_5F_warnings ("galgas_cli_options",
                                                 "Stop after the given number of warnings has been reached",
                                                 100) ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 C_StringCommandLineOption gOption_galgas_5F_builtin_5F_options_mode ("galgas_cli_options",
                                          "mode",
@@ -87,7 +86,7 @@ C_StringCommandLineOption gOption_galgas_5F_builtin_5F_options_mode ("galgas_cli
                                          "'lexical-only', 'syntax-only' or 'latex'",
                                          "") ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 C_StringCommandLineOption gOption_galgas_5F_builtin_5F_options_outputKeywordList ("galgas_cli_options",
                                          "outputKeywordList",
@@ -96,21 +95,21 @@ C_StringCommandLineOption gOption_galgas_5F_builtin_5F_options_outputKeywordList
                                          "Output a Latex file containing keyword list",
                                          "") ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //
 //   EXECUTION MODE
 //
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 static EnumExecutionMode gExecutionMode = kExecutionModeNormal ;
-static C_String gModeLatexSuffixString ;
-static C_String gModeIndexingOutputFilePath ;
+static String gModeLatexSuffixString ;
+static String gModeIndexingOutputFilePath ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-void setExecutionMode (C_String & outErrorMessage) {
-  const C_String mode = gOption_galgas_5F_builtin_5F_options_mode.mValue ;
-  TC_UniqueArray <C_String> modeComponents ;
+void setExecutionMode (String & outErrorMessage) {
+  const String mode = gOption_galgas_5F_builtin_5F_options_mode.mValue ;
+  TC_UniqueArray <String> modeComponents ;
   mode.componentsSeparatedByString (":", modeComponents) ;
   if (mode == "") {
     gExecutionMode = kExecutionModeNormal ;
@@ -126,75 +125,77 @@ void setExecutionMode (C_String & outErrorMessage) {
     gModeLatexSuffixString = modeComponents (1 COMMA_HERE) ;
     bool ok = true ;
     for (int32_t i=0 ; (i<gModeLatexSuffixString.length ()) && ok ; i++) {
-      const uint32_t c = UNICODE_VALUE (gModeLatexSuffixString (i COMMA_HERE)) ;
+      const uint32_t c = UNICODE_VALUE (gModeLatexSuffixString.charAtIndex (i COMMA_HERE)) ;
       ok = ((c >= 'A') && (c <= 'Z')) || ((c >= 'a') && (c <= 'z')) ;
     }
     if (! ok) {
-      outErrorMessage << "** Fatal Error: invalid '--mode=latex:suffix' parameter; suffix should contain only letters\n" ;
+      outErrorMessage.appendCString ("** Fatal Error: invalid '--mode=latex:suffix' parameter; suffix should contain only letters\n") ;
     }
   }else if ((modeComponents.count () == 1) && (mode == "latex")) {
     gExecutionMode = kExecutionModeLatex ;
     gModeLatexSuffixString = "" ;
   }else{
-    outErrorMessage << "** Fatal Error: invalid '--mode=" << mode << "' parameter; it should be:\n"
+    outErrorMessage.appendCString ("** Fatal Error: invalid '--mode=") ;
+    outErrorMessage.appendString (mode) ;
+    outErrorMessage.appendCString ("' parameter; it should be:\n"
       "  --mode=                     default mode: perform compilation;\n"
       "  --mode=lexical-only         perform only lexical analysis;\n"
       "  --mode=syntax-only          perform only syntax analysis;\n"
-      "  --mode=latex:suffix         perform latex formatting.\n" ;
+      "  --mode=latex:suffix         perform latex formatting.\n") ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 EnumExecutionMode executionMode (void) {
   return gExecutionMode ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 bool executionModeIsLexicalAnalysisOnly (void) {
   return gExecutionMode == kExecutionModeLexicalAnalysisOnly ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 bool executionModeIsSyntaxAnalysisOnly (void) {
   return gExecutionMode == kExecutionModeSyntaxAnalysisOnly ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 bool executionModeIsIndexing (void) {
   return gExecutionMode == kExecutionModeIndexing ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 bool executionModeIsLatex (void) {
   return gExecutionMode == kExecutionModeLatex ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-C_String latexModeStyleSuffixString (void) {
+String latexModeStyleSuffixString (void) {
   return gModeLatexSuffixString ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-C_String indexingModeOutputFilePath (void) {
+String indexingModeOutputFilePath (void) {
   return gModeIndexingOutputFilePath ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 static void epilogueAction (void) {
-  gModeLatexSuffixString.releaseString () ;
+  gModeLatexSuffixString.removeAll () ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue prologueEpilogue (nullptr, epilogueAction) ;
+PrologueEpilogue prologueEpilogue (nullptr, epilogueAction) ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
