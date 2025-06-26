@@ -24,7 +24,11 @@ let task::SECTION := "OS"
 
 if OS::NUMBER_OF_CORES == 1 then
 let task::NAME := "IDLE_TASK"
+if OS::IDLE_NAME == "idle_function" then
 let task::FUNC := "idle_function"
+else
+let task::FUNC := OS::IDLE_NAME
+end if
 let task::ID   := "IDLE_TASK_ID"
 template task_descriptor
 else

@@ -15,6 +15,7 @@ IMPLEMENTATION trampoline {
 
 CPU blink {
   OS config {
+    IDLE_NAME = "idle_efm32_function";
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;

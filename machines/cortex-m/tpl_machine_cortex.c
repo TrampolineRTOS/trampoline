@@ -307,21 +307,16 @@ FUNC(uint8, OS_CODE) tpl_check_stack_footprint(CONST(tpl_proc_id, OS_APPL_DATA) 
   return tmp;
 }
 
-// /*
-//  * tpl_sleep is used by the idle task
-//  */
-// void idle_function(void)
-// {
-//     while(1)
-//   {
-//     #if IDLE_POWER_MODE != ACTIVE_POWER_MODE
-//     StopSystick();
-//     EnterLowPower(IDLE_POWER_MODE);
-//     #else
-//     __WFE();
-//     #endif
-//   }
-// }
+/*
+ * tpl_sleep is used by the idle task
+ */
+void idle_function(void)
+{
+    while(1)
+  {
+    __WFE();
+  }
+}
 
 void tpl_init_machine()
 {

@@ -157,6 +157,7 @@ IMPLEMENTATION trampoline_common {
   };
 
   OS {
+    STRING IDLE_NAME = "idle_function";
     /* Standard OIL attributes */
     ENUM [STANDARD, EXTENDED] STATUS;
     BOOLEAN [

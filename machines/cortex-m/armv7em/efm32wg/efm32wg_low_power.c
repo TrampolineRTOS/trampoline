@@ -88,7 +88,7 @@ FUNC(void, OS_CODE) tpl_enter_low_power_service(CONST(uint8_t, AUTOMATIC) low_po
 /*
  * tpl_sleep is used by the idle task
  */
-void idle_function(void)
+void idle_efm32_function(void)
 {
     while(1)
   {
