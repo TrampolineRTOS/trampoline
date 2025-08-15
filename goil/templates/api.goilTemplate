@@ -65,8 +65,10 @@ if ioc_unqueued_count > 0 then
   let APIUSED += APIMAP["ioc_unqueued"]
 end if
 
+if exists OS::IDLE_POWER_MODE then
 if OS::IDLE_POWER_MODE != "ACTIVE" then
   let APIUSED += APIMAP["low_power"]
+end if
 end if
 
 if OS::SYSTEM_CALL then
