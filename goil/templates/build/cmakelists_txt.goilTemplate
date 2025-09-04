@@ -26,7 +26,7 @@ set(APP_GENERATED_PATH ${CMAKE_SOURCE_DIR}/% !PROJECT %)
 #goil
 set(OILFILE ${CMAKE_SOURCE_DIR}/% !OILFILENAME %)
 set(OILCOMPILER goil)
-set(OILFLAGS -t=% !TARGET % --templates=${TRAMPOLINE_GOIL_TEMPLATES})
+set(OILFLAGS --target=% !TARGET % --templates=${TRAMPOLINE_GOIL_TEMPLATES})
 
 #cross compiler
 include("% !PROJECT %/compiler.cmake")
