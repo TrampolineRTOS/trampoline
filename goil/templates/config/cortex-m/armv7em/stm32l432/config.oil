@@ -30,7 +30,8 @@ IMPLEMENTATION stm32l432 {
           serial {
             UINT32 RXBUFFER = 32;
             UINT32 TXBUFFER = 16;
-          }
+          },
+          cmsisdsp
         ] LIBRARY[];
       },
       FALSE
@@ -598,6 +599,63 @@ CPU stm32l432 {
   PLATFORM_FILES stm32fl432_cmsis {
     PATH = "cortex-m/armv7em/stm32l432/CMSIS-ST/Device/ST/STM32L4xx/Include";
   };
+
+PLATFORM_FILES cmsis_dsp_inc {
+    PATH    = "cortex-m/CMSIS-DSP/Include";
+  };
+  
+  PLATFORM_FILES cmsis_dsp_dsp_inc {
+    PATH    = "cortex-m/CMSIS-DSP/Include/dsp";
+  };
+   
+ PLATFORM_FILES cmsis_dsp_private_inc {
+    PATH    = "cortex-m/CMSIS-DSP/PrivateInclude";
+  };
+  
+ LIBRARY cmsisdsp {
+   PATH = "cortex-m/CMSIS-DSP";
+  //  CHEADER = "serial.h";
+   CFILE = "Source/MatrixFunctions/MatrixFunctionsF16.c";
+   CFILE = "Source/MatrixFunctions/MatrixFunctions.c";
+//   CFILE = "Source/MatrixFunctions/_arm_mat_mult_neon.c";
+   CFILE = "Source/TransformFunctions/TransformFunctions.c";
+   CFILE = "Source/TransformFunctions/TransformFunctionsF16.c";
+   CFILE = "Source/CommonTables/CommonTablesF16.c";
+   CFILE = "Source/CommonTables/CommonTables.c";
+   CFILE = "Source/FilteringFunctions/FilteringFunctionsF16.c";
+   CFILE = "Source/FilteringFunctions/FilteringFunctions.c";
+   CFILE = "Source/StatisticsFunctions/StatisticsFunctionsF16.c";
+   CFILE = "Source/StatisticsFunctions/StatisticsFunctions.c";
+   CFILE = "Source/BasicMathFunctions/BasicMathFunctions.c";
+   CFILE = "Source/BasicMathFunctions/BasicMathFunctionsF16.c";
+   CFILE = "Source/InterpolationFunctions/InterpolationFunctions.c";
+   CFILE = "Source/InterpolationFunctions/InterpolationFunctionsF16.c";
+   CFILE = "Source/SupportFunctions/SupportFunctionsF16.c";
+   CFILE = "Source/SupportFunctions/SupportFunctions.c";
+   CFILE = "Source/DistanceFunctions/DistanceFunctions.c";
+   CFILE = "Source/DistanceFunctions/DistanceFunctionsF16.c";
+   CFILE = "Source/ControllerFunctions/ControllerFunctions.c";
+   CFILE = "Source/FastMathFunctions/FastMathFunctions.c";
+   CFILE = "Source/FastMathFunctions/FastMathFunctionsF16.c";
+   CFILE = "Source/WindowFunctions/WindowFunctions.c";
+   CFILE = "Source/BayesFunctions/BayesFunctionsF16.c";
+   CFILE = "Source/BayesFunctions/BayesFunctions.c";
+   CFILE = "Source/SVMFunctions/SVMFunctions.c";
+   CFILE = "Source/SVMFunctions/SVMFunctionsF16.c";
+   CFILE = "Source/QuaternionMathFunctions/QuaternionMathFunctions.c";
+   CFILE = "Source/ComplexMathFunctions/ComplexMathFunctions.c";
+   CFILE = "Source/ComplexMathFunctions/ComplexMathFunctionsF16.c";
+ };
+ 
+ 
+ PLATFORM_FILES cmsis_nn_inc {
+    PATH    = "cortex-m/CMSIS-NN/Include";
+  };
+  
+ PLATFORM_FILES cmsis_dsp_private_inc {
+    PATH    = "cortex-m/CMSIS-DSP/PrivateInclude";
+  };
+ 
 
   PLATFORM_FILES stm32l432IO {
     PATH    = "cortex-m/armv7em/stm32l432/lib";
