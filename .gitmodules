@@ -22,3 +22,6 @@
 [submodule "machines/cortex-m/tflite-micro"]
 	path = machines/cortex-m/tflite-micro
 	url = https://github.com/tensorflow/tflite-micro
+[submodule "machines/cortex-m/armv6m/rp2040/pico-sdk"]
+	path = machines/cortex-m/armv6m/rp2040/pico-sdk
+	url = https://github.com/raspberrypi/pico-sdk.git

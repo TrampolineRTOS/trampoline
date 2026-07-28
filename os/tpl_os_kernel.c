@@ -1199,9 +1199,10 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
   idle = tpl_dyn_proc_table[IDLE_TASK_ID];
 #else
   CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_CONST)
-  idle_stat = tpl_stat_proc_table[IDLE_TASK_0_ID + tpl_get_core_id()];
+  idle_stat = tpl_stat_proc_table[IDLE_TASK_0_ID + core_id];
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_VAR)
-  idle = tpl_dyn_proc_table[IDLE_TASK_0_ID + tpl_get_core_id()];
+  idle = tpl_dyn_proc_table[IDLE_TASK_0_ID + core_id];
+  GET_CORE_READY_LIST(core_id,ready_list)
 #endif
 
   READY_LIST(ready_list)[0].key = 0;
