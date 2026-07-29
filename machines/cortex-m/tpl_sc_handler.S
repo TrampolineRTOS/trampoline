@@ -293,6 +293,11 @@ no_release_lock_startOS:
     #else
         ldr r0,=tpl_kern
     #endif
+        /*-------------------------------------------------------------------------
+     * 16.1 - At this point we know that we need switch so we are cleaning
+     *      Need switch and also need schedule
+     *      
+     */
     movs r5,#NO_NEED_SWITCH_NOR_SCHEDULE
     strb r5,[r0,#TPL_KERN_OFFSET_NEED_SWITCH]
     strb r5,[r0,#TPL_KERN_OFFSET_NEED_SCHEDULE]
