@@ -7,3 +7,4 @@ CMakeLists.txt
 *.map
 make.py
 build.py
+commands.gdb

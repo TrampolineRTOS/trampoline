@@ -1,0 +1,7 @@
+/*
+ * Interrupt sources for the rasberry pico
+ */
+ENUM [
+  SysTick
+  // SysTick2
+] SOURCE;

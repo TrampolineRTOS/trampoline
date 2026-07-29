@@ -311,6 +311,9 @@ let includeDirSet += "${TRAMPOLINE_BASE_PATH}/ioc"
 let includeDirSet += "${TRAMPOLINE_BASE_PATH}/os"
 let includeDirSet += "${TRAMPOLINE_BASE_PATH}/debug"
 let includeDirSet += "${TRAMPOLINE_BASE_PATH}/com"
+if OS::SCALABILITYCLASS > 0 then
+  let includeDirSet += "${TRAMPOLINE_BASE_PATH}/autosar"
+end if
 let includeDirSet += PROJECT
 
 %

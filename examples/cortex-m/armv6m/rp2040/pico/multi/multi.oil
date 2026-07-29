@@ -75,7 +75,7 @@ CPU blink {
    *    ALARM
    */
   COUNTER SystemCounter2 {
-    SOURCE = SysTick2;
+    SOURCE = SysTick;
    };
 
   ALARM alarm_t1_app1 {

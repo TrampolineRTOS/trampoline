@@ -72,20 +72,7 @@ FUNC(void, OS_CODE) tpl_start_core(CONST(CoreIdType, AUTOMATIC) core_id)
    */
   if (core_id == OS_CORE_ID_1)
   {
-    /*We create a new VTOR for the core1 were we just change the Systick handler
-    Since the pico have a Sytick for each core
-    */
-    for (int i = 0; i < 41; i++) {
-        tpl_it_vectors_core1[i] = tpl_it_vectors[i];
-    }
-    tpl_it_vectors_core1[15] = (tpl_it_handler)tpl_primary_irq_handler_SysTick2;
-
-    /* 3. we start core1 with his own VTOR table*/
-    multicore_launch_core1_raw(
-        (void (*)(void))tpl_multicore_boot_handler, 
-        (uint32_t *)tpl_core1_stack+tpl_core1_stack_size / sizeof(uint32_t),
-        (uint32_t)tpl_it_vectors_core1 
-    );
+    multicore_launch_core1_with_stack((void (*)(void))tpl_multicore_boot_handler,(uint32_t *)tpl_core1_stack,(uint32_t)tpl_core1_stack_size );
   }
 }
 FUNC(void, OS_CODE) tpl_get_lock(
@@ -117,7 +104,6 @@ FUNC(void, OS_CODE) tpl_init_core(void)
     NVIC_EnableIRQ(15);
   }
   if(core_id ==1){
-    tpl_set_systick_timer();
     NVIC_SetPriority(SVCall_IRQn, KERNEL_PRIO_UNSHIFTED);
     while (multicore_fifo_rvalid())
     {
