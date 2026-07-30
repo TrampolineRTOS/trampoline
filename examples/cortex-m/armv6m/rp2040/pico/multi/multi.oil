@@ -7,11 +7,6 @@ IMPLEMENTATION trampoline {
         UINT32 STACKSIZE = 800 ;
     } ;
 
-    /* This fix the default STACKSIZE of ISRs */
-    ISR {
-        UINT32 STACKSIZE = 800 ;
-    } ;
-
 };
 
 CPU blink {
@@ -36,11 +31,6 @@ CPU blink {
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
       COPIER = "arm-none-eabi-objcopy";
-      LIBRARY = hardware_gpio;
-      LIBRARY = hardware_clocks;
-      LIBRARY = hardware_irq;
-      LIBRARY = hardware_resets;
-      LIBRARY = pico_runtime_init;
       SYSTEM = CMAKE {VSCODE=TRUE;};
     };
     SYSTEM_CALL = TRUE;

@@ -19,6 +19,15 @@ CPU pico {
     CFILE = "boot2_w25q080_2_padded_checksum.s"; //should use C compiler, not ASM
     CFILE = "crt0.S";                            //should use C compiler, not ASM
   };  
+  OS pico {
+    BUILD = TRUE{
+      LIBRARY = hardware_gpio;
+      LIBRARY = hardware_clocks;
+      LIBRARY = hardware_irq;
+      LIBRARY = hardware_resets;
+      LIBRARY = pico_runtime_init;
+    };
+  };
 
   //include libs from SDK
   #include "pico_sdk.oil"
