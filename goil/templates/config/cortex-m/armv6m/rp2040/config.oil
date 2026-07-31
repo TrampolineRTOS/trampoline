@@ -45,7 +45,6 @@ CPU rp2040 {
     COMMONFLAGS = "-DPICO_TARGET_NAME=\"blink\"";
     COMMONFLAGS = "-DPICO_USE_BLOCKED_RAM=0";
     COMMONFLAGS = "-DPICO_RP2040=1";
-    COMMONFLAGS = "-Wno-builtin-macro-redefined";
   };
   
   PLATFORM_FILES rp2040 {
