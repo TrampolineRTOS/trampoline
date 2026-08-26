@@ -27,6 +27,9 @@
 #include "tpl_asm_definitions.h"
 #include "tpl_os_kernel_stack.h"
 #include "tpl_service_ids.h"
+#include "tpl_app_define.h"
+
+#if NUMBER_OF_CORES > 1
 
 .equ  NO_NEED_SWITCH_NOR_SCHEDULE, 0
 .equ  NO_NEED_SWITCH, 0
@@ -180,10 +183,31 @@ ICI_handler_1_end_switch :
     pop  {r4,pc}
 /*---------------------------------------------------------------------------*/
 
-
-
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"
+
+#else
+
+#define OS_START_SEC_CODE
+#include "tpl_as_memmap.h"
+
+.extern tpl_null_it
+
+.global SIO_IRQ_PROC0_Handler 
+.type   SIO_IRQ_PROC0_Handler, %function
+SIO_IRQ_PROC0_Handler:
+    ldr r0, =tpl_null_it
+    bx r0
+
+.global SIO_IRQ_PROC1_Handler 
+.type   SIO_IRQ_PROC1_Handler, %function
+SIO_IRQ_PROC1_Handler:
+    ldr r0, =tpl_null_it
+    bx r0
+#define OS_STOP_SEC_CODE
+#include "tpl_as_memmap.h"
+
+#endif
 
 .end
 

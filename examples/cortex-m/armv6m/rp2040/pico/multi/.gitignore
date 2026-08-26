@@ -8,3 +8,4 @@ CMakeLists.txt
 make.py
 build.py
 commands.gdb
+commands_multi.gdb

@@ -670,6 +670,7 @@ LIBRARY hardware_irq{
 	NEEDS = pico_platform;
 	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_irq/include";
 	CFILE = "../irq.c";
+	ASFILE = "../irq_handler_chain.S";
 };
 
 LIBRARY pico_sha256{
@@ -798,7 +799,7 @@ LIBRARY pico_stdio{
 	//HEADERFILE = "pico/stdio/driver.h";
 	NEEDS = pico_base_headers;
 	NEEDS = pico_printf;
-	NEEDS = pico_stdio_rtt;
+	// NEEDS = pico_stdio_rtt;
 	NEEDS = pico_stdio_uart;
 	NEEDS = pico_sync;
 	NEEDS = pico_time;
@@ -1030,4 +1031,3 @@ LIBRARY boot_stage2{
 	NEEDS = pico_base_headers;
 	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2040/boot_stage2/include";
 };
-

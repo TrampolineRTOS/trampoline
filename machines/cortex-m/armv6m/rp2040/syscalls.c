@@ -106,7 +106,10 @@ extern int _getpid ( void )
 
 void __cxa_pure_virtual (void) {
 }
-
+void __unhandled_user_irq(void) {
+    while (1) {
+    }
+}
 int _write(int file, char *ptr, int len) { return len; }
 int _read(int file, char *ptr, int len) { return 0; }
 

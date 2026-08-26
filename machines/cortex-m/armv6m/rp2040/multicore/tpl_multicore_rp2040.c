@@ -123,11 +123,6 @@ void tpl_ici_ack(void) {
     }
 }
 
-void __unhandled_user_irq(void) {
-    while (1) {
-    }
-}
-
 FUNC(void, OS_CODE) tpl_get_task_lock(void){
   while (sio_hw->spinlock[tpl_RP2040_SPINLOCK_OFFSET]==0) {}
 }

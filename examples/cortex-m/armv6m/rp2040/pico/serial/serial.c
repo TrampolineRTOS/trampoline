@@ -1,7 +1,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "tpl_os.h"
-#include "pico/stdlib.h" //gpio_xxx()
+#include "hardware/gpio.h"
+#include "hardware/uart.h"
 
 #define APP_Task_serialTX_START_SEC_CODE
 #include "tpl_memmap.h"

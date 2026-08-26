@@ -61,7 +61,7 @@ CPU rp2040 {
   POSTCOMMAND uf2 {
     COMMAND uf2 {
       MESSAGE = "Generate uf2 file";
-      COMMAND = "elf2uf2";
+      COMMAND = "picotool uf2 convert";
       INPUT = TARGET { EXT = ""; };
       POSTOPTION = " flash.uf2";
     };
