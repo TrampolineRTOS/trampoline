@@ -1,10 +1,10 @@
 #to compile the project:
-# mkdir _build
-# cd _build
+# mkdir build
+# cd build
 # cmake -D CMAKE_TOOLCHAIN_FILE=../% !PROJECT %/compiler.cmake ..
 # make
 # make flash
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 # with this option, cmake will not try to compile a 
 # simple test program (that may fail for an embedded target)
