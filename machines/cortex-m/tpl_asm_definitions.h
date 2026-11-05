@@ -56,6 +56,12 @@
 .equ CPSR_IRQ_LOCKED, 0b10000000
 .equ CPSR_FIQ_LOCKED, 0b01000000
 
+/*
+ * Offset for PSP initialization in multicore early startup 
+ * to avoid MSP corruption
+ */
+.equ TPL_MULTICORE_PSP_OFFSET, 248
+
 #endif
 /* TPL_ASM_DEFINITIONS_H */
 

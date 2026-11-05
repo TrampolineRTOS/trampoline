@@ -35,6 +35,8 @@
  *          +---------------------------------+
  *       +8 |           r5 save area          | KS_R5
  *          +---------------------------------+
+ *          |           r6 save area          | KS_R6 (used to keep the core id in multicore)
+ *  *       +---------------------------------+
  *          |                                 |       <- MSP before allocation
  *
  * When allocated from an interrupt handler, we do not need space to store
@@ -50,11 +52,12 @@
  *          |                                 |       <- MSP before allocation
  */
 
-#define KS_FOOTPRINT  12
+#define KS_FOOTPRINT  16
 
 #define KS_LR         0
 #define KS_R4         4
 #define KS_R5         8
+#define KS_R6         12
 
 /* TPL_OS_KERNEL_STACK_H */
 #endif

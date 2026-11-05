@@ -27,6 +27,10 @@ VAR(tpl_kern_state, OS_VAR) tpl_kern =
                              /*  kernel mode, so in trusted mode    */
 #endif /* WITH_MEMORY_PROTECTION */
 };
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
 %
 # In multicore, the tpl_kern variable is an array of pointers
 # to tpl_kern_state structures indexed by core number
@@ -57,7 +61,14 @@ VAR(tpl_kern_state, OS_VAR) tpl_kern_% !core_id % =
 };
 %
   end loop
-  
+%
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+
   loop core_id from 0 to OS::NUMBER_OF_CORES - 1
     before %
 CONSTP2VAR(tpl_kern_state, OS_CONST, OS_VAR) tpl_kern[% ! OS::NUMBER_OF_CORES %] =
@@ -69,8 +80,8 @@ CONSTP2VAR(tpl_kern_state, OS_CONST, OS_VAR) tpl_kern[% ! OS::NUMBER_OF_CORES %]
     after %
 };
 %
-  end loop
+  end loop%
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"%
 end if
-%
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"

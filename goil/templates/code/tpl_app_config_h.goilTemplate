@@ -41,6 +41,17 @@ end if
 if [COUNTERS length] > 0 then
 %#include "tpl_os_internal_types.h"%
 end if
+
+if [ioc_reordered length] != 0 then
+%
+/* User specific data types for IOC */
+#if defined(__has_include)
+#  if __has_include("ioc_types.h")
+    #include "ioc_types.h"
+  #endif
+#endif %
+end if
+
 %
 /*=============================================================================
  * proc_name_table is an array of strings containing the name of the

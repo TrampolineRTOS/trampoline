@@ -1,0 +1,40 @@
+IMPLEMENTATION pico {
+  // define libs
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          hardware_gpio,hardware_clocks,hardware_irq,hardware_resets,pico_runtime_init,
+          hardware_uart,pico_stdio,pico_stdio_uart
+          // tinyusb,pico_usb_reset //TODO: needs tinyusb integration.
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
+CPU pico {
+  PLATFORM_FILES pico {
+    PATH = "cortex-m/armv6m/rp2040/pico";
+    CFILE = "boot2_w25q080_2_padded_checksum.s"; //should use C compiler, not ASM
+    CFILE = "crt0.S";                            //should use C compiler, not ASM
+  };  
+  //include libs from SDK
+  #include "pico_sdk.oil"
+  OS pico {
+    BUILD = TRUE{
+      LIBRARY = hardware_gpio;
+      LIBRARY = hardware_clocks;
+      LIBRARY = hardware_irq;
+      LIBRARY = hardware_resets;
+      LIBRARY = pico_runtime_init;
+      // LIBRARY = tinyusb;        
+      // LIBRARY = pico_usb_reset;  
+      // LIBRARY = pico_stdio_usb;
+    };
+  };
+
+  
+};
+    

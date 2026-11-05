@@ -1,5 +1,5 @@
 /**
- * @file tpl_system_call.S
+ * @file tpl_sc_handler.S
  *
  * @section descr File description
  *
@@ -134,7 +134,7 @@ tpl_sc_handler:
      */
     cmp   r3,#SYSCALL_COUNT
     bhs   tpl_sc_handler_invalid_service_id
-
+    
     /*-------------------------------------------------------------------------
      * 1a - The service identifier is checked again for xxxInterrupt services
      *      that are callable by ISR1. If the service is callable by ISR1,
@@ -155,10 +155,12 @@ not_callable_by_isr1:
     /*-------------------------------------------------------------------------
      * 3 - Save working registers in the master stack frame.
      *     We need a couple of low register to work and to be compatible
-     *     with armv6m. We choose r4 and r5
+     *     with armv6m. We choose r4 and r5 and r6 for multicore purpose
      */
     str   r4,[sp,#KS_R4]
     str   r5,[sp,#KS_R5]
+    str   r6,[sp,#KS_R6]
+
 
     /*-------------------------------------------------------------------------
      * 4 - Save the link register, in armv6m, the source register of a store
@@ -167,10 +169,32 @@ not_callable_by_isr1:
     mov   r4,lr
     str   r4,[sp,#KS_LR]
 
+    /* 5 - Lock the kernel in case of multicore and 
+           we need to check if it's not a call from StarOS to prevent deadlock */  
+    #if NUMBER_OF_CORES > 1
+    cmp r3,#OSServiceId_StartOS
+    beq no_lock_startOS
+    push {r0-r3}
+    bl tpl_get_task_lock 
+    pop {r0-r3}
+no_lock_startOS:
+    #endif
+
     /*-------------------------------------------------------------------------
-     * 6 - Reset the tpl_kern variables
+     * 6 - Reset the tpl_kern variables in multicore we need to get the kern corresponding to the core
      */
-    ldr   r4,=tpl_kern
+    #if NUMBER_OF_CORES > 1
+    push {r0-r3}
+    bl tpl_get_core_id
+    mov r6,r0
+    pop {r0-r3}
+    lsls r6,r6,#2
+    ldr r4,=tpl_kern
+    adds r6,r6,r4
+    ldr r4,[r6]
+    #else
+    ldr r4,=tpl_kern
+    #endif
     movs  r5,#NO_NEED_SWITCH_NOR_SCHEDULE
     strb  r5,[r4,#TPL_KERN_OFFSET_NEED_SWITCH]
     strb  r5,[r4,#TPL_KERN_OFFSET_NEED_SCHEDULE]
@@ -194,15 +218,20 @@ not_callable_by_isr1:
 
     /*-------------------------------------------------------------------------
      * 9 - Copy back the result to the saved r0 on the process stack
-     *     r0 is at the top of the process stack
+     *     r0 is at the top of the current stack before handler we do the same logic as step 0
      */
+
     mrs   r4,psp
     str   r0,[r4]
 
     /*-------------------------------------------------------------------------
      * 10 - Check the context switch condition in tpl_kern
      */
-    ldr   r4,=tpl_kern
+    #if NUMBER_OF_CORES > 1 
+    ldr r4,[r6]
+    #else
+    ldr r4,=tpl_kern
+    #endif
     ldrb  r5,[r4,#TPL_KERN_OFFSET_NEED_SWITCH]
     cmp   r5,#NO_NEED_SWITCH
     beq   tpl_sc_handler_no_context_switch
@@ -223,7 +252,11 @@ not_callable_by_isr1:
      * 13 - Save context
      *      Load in r0 the pointer to the static descriptor of the running task
      */
-    ldr   r0,=tpl_kern
+    #if NUMBER_OF_CORES > 1 
+    ldr r0,[r6]
+    #else
+    ldr r0,=tpl_kern
+    #endif
     ldr   r0,[r0,#TPL_KERN_OFFSET_S_RUNNING]
     bl    tpl_save_context
 
@@ -241,16 +274,48 @@ tpl_sc_handler_no_save_running_context:
      */
     bl    tpl_run_elected
 
+    /* 15b We release the lock */
+#if NUMBER_OF_CORES > 1
+    mrs r4, psp
+    ldr r5, [r4, #12]
+    cmp r5,#OSServiceId_StartOS
+    beq no_release_lock_startOS
+    bl tpl_release_task_lock 
+no_release_lock_startOS:
+#endif
     /*-------------------------------------------------------------------------
      * 16 - Load context
      *      Load in r0 the pointer to the context of the running task.
      *      It has been changed by tpl_run_elected
      */
-    ldr   r0,=tpl_kern
+    #if NUMBER_OF_CORES > 1 
+    ldr r0,[r6]
+    #else
+        ldr r0,=tpl_kern
+    #endif
+        /*-------------------------------------------------------------------------
+     * 16.1 - At this point we know that we need switch so we are cleaning
+     *      Need switch and also need schedule
+     *      
+     */
+    movs r5,#NO_NEED_SWITCH_NOR_SCHEDULE
+    strb r5,[r0,#TPL_KERN_OFFSET_NEED_SWITCH]
+    strb r5,[r0,#TPL_KERN_OFFSET_NEED_SCHEDULE]
     ldr   r0,[r0,#TPL_KERN_OFFSET_S_RUNNING]
     bl    tpl_load_context
+    b tpl_sc_handler_context_switch_already_release
 
 tpl_sc_handler_no_context_switch:
+#if NUMBER_OF_CORES > 1
+    /* 17 - if no context switch we release the lock */
+    mrs r4, psp
+    ldr r5, [r4, #12]
+    cmp r5,#OSServiceId_StartOS
+    beq no_release_lock_startOS_no_context_switch
+    bl tpl_release_task_lock 
+no_release_lock_startOS_no_context_switch:
+#endif
+tpl_sc_handler_context_switch_already_release:
 
     /*-------------------------------------------------------------------------
      * 18 - Restore the link register from the kernel stack.
@@ -263,6 +328,7 @@ tpl_sc_handler_no_context_switch:
      * 19 - Restore r4 and r5 from the kernel stack.
      *      Symetric of stage 3
      */
+    ldr   r6,[sp,#KS_R6]
     ldr   r5,[sp,#KS_R5]
     ldr   r4,[sp,#KS_R4]
 

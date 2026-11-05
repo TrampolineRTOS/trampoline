@@ -46,38 +46,29 @@
 #include "tpl_as_memmap.h"
 
 /*-----------------------------------------------------------------------------
- * A WORD ABOUT INTERRUPT PRIORITY for Cortex M0
- * 4 levels of priority are available
+ * A WORD ABOUT INTERRUPT MASKING for Cortex M0/M0+ (ARMv6-M)
  *-----------------------------------------------------------------------------
- * Prioritities are set in the following order (from lower urgency to higher
- * urgency):
+ * Unlike ARMv7-M architectures, the Cortex-M0+ does NOT implement the 
+ * BASEPRI register. Therefore, priority-based interrupt masking is not 
+ * possible at the hardware level.
  *
- *   +-----------------------------------+
- *   |            Tasks, ISR2            | Thread mode
- *   +-----------------------------------+
- *   |      COUNTERS, ISR2 Handlers      | <- OS_ISR_PRIO (3)
- *   +-----------------------------------+
- *   |              ISR1 1               | (2)
- *   +-----------------------------------+
- *   |              ISR1 n               | <- ISR1_IT_PRIO (1)
- *   +-----------------------------------+
- *   |               SVC                 | <- KERNEL_PRIO (0)
- *   +-----------------------------------+
+ * The only available mechanism to protect critical sections is the PRIMASK 
+ * register, which is manipulated using the 'cpsid i' and 'cpsie i' instructions.
+ * 
+ * When 'tpl_disable_interrupts' is called, it sets PRIMASK to 1. 
+ * This disables ALL configurable exceptions and interrupts globally, 
+ * regardless of their priority level. Only the Non-Maskable Interrupt (NMI) 
+ * and HardFault exceptions can bypass this mask.
  *
- * DISCUSSION.
- *
- * With priority of SVC set at 0, the kernel cannot be interrupted by ISR1.
- * The SVC handler is only called by Tasks and ISR2 that execute in thread
- * mode.
- *
- * When disabling all interrupts, the BASEPRI register is set to 1.
- * This prevents interruptions by ISR1 and, since the SVC priority is 0, OS
- * services can be called from thread mode.
- */
+ * Consequence for the OS:
+ * We operate on an "all-or-nothing" basis. It is no longer possible to let 
+ * high-priority interrupts (ISR1) preempt the kernel during its critical 
+ * sections. All ISRs and Counters are delayed until PRIMASK is cleared.
+ *-----------------------------------------------------------------------------*/
 
 /*=============================================================================
- * tpl_disable_interrupts disables all the interrupts by setting the BASEPRI
- * register to ISR1_IT_PRIO.
+ * tpl_disable_interrupts disables all the interrupts by setting primask to 1
+ * 
  *
  * Scratch registers are usable : r0-r3 and r12. r12 is not used to be
  * compatible with armv6m general purpose registers access restrictions.
@@ -86,17 +77,15 @@
  .type   tpl_disable_interrupts, %function
 
 tpl_disable_interrupts:
-    /*-------------------------------------------------------------------------
-     * Set BASEPRI to ISR1_IT_PRIO.
-     */
-    movs r0,#ISR1_IT_PRIO
-    msr  basepri,r0
+
+
+    cpsid i
 
     bx   lr
 
 /*=============================================================================
- * tpl_enable_interrupts enables all the interrupts by setting BASEPRI to
- * OS_ISR_PRIO.
+ * tpl_enable_interrupts enables all the interrupts by setting primask to 0
+ * 
  *
  * Scratch registers are usable : r0-r3 and r12. r12 is not used to be
  * compatible with armv6m general purpose registers access restrictions.
@@ -105,13 +94,10 @@ tpl_disable_interrupts:
  .type   tpl_enable_interrupts, %function
 
 tpl_enable_interrupts:
-    /*-------------------------------------------------------------------------
-     * set BASEPRI to OS_ISR_PRIO
-     */
-    movs r0,#OS_ISR_PRIO
-    msr  basepri,r0
 
-    bx   lr
+    cpsie i
+    
+    bx lr
 
 /*-----------------------------------------------------------------------------
  * the code ends here

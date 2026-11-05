@@ -44,11 +44,14 @@
  * Just after the modification of CONTROL register (set to use both PSP and MSP)
  * the cpu will use PSP. So we MUST initialize PSP with a temporary value otherwise
  * the startup will crash.
- * We can initialize PSP with the current value of MSP because PSP will be updated
- * with the stack of running processes. The first process to run is the idle task.
+ * We create space for PSP since in multicore there is system call before StartOS 
+ * and we need to be able to return to main so MSP and PSP can't corrup each others.
  *
  * @param
  */
+#include "tpl_os_definitions.h"
+#include "tpl_app_define.h"
+#include "tpl_asm_definitions.h"
 
  #define OS_START_SEC_CODE
  #include "tpl_as_memmap.h"
@@ -57,8 +60,11 @@
 	.type tpl_reset_handler, %function
 
 tpl_reset_handler:
-    /* Copy MSP into PSP */
     mrs  r0, msp
+    #if NUMBER_OF_CORES > 1     /* Copy MSP - OFFSET into PSP */
+    ldr r1,=TPL_MULTICORE_PSP_OFFSET
+    subs r0,r0,r1
+    #endif
     msr  psp, r0
     /* Switch to use PSP, privileged state */
     movs r0, #2

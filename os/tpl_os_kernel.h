@@ -299,13 +299,23 @@ typedef struct
   VAR(tpl_proc_id, TYPEDEF) id;
 } tpl_heap_entry;
 
+#if NUMBER_OF_CORES == 1
+
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-#if NUMBER_OF_CORES == 1
 extern VAR(tpl_kern_state, OS_VAR) tpl_kern;
 #else
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
 extern CONSTP2VAR(tpl_kern_state, OS_CONST, OS_VAR) tpl_kern[];
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 #endif
 
 /**

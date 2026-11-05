@@ -1,0 +1,11 @@
+multi
+build
+.vscode
+CMakeLists.txt
+*_exe
+*.bin
+*.map
+make.py
+build.py
+commands.gdb
+commands_multi.gdb

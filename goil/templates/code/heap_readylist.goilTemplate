@@ -37,6 +37,9 @@ between %,
 end loop
 %
 };
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 %
 
 ###### MULTICORE
@@ -70,7 +73,13 @@ VAR(tpl_rank_count, OS_VAR) tpl_tail_for_prio_% !core_id %[% !NUMBER_OF_PRIORITI
 };
 %
   end loop
+%
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
   loop core_id from 0 to OS::NUMBER_OF_CORES - 1
     before %
 CONSTP2VAR(tpl_heap_entry, OS_CONST, OS_VAR) tpl_ready_list[% ! OS::NUMBER_OF_CORES %] =
@@ -95,7 +104,10 @@ CONSTP2VAR(tpl_rank_count, OS_CONST, OS_VAR) tpl_tail_for_prio[% ! OS::NUMBER_OF
 };
 %
   end loop
-
+%
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
 end if
 
 foreach core in CORES do
@@ -110,6 +122,4 @@ foreach core in CORES do
     let heap_size := heap_size + task::ACTIVATION
   end foreach
 end foreach
-%
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
+

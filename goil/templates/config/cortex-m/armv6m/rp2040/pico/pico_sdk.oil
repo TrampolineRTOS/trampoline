@@ -1,0 +1,1033 @@
+LIBRARY pico_version{
+	//HEADERFILE = "pico/version.h";
+	PATH = "cortex-m/armv6m/rp2040/build/generated/pico_base/";
+};
+
+LIBRARY pico_cmsis_device {
+    PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/cmsis/stub/CMSIS/Device/RP2040/Include";
+};
+
+LIBRARY pico_runtime{
+	//HEADERFILE = "pico/runtime.h";
+	NEEDS = pico_base_headers;
+	NEEDS = pico_runtime_init;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_runtime/include";
+};
+
+LIBRARY pico_printf{
+	//HEADERFILE = "pico/printf.h";
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_printf/include";
+	CFILE = "../printf.c";
+};
+
+LIBRARY pico_malloc{
+	//HEADERFILE = "pico/malloc.h";
+	NEEDS = pico_base_headers;
+	NEEDS = pico_sync;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_malloc/include";
+	CFILE = "../malloc.c";
+};
+
+LIBRARY pico_double{
+	//HEADERFILE = "pico/double.h";
+	NEEDS = pico_base_headers;
+	NEEDS = pico_bootrom;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_double/include";
+	CFILE = "../double_math.c";
+	CFILE = "../double_init_rom_rp2040.c";
+};
+
+LIBRARY hardware_riscv_platform_timer{
+	//HEADERFILE = "hardware/riscv_platform_timer.h";
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_riscv_platform_timer/include";
+};
+
+LIBRARY pico_mem_ops{
+	//HEADERFILE = "pico/mem_ops.h";
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_mem_ops/include";
+	CFILE = "../mem_ops.c";
+};
+
+LIBRARY pico_platform_panic{
+	//HEADERFILE = "pico/platform/panic.h";
+	NEEDS = pico_base_headers;
+	NEEDS = pico_printf;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_platform_panic/include";
+	CFILE = "../panic.c";
+};
+
+LIBRARY hardware_exception{
+	//HEADERFILE = "hardware/exception.h";
+	NEEDS = hardware_base;
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_platform;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_exception/include";
+	CFILE = "../exception.c";
+};
+
+LIBRARY pico_mbedtls{
+	//HEADERFILE = "pico_mbedtls_config.h";
+	//HEADERFILE = "sha256_alt.h";
+	NEEDS = pico_base_headers;
+	NEEDS = pico_rand;
+	NEEDS = pico_sha256;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_mbedtls/include";
+	CFILE = "../pico_mbedtls.c";
+};
+
+LIBRARY hardware_sync_spin_lock{
+	//HEADERFILE = "hardware/sync/spin_lock.h";
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_platform;
+	NEEDS = pico_runtime_init;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_sync_spin_lock/include";
+	CFILE = "../sync_spin_lock.c";
+};
+
+LIBRARY hardware_adc{
+	//HEADERFILE = "hardware/adc.h";
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_resets;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_adc/include";
+	CFILE = "../adc.c";
+};
+
+LIBRARY hardware_flash{
+	//HEADERFILE = "hardware/flash.h";
+	NEEDS = hardware_structs;
+	NEEDS = hardware_xip_cache;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_bootrom;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_flash/include";
+	CFILE = "../flash.c";
+};
+
+LIBRARY hardware_ticks{
+	//HEADERFILE = "hardware/ticks.h";
+	NEEDS = hardware_watchdog;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_ticks/include";
+	CFILE = "../ticks.c";
+};
+
+LIBRARY hardware_rosc{
+	//HEADERFILE = "hardware/rosc.h";
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_rosc/include";
+	CFILE = "../rosc.c";
+};
+
+LIBRARY hardware_divider{
+	//HEADERFILE = "hardware/divider.h";
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_divider/include";
+	CFILE = "../divider.c";
+};
+
+LIBRARY hardware_sha256{
+	//HEADERFILE = "hardware/sha256.h";
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_sha256/include";
+	CFILE = "../sha256.c";
+};
+
+LIBRARY pico_thread_local{
+	//HEADERFILE = "picotls.h";
+	//HEADERFILE = "pico/thread_local.h";
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_runtime_init;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_thread_local/include";
+	CFILE = "../thread_local.c";
+};
+
+LIBRARY pico_stdio_rtt{
+	//HEADERFILE = "pico/stdio_rtt.h";
+	NEEDS = pico_binary_info;
+	NEEDS = pico_stdio;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_stdio_rtt/include";
+	CFILE = "../stdio_rtt.c";
+};
+
+LIBRARY pico_unique_id{
+	//HEADERFILE = "pico/unique_id.h";
+	NEEDS = hardware_flash;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_bootrom;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_unique_id/include";
+	CFILE = "../unique_id.c";
+};
+
+LIBRARY pico_multicore{
+	//HEADERFILE = "pico/multicore.h";
+	NEEDS = hardware_claim;
+	NEEDS = hardware_irq;
+	NEEDS = hardware_riscv;
+	NEEDS = hardware_structs;
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_runtime_init;
+	NEEDS = pico_sync;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_multicore/include";
+	CFILE = "../multicore.c";
+};
+
+LIBRARY hardware_riscv{
+	//HEADERFILE = "hardware/riscv.h";
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_riscv/include";
+};
+
+LIBRARY pico_flash{
+	//HEADERFILE = "pico/flash.h";
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_multicore;
+	NEEDS = pico_time;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_flash/include";
+	CFILE = "../flash.c";
+};
+
+LIBRARY hardware_sync{
+	//HEADERFILE = "hardware/sync.h";
+	NEEDS = hardware_base;
+	NEEDS = hardware_claim;
+	NEEDS = hardware_hazard3;
+	NEEDS = hardware_sync_spin_lock;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_sync/include";
+	CFILE = "../sync.c";
+};
+
+LIBRARY pico_platform_sections{
+	//HEADERFILE = "pico/platform/sections.h";
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_platform_sections/include";
+};
+
+LIBRARY hardware_pio{
+	//HEADERFILE = "hardware/pio.h";
+	//HEADERFILE = "hardware/pio_instructions.h";
+	NEEDS = hardware_base;
+	NEEDS = hardware_claim;
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_pio/include";
+	CFILE = "../pio.c";
+};
+
+LIBRARY pico_usb_reset{
+	//HEADERFILE = "pico/usb_reset_tusb.h";
+	//HEADERFILE = "pico/usb_reset_config.h";
+	//HEADERFILE = "pico/usb_reset.h";
+	NEEDS = hardware_watchdog;
+	NEEDS = pico_bootrom;
+	NEEDS = pico_usb_reset_interface_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_usb_reset/include";
+	CFILE = "../usb_reset.c";
+};
+
+LIBRARY hardware_dma{
+	//HEADERFILE = "hardware/dma.h";
+	NEEDS = hardware_claim;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_dma/include";
+	CFILE = "../dma.c";
+};
+
+LIBRARY pico_bootrom{
+	//HEADERFILE = "pico/bootrom.h";
+	//HEADERFILE = "pico/bootrom_constants.h";
+	//HEADERFILE = "pico/bootrom/lock.h";
+	//HEADERFILE = "pico/bootrom/sf_table.h";
+	NEEDS = boot_bootrom_headers;
+	NEEDS = boot_picobin_headers;
+	NEEDS = boot_picoboot_headers;
+	NEEDS = hardware_boot_lock;
+	NEEDS = hardware_rcp;
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_flash;
+	NEEDS = pico_runtime_init;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_bootrom/include";
+	CFILE = "../bootrom_lock.c";
+	CFILE = "../bootrom.c";
+};
+
+LIBRARY hardware_i2c{
+	//HEADERFILE = "hardware/i2c.h";
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_resets;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_time;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_i2c/include";
+	CFILE = "../i2c.c";
+};
+
+LIBRARY hardware_psram{
+	//HEADERFILE = "hardware/psram.h";
+	NEEDS = hardware_base;
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_flash;
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_runtime_init;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_psram/include";
+	CFILE = "../psram.c";
+};
+
+LIBRARY pico_lwip{
+	//HEADERFILE = "pico/lwip_nosys.h";
+	//HEADERFILE = "pico/lwip_freertos.h";
+	//HEADERFILE = "arch/cc.h";
+	NEEDS = pico_async_context;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_rand;
+	NEEDS = pico_time;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_lwip/include";
+	CFILE = "../lwip_nosys.c";
+	CFILE = "../lwip_freertos.c";
+	CFILE = "../altcp_tls_mbedtls.c";
+};
+
+LIBRARY pico_runtime_init{
+	//HEADERFILE = "pico/runtime_init.h";
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_irq;
+	NEEDS = hardware_pll;
+	NEEDS = hardware_resets;
+	NEEDS = hardware_riscv;
+	NEEDS = hardware_rtc;
+	NEEDS = hardware_structs;
+	NEEDS = hardware_sync;
+	NEEDS = hardware_ticks;
+	NEEDS = hardware_timer;
+	NEEDS = hardware_vreg;
+	NEEDS = hardware_xosc;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_bootrom;
+	NEEDS = pico_platform;
+	NEEDS = pico_runtime;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_runtime_init/include";
+	CFILE = "../runtime_init_clocks.c";
+};
+
+LIBRARY hardware_dcp{
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_dcp/include";
+};
+
+LIBRARY hardware_clocks{
+	//HEADERFILE = "hardware/clocks.h";
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_irq;
+	NEEDS = hardware_pll;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_util;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_clocks/include";
+	CFILE = "../clocks.c";
+};
+
+LIBRARY hardware_hazard3{
+	//HEADERFILE = "hardware/hazard3.h";
+	//HEADERFILE = "hardware/hazard3/instructions.h";
+	//HEADERFILE = "hardware/hazard3/features.h";
+	NEEDS = hardware_riscv;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_hazard3/include";
+};
+
+LIBRARY pico_cyw43_driver{
+	//HEADERFILE = "cyw43_partition_firmware.h";
+	//HEADERFILE = "cyw43_configport.h";
+	//HEADERFILE = "pico/btstack_chipset_cyw43.h";
+	//HEADERFILE = "pico/btstack_hci_transport_cyw43.h";
+	//HEADERFILE = "pico/btstack_cyw43.h";
+	//HEADERFILE = "pico/cyw43_driver.h";
+	NEEDS = boot_picobin_headers;
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_dma;
+	NEEDS = hardware_flash;
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_irq;
+	NEEDS = hardware_pio;
+	NEEDS = hardware_sync;
+	NEEDS = pico_async_context;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_bootrom;
+	NEEDS = pico_btstack;
+	NEEDS = pico_time;
+	NEEDS = pico_unique_id;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_cyw43_driver/include";
+	CFILE = "../cyw43_driver.c";
+	CFILE = "../cyw43_bus_pio_spi.c";
+	CFILE = "../btstack_chipset_cyw43.c";
+	CFILE = "../btstack_hci_transport_cyw43.c";
+	CFILE = "../btstack_cyw43.c";
+};
+
+LIBRARY hardware_resets{
+	//HEADERFILE = "hardware/resets.h";
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_resets/include";
+};
+
+LIBRARY hardware_vreg{
+	//HEADERFILE = "hardware/vreg.h";
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_vreg/include";
+	CFILE = "../vreg.c";
+};
+
+LIBRARY pico_async_context{
+	//HEADERFILE = "pico/async_context_base.h";
+	//HEADERFILE = "pico/async_context_freertos.h";
+	//HEADERFILE = "pico/async_context.h";
+	//HEADERFILE = "pico/async_context_poll.h";
+	//HEADERFILE = "pico/async_context_threadsafe_background.h";
+	NEEDS = hardware_irq;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_sync;
+	NEEDS = pico_time;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_async_context/include";
+	CFILE = "../async_context_threadsafe_background.c";
+	CFILE = "../async_context_freertos.c";
+	CFILE = "../async_context_poll.c";
+	CFILE = "../async_context_base.c";
+};
+
+LIBRARY hardware_uart{
+	//HEADERFILE = "hardware/uart.h";
+	NEEDS = hardware_base;
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_resets;
+	NEEDS = hardware_structs;
+	NEEDS = hardware_timer;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_uart/include";
+	CFILE = "../uart.c";
+};
+
+LIBRARY hardware_base{
+	//HEADERFILE = "hardware/address_mapped.h";
+	NEEDS = hardware_regs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_base/include";
+};
+
+LIBRARY hardware_timer{
+	//HEADERFILE = "hardware/timer.h";
+	NEEDS = hardware_claim;
+	NEEDS = hardware_irq;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_timer/include";
+	CFILE = "../timer.c";
+};
+
+LIBRARY hardware_boot_lock{
+	//HEADERFILE = "hardware/boot_lock.h";
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_runtime_init;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_boot_lock/include";
+	CFILE = "../boot_lock.c";
+};
+
+LIBRARY pico_cxx_options{
+	//HEADERFILE = "pico/cxx_options.h";
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_cxx_options/include";
+};
+
+LIBRARY hardware_spi{
+	//HEADERFILE = "hardware/spi.h";
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_resets;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_spi/include";
+	CFILE = "../spi.c";
+};
+
+LIBRARY pico_cyw43_arch{
+	//HEADERFILE = "pico/cyw43_arch.h";
+	//HEADERFILE = "pico/cyw43_arch/arch_threadsafe_background.h";
+	//HEADERFILE = "pico/cyw43_arch/arch_freertos.h";
+	//HEADERFILE = "pico/cyw43_arch/arch_poll.h";
+	NEEDS = pico_async_context;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_cyw43_driver;
+	NEEDS = pico_lwip;
+	NEEDS = pico_unique_id;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_cyw43_arch/include";
+	CFILE = "../cyw43_arch.c";
+	CFILE = "../cyw43_arch_poll.c";
+	CFILE = "../cyw43_arch_freertos.c";
+	CFILE = "../cyw43_arch_threadsafe_background.c";
+};
+
+LIBRARY pico_aon_timer{
+	//HEADERFILE = "pico/aon_timer.h";
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_irq;
+	NEEDS = hardware_powman;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_rtc;
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_time;
+	NEEDS = pico_util;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_aon_timer/include";
+	CFILE = "../aon_timer.c";
+};
+
+LIBRARY pico_platform_compiler{
+	//HEADERFILE = "pico/platform/compiler.h";
+	NEEDS = hardware_regs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_platform_compiler/include";
+};
+
+LIBRARY boot_bootrom_headers{
+	//HEADERFILE = "boot/bootrom_constants.h";
+	NEEDS = pico_platform;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/boot_bootrom_headers/include";
+};
+
+LIBRARY hardware_powman{
+	//HEADERFILE = "hardware/powman.h";
+	NEEDS = hardware_gpio;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_util;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_powman/include";
+	CFILE = "../powman.c";
+};
+
+LIBRARY pico_i2c_slave{
+	//HEADERFILE = "pico/i2c_slave.h";
+	NEEDS = hardware_i2c;
+	NEEDS = hardware_irq;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_i2c_slave/include";
+	CFILE = "../i2c_slave.c";
+};
+
+LIBRARY pico_btstack{
+	//HEADERFILE = "pico/btstack_flash_bank.h";
+	//HEADERFILE = "pico/btstack_run_loop_async_context.h";
+	NEEDS = hardware_flash;
+	NEEDS = hardware_sync;
+	NEEDS = pico_async_context;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_flash;
+	NEEDS = pico_stdio;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_btstack/include";
+	CFILE = "../btstack_run_loop_async_context.c";
+	CFILE = "../btstack_flash_bank.c";
+	CFILE = "../btstack_stdin_pico.c";
+};
+
+LIBRARY pico_float{
+	//HEADERFILE = "pico/float.h";
+	NEEDS = pico_base_headers;
+	NEEDS = pico_bootrom;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_float/include";
+	CFILE = "../float_init_rom_rp2040.c";
+	CFILE = "../float_math.c";
+};
+
+LIBRARY pico_status_led{
+	//HEADERFILE = "pico/status_led.h";
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_pio;
+	NEEDS = hardware_sync_spin_lock;
+	NEEDS = pico_async_context;
+	NEEDS = pico_cyw43_driver;
+	NEEDS = pico_time;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_status_led/include";
+	CFILE = "../status_led.c";
+};
+
+LIBRARY hardware_rcp{
+	//HEADERFILE = "hardware/rcp.h";
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_rcp/include";
+};
+
+LIBRARY pico_platform_common{
+	//HEADERFILE = "pico/platform/common.h";
+	NEEDS = hardware_base;
+	NEEDS = hardware_regs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_platform_common/include";
+	CFILE = "../common.c";
+};
+
+LIBRARY pico_stdio_uart{
+	//HEADERFILE = "pico/stdio_uart.h";
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_irq;
+	NEEDS = hardware_uart;
+	NEEDS = pico_binary_info;
+	NEEDS = pico_stdio;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_stdio_uart/include";
+	CFILE = "../stdio_uart.c";
+};
+
+LIBRARY hardware_watchdog{
+	//HEADERFILE = "hardware/watchdog.h";
+	NEEDS = hardware_structs;
+	NEEDS = hardware_ticks;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_bootrom;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_watchdog/include";
+	CFILE = "../watchdog.c";
+};
+
+LIBRARY hardware_interp{
+	//HEADERFILE = "hardware/interp.h";
+	NEEDS = hardware_claim;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_interp/include";
+	CFILE = "../interp.c";
+};
+
+LIBRARY tinyusb{
+	//HEADERFILE = "bsp/board.h";
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/tinyusb/include";
+};
+
+LIBRARY hardware_rtc{
+	//HEADERFILE = "hardware/rtc.h";
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_irq;
+	NEEDS = hardware_resets;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_rtc/include";
+	CFILE = "../rtc.c";
+};
+
+LIBRARY pico_rand{
+	//HEADERFILE = "pico/rand.h";
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_structs;
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_bootrom;
+	NEEDS = pico_time;
+	NEEDS = pico_unique_id;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_rand/include";
+	CFILE = "../rand.c";
+};
+
+LIBRARY hardware_pwm{
+	//HEADERFILE = "hardware/pwm.h";
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_pwm/include";
+};
+
+LIBRARY cmsis{
+	//HEADERFILE = "cmsis/rename_exceptions.h";
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/cmsis/include";
+};
+
+LIBRARY hardware_irq{
+	//HEADERFILE = "hardware/irq.h";
+	NEEDS = hardware_base;
+	NEEDS = hardware_claim;
+	NEEDS = hardware_regs;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_platform;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_irq/include";
+	CFILE = "../irq.c";
+	ASFILE = "../irq_handler_chain.S";
+};
+
+LIBRARY pico_sha256{
+	//HEADERFILE = "pico/sha256.h";
+	NEEDS = hardware_dma;
+	NEEDS = hardware_sha256;
+	NEEDS = pico_bootrom;
+	NEEDS = pico_time;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_sha256/include";
+	CFILE = "../sha256.c";
+};
+
+LIBRARY hardware_gpio{
+	//HEADERFILE = "hardware/gpio.h";
+	//HEADERFILE = "hardware/gpio_coproc.h";
+	NEEDS = hardware_irq;
+	NEEDS = hardware_structs;
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_binary_info;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_gpio/include";
+	CFILE = "../gpio.c";
+};
+
+LIBRARY hardware_xosc{
+	//HEADERFILE = "hardware/xosc.h";
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_xosc/include";
+	CFILE = "../xosc.c";
+};
+
+LIBRARY pico_int64_ops{
+	//HEADERFILE = "pico/int64_ops.h";
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_int64_ops/include";
+};
+
+LIBRARY hardware_pll{
+	//HEADERFILE = "hardware/pll.h";
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_resets;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_pll/include";
+	CFILE = "../pll.c";
+};
+
+LIBRARY pico_time_adapter{
+	//HEADERFILE = "pico/time_adapter.h";
+	NEEDS = hardware_irq;
+	NEEDS = hardware_timer;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_time_adapter/include";
+};
+
+LIBRARY pico_low_power{
+	//HEADERFILE = "pico/low_power.h";
+	NEEDS = hardware_claim;
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_pll;
+	NEEDS = hardware_powman;
+	NEEDS = hardware_riscv;
+	NEEDS = hardware_rosc;
+	NEEDS = hardware_rtc;
+	NEEDS = hardware_structs;
+	NEEDS = hardware_sync;
+	NEEDS = hardware_timer;
+	NEEDS = hardware_uart;
+	NEEDS = hardware_watchdog;
+	NEEDS = hardware_xosc;
+	NEEDS = pico_aon_timer;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_runtime_init;
+	NEEDS = pico_stdio;
+	NEEDS = pico_time;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_low_power/include";
+	CFILE = "../low_power.c";
+};
+
+LIBRARY pico_clib_interface{
+	//HEADERFILE = "llvm_libc/unistd.h";
+	//HEADERFILE = "llvm_libc/time.h";
+	//HEADERFILE = "llvm_libc/sys/time.h";
+	//HEADERFILE = "llvm_libc/sys/types.h";
+	//HEADERFILE = "llvm_libc/sys/cdefs.h";
+	//HEADERFILE = "llvm_libc/sys/times.h";
+	//HEADERFILE = "llvm_libc/sys/stat.h";
+	NEEDS = pico_base_headers;
+	NEEDS = pico_bootrom;
+	NEEDS = pico_cxx_options;
+	NEEDS = pico_printf;
+	NEEDS = pico_runtime_init;
+	NEEDS = pico_stdio;
+	NEEDS = pico_time;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_clib_interface/include";
+	CFILE = "../picolibc_interface.c";
+	CFILE = "../cxa_guard.c";
+	CFILE = "../llvm_libc_interface.c";
+	CFILE = "../newlib_interface.c";
+};
+
+LIBRARY hardware_xip_cache{
+	//HEADERFILE = "hardware/xip_cache.h";
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/hardware_xip_cache/include";
+	CFILE = "../xip_cache.c";
+};
+
+LIBRARY pico_atomic{
+	//HEADERFILE = "stdatomic.h";
+	NEEDS = pico_base_headers;
+	NEEDS = pico_sync;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_atomic/include";
+	CFILE = "../atomic.c";
+};
+
+LIBRARY pico_stdio{
+	//HEADERFILE = "pico/stdio.h";
+	//HEADERFILE = "pico/stdio/driver.h";
+	NEEDS = pico_base_headers;
+	NEEDS = pico_printf;
+	// NEEDS = pico_stdio_rtt;
+	NEEDS = pico_stdio_uart;
+	NEEDS = pico_sync;
+	NEEDS = pico_time;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2_common/pico_stdio/include";
+	CFILE = "../stdio.c";
+};
+
+LIBRARY pico_base_headers{
+	//HEADERFILE = "pico.h";
+	//HEADERFILE = "pico/config.h";
+	//HEADERFILE = "pico/types.h";
+	//HEADERFILE = "pico/error.h";
+	//HEADERFILE = "pico/assert.h";
+	NEEDS = pico_platform;
+	NEEDS = pico_version;
+	NEEDS = pico_cmsis_device;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/common/pico_base_headers/include";
+};
+
+LIBRARY pico_sync{
+	//HEADERFILE = "pico/mutex.h";
+	//HEADERFILE = "pico/sem.h";
+	//HEADERFILE = "pico/critical_section.h";
+	//HEADERFILE = "pico/sync.h";
+	//HEADERFILE = "pico/lock_core.h";
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_runtime_init;
+	NEEDS = pico_time;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/common/pico_sync/include";
+};
+
+LIBRARY pico_usb_reset_interface_headers{
+	//HEADERFILE = "pico/usb_reset_interface.h";
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/common/pico_usb_reset_interface_headers/include";
+};
+
+LIBRARY pico_bit_ops_headers{
+	//HEADERFILE = "pico/bit_ops.h";
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/common/pico_bit_ops_headers/include";
+};
+
+LIBRARY hardware_claim{
+	//HEADERFILE = "hardware/claim.h";
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/common/hardware_claim/include";
+	CFILE = "../claim.c";
+};
+
+LIBRARY boot_picobin_headers{
+	//HEADERFILE = "boot/picobin.h";
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/common/boot_picobin_headers/include";
+};
+
+LIBRARY pico_binary_info{
+	//HEADERFILE = "pico/binary_info.h";
+	//HEADERFILE = "pico/binary_info/defs.h";
+	//HEADERFILE = "pico/binary_info/code.h";
+	//HEADERFILE = "pico/binary_info/structure.h";
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/common/pico_binary_info/include";
+};
+
+LIBRARY pico_stdlib_headers{
+	//HEADERFILE = "pico/stdlib.h";
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_uart;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_stdio;
+	NEEDS = pico_stdio_uart;
+	NEEDS = pico_time;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/common/pico_stdlib_headers/include";
+};
+
+LIBRARY pico_time{
+	//HEADERFILE = "pico/time.h";
+	//HEADERFILE = "pico/timeout_helper.h";
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_timer;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_runtime_init;
+	NEEDS = pico_sync;
+	NEEDS = pico_time_adapter;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/common/pico_time/include";
+	// CFILE = "../timeout_helper.c";
+	// CFILE = "../time.c";
+};
+
+LIBRARY pico_util{
+	//HEADERFILE = "pico/util/fixed_bitset.h";
+	//HEADERFILE = "pico/util/datetime.h";
+	//HEADERFILE = "pico/util/pheap.h";
+	//HEADERFILE = "pico/util/queue.h";
+	NEEDS = hardware_sync;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_sync;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/common/pico_util/include";
+	CFILE = "../datetime.c";
+	CFILE = "../pheap.c";
+	CFILE = "../queue.c";
+	CFILE = "../fixed_bitset.c";
+};
+
+LIBRARY pico_divider_headers{
+	//HEADERFILE = "pico/divider.h";
+	NEEDS = hardware_divider;
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/common/pico_divider_headers/include";
+};
+
+LIBRARY boot_picoboot_headers{
+	//HEADERFILE = "boot/picoboot_constants.h";
+	//HEADERFILE = "boot/picoboot.h";
+	NEEDS = pico_platform;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/common/boot_picoboot_headers/include";
+};
+
+LIBRARY boot_uf2_headers{
+	//HEADERFILE = "boot/uf2.h";
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/common/boot_uf2_headers/include";
+};
+
+LIBRARY hardware_regs{
+	//HEADERFILE = "hardware/platform_defs.h";
+	//HEADERFILE = "hardware/regs/pll.h";
+	//HEADERFILE = "hardware/regs/pio.h";
+	//HEADERFILE = "hardware/regs/i2c.h";
+	//HEADERFILE = "hardware/regs/adc.h";
+	//HEADERFILE = "hardware/regs/watchdog.h";
+	//HEADERFILE = "hardware/regs/addressmap.h";
+	//HEADERFILE = "hardware/regs/pwm.h";
+	//HEADERFILE = "hardware/regs/sysinfo.h";
+	//HEADERFILE = "hardware/regs/dma.h";
+	//HEADERFILE = "hardware/regs/usb_device_dpram.h";
+	//HEADERFILE = "hardware/regs/busctrl.h";
+	//HEADERFILE = "hardware/regs/intctrl.h";
+	//HEADERFILE = "hardware/regs/pads_bank0.h";
+	//HEADERFILE = "hardware/regs/spi.h";
+	//HEADERFILE = "hardware/regs/resets.h";
+	//HEADERFILE = "hardware/regs/dreq.h";
+	//HEADERFILE = "hardware/regs/ssi.h";
+	//HEADERFILE = "hardware/regs/m0plus.h";
+	//HEADERFILE = "hardware/regs/usb.h";
+	//HEADERFILE = "hardware/regs/io_bank0.h";
+	//HEADERFILE = "hardware/regs/io_qspi.h";
+	//HEADERFILE = "hardware/regs/vreg_and_chip_reset.h";
+	//HEADERFILE = "hardware/regs/uart.h";
+	//HEADERFILE = "hardware/regs/timer.h";
+	//HEADERFILE = "hardware/regs/pads_qspi.h";
+	//HEADERFILE = "hardware/regs/xosc.h";
+	//HEADERFILE = "hardware/regs/psm.h";
+	//HEADERFILE = "hardware/regs/rosc.h";
+	//HEADERFILE = "hardware/regs/xip.h";
+	//HEADERFILE = "hardware/regs/tbman.h";
+	//HEADERFILE = "hardware/regs/syscfg.h";
+	//HEADERFILE = "hardware/regs/sio.h";
+	//HEADERFILE = "hardware/regs/rtc.h";
+	//HEADERFILE = "hardware/regs/clocks.h";
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2040/hardware_regs/include";
+};
+
+LIBRARY pico_platform{
+	//HEADERFILE = "pico/platform.h";
+	//HEADERFILE = "pico/platform/cpu_regs.h";
+	NEEDS = hardware_base;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base_headers;
+	NEEDS = pico_platform_common;
+	NEEDS = pico_platform_compiler;
+	NEEDS = pico_platform_panic;
+	NEEDS = pico_platform_sections;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2040/pico_platform/include";
+	CFILE = "../platform.c";
+};
+
+LIBRARY hardware_structs{
+	//HEADERFILE = "hardware/structs/nvic.h";
+	//HEADERFILE = "hardware/structs/iobank0.h";
+	//HEADERFILE = "hardware/structs/pll.h";
+	//HEADERFILE = "hardware/structs/pio.h";
+	//HEADERFILE = "hardware/structs/i2c.h";
+	//HEADERFILE = "hardware/structs/interp.h";
+	//HEADERFILE = "hardware/structs/adc.h";
+	//HEADERFILE = "hardware/structs/watchdog.h";
+	//HEADERFILE = "hardware/structs/pwm.h";
+	//HEADERFILE = "hardware/structs/mpu.h";
+	//HEADERFILE = "hardware/structs/sysinfo.h";
+	//HEADERFILE = "hardware/structs/dma.h";
+	//HEADERFILE = "hardware/structs/xip_ctrl.h";
+	//HEADERFILE = "hardware/structs/busctrl.h";
+	//HEADERFILE = "hardware/structs/bus_ctrl.h";
+	//HEADERFILE = "hardware/structs/padsbank0.h";
+	//HEADERFILE = "hardware/structs/pads_bank0.h";
+	//HEADERFILE = "hardware/structs/spi.h";
+	//HEADERFILE = "hardware/structs/resets.h";
+	//HEADERFILE = "hardware/structs/ssi.h";
+	//HEADERFILE = "hardware/structs/m0plus.h";
+	//HEADERFILE = "hardware/structs/usb.h";
+	//HEADERFILE = "hardware/structs/io_bank0.h";
+	//HEADERFILE = "hardware/structs/io_qspi.h";
+	//HEADERFILE = "hardware/structs/scb.h";
+	//HEADERFILE = "hardware/structs/vreg_and_chip_reset.h";
+	//HEADERFILE = "hardware/structs/systick.h";
+	//HEADERFILE = "hardware/structs/uart.h";
+	//HEADERFILE = "hardware/structs/timer.h";
+	//HEADERFILE = "hardware/structs/pads_qspi.h";
+	//HEADERFILE = "hardware/structs/xosc.h";
+	//HEADERFILE = "hardware/structs/dma_debug.h";
+	//HEADERFILE = "hardware/structs/psm.h";
+	//HEADERFILE = "hardware/structs/rosc.h";
+	//HEADERFILE = "hardware/structs/xip.h";
+	//HEADERFILE = "hardware/structs/ioqspi.h";
+	//HEADERFILE = "hardware/structs/tbman.h";
+	//HEADERFILE = "hardware/structs/syscfg.h";
+	//HEADERFILE = "hardware/structs/usb_dpram.h";
+	//HEADERFILE = "hardware/structs/sio.h";
+	//HEADERFILE = "hardware/structs/rtc.h";
+	//HEADERFILE = "hardware/structs/clocks.h";
+	NEEDS = hardware_base;
+	NEEDS = hardware_regs;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2040/hardware_structs/include";
+};
+
+LIBRARY boot_stage2{
+	//HEADERFILE = "boot_stage2/config.h";
+	NEEDS = pico_base_headers;
+	PATH = "cortex-m/armv6m/rp2040/pico-sdk/src/rp2040/boot_stage2/include";
+};

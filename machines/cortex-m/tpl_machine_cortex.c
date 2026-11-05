@@ -96,7 +96,11 @@ FUNC (void, OS_CODE) tpl_init_machine_specific (void)
   /*
    * Switch to use PSP, unprivileged state
    */
-  __set_CONTROL(0x3);
+  /*Adding this because for rp2040 port we need to acces NVIC for every core
+  and init core is called after init_machine*/
+  #if NUMBER_OF_CORES == 1
+    __set_CONTROL(0x3);
+  #endif
   /*
    * Instruction SynchronizationBarrier
    * Execute ISB after changing CONTROL (architectural recommendation)
